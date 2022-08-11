@@ -33,7 +33,7 @@ class Pistachio extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           enableLog: false,
-          title: 'Fitween',
+          title: 'Pistachio',
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.light,
           theme: ThemeData(

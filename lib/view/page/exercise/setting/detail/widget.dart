@@ -55,7 +55,7 @@ class ExerciseSelectionButton extends StatelessWidget {
         fixedSize: Size(size, size),
         shape: const CircleBorder(),
       ),
-      child: FWText(text, style: textTheme.bodyMedium),
+      child: PText(text, style: textTheme.bodyMedium),
     );
   }
 }
@@ -96,9 +96,9 @@ class ExerciseDescriptionView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FWText('운동 설명', style: textTheme.bodyLarge),
+        PText('운동 설명', style: textTheme.bodyLarge),
         const SizedBox(height: 10.0),
-        FWText(exercise.description!, maxLines: 4),
+        PText(exercise.description!, maxLines: 4),
       ],
     );
   }
@@ -162,12 +162,12 @@ class ExerciseDetailSettingView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FWButton(
+                  PButton(
                     onPressed: Get.back,
                     constraints: const BoxConstraints(minWidth: 150.0),
                     text: '돌아가기',
                   ),
-                  FWButton(
+                  PButton(
                     onPressed: () => ExerciseMain.toExerciseMain(ExerciseState.stop),
                     constraints: const BoxConstraints(minWidth: 150.0),
                     text: '운동하기',

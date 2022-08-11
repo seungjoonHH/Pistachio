@@ -55,7 +55,7 @@ class ExerciseTypeCard extends StatelessWidget {
             children: [
               Icon(icon, size: 56.0),
               const SizedBox(width: 20.0),
-              FWText(type, style: textTheme.titleLarge),
+              PText(type, style: textTheme.titleLarge),
             ],
           ),
         ),

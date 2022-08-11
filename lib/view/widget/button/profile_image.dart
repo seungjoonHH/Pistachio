@@ -10,7 +10,7 @@
 //     required this.user,
 //   }) : super(key: key);
 //
-//   final FWUser user;
+//   final PUser user;
 //
 //   @override
 //   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// class
-class FWRoute {
+class PRoute {
   /// static variables
 // 화면 전환 트랜지션
   static const Transition transition = Transition.fadeIn;

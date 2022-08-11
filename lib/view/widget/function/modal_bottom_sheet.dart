@@ -12,7 +12,7 @@ void showFWModalBottomSheet(Map<String, VoidCallback> buttonData) {
     required VoidCallback onPressed,
   }) => ElevatedButton(
     style: ElevatedButton.styleFrom(
-      primary: FWTheme.black,
+      primary: PTheme.black,
       side: BorderSide(width: 1.0, color: colorScheme.outline),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -20,7 +20,7 @@ void showFWModalBottomSheet(Map<String, VoidCallback> buttonData) {
     ),
     onPressed: onPressed,
     child: Text(text,
-      style: const TextStyle(color: FWTheme.white),
+      style: const TextStyle(color: PTheme.white),
     ),
   );
 

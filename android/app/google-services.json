@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "877102769091",
+    "project_id": "pistachio-8c35b",
+    "storage_bucket": "pistachio-8c35b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877102769091:android:0754dcd1220ed64dd15376",
+        "android_client_info": {
+          "package_name": "com.example.pistachio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877102769091-uuok0oj78mj60munsda9tv85842srml9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBla1qn4nw4LeZrBlqrVuMlm0dBOJcOXso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877102769091-uuok0oj78mj60munsda9tv85842srml9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

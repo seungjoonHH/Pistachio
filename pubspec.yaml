@@ -1,0 +1,69 @@
+name: pistachio
+description: pistachio
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.3 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  firebase_core: ^1.19.1
+  firebase_auth: ^3.4.1
+  cloud_firestore: ^3.2.1
+  firebase_storage: ^10.3.1
+  google_sign_in: ^5.4.0
+  get: ^4.6.5
+  cupertino_icons: ^1.0.2
+  image_picker: ^0.8.5+3
+  flutter_screenutil: ^5.5.3+2
+  intl: ^0.17.0
+  pull_to_refresh: ^2.0.0
+  material_tag_editor: ^0.1.2
+  percent_indicator: ^4.2.2
+  carousel_slider: ^4.1.1
+  flutter_svg: ^1.1.1+1
+  animated_flip_counter: ^0.2.4
+  lottie: ^1.4.1
+  syncfusion_flutter_calendar: ^20.2.40
+  dotted_border: ^2.0.0+2
+  path_provider: ^2.0.11
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/image/logo/
+    - assets/image/object/
+    - assets/image/exercise/
+    - assets/image/page/timer/
+    - assets/json/lottie/
+    - assets/json/data/
+
+
+fonts:
+  - family: Noto_Sans_KR
+    fonts:
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Black.otf
+        weight: 900
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Bold.otf
+        weight: 700
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Medium.otf
+        weight: 500
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Regular.otf
+        weight: 400
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Light.otf
+        weight: 300
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Thin.otf
+        weight: 200

@@ -69,7 +69,7 @@ class ExerciseCompletePage extends StatelessWidget {
                     const SizedBox(height: 30.0),
                     const Text('고래는 행복해요 :)'),
                     const SizedBox(height: 50.0),
-                    FWButton(
+                    PButton(
                       onPressed: () {},
                       text: '      확인      ',
                     ),
@@ -274,7 +274,7 @@ class ExerciseCompletePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20.0),
-                const FWButton(
+                const PButton(
                   onPressed: HomePresenter.toHome,
                   text: '확인',
                 ),

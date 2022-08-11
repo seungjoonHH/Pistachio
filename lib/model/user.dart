@@ -12,7 +12,7 @@ String get kr => ['남성', '여성'][index];
 }
 
 /// class
-class FWUser {
+class PUser {
   /// static variables
   // 사용자의 기본 프로필 사진
   static const String defaultImageUrl = 'https://firebasestorage.googleapis.com/v0/b/fitween-v1-1.appspot.com/o/users%2Fguest.png?alt=media&token=d0c5908c-57a0-4d1d-9277-57c0cd23acd5';
@@ -115,13 +115,13 @@ class FWUser {
 
   /// constructors
   // 기본 생성자
-  FWUser() {
+  PUser() {
     // 프로필 이미지 주소를 기본값으로 설정
     imageUrl = defaultImageUrl;
   }
 
   // json 데이터를 통해 객체를 생성하는 생성자
-  FWUser.fromJson(Map<String, dynamic> json) {
+  PUser.fromJson(Map<String, dynamic> json) {
     fromJson(json);
 
     // json 데이터에 프로필 이미지 주소가 없을 경우 기본값으로 설정

@@ -5,8 +5,8 @@
 // import 'package:get/get.dart';
 //
 // /// class
-// class FWBottomBar extends StatelessWidget {
-//   const FWBottomBar({Key? key}) : super(key: key);
+// class PBottomBar extends StatelessWidget {
+//   const PBottomBar({Key? key}) : super(key: key);
 //
 //   @override
 //   Widget build(BuildContext context) {

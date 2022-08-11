@@ -196,7 +196,7 @@ class RecordCard extends StatelessWidget{
       child: Container(
         margin: const EdgeInsets.only(bottom: 10.0, top: 14.0),
         decoration: BoxDecoration(
-          color: FWTheme.white,
+          color: PTheme.white,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -205,7 +205,7 @@ class RecordCard extends StatelessWidget{
             Container(
               width: 104,
               height: 112,
-              color: FWTheme.white,
+              color: PTheme.white,
               child: SvgPicture.asset(image),
             ),
             Column(

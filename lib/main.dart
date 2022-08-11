@@ -38,27 +38,27 @@ class Pistachio extends StatelessWidget {
           themeMode: ThemeMode.light,
           theme: ThemeData(
             useMaterial3: true,
-            colorScheme: FWTheme.lightScheme,
-            textTheme: FWTheme.textTheme,
+            colorScheme: PTheme.lightScheme,
+            textTheme: PTheme.textTheme,
             appBarTheme: AppBarTheme(
               iconTheme: IconThemeData(
-                color: FWTheme.lightScheme.primary,
+                color: PTheme.lightScheme.primary,
               ),
             ),
           ),
           darkTheme: ThemeData(
             useMaterial3: true,
-            colorScheme: FWTheme.darkScheme,
-            textTheme: FWTheme.textTheme,
+            colorScheme: PTheme.darkScheme,
+            textTheme: PTheme.textTheme,
             appBarTheme: AppBarTheme(
               iconTheme: IconThemeData(
-                color: FWTheme.darkScheme.primary,
+                color: PTheme.darkScheme.primary,
               ),
             ),
           ),
           // home: const DeveloperPage(),
           home: const HomePage(),
-          getPages: FWRoute.getPages,
+          getPages: PRoute.getPages,
         );
       },
     );

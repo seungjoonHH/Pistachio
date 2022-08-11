@@ -5,8 +5,8 @@ import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:flutter/material.dart';
 
 /// class
-class FWButton extends StatelessWidget {
-  const FWButton({
+class PButton extends StatelessWidget {
+  const PButton({
     Key? key,
     this.text,
     this.child,
@@ -39,8 +39,8 @@ class FWButton extends StatelessWidget {
           padding: padding,
           constraints: constraints,
           child: Center(
-            child: child ?? FWText(text!,
-              color: FWTheme.white,
+            child: child ?? PText(text!,
+              color: PTheme.white,
             ),
           ),
         ),
@@ -49,8 +49,8 @@ class FWButton extends StatelessWidget {
   }
 }
 
-class FWDirectButton extends StatelessWidget {
-  const FWDirectButton({
+class PDirectButton extends StatelessWidget {
+  const PDirectButton({
     Key? key,
     required this.text,
     required this.onPressed,
@@ -67,15 +67,15 @@ class FWDirectButton extends StatelessWidget {
         padding: const EdgeInsets.all(2.0),
         decoration: const BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: FWTheme.black),
+            bottom: BorderSide(color: PTheme.black),
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FWText(text,
-              color: FWTheme.black,
+            PText(text,
+              color: PTheme.black,
               style: const TextStyle(fontSize: 13.0),
             ),
             const Icon(Icons.arrow_forward_ios, size: 15.0),

@@ -12,7 +12,7 @@ TextTheme textTheme = Theme.of(Get.context!).textTheme;
 ColorScheme colorScheme = Theme.of(Get.context!).colorScheme;
 
 /// class
-class FWTheme {
+class PTheme {
   /// colors
   // simple
   static const Color black = Colors.black;

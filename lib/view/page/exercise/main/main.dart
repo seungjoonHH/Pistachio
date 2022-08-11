@@ -185,12 +185,12 @@ class ExerciseMainPage extends StatelessWidget {
                 Column(
                   children: [
                     if (controller.state != ExerciseState.unselected)
-                    FWButton(
+                    PButton(
                       onPressed: controller.startExercise,
                       text: '운동하기',
                     ),
                     const SizedBox(height: 20.0),
-                    const FWDirectButton(
+                    const PDirectButton(
                       onPressed: ExerciseMain.toExerciseTypeSetting,
                       text: '운동 설정하기',
                     ),

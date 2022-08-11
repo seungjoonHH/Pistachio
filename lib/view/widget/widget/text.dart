@@ -4,8 +4,8 @@ import 'package:pistachio/global/theme.dart';
 import 'package:flutter/material.dart';
 
 /// class
-class FWText extends StatelessWidget {
-  FWText(this.data, {
+class PText extends StatelessWidget {
+  PText(this.data, {
     Key? key,
     this.style,
     this.color,
@@ -20,7 +20,7 @@ class FWText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     style ??= textTheme.bodyMedium;
-    color ??= FWTheme.black;
+    color ??= PTheme.black;
     return Text(data,
       maxLines: maxLines,
       overflow: TextOverflow.ellipsis,

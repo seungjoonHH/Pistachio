@@ -87,7 +87,7 @@ class ExerciseCompletePage extends StatelessWidget {
       backgroundColor: colorScheme.background,
       appBar: AppBar(
         backgroundColor: const Color(0xff54bab9),
-        title: const Text('Fitween',
+        title: const Text('Pistachio',
           style: TextStyle(color: Color(0xfff7ecde)),
         ),
       ),

@@ -10,6 +10,11 @@ import 'package:pistachio/presenter/page/home.dart';
 
 class GlobalPresenter extends GetxController {
   int navIndex = 0;
+  static GlobalPresenter get to => Get.find();
+
+  Future<bool> initialize() async {
+    return true;
+  }
 
   void navigate(int index) {
     navIndex = index;

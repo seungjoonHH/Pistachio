@@ -5,10 +5,12 @@ import 'package:pistachio/view/page/exercise/main/main.dart';
 import 'package:pistachio/view/page/exercise/setting/detail/detail.dart';
 import 'package:pistachio/view/page/exercise/setting/type/type.dart';
 import 'package:pistachio/view/page/home/home.dart';
+import 'package:pistachio/view/page/login/login.dart';
 import 'package:pistachio/view/page/record/detail/detail.dart';
 import 'package:pistachio/view/page/record/main/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/view/page/register/register.dart';
 
 /// class
 class PRoute {
@@ -33,6 +35,8 @@ class PRoute {
     // '/record': const RecordPage(),
     // '/start': const StartPage(),
     '/home': const HomePage(),
+    '/login': const LoginPage(),
+    '/register': const RegisterPage(),
     '/exercise/main': const ExerciseMainPage(),
     '/exercise/complete': const ExerciseCompletePage(),
     '/exercise/setting/type': const ExerciseTypeSettingPage(),
@@ -42,13 +46,11 @@ class PRoute {
     '/challenge/main': const ChallengeMainPage(),
   };
 
-// 겟페이지 리스트
-  static List<GetPage> get getPages => pages.entries
-      .map((page) => GetPage(
-            name: page.key,
-            page: () => page.value,
-            transition: transition,
-            transitionDuration: duration,
-          ))
-      .toList();
+  // 겟페이지 리스트
+  static List<GetPage> get getPages => pages.entries.map((page) => GetPage(
+    name: page.key,
+    page: () => page.value,
+    transition: transition,
+    transitionDuration: duration,
+  )).toList();
 }

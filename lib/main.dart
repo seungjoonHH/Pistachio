@@ -3,15 +3,15 @@ import 'package:pistachio/firebase_options.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/route.dart';
-import 'package:pistachio/view/page/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/view/page/login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    name: 'pistachio',
+    // name: 'pistachio',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -33,7 +33,7 @@ class Pistachio extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           enableLog: false,
-          title: 'Fitween',
+          title: 'Pistachio',
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.light,
           theme: ThemeData(
@@ -57,7 +57,7 @@ class Pistachio extends StatelessWidget {
             ),
           ),
           // home: const DeveloperPage(),
-          home: const HomePage(),
+          home: const LoginPage(),
           getPages: PRoute.getPages,
         );
       },

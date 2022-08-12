@@ -1,3 +1,4 @@
+import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/page/challenge.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
 import 'package:pistachio/presenter/page/record.dart';
@@ -16,7 +17,7 @@ class HomeView extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: Card(
-              color: const Color(0xff54bab9),
+              color: PTheme.secondary[40],
               child: InkWell(
                 onTap: ExerciseMain.toExerciseMain,
                 borderRadius: BorderRadius.circular(10.0),
@@ -26,7 +27,10 @@ class HomeView extends StatelessWidget {
                     children: [
                       SvgPicture.asset('assets/image/object/balls.svg'),
                       const Text('운동하러 가기',
-                        style: TextStyle(fontSize: 20.0, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: PTheme.white,
+                        ),
                       ),
                       const Positioned(
                         right: 0.0,
@@ -34,7 +38,7 @@ class HomeView extends StatelessWidget {
                         child: Icon(
                           Icons.timelapse_sharp,
                           size: 100,
-                          color: Colors.white,
+                          color: PTheme.white,
                         ),
                       ),
                     ],
@@ -52,7 +56,7 @@ class HomeView extends StatelessWidget {
                   width: 172.0,
                   height: 172.0,
                   child: Card(
-                    color: const Color(0xff54bab9),
+                    color: PTheme.secondary[40],
                     child: InkWell(
                       onTap: RecordPresenter.toRecordMain,
                       borderRadius: BorderRadius.circular(10.0),
@@ -61,9 +65,11 @@ class HomeView extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            Text(
-                              '내 기록\n보러가기',
-                              style: TextStyle(fontSize: 20.0, color: Colors.white),
+                            Text('내 기록\n보러가기',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: PTheme.white,
+                              ),
                             ),
                             Expanded(
                               child: Align(
@@ -71,7 +77,7 @@ class HomeView extends StatelessWidget {
                                 child: Icon(
                                   Icons.dvr,
                                   size: 60.0,
-                                  color: Colors.white,
+                                  color: PTheme.white,
                                 ),
                               ),
                             ),
@@ -85,7 +91,7 @@ class HomeView extends StatelessWidget {
                   width: 172.0,
                   height: 172.0,
                   child: Card(
-                    color: const Color(0xff54bab9),
+                    color: PTheme.secondary[40],
                     child: InkWell(
                       onTap: ChallengePresenter.toChallengeMain,
                       borderRadius: BorderRadius.circular(10.0),
@@ -94,9 +100,11 @@ class HomeView extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            Text(
-                              '챌린지',
-                              style: TextStyle(fontSize: 20.0, color: Colors.white),
+                            Text('챌린지',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: PTheme.white,
+                              ),
                             ),
                             Expanded(
                               child: Align(
@@ -104,7 +112,7 @@ class HomeView extends StatelessWidget {
                                 child: Icon(
                                   Icons.military_tech_outlined,
                                   size: 60.0,
-                                  color: Colors.white,
+                                  color: PTheme.white,
                                 ),
                               ),
                             ),

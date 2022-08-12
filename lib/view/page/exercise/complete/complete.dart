@@ -1,13 +1,14 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/page/complete.dart';
-import 'package:pistachio/presenter/page/main.dart';
+import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:pistachio/view/widget/widget/app_bar.dart';
 
 class ExerciseCompletePage extends StatelessWidget {
   const ExerciseCompletePage({Key? key}) : super(key: key);
@@ -85,12 +86,7 @@ class ExerciseCompletePage extends StatelessWidget {
     */
     return Scaffold(
       backgroundColor: colorScheme.background,
-      appBar: AppBar(
-        backgroundColor: const Color(0xff54bab9),
-        title: const Text('Fitween',
-          style: TextStyle(color: Color(0xfff7ecde)),
-        ),
-      ),
+      appBar: HomeAppBar(),
       body: GetBuilder<CompletePresenter>(
         builder: (controller) {
           return Center(

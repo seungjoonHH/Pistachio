@@ -10,7 +10,7 @@ class RecordDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const HomeAppBar(),
+      appBar: HomeAppBar(),
       body: Container(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 33.0),
         child: Column(

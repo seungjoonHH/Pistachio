@@ -13,7 +13,6 @@ dependencies:
     sdk: flutter
 
   firebase_core: ^1.19.1
-  firebase_auth: ^3.4.1
   cloud_firestore: ^3.2.1
   firebase_storage: ^10.3.1
   google_sign_in: ^5.4.0
@@ -32,6 +31,7 @@ dependencies:
   syncfusion_flutter_calendar: ^20.2.40
   dotted_border: ^2.0.0+2
   path_provider: ^2.0.11
+  firebase_auth: ^3.6.3
 
 dev_dependencies:
   flutter_test:

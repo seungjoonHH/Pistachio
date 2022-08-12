@@ -11,7 +11,7 @@ class PButton extends StatelessWidget {
     this.text,
     this.child,
     required this.onPressed,
-    this.fill = false,
+    this.fill = true,
     this.padding = const EdgeInsets.symmetric(
       horizontal: 30.0, vertical: 10.0,
     ),
@@ -29,22 +29,42 @@ class PButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: const Color(0xff54bab9),
-      borderRadius: BorderRadius.circular(20.0),
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(20.0),
-        child: Container(
-          padding: padding,
-          constraints: constraints,
-          child: Center(
-            child: child ?? PText(text!,
-              color: PTheme.white,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Material(
+              color: fill
+                  ? PTheme.secondary[40]
+                  : PTheme.white,
+              borderRadius: BorderRadius.circular(20.0),
+              child: InkWell(
+                onTap: onPressed,
+                borderRadius: BorderRadius.circular(20.0),
+                child: Container(
+                  padding: padding,
+                  constraints: constraints,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      color: PTheme.secondary[40]!,
+                    ),
+                  ),
+                  child: Center(
+                    child: child ?? PText(text!,
+                      color: fill
+                          ? PTheme.white
+                          : PTheme.secondary[40],
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-      ),
+      ],
     );
   }
 }

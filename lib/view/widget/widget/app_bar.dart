@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/presenter/global.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({Key? key}) : super(key: key);
@@ -8,13 +12,22 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0.0,
-      title: const Text('Fitween',
-        style: TextStyle(color: Color(0xfff7ecde)),
-      ),
-      iconTheme: const IconThemeData(color: Color(0xfff7ecde)),
-      backgroundColor: const Color(0xff54bab9),
+    return GetBuilder<GlobalPresenter>(
+      builder: (controller) {
+        return AppBar(
+          elevation: 0.0,
+          title: PText('Pistachio',
+            color: PTheme.light,
+            style: textTheme.titleLarge,
+          ),
+          // leading: IconButton(
+          //   icon: const Icon(Icons.menu),
+          //   onPressed: () {},
+          // ),
+          iconTheme: const IconThemeData(color: PTheme.light),
+          backgroundColor: PTheme.primary[30],
+        );
+      }
     );
   }
 }

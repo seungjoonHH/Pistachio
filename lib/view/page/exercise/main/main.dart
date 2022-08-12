@@ -16,7 +16,7 @@ class ExerciseMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorScheme.background,
-      appBar: const HomeAppBar(),
+      appBar: HomeAppBar(),
       body: GetBuilder<ExerciseMain>(
           builder: (controller) {
             return Column(
@@ -33,7 +33,7 @@ class ExerciseMainPage extends StatelessWidget {
                       width: 330.0,
                       height: 91.0,
                       child: Card(
-                        color: const Color(0xfffbf8f1),
+                        color: PTheme.secondary[40],
                         child: Row(
                           children: [
                             Container(

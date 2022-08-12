@@ -10,7 +10,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0.0,
-      title: const Text('Fitween',
+      title: const Text('Pistachio',
         style: TextStyle(color: Color(0xfff7ecde)),
       ),
       iconTheme: const IconThemeData(color: Color(0xfff7ecde)),

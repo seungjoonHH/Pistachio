@@ -20,10 +20,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: PTheme.light,
             style: textTheme.titleLarge,
           ),
-          // leading: IconButton(
-          //   icon: const Icon(Icons.menu),
-          //   onPressed: () {},
-          // ),
           iconTheme: const IconThemeData(color: PTheme.light),
           backgroundColor: PTheme.primary[30],
         );

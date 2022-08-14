@@ -10,6 +10,8 @@ class PUser {
   String? uid;
   String? name;
   String? nickname;
+  double? weight;
+  double? height;
   Sex? sex;
   Timestamp? _regDate;
   Timestamp? _dateOfBirth;
@@ -38,6 +40,8 @@ class PUser {
     uid = json['uid'];
     name = json['name'];
     nickname = json['nickname'];
+    weight = json['weight'];
+    height = json['height'];
     sex = toSex(json['sex']);
     _regDate = json['regDate'];
     _dateOfBirth = json['dateOfBirth'];
@@ -53,6 +57,8 @@ class PUser {
     json['uid'] = uid;
     json['name'] = name;
     json['nickname'] = nickname;
+    json['weight'] = weight;
+    json['height'] = height;
     json['sex'] = sex?.name;
     json['regDate'] = _regDate;
     json['dateOfBirth'] = _dateOfBirth;

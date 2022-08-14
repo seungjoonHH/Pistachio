@@ -7,9 +7,15 @@ import 'package:pistachio/presenter/page/exercise/main.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/presenter/page/register.dart';
 
 class GlobalPresenter extends GetxController {
   int navIndex = 0;
+  static GlobalPresenter get to => Get.find();
+
+  Future<bool> initialize() async {
+    return true;
+  }
 
   void navigate(int index) {
     navIndex = index;
@@ -37,6 +43,7 @@ class GlobalPresenter extends GetxController {
     Get.put(ExercisePresenter());
     Get.put(ExerciseMain());
     Get.put(ExerciseDetailSetting());
+    Get.put(RegisterPresenter());
   }
 
   static void importData() {

@@ -70,6 +70,34 @@ class ExerciseMainPage extends StatelessWidget {
                                 ],
                               ),
                             ),
+<<<<<<< HEAD
+=======
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const SizedBox(height: 350.0),
+                    if (controller.state == ExerciseState.unselected)
+                    Center(
+                      child: DottedBorder(
+                        borderType: BorderType.Circle,
+                        dashPattern: const [10.0, 10.0],
+                        strokeWidth: 5.0,
+                        color: const Color(0xff54bab9),
+                        child: const SizedBox(
+                          width: 300.0,
+                          height: 300.0,
+                          child: Center(
+                            child: Text('운동을\n설정해주세요',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 40.0),
+                            ),
+>>>>>>> upstream/main
                           ),
                         ],
                       ),

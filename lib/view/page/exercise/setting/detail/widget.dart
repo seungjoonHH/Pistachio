@@ -10,7 +10,6 @@ import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class ExerciseImageWidget extends StatelessWidget {
   const ExerciseImageWidget({

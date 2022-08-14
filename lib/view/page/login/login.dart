@@ -13,21 +13,10 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: Center(
-      //   child: PButton(
-      //     onPressed: () => LoginPresenter.fwLogin(LoginType.google),
-      //     text: '구글 계정으로 로그인',
-      //   ),
-      // ),
       body: Center(
-        child: PIconButton(Icons.add,
-          onPressed: () => showPDialog(
-            title: '제목',
-            content: PText('내용'),
-            type: DialogType.none,
-          ),
-          backgroundColor: PTheme.primary,
-          iconColor: PTheme.white,
+        child: PButton(
+          onPressed: () => LoginPresenter.fwLogin(LoginType.google),
+          text: '구글 계정으로 로그인',
         ),
       ),
     );

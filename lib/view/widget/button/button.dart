@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 /// class
 class PButton extends StatelessWidget {
-  const PButton({
+  PButton({
     Key? key,
     this.text,
     this.child,
@@ -16,9 +16,10 @@ class PButton extends StatelessWidget {
       horizontal: 30.0, vertical: 10.0,
     ),
     this.constraints,
+    Color? color,
   }) : assert(
   text == null || child == null,
-  ), super(key: key);
+  ), color = color ?? PTheme.secondary[40], super(key: key);
 
   final String? text;
   final Widget? child;
@@ -26,19 +27,20 @@ class PButton extends StatelessWidget {
   final bool fill;
   final EdgeInsets padding;
   final BoxConstraints? constraints;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Material(
-              color: fill
-                  ? PTheme.secondary[40]
-                  : PTheme.white,
+              color: fill ? color : PTheme.white,
               borderRadius: BorderRadius.circular(20.0),
               child: InkWell(
                 onTap: onPressed,
@@ -48,9 +50,7 @@ class PButton extends StatelessWidget {
                   constraints: constraints,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
-                    border: Border.all(
-                      color: PTheme.secondary[40]!,
-                    ),
+                    border: Border.all(color: color!),
                   ),
                   child: Center(
                     child: child ?? PText(text!,
@@ -106,3 +106,40 @@ class PDirectButton extends StatelessWidget {
   }
 }
 
+class PIconButton extends StatelessWidget {
+  const PIconButton(this.iconData, {
+    Key? key,
+    required this.onPressed,
+    this.size = 66.0,
+    Color? backgroundColor,
+    Color? iconColor,
+  }) : backgroundColor = backgroundColor ?? const Color(0xFFD6BDAC),
+        iconColor = iconColor ?? PTheme.black,
+        super(key: key);
+
+  final IconData iconData;
+  final VoidCallback onPressed;
+  final double size;
+  final Color? backgroundColor;
+  final Color? iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(size * .5),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(size * .5),
+        child: SizedBox(
+          width: size,
+          height: size,
+          child: Icon(iconData,
+            size: size * .7,
+            color: iconColor,
+          ),
+        ),
+      ),
+    );
+  }
+}

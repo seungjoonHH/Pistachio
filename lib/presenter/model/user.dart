@@ -1,7 +1,7 @@
 /* 사용자 모델 프리젠터 */
 
 import 'package:get/get.dart';
-import 'package:pistachio/model/user.dart';
+import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 
 /// class

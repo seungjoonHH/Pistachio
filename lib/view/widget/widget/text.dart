@@ -7,24 +7,34 @@ import 'package:flutter/material.dart';
 class PText extends StatelessWidget {
   PText(this.data, {
     Key? key,
-    this.style,
-    this.color,
+    TextStyle? style,
+    this.color = PTheme.black,
     this.maxLines = 1,
-  }) : super(key: key);
+    this.bold = false,
+    this.italic = false,
+  }) : style = style ?? textTheme.bodyMedium, super(key: key);
 
   final String data;
-  TextStyle? style;
-  Color? color;
+  final TextStyle? style;
+  final Color? color;
   final int maxLines;
+  final bool bold;
+  final bool italic;
 
   @override
   Widget build(BuildContext context) {
-    style ??= textTheme.bodyMedium;
-    color ??= PTheme.black;
     return Text(data,
       maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
-      style: style?.apply(color: color),
+      style: style?.merge(TextStyle(
+        color: color,
+        fontWeight: bold
+            ? FontWeight.bold
+            : FontWeight.normal,
+        fontStyle: italic
+            ? FontStyle.italic
+            : FontStyle.normal,
+      )),
     );
   }
 }

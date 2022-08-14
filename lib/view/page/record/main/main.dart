@@ -7,10 +7,10 @@ class RecordMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       appBar: HomeAppBar(),
-      body: const MyRecordView(),
+      body: MyRecordView(),
     );
   }
 }

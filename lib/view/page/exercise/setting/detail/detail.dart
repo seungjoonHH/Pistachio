@@ -13,7 +13,7 @@ class ExerciseDetailSettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorScheme.background,
-      appBar: HomeAppBar(),
+      appBar: const HomeAppBar(),
       body: const ExerciseDetailSettingView(),
     );
   }

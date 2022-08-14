@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:pistachio/model/exercise.dart';
 import 'package:pistachio/presenter/page/complete.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 enum ExerciseState { unselected, ready, ongoing, pause, stop }

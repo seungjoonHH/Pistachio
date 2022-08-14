@@ -47,6 +47,8 @@ flutter:
     - assets/image/logo/
     - assets/image/object/
     - assets/image/exercise/
+    - assets/image/collection/default/
+    - assets/image/collection/complete/
     - assets/image/page/timer/
     - assets/json/lottie/
     - assets/json/data/

@@ -4,6 +4,7 @@ import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/complete.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
+import 'package:pistachio/presenter/notification.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/presenter/page/home.dart';
@@ -44,6 +45,7 @@ class GlobalPresenter extends GetxController {
     Get.put(ExerciseMain());
     Get.put(ExerciseDetailSetting());
     Get.put(RegisterPresenter());
+    Get.put(NotificationPresenter());
   }
 
   static void importData() {

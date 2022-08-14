@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:pistachio/model/collection.dart';
+import 'package:pistachio/model/class/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
@@ -15,5 +15,6 @@ class CollectionPresenter extends GetxController {
     String string = await rootBundle.loadString(asset);
     List<dynamic> list = jsonDecode(string);
     collections = list.map((json) => Collection.fromJson(json)).toList();
+    update();
   }
 }

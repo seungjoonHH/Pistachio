@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/presenter/page/challenge.dart';
+import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +31,6 @@ class HomeDrawerTile extends StatelessWidget {
     );
   }
 }
-
 
 class HomeDrawer extends StatelessWidget{
   const HomeDrawer({Key? key}) : super(key: key);

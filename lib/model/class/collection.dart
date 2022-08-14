@@ -1,24 +1,30 @@
-class Exercise {
-  int? index;
-  String? name;
+/* 컬렉션 모델 구조 */
+class Collection {
+  /// attributes
+  String? id;
+  String? title;
   String? imageUrl;
   String? description;
 
-  Exercise.fromJson(Map<String, dynamic> json) {
+  /// constructors
+  Collection();
+
+  Collection.fromJson(Map<String, dynamic> json) {
     fromJson(json);
   }
 
+  /// methods
   void fromJson(Map<String, dynamic> json) {
-    index = json['index'];
-    name = json['name'];
+    id = json['id'];
+    title = json['title'];
     imageUrl = json['imageUrl'];
     description = json['description'];
   }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};
-    json['index'] = index;
-    json['name'] = name;
+    json['id'] = id;
+    json['title'] = title;
     json['imageUrl'] = imageUrl;
     json['description'] = description;
     return json;

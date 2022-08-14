@@ -15,75 +15,6 @@ class ExerciseCompletePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fitween',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xff54bab9),
-      ),
-      body: GetBuilder<CompletePresenter>(
-        builder: (controller) {
-          return Padding(
-            padding: const EdgeInsets.all(40.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Center(
-                      child: SvgPicture.asset(
-                        'assets/image/page/timer/whale.svg',
-                        width: 300.0,
-                      ),
-                    ),
-                    const SizedBox(height: 50.0),
-                    Stack(
-                      children: [
-                        LinearPercentIndicator(
-                          padding: EdgeInsets.zero,
-                          percent: controller.after,
-                          lineHeight: 20.0,
-                          animation: true,
-                          animationDuration: 3000,
-                          animateFromLastPercent: true,
-                          curve: Curves.fastLinearToSlowEaseIn,
-                          barRadius: const Radius.circular(10.0),
-                          progressColor: const Color(0xff54bab9),
-                          backgroundColor: Colors.black12,
-                        ),
-                        LinearPercentIndicator(
-                          padding: EdgeInsets.zero,
-                          percent: controller.before,
-                          lineHeight: 20.0,
-                          barRadius: const Radius.circular(10.0),
-                          progressColor: const Color(0xff54bab9),
-                          backgroundColor: Colors.transparent,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const SizedBox(height: 30.0),
-                    const Text('고래는 행복해요 :)'),
-                    const SizedBox(height: 50.0),
-                    PButton(
-                      onPressed: () {},
-                      text: '      확인      ',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }
-      ),
-      backgroundColor: const Color(0xfff7ecde),
-    );
-    */
     return Scaffold(
       backgroundColor: colorScheme.background,
       appBar: const HomeAppBar(),
@@ -270,7 +201,7 @@ class ExerciseCompletePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20.0),
-                const PButton(
+                PButton(
                   onPressed: HomePresenter.toHome,
                   text: '확인',
                 ),

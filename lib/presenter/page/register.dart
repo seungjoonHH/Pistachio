@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../model/user.dart';
-import '../model/user.dart';
+import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/user.dart';
 import 'main.dart';
 
 /// class

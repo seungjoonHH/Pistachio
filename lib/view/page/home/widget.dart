@@ -1,5 +1,5 @@
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/presenter/page/challenge.dart';
+import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
 import 'package:pistachio/presenter/page/record.dart';
 import 'package:flutter/material.dart';

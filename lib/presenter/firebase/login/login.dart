@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/model/user.dart';
+import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/firebase/login/google.dart';
 import 'package:pistachio/presenter/model/user.dart';

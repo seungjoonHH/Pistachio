@@ -1,7 +1,7 @@
 import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/exercise.dart';
 import 'package:pistachio/presenter/model/user.dart';
-import 'package:pistachio/presenter/page/challenge.dart';
+import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/complete.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
@@ -49,7 +49,9 @@ class GlobalPresenter extends GetxController {
   static void importData() {
     final exercisePresenter = Get.find<ExercisePresenter>();
     final collectionPresenter = Get.find<CollectionPresenter>();
+    final challengePresenter = Get.find<ChallengePresenter>();
     exercisePresenter.importFile();
     collectionPresenter.importFile();
+    challengePresenter.importFile();
   }
 }

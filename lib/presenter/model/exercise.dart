@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:pistachio/model/exercise.dart';
+import 'package:pistachio/model/class/exercise.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 

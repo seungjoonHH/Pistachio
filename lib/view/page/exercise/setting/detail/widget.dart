@@ -1,7 +1,7 @@
 /* 운동 상세 설정 페이지 위젯 */
 
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/exercise.dart';
+import 'package:pistachio/model/class/exercise.dart';
 import 'package:pistachio/presenter/model/exercise.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';

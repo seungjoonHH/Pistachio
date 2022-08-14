@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import '../../../model/user.dart';
-import '../../../presenter/page/register.dart';
+import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/page/register.dart';
 
 class Register extends StatelessWidget {
   const Register({Key? key}) : super(key: key);

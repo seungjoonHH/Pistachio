@@ -16,7 +16,7 @@ class ExerciseMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorScheme.background,
-      appBar: HomeAppBar(),
+      appBar: const HomeAppBar(),
       body: GetBuilder<ExerciseMain>(
           builder: (controller) {
             return Column(
@@ -87,10 +87,10 @@ class ExerciseMainPage extends StatelessWidget {
                         dashPattern: const [10.0, 10.0],
                         strokeWidth: 5.0,
                         color: const Color(0xff54bab9),
-                        child: Container(
+                        child: const SizedBox(
                           width: 300.0,
                           height: 300.0,
-                          child: const Center(
+                          child: Center(
                             child: Text('운동을\n설정해주세요',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 40.0),

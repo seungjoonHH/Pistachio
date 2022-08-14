@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pistachio/view/page/register/widget.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -6,9 +7,9 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: HomeAppBar(),
-      body: Container(),
+      body: Register(),
     );
   }
 }

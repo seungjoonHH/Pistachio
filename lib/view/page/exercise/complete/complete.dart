@@ -86,7 +86,7 @@ class ExerciseCompletePage extends StatelessWidget {
     */
     return Scaffold(
       backgroundColor: colorScheme.background,
-      appBar: HomeAppBar(),
+      appBar: const HomeAppBar(),
       body: GetBuilder<CompletePresenter>(
         builder: (controller) {
           return Center(

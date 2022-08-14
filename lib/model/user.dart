@@ -141,8 +141,8 @@ class PUser {
     imageUrl = json['imageUrl'];
     partyIds = (json['partyIds'] ?? []).cast<String>();
     collectionIds = (json['collectionIds'] ?? []).cast<String>();
-    goals = json['goals'];
-    records = json['records'];
+    goals = (json['goals'] ?? []).cast<String>();
+    records = (json['records'] ?? []).cast<String>();
   }
 
   // 객체의 json 데이터 추출

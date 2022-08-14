@@ -7,15 +7,18 @@ import 'package:get/get.dart';
 /// enums
 // 성별 { 남성, 여성 }
 enum Sex {
-  male, female;
-String get kr => ['남성', '여성'][index];
+  male,
+  female;
+
+  String get kr => ['남성', '여성'][index];
 }
 
 /// class
 class PUser {
   /// static variables
   // 사용자의 기본 프로필 사진
-  static const String defaultImageUrl = 'https://firebasestorage.googleapis.com/v0/b/fitween-v1-1.appspot.com/o/users%2Fguest.png?alt=media&token=d0c5908c-57a0-4d1d-9277-57c0cd23acd5';
+  static const String defaultImageUrl =
+      'https://firebasestorage.googleapis.com/v0/b/fitween-v1-1.appspot.com/o/users%2Fguest.png?alt=media&token=d0c5908c-57a0-4d1d-9277-57c0cd23acd5';
 
   /// attributes
   // uid
@@ -29,6 +32,12 @@ class PUser {
 
   // 상태메시지
   String? statusMessage;
+
+  // 키
+  double? height;
+
+  // 몸무게
+  double? weight;
 
   // 성별
   Sex? sex;
@@ -96,7 +105,6 @@ class PUser {
   // ]
   List<dynamic> records = [];
 
-
   /// accessors & mutators
   // 가입일 getter
   DateTime? get regDate => _regDate?.toDate();
@@ -141,8 +149,8 @@ class PUser {
     imageUrl = json['imageUrl'];
     partyIds = (json['partyIds'] ?? []).cast<String>();
     collectionIds = (json['collectionIds'] ?? []).cast<String>();
-    goals = json['goals'];
-    records = json['records'];
+    goals = (json['goals'] ?? []).cast<String>();
+    records = (json['records'] ?? []).cast<String>();
   }
 
   // 객체의 json 데이터 추출
@@ -166,5 +174,5 @@ class PUser {
   // 문자열을 성별 enum 으로 전환 ('male' => Sex.male)
   static Sex? toSex(String? string) => Sex.values.firstWhereOrNull(
         (sex) => sex.name == string,
-  );
+      );
 }

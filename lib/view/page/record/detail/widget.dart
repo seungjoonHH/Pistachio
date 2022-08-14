@@ -60,7 +60,7 @@ class ExerciseDetailView extends StatelessWidget{
               percent: percent,
             ),
           ),
-          Container(
+          SizedBox(
             width: 300.0,
             height: 250.0,
             child: SfCalendar(

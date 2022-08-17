@@ -9,7 +9,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: HomeAppBar(),
-      body: Register(),
+      body: CarouselView(),
     );
   }
 }

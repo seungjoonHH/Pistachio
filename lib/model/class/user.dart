@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:get/get.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
 class PUser {
@@ -10,8 +9,8 @@ class PUser {
   String? uid;
   String? name;
   String? nickname;
-  double? weight;
-  double? height;
+  int? weight;
+  int? height;
   Sex? sex;
   Timestamp? _regDate;
   Timestamp? _dateOfBirth;
@@ -23,9 +22,13 @@ class PUser {
 
   /// accessors & mutators
   DateTime? get regDate => _regDate?.toDate();
+
   DateTime? get dateOfBirth => _dateOfBirth?.toDate();
+
   set regDate(DateTime? date) => _regDate = toTimestamp(date);
+
   set dateOfBirth(DateTime? date) => _dateOfBirth = toTimestamp(date);
+
   String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);
 
   /// constructors
@@ -68,5 +71,23 @@ class PUser {
     json['goals'] = goals;
     json['records'] = records;
     return json;
+  }
+
+  static DateTime? stringToDate(String string) {
+    try {
+      String yy = string.substring(0, 2);
+      int year = int.parse('${int.parse(yy) > 50 ? '19' : '20'}$yy');
+      int month = int.parse(string.substring(2, 4));
+      int day = int.parse(string.substring(4));
+
+      if (month > 12) return null;
+      if (month == 2 && day > 29) return null;
+      if ([4, 6, 9, 11].contains(month) && day > 30) return null;
+      if (day > 31) return null;
+
+      return DateTime(year, month, day);
+    } catch (e) {
+      return null;
+    }
   }
 }

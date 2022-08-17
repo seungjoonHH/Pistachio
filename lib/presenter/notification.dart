@@ -12,11 +12,11 @@ class NotificationPresenter extends GetxController {
     // 첫 빌드시, 권한 확인
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
-      announcement: false,
+      announcement: true,
       badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: true,
       sound: true,
     );
     // authenticated 된 상태인지 아닌지 확인

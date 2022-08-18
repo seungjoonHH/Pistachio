@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 /// class
 class PButton extends StatelessWidget {
-  PButton({
+  const PButton({
     Key? key,
     this.text,
     this.child,
@@ -17,9 +17,10 @@ class PButton extends StatelessWidget {
     ),
     this.constraints,
     Color? color,
+    this.stretch = false,
   }) : assert(
   text == null || child == null,
-  ), color = color ?? PTheme.secondary[40], super(key: key);
+  ), color = color ?? PTheme.black, super(key: key);
 
   final String? text;
   final Widget? child;
@@ -28,42 +29,44 @@ class PButton extends StatelessWidget {
   final EdgeInsets padding;
   final BoxConstraints? constraints;
   final Color? color;
+  final bool stretch;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Material(
-              color: fill ? color : PTheme.white,
-              borderRadius: BorderRadius.circular(20.0),
-              child: InkWell(
-                onTap: onPressed,
-                borderRadius: BorderRadius.circular(20.0),
-                child: Container(
-                  padding: padding,
-                  constraints: constraints,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    border: Border.all(color: color!),
-                  ),
-                  child: Center(
-                    child: child ?? PText(text!,
-                      color: fill
-                          ? PTheme.white
-                          : PTheme.secondary[40],
-                    ),
+    Widget content = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Material(
+            color: fill ? color : PTheme.white,
+            child: InkWell(
+              onTap: onPressed,
+              child: Container(
+                padding: padding,
+                constraints: constraints,
+                decoration: BoxDecoration(
+                  border: fill ? null : Border.all(color: color!),
+                ),
+                child: Center(
+                  child: child ?? PText(text!,
+                    color: fill
+                        ? PTheme.white
+                        : PTheme.secondary[40],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        stretch ? Expanded(child: content) : content,
       ],
     );
   }
@@ -95,7 +98,6 @@ class PDirectButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             PText(text,
-              color: PTheme.black,
               style: const TextStyle(fontSize: 13.0),
             ),
             const Icon(Icons.arrow_forward_ios, size: 15.0),
@@ -138,6 +140,36 @@ class PIconButton extends StatelessWidget {
             size: size * .7,
             color: iconColor,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class PTextButton extends StatelessWidget {
+  const PTextButton({
+    Key? key,
+    required this.onPressed,
+    required this.text,
+    Color? color,
+  }) : color = color ?? PTheme.black, super(key: key);
+
+  final VoidCallback onPressed;
+  final String text;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(5.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 5.0, vertical: 2.0,
+          ),
+          child: PText(text, color: color),
         ),
       ),
     );

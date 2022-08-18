@@ -15,7 +15,7 @@ enum LoginType { google }
 class LoginPresenter {
   /// static methods
   // 로그인 형식에 따른 피트윈 로그인
-  static Future fwLogin(LoginType type) async {
+  static Future pLogin(LoginType type) async {
     final userPresenter = Get.find<UserPresenter>();
     UserCredential? userCredential;
 
@@ -64,16 +64,16 @@ class LoginPresenter {
   }
 
   // 피트윈 로그아웃
-  static void fwLogout() {
+  static void pLogout() {
     final userPresenter = Get.find<UserPresenter>();
     Get.offAllNamed('/login');
     userPresenter.logout();
   }
 
   // 피트윈 계정삭제
-  static void fwDeleteAccount() {
+  static void pDeleteAccount() {
     final userPresenter = Get.find<UserPresenter>();
     userPresenter.delete();
-    fwLogout();
+    pLogout();
   }
 }

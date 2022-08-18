@@ -32,6 +32,9 @@ dependencies:
   dotted_border: ^2.0.0+2
   path_provider: ^2.0.11
   firebase_auth: ^3.6.3
+  bottom_sheet_bar: ^2.3.1
+  shadow: ^1.5.0
+  flutter_polygon: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:
@@ -47,11 +50,16 @@ flutter:
     - assets/image/logo/
     - assets/image/object/
     - assets/image/exercise/
+    - assets/image/level/distance/
+    - assets/image/level/height/
+    - assets/image/widget/bottom_bar/
     - assets/image/collection/default/
     - assets/image/collection/complete/
     - assets/image/page/timer/
+    - assets/image/page/home/
     - assets/json/lottie/
     - assets/json/data/
+    - assets/json/data/level/
 
 
 fonts:

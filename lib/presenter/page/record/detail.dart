@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 
-class RecordPresenter {
-  static void toRecordMain() => Get.toNamed('/record/main');
+class RecordDetail {
   static void toRecordDetail() => Get.toNamed('/record/detail');
 }

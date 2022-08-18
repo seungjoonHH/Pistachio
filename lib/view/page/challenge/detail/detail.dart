@@ -1,19 +1,22 @@
-/* 챌린지 메인 페이지 */
+/* 챌린지 디테일 페이지 */
 
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/view/page/challenge/main/widget.dart';
-import 'package:pistachio/view/widget/widget/app_bar.dart';
+import 'package:pistachio/view/page/challenge/detail/widget.dart';
+import 'package:pistachio/model/class/challenge.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// class
-class ChallengeMainPage extends StatelessWidget {
-  const ChallengeMainPage({Key? key}) : super(key: key);
+class ChallengeDetailPage extends StatelessWidget {
+  const ChallengeDetailPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Challenge challenge = Get.arguments;
+
     return Scaffold(
-      appBar: const HomeAppBar(),
-      backgroundColor: colorScheme.background,
+      appBar: const ChallengeDetailAppBar(),
+      backgroundColor: challenge.theme['background'],
       body: const ChallengeListView(),
     );
   }

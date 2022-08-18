@@ -1,6 +1,7 @@
 /* 라우트 관련 */
 import 'package:pistachio/view/page/challenge/main/main.dart';
 import 'package:pistachio/view/page/challenge/detail/detail.dart';
+import 'package:pistachio/view/page/challenge/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/main/main.dart';
 import 'package:pistachio/view/page/exercise/setting/detail/detail.dart';
@@ -46,6 +47,7 @@ class PRoute {
     '/record/detail': const RecordDetailPage(),
     '/challenge/main': const ChallengeMainPage(),
     '/challenge/detail': const ChallengeDetailPage(),
+    '/challenge/complete': const ChallengeCompletePage(),
   };
 
   // 겟페이지 리스트

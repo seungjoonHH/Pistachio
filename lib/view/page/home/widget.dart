@@ -154,8 +154,8 @@ class DailyActivityCircularGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomePresenter>(
       builder: (controller) {
-        int todayRecord = controller.todayRecords[recordType]!;
-        int goal = controller.myGoals[recordType]!;
+        int todayRecord = controller.todayRecords[recordType] ?? 0;
+        int goal = controller.myGoals[recordType] ?? 1;
 
         return Column(
           children: [

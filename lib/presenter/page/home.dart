@@ -35,8 +35,8 @@ class HomePresenter extends GetxController {
       todayRecords[type] = user.getTodayAmounts(type);
       thisMonthRecords[type] = user.getAmounts(type);
       if (type == ActivityType.weight) {
-        todayRecords[type] = (todayRecords[type]! / user.weight!).ceil();
-        thisMonthRecords[type] = (thisMonthRecords[type]! / user.weight!).ceil();
+        todayRecords[type] = ((todayRecords[type] ?? 0) / user.weight!).ceil();
+        thisMonthRecords[type] = ((thisMonthRecords[type] ?? 0) / user.weight!).ceil();
       }
     }
     update();

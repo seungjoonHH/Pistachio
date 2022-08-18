@@ -40,7 +40,8 @@ class MyNavigationButton extends StatelessWidget {
       borderRadius: radius,
       shadowColor: PTheme.grey,
       child: InkWell(
-        onTap: () {},
+        onTap: () {Get.toNamed('/challenge/main');
+          },
         borderRadius: radius,
         child: Container(
           padding: const EdgeInsets.symmetric(

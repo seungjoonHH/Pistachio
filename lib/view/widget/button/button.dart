@@ -39,20 +39,20 @@ class PButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Material(
-            color: fill ? color : PTheme.white,
+            color: fill ? color : Colors.transparent,
             child: InkWell(
               onTap: onPressed,
               child: Container(
                 padding: padding,
                 constraints: constraints,
                 decoration: BoxDecoration(
-                  border: fill ? null : Border.all(color: color!),
+                  border: fill ? null : Border.all(color: color!, width: 1.5),
                 ),
                 child: Center(
                   child: child ?? PText(text!,
                     color: fill
                         ? PTheme.white
-                        : PTheme.secondary[40],
+                        : color,
                   ),
                 ),
               ),

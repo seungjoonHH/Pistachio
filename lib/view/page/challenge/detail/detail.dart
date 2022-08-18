@@ -12,8 +12,8 @@ class ChallengeMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ChallengeAppBar(),
-      backgroundColor: PTheme.offWhite,
+      appBar: const HomeAppBar(),
+      backgroundColor: colorScheme.background,
       body: const ChallengeListView(),
     );
   }

@@ -28,15 +28,23 @@ class PUser {
 
   String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);
 
-  int getTodayAmounts(ActivityType type) => getAmounts(type, today, today);
+  int getTodayAmounts(ActivityType type) => getAmounts(type, today, tomorrow);
+  int getThisMonthAmounts(ActivityType type) {
+    DateTime firstDate = DateTime(today.year, today.month, 1);
+    DateTime lastDate = DateTime(today.year, today.month + 1, 1)
+        .subtract(const Duration(days: 1));
+
+    return getAmounts(type, firstDate, lastDate);
+  }
   int getAmounts(ActivityType type, [DateTime? startDate, DateTime? endDate]) {
     int result = 0;
+
     for (var record in records) {
       if (record['type'] != type.kr) continue;
       for (var item in record['recordList']) {
         if (startDate != null && item['date'].toDate().isBefore(startDate)) continue;
         if (endDate != null && item['date'].toDate().isAfter(endDate)) continue;
-        result += int.parse(item['amount']);
+        result += item['amount'] as int;
       }
     }
     return result;

@@ -68,7 +68,7 @@ class ChallengeCard extends StatelessWidget {
                   child: PButton(
                     onPressed: () {},
                     text: '알아보러 가기',
-                    color: challenge.theme['button'],
+                    backgroundColor: challenge.theme['button'],
                   ),
                 )
               ],

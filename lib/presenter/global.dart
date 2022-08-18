@@ -3,6 +3,7 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/exercise.dart';
 import 'package:pistachio/presenter/model/level.dart';
+import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/complete.dart';
@@ -40,6 +41,7 @@ class GlobalPresenter extends GetxController {
     Get.put(ChallengePresenter());
     Get.put(CollectionPresenter());
     Get.put(LevelPresenter());
+    Get.put(QuestPresenter());
 
     Get.put(RegisterPresenter());
     Get.put(HomePresenter());
@@ -56,6 +58,7 @@ class GlobalPresenter extends GetxController {
     final collectionPresenter = Get.find<CollectionPresenter>();
     final challengePresenter = Get.find<ChallengePresenter>();
     final levelPresenter = Get.find<LevelPresenter>();
+    final questPresenter = Get.find<QuestPresenter>();
     exercisePresenter.importFile();
     collectionPresenter.importFile();
     challengePresenter.importFile();
@@ -63,5 +66,6 @@ class GlobalPresenter extends GetxController {
     levelPresenter.importFile(ActivityType.distance);
     levelPresenter.importFile(ActivityType.height);
     levelPresenter.importFile(ActivityType.weight);
+    questPresenter.importFile();
   }
 }

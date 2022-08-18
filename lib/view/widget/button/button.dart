@@ -16,11 +16,14 @@ class PButton extends StatelessWidget {
       horizontal: 30.0, vertical: 10.0,
     ),
     this.constraints,
-    Color? color,
+    Color? backgroundColor,
+    Color? textColor,
     this.stretch = false,
   }) : assert(
   text == null || child == null,
-  ), color = color ?? PTheme.black, super(key: key);
+  ), backgroundColor = backgroundColor ?? PTheme.black,
+    textColor = textColor ?? (fill ? PTheme.white : PTheme.black),
+    super(key: key);
 
   final String? text;
   final Widget? child;
@@ -28,7 +31,8 @@ class PButton extends StatelessWidget {
   final bool fill;
   final EdgeInsets padding;
   final BoxConstraints? constraints;
-  final Color? color;
+  final Color? backgroundColor;
+  final Color? textColor;
   final bool stretch;
 
   @override
@@ -39,21 +43,17 @@ class PButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Material(
-            color: fill ? color : Colors.transparent,
+            color: fill ? backgroundColor : Colors.transparent,
             child: InkWell(
               onTap: onPressed,
               child: Container(
                 padding: padding,
                 constraints: constraints,
                 decoration: BoxDecoration(
-                  border: fill ? null : Border.all(color: color!, width: 1.5),
+                  border: Border.all(color: PTheme.black, width: 1.5),
                 ),
                 child: Center(
-                  child: child ?? PText(text!,
-                    color: fill
-                        ? PTheme.white
-                        : color,
-                  ),
+                  child: child ?? PText(text!, color: textColor),
                 ),
               ),
             ),

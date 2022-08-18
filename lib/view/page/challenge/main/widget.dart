@@ -64,7 +64,7 @@ class ChallengeCard extends StatelessWidget {
       child: PCard(
         color: challenge.theme['background'],
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
               Column(
@@ -95,7 +95,7 @@ class ChallengeCard extends StatelessWidget {
                   PButton(
                     onPressed: () {},
                     text: '알아보러 가기',
-                    color: challenge.theme['button'],
+                    backgroundColor: challenge.theme['button'],
                     padding: EdgeInsets.symmetric(
                       horizontal: 70.0, vertical: 5.0,
                     ),

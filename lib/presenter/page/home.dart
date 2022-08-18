@@ -7,11 +7,13 @@ class HomePresenter extends GetxController {
   static void toHome() {
     final homePresenter = Get.find<HomePresenter>();
     homePresenter.loadGoals();
+    homePresenter.loadRecords();
     Get.offAllNamed('/home');
   }
 
   Map<ActivityType, int> myGoals = {};
-  Map<ActivityType, int> myTodayRecords = {};
+  Map<ActivityType, int> todayRecords = {};
+  Map<ActivityType, int> thisMonthRecords = {};
 
   void loadGoals() {
     final userPresenter = Get.find<UserPresenter>();
@@ -23,13 +25,21 @@ class HomePresenter extends GetxController {
         myGoals[type] = goal['amount'].toInt();
       }
     }
+    update();
   }
 
   void loadRecords() {
     final userPresenter = Get.find<UserPresenter>();
     PUser user = userPresenter.loggedUser;
     for (var type in ActivityType.values) {
-      myTodayRecords[type] = user.getTodayAmounts(type);
+      todayRecords[type] = user.getTodayAmounts(type);
+      thisMonthRecords[type] = user.getAmounts(type);
+      if (type == ActivityType.weight) {
+        todayRecords[type] = (todayRecords[type]! / user.weight!).ceil();
+        thisMonthRecords[type] = (thisMonthRecords[type]! / user.weight!).ceil();
+      }
     }
+    update();
   }
+
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
@@ -151,19 +154,25 @@ class DailyActivityCircularGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomePresenter>(
       builder: (controller) {
+        int todayRecord = controller.todayRecords[recordType]!;
+        int goal = controller.myGoals[recordType]!;
+
         return Column(
           children: [
             PCircularIndicator(
-              percent: .5,
+              percent: min(todayRecord / goal, 1),
               centerText: recordType.kr,
               color: recordType.color,
             ),
             const SizedBox(height: 10.0),
             Row(
               children: [
-                PText('250', color: PTheme.brickRed, style: textTheme.labelLarge),
+                PText('$todayRecord',
+                  color: PTheme.brickRed,
+                  style: textTheme.labelLarge,
+                ),
                 PText(
-                  '/${controller.myGoals[recordType]} ${recordType.unit}',
+                  '/$goal ${recordType.unit}',
                   style: textTheme.labelLarge,
                 ),
               ],
@@ -194,7 +203,7 @@ class MonthlyQuestWidget extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: ActivityType.values.length,
           itemBuilder: (_, index) => MonthlyQuestProgressWidget(
-            recordType: ActivityType.values[index],
+            type: ActivityType.values[index],
           ),
           separatorBuilder: (_, index) => const SizedBox(height: 20.0),
         ),
@@ -206,24 +215,16 @@ class MonthlyQuestWidget extends StatelessWidget {
 class MonthlyQuestProgressWidget extends StatelessWidget {
   const MonthlyQuestProgressWidget({
     Key? key,
-    required this.recordType,
+    required this.type,
   }) : super(key: key);
 
-  final ActivityType recordType;
+  final ActivityType type;
 
   @override
   Widget build(BuildContext context) {
     const String directory = 'assets/image/page/home/';
-    const Map<ActivityType, String> assets = {
-      ActivityType.distance: '${directory}running.svg',
-      ActivityType.height: '${directory}stairs.svg',
-      ActivityType.weight: '${directory}dumbbell.svg',
-      ActivityType.calorie: '${directory}lightning.svg',
-    };
-    Border border = Border.all(
-      color: PTheme.black,
-      width: 1.5,
-    );
+    Border border = Border.all(color: PTheme.black, width: 1.5);
+
     return Container(
       decoration: BoxDecoration(
         border: border,
@@ -234,7 +235,7 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
         children: [
           Expanded(
             flex: 1,
-            child: SvgPicture.asset(assets[recordType]!),
+            child: SvgPicture.asset('$directory${type.asset}'),
           ),
           const VerticalDivider(
             color: PTheme.black,
@@ -243,30 +244,42 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: Stack(
-              children: [
-                LinearPercentIndicator(
-                  padding: const EdgeInsets.only(left: 1.0),
-                  progressColor: recordType.color,
-                  lineHeight: double.infinity,
-                  backgroundColor: Colors.transparent,
-                  percent: .55,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PText(recordType.kr,
-                        style: textTheme.titleMedium,
+            child: GetBuilder<HomePresenter>(
+              builder: (controller) {
+                final questPresenter = Get.find<QuestPresenter>();
+                int record = controller.thisMonthRecords[type]!;
+                int goal = questPresenter.quests[type]!;
+                double percent = min(record / goal, 1);
+
+                return Stack(
+                  children: [
+                    LinearPercentIndicator(
+                      padding: const EdgeInsets.only(left: 1.0),
+                      progressColor: type.color,
+                      lineHeight: double.infinity,
+                      backgroundColor: Colors.transparent,
+                      percent: percent,
+                    ),
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            PText(type.kr,
+                              style: textTheme.titleMedium,
+                            ),
+                            PText('${(percent * 100).ceil()} %',
+                              style: textTheme.titleMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                      PText('55%',
-                        style: textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                  ],
+                );
+              }
             ),
           ),
         ],

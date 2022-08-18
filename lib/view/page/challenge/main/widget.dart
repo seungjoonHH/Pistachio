@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
+import 'package:pistachio/presenter/page/challenge/detail.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
@@ -74,7 +75,7 @@ class ChallengeCard extends StatelessWidget {
                     challenge.imageUrls['default'],
                     height: 206.0,
                   ),
-                  PText(challenge.title!,
+                  PText('이번주의\n첼린지',
                     style: textTheme.headlineLarge,
                     color: PTheme.white,
                     maxLines: 2,
@@ -93,10 +94,10 @@ class ChallengeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   PButton(
-                    onPressed: () {},
+                    onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
                     text: '알아보러 가기',
                     backgroundColor: challenge.theme['button'],
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 70.0, vertical: 5.0,
                     ),
                   ),

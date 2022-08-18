@@ -1,4 +1,4 @@
-/* 챌린지 메인 위젯 */
+/* 챌린지 디테일 위젯 */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,7 +9,7 @@ import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
-// 챌린지 메인 리스트 뷰
+// 챌린지 디테일 리스트 뷰
 class ChallengeListView extends StatelessWidget {
   const ChallengeListView({Key? key}) : super(key: key);
 
@@ -19,7 +19,7 @@ class ChallengeListView extends StatelessWidget {
       child: GetBuilder<ChallengePresenter>(
         builder: (controller) {
           return Column(
-            children: controller.challenges.map((ch) => ChallengeCard(
+            children: controller.challenges.map((ch) => ChallengeDetailBody(
               challenge: ch
             )).toList(),
           );
@@ -29,53 +29,62 @@ class ChallengeListView extends StatelessWidget {
   }
 }
 
-class ChallengeCard extends StatelessWidget {
-  const ChallengeCard({Key? key, required this.challenge}) : super(key: key);
+class ChallengeDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const ChallengeDetailAppBar({Key? key}) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(60.0);
+
+  @override
+  Widget build(BuildContext context) {
+    Challenge challenge = Get.arguments;
+
+    return GetBuilder<ChallengePresenter>(
+        builder: (controller) {
+          return AppBar(
+            elevation: 0.0,
+            iconTheme: const IconThemeData(color: PTheme.light),
+            backgroundColor: challenge.theme['background'],
+          );
+        }
+    );
+  }
+}
+
+class ChallengeDetailBody extends StatelessWidget {
+  const ChallengeDetailBody({Key? key, required this.challenge}) : super(key: key);
 
   final Challenge challenge;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(17.0),
-      child: SizedBox(
-        height: 441.0,
-        child: Card(
-          color: challenge.theme['background'],
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: SvgPicture.asset(
-                    challenge.imageUrls['default'],
-                    height: 206.0,
-                  ),
-                ),
-                PText(challenge.title!,
-                  style: textTheme.headlineLarge,
-                  color: PTheme.white,
-                  maxLines: 2,
-                ),
-                PText(
-                  challenge.descriptions['sub']!.replaceAll('#', ''),
-                  style: textTheme.titleSmall,
-                  color: PTheme.white,
-                  maxLines: 2,
-                ),
-                Center(
-                  child: PButton(
-                    onPressed: () {},
-                    text: '알아보러 가기',
-                    backgroundColor: challenge.theme['button'],
-                  ),
-                )
-              ],
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(
+          child: SvgPicture.asset(
+            challenge.imageUrls['default'],
+            width: 500.0,
+            fit: BoxFit.fitHeight,
           ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.all(34.0),
+          child: PText(
+            challenge.descriptions['detail']!.replaceAll('#', ''),
+            style: textTheme.titleSmall,
+            color: PTheme.white,
+            maxLines: 7,
+          ),
+        ),
+        Center(
+          child: PButton(
+            onPressed: () {},
+            text: '챌린지하러 가기',
+            backgroundColor: challenge.theme['button'],
+          ),
+        )
+      ],
     );
   }
 }

@@ -64,13 +64,13 @@ class ChallengeDetailBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
+        /*Center(
           child: SvgPicture.asset(
             challenge.imageUrls['default'],
             width: 500.0,
             fit: BoxFit.fitHeight,
           ),
-        ),
+        ),*/
         Center(
           child: PCard(
             color: PTheme.offWhite,

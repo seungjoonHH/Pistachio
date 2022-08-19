@@ -71,10 +71,10 @@ class ChallengeCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(
+                /*SvgPicture.asset(
                   challenge.imageUrls['default'],
                   height: 206.0,
-                ),
+                ),*/
                 Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 0.0, 0.0),
                   child: PText('이번주의\n첼린지',

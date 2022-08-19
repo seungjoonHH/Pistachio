@@ -45,6 +45,7 @@ class ChallengeAppBar extends StatelessWidget implements PreferredSizeWidget {
             iconTheme: const IconThemeData(color: PTheme.light),
             backgroundColor: PTheme.offWhite,
             title: PText('챌린지',
+              border: true,
               style: textTheme.headlineMedium,
             ),
           );
@@ -63,17 +64,42 @@ class ChallengeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(17.0),
       child: PCard(
+<<<<<<< HEAD
+        color: PTheme.offWhite,
+        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+=======
         color: challenge.theme['background'],
         padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+>>>>>>> upstream/main
         child: Column(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(
+                /*SvgPicture.asset(
                   challenge.imageUrls['default'],
                   height: 206.0,
+                ),*/
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 0.0, 0.0),
+                  child: PText('이번주의\n첼린지',
+                    style: textTheme.headlineLarge,
+                    color: PTheme.black,
+                    maxLines: 2,
+                    border: true,
+                  ),
                 ),
+<<<<<<< HEAD
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                  child: PText(
+                    challenge.descriptions['sub']!.replaceAll('#', ''),
+                    style: textTheme.titleSmall,
+                    color: PTheme.black,
+                    maxLines: 2,
+                  ),
+                )
+=======
                 PText('이번주의\n챌린지',
                   style: textTheme.headlineLarge,
                   color: PTheme.white,
@@ -86,6 +112,7 @@ class ChallengeCard extends StatelessWidget {
                   color: PTheme.white,
                   maxLines: 2,
                 ),
+>>>>>>> upstream/main
               ],
             ),
             const SizedBox(height: 30.0),

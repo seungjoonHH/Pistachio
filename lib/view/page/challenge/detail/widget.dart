@@ -7,6 +7,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/challenge/complete.dart';
+import 'package:pistachio/presenter/page/challenge/difficulty.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -83,7 +84,7 @@ class ChallengeDetailBody extends StatelessWidget {
         ),
         Center(
           child: PButton(
-            onPressed: () => ChallengeComplete.toChallengeComplete(challenge),
+            onPressed: () => ChallengeDifficulty.toChallengeDifficulty(challenge),
             text: '챌린지 하러가기',
             //backgroundColor: challenge.theme['button'],
           ),

@@ -59,6 +59,7 @@ flutter:
     - assets/image/collection/complete/
     - assets/image/page/timer/
     - assets/image/page/home/
+    - assets/image/page/challenge/
     - assets/json/lottie/
     - assets/json/data/
     - assets/json/data/level/

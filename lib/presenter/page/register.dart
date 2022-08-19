@@ -1,136 +1,3 @@
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import '../../model/class/user.dart';
-// import '../../view/page/register/widget.dart';
-// import '../firebase/login/login.dart';
-// import '../model/user.dart';
-//
-// // 회원가입 페이지 프리젠터
-// class RegisterPresenter extends GetxController {
-//   int pageIndex = 0;
-//   List<bool> invalids = [false, false, false];
-//
-//   static const Duration shakeDuration = Duration(milliseconds: 500);
-//
-//   static Curve transitionCurve = Curves.fastOutSlowIn;
-//   static const Duration transitionDuration = Duration(milliseconds: 300);
-//
-//   static final userPresenter = Get.find<UserPresenter>();
-//
-//   static final nicknameCont = TextEditingController();
-//   static final dateOfBirthCont = TextEditingController();
-//   static final carouselCont = CarouselController();
-//
-//   // 현재 페이지 인덱스 증가
-//   void pageIndexIncrease() {
-//     if (pageIndex < CarouselView.widgetCount - 1) pageIndex++;
-//     update();
-//   }
-//
-//   // 현재 페이지 인덱스 감소
-//   void pageIndexDecrease() {
-//     if (pageIndex > 0) pageIndex--;
-//     update();
-//   }
-//
-//   // 뒤로가기 버튼 클릭 트리거
-//   void backPressed() {
-//     if (pageIndex == 0) {
-//       LoginPresenter.fwLogout();
-//       Get.offAllNamed('/greeting', arguments: true);
-//     }
-//
-//     carouselCont.previousPage(
-//       curve: transitionCurve,
-//       duration: transitionDuration,
-//     );
-//     pageIndexDecrease();
-//   }
-//
-//   // 다음 버튼 클릭 트리거
-//   void nextPressed() {
-//     if (pageIndex == 0) {
-//       bool nicknameInvalid = nicknameCont.text == '';
-//       nicknameInvalid |=
-//           RegExp(r'[`~!@#$%^&*|"' r"'‘’””;:/?]").hasMatch(nicknameCont.text);
-//       bool dateOfBirthInvalid = dateOfBirthCont.text.length != 6;
-//       dateOfBirthInvalid |= int.tryParse(dateOfBirthCont.text) == null;
-//       dateOfBirthInvalid |= PUser.stringToDate(dateOfBirthCont.text) == null;
-//       bool sexInvalid = userPresenter.loggedUser.sex == null;
-//
-//       bool invalid = nicknameInvalid || dateOfBirthInvalid || sexInvalid;
-//
-//       if (invalid) {
-//         if (nicknameInvalid) validate(0);
-//         if (dateOfBirthInvalid) validate(1);
-//         if (sexInvalid) validate(2);
-//         return;
-//       }
-//       nicknameSubmitted(nicknameCont.text);
-//       dateOfBirthChanged(PUser.stringToDate(dateOfBirthCont.text)!);
-//     } else if (pageIndex == CarouselView.widgetCount - 1) {
-//       userPresenter.setInitWeight();
-//       nicknameCont.clear();
-//       dateOfBirthCont.clear();
-//       UserPresenter.updateDB(userPresenter.user);
-//       return;
-//     }
-//
-//     carouselCont.nextPage(
-//       curve: transitionCurve,
-//       duration: transitionDuration,
-//     );
-//     pageIndexIncrease();
-//   }
-//
-//   // 잘못되었을 때 효과 트리거
-//   void validate(index) async {
-//     invalids[index] = true;
-//     update();
-//     await Future.delayed(shakeDuration, () {
-//       invalids[index] = false;
-//       update();
-//     });
-//   }
-//
-//   // 닉네임 제출 버튼 클릭 트리거 (닉네임 인풋 박스에서 Enter 버튼 클릭 트리거)
-//   void nicknameSubmitted(String value) {
-//     userPresenter.nickname = value;
-//     update();
-//   }
-//
-//   // 역할 선택 버튼 트리거
-//   void roleSelected(Role role) {
-//     if (role != userPresenter.user.role) userPresenter.toggleRole();
-//     update();
-//   }
-//
-//   // 성별 선택 버튼 트리거
-//   void sexSelected(Sex sex) {
-//     userPresenter.setSex(sex);
-//     update();
-//   }
-//
-//   // 생년월일 변경 트리거
-//   void dateOfBirthChanged(DateTime dateOfBirth) {
-//     userPresenter.user.dateOfBirth = dateOfBirth;
-//     update();
-//   }
-//
-//   // 체중 변경 트리거
-//   void weightChanged(double weight) {
-//     userPresenter.currentWeight = weight;
-//     update();
-//   }
-//
-//   // 신장 변경 트리거
-//   void heightChanged(double height) {
-//     userPresenter.user.height = height;
-//     update();
-//   }
-// }
-
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -164,13 +31,7 @@ class RegisterPresenter extends GetxController {
   void clearConts() {
     nickNameCont.clear();
     birthdayCont.clear();
-  }
-
-  // 회원가입 페이지로 이동
-  static void toRegister() {
-    final registerPresenter = Get.find<RegisterPresenter>();
-    Get.toNamed('/register');
-    registerPresenter.newcomer = PUser();
+    sex = null;
   }
 
   // 현재 페이지 인덱스 증가
@@ -190,13 +51,61 @@ class RegisterPresenter extends GetxController {
   PUser newcomer = PUser();
 
   // 성별
-  Sex? sex = Sex.male;
+  Sex? sex;
 
   // 체중
-  int? weight = 0;
+  int? weight = 60;
 
   // 신장
-  int? height = 0;
+  int? height = 170;
+
+  // 목표
+  Map goal = {
+    "거리": 0,
+    "높이": 0,
+    '무게': 0,
+    '칼로리': 0,
+  };
+
+  // 무게 목표
+  int? weightGoal = 0;
+
+  // 거리 목표
+  int? distanceGoal = 0;
+
+  // 높이 목표
+  int? heightGoal = 0;
+
+  // 칼로리 목표
+  int? calorieGoal = 0;
+
+  // List<Map<String, String>> examples = [
+  //   {
+  //     'name': '감자튀김',
+  //     'kcal': '331kal',
+  //     'image':
+  //         'https://previews.123rf.com/images/rainart123/rainart1231610/rainart123161000053/67577359-%EA%B0%90%EC%9E%90-%ED%8A%80%EA%B9%80-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%B2%A1%ED%84%B0.jpg'
+  //   },
+  //   {
+  //     'name': '탄산음료',
+  //     'kcal': '108kal',
+  //     'image':
+  //         'https://w7.pngwing.com/pngs/69/20/png-transparent-three-coca-cola-fanta-and-sprite-disposable-cups-fizzy-drinks-coca-cola-sprite-fanta-shawarma-fanta-food-chicken-meat-cola.png'
+  //   },
+  //   {
+  //     'name': '공깃밥',
+  //     'kcal': '313kal',
+  //     'image':
+  //         'https://e7.pngegg.com/pngimages/973/964/png-clipart-jasmine-rice-cooked-rice-white-rice-basmati-translucent-food-cereal.png'
+  //   },
+  // ];
+  //
+  Map<String, String> example = {
+    'name': '공깃밥',
+    'kcal': '313kal',
+    'image':
+        'https://e7.pngegg.com/pngimages/973/964/png-clipart-jasmine-rice-cooked-rice-white-rice-basmati-translucent-food-cereal.png'
+  };
 
   /// methods
   // 성별 설정
@@ -215,6 +124,26 @@ class RegisterPresenter extends GetxController {
   // 신장 변경 트리거
   void heightChanged(int value) {
     height = value;
+    update();
+  }
+
+  void weightGoalChange(int value) {
+    weightGoal = value;
+    update();
+  }
+
+  void distanceGoalChange(int value) {
+    distanceGoal = value;
+    update();
+  }
+
+  void heightGoalChange(int value) {
+    heightGoal = value;
+    update();
+  }
+
+  void calorieGoalChange(int value) {
+    calorieGoal = value;
     update();
   }
 
@@ -249,7 +178,6 @@ class RegisterPresenter extends GetxController {
           RegExp(r'[`~!@#$%^&*|"' r"'‘’””;:/?]").hasMatch(nickNameCont.text);
       bool birthdayInvalid = birthdayCont.text.length != 8;
       birthdayInvalid |= int.tryParse(birthdayCont.text) == null;
-      birthdayInvalid |= PUser.stringToDate(birthdayCont.text) == null;
       bool sexInvalid = (sex == null);
 
       bool invalid = nicknameInvalid || birthdayInvalid || sexInvalid;
@@ -268,20 +196,30 @@ class RegisterPresenter extends GetxController {
         int.parse(birthdayCont.text.substring(6)),
       );
     } else if (pageIndex == CarouselView.widgetCount - 1) {
-      final userPresenter = Get.find<UserPresenter>();
-      userPresenter.login(newcomer);
-
-      // 파이어베이스에 저장
-      userPresenter.save();
-      MainPresenter.toMain();
+      submitted();
       return;
     }
-
     carouselCont.nextPage(
       curve: transitionCurve,
       duration: transitionDuration,
     );
     pageIndexIncrease();
+  }
+
+  // 뒤로가기 버튼 클릭 트리거
+  void backPressed() {
+    if (pageIndex == 0) {
+      final userPresenter = Get.find<UserPresenter>();
+      userPresenter.logout();
+      clearConts();
+      Get.offAllNamed('/login', arguments: true);
+    }
+
+    carouselCont.previousPage(
+      curve: transitionCurve,
+      duration: transitionDuration,
+    );
+    pageIndexDecrease();
   }
 
   // 잘못되었을 때 효과 트리거

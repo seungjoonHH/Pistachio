@@ -1,14 +1,49 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
+import '../../../global/theme.dart';
 import '../../../model/enum/enum.dart';
-import '../../../presenter/model/user.dart';
 import '../../../presenter/page/register.dart';
+import '../../widget/widget/text.dart';
 
 // 회원가입 페이지 위젯 모음
+
+// 회원가입 페이지 AppBar
+class RegisterAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const RegisterAppBar({Key? key}) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(60.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: GetBuilder<RegisterPresenter>(
+        builder: (controller) => IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: controller.backPressed,
+        ),
+      ),
+      elevation: 0.0,
+      title: PText(
+        'Pistachio',
+        color: PTheme.light,
+        style: textTheme.titleLarge,
+      ),
+      iconTheme: const IconThemeData(color: PTheme.light),
+      backgroundColor: PTheme.primary[30],
+    );
+  }
+}
+
 // Carousel 뷰 위젯
 class CarouselView extends StatelessWidget {
   const CarouselView({Key? key}) : super(key: key);
@@ -17,7 +52,16 @@ class CarouselView extends StatelessWidget {
   static List<Widget> carouselWidgets() => const [
         UserInfoView(),
         WeightHeightView(),
+        WeightGoalView(),
+        DistanceRecommendView(),
+        DistanceGoalView(),
+        HeightRecommendView(),
+        HeightGoalView(),
+        CalorieCheckView(),
+        RecommendView(),
+        CalorieExplanationView(),
       ];
+
   static int widgetCount = carouselWidgets().length;
 
   @override
@@ -30,7 +74,7 @@ class CarouselView extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.only(top: 50.0),
+            padding: const EdgeInsets.only(top: 30.0),
             alignment: Alignment.topCenter,
             child: Container(
               constraints: BoxConstraints(minWidth: screenSize.width),
@@ -56,9 +100,10 @@ class CarouselView extends StatelessWidget {
           ),
         ),
         Container(
-          height: keyboardDisabled ? 200.0 : 100.0,
-          padding: const EdgeInsets.symmetric(horizontal: 45.0),
+          height: keyboardDisabled ? 150.0 : 100.0,
+          padding: const EdgeInsets.fromLTRB(28.0, 32.0, 28.0, 0.0),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Carousel 인디케이터
@@ -81,77 +126,79 @@ class UserInfoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
-        return Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('닉네임을 입력하세요.'),
-                const SizedBox(height: 8.0),
-                ShakeWidget(
-                  autoPlay: controller.invalids[0],
-                  shakeConstant: ShakeHorizontalConstant2(),
-                  child: TextFormField(
-                    controller: RegisterPresenter.nickNameCont,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '별명',
-                      isDense: true,
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('닉네임을 입력하세요.'),
+                  const SizedBox(height: 8.0),
+                  ShakeWidget(
+                    autoPlay: controller.invalids[0],
+                    shakeConstant: ShakeHorizontalConstant2(),
+                    child: TextFormField(
+                      controller: RegisterPresenter.nickNameCont,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: '별명',
+                        isDense: true,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 8.0),
-                const Text('한글, 영문, 숫자만 입력해주세요.'),
-              ],
-            ),
-            Divider(
-              height: 40.0,
-              thickness: 2.0,
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('생년월일을 입력하세요.'),
-                const SizedBox(height: 8.0),
-                ShakeWidget(
-                  autoPlay: controller.invalids[1],
-                  shakeConstant: ShakeHorizontalConstant2(),
-                  child: TextFormField(
-                    controller: RegisterPresenter.birthdayCont,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'YYYYMMDD',
-                      isDense: true,
+                  const SizedBox(height: 8.0),
+                  const Text('한글, 영문, 숫자만 입력해주세요.'),
+                ],
+              ),
+              Divider(
+                height: 40.0,
+                thickness: 2.0,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('생년월일을 입력하세요.'),
+                  const SizedBox(height: 8.0),
+                  ShakeWidget(
+                    autoPlay: controller.invalids[1],
+                    shakeConstant: ShakeHorizontalConstant2(),
+                    child: TextFormField(
+                      controller: RegisterPresenter.birthdayCont,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'YYYYMMDD',
+                        isDense: true,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 40.0,
-              thickness: 2.0,
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('성별을 선택하세요.'),
-                const SizedBox(height: 8.0),
-                ShakeWidget(
-                  autoPlay: controller.invalids[2],
-                  shakeConstant: ShakeHorizontalConstant2(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      SexSelectionButton(sex: Sex.male),
-                      SexSelectionButton(sex: Sex.female),
-                    ],
+                ],
+              ),
+              Divider(
+                height: 40.0,
+                thickness: 2.0,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('성별을 선택하세요.'),
+                  const SizedBox(height: 8.0),
+                  ShakeWidget(
+                    autoPlay: controller.invalids[2],
+                    shakeConstant: ShakeHorizontalConstant2(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: const [
+                        SexSelectionButton(sex: Sex.male),
+                        SexSelectionButton(sex: Sex.female),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
@@ -166,37 +213,41 @@ class SexSelectionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final registerCont = Get.find<RegisterPresenter>();
-
     const Map<Sex, String> texts = {
       Sex.male: '남자',
       Sex.female: '여자',
     };
 
-    return GetBuilder<UserPresenter>(builder: (userCont) {
-      return SizedBox(
-        width: 128.0,
-        height: 40.0,
-        child: ElevatedButton(
-          onPressed: () => registerCont.setSex(sex),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.zero,
-            elevation: 0.0,
-            side: BorderSide(color: Theme.of(context).colorScheme.primary),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
+    return GetBuilder<RegisterPresenter>(
+      builder: (register) {
+        return SizedBox(
+          width: 128.0,
+          height: 40.0,
+          child: ElevatedButton(
+            onPressed: () => register.setSex(sex),
+            style: OutlinedButton.styleFrom(
+              padding: EdgeInsets.zero,
+              elevation: 0.0,
+              backgroundColor: sex == register.sex
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onPrimary,
+              side: BorderSide(color: Theme.of(context).colorScheme.primary),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            child: Text(
+              texts[sex]!,
+              style: TextStyle(
+                color: sex == register.sex
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
-          child: Text(texts[sex]!),
-        ),
-      );
-      //   FWButton(
-      //   text: texts[sex],
-      //   width: 128.0,
-      //   fill: sex == userCont.user.sex,
-      //   onPressed: () => registerCont.sexSelected(sex),
-      // );
-    });
+        );
+      },
+    );
   }
 }
 
@@ -213,11 +264,15 @@ class WeightHeightView extends StatelessWidget {
           GetBuilder<RegisterPresenter>(
             builder: (controller) {
               return NumberPicker(
-                itemCount: 5,
                 onChanged: (value) => controller.weightChanged(value),
+                itemCount: 3,
                 value: controller.weight!,
                 minValue: 30,
                 maxValue: 220,
+                selectedTextStyle: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
               );
             },
           ),
@@ -230,11 +285,14 @@ class WeightHeightView extends StatelessWidget {
           GetBuilder<RegisterPresenter>(
             builder: (controller) {
               return NumberPicker(
-                itemCount: 5,
                 onChanged: (value) => controller.heightChanged(value),
                 value: controller.height!,
                 minValue: 100,
                 maxValue: 220,
+                selectedTextStyle: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
               );
             },
           ),
@@ -265,11 +323,405 @@ class WeightHeightView extends StatelessWidget {
           ),
         ),
       ),
-      //     FWCard(
-      //   title: contents.keys.toList()[index],
-      //   child: contents[contents.keys.toList()[index]]!,
-      // ),
       separatorBuilder: (context, index) => const SizedBox(height: 10.0),
+    );
+  }
+}
+
+class WeightGoalView extends StatelessWidget {
+  const WeightGoalView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    bool isFirst = true;
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      RegisterPresenter.nickNameCont.text,
+                      style: TextStyle(
+                        fontSize: 36,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const Text(
+                      '님의',
+                      style: TextStyle(
+                        fontSize: 36,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '몸무게로 ',
+                      style: TextStyle(fontSize: 36),
+                    ),
+                    GetBuilder<RegisterPresenter>(
+                      builder: (controller) {
+                        if (isFirst) {
+                          Future.delayed(const Duration(milliseconds: 500), () {
+                            controller.weightGoalChange(10);
+                          });
+                          isFirst = false;
+                        }
+                        return NumberPicker(
+                          onChanged: (value) =>
+                              controller.weightGoalChange(value),
+                          itemCount: 1,
+                          itemHeight: 48,
+                          itemWidth: 80,
+                          value: controller.weightGoal!,
+                          minValue: 0,
+                          maxValue: 200,
+                          selectedTextStyle: TextStyle(
+                            fontSize: 36.0,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        );
+                      },
+                    ),
+                    const Text(
+                      '회',
+                      style: TextStyle(fontSize: 36),
+                    ),
+                  ],
+                ),
+                const Text(
+                  '스쿼트하면',
+                  style: TextStyle(fontSize: 36),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: const [
+                    Text(
+                      '북극곰',
+                      style: TextStyle(fontSize: 36),
+                    ),
+                    Text(
+                      '(500kg)',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                  ],
+                ),
+                const Text(
+                  '을(를) 들 수 있어요!',
+                  style: TextStyle(fontSize: 36),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class DistanceRecommendView extends StatelessWidget {
+  const DistanceRecommendView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        int ageGroup = DateTime.now()
+            .difference(DateTime.utc(
+              int.parse(RegisterPresenter.birthdayCont.text.substring(0, 4)),
+              int.parse(RegisterPresenter.birthdayCont.text.substring(4, 6)),
+              int.parse(RegisterPresenter.birthdayCont.text.substring(6)),
+            ))
+            .inDays;
+
+        ageGroup = (ageGroup / 3650).floor();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  '${ageGroup}0',
+                  style: const TextStyle(fontSize: 36),
+                ),
+                const Text(
+                  '대 ',
+                  style: TextStyle(fontSize: 36),
+                ),
+                Text(
+                  controller.sex!.kr,
+                  style: const TextStyle(fontSize: 36),
+                ),
+                const Text(
+                  ' 평균',
+                  style: TextStyle(fontSize: 36),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                const Text(
+                  '매일 ',
+                  style: TextStyle(fontSize: 36),
+                ),
+                ageGroup < 6
+                    ? controller.sex == Sex.male
+                        ? const Text(
+                            '30 ~ 60',
+                            style: TextStyle(fontSize: 36),
+                          )
+                        : const Text(
+                            '10 ~ 30',
+                            style: TextStyle(fontSize: 36),
+                          )
+                    : const Text(
+                        '30 ~ 50',
+                        style: TextStyle(fontSize: 36),
+                      ),
+                const Text(
+                  '분',
+                  style: TextStyle(fontSize: 36),
+                ),
+              ],
+            ),
+            const Text(
+              '유산소 운동이',
+              style: TextStyle(fontSize: 36),
+            ),
+            const Text(
+              '적당해요',
+              style: TextStyle(fontSize: 36),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class DistanceGoalView extends StatelessWidget {
+  const DistanceGoalView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    bool isFirst = true;
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        if (isFirst) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            controller.distanceGoalChange(15);
+          });
+          isFirst = false;
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: NumberPicker(
+                onChanged: (value) => controller.distanceGoalChange(value),
+                itemCount: 1,
+                itemHeight: 112.0,
+                itemWidth: 200.0,
+                value: controller.distanceGoal!,
+                minValue: 0,
+                maxValue: 200,
+                selectedTextStyle: TextStyle(
+                  fontSize: 96.0,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+            const SizedBox(height: 200.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Text(
+                      '하루 ',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    Text(
+                      '${controller.distanceGoal}',
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const Text(
+                      '분이면',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    Text(
+                      "한강대교 왕복",
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Color(0xffE45B47),
+                        // Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    Text(
+                      '이',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                  ],
+                ),
+                const Text(
+                  '가능해요!',
+                  style: TextStyle(fontSize: 28),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class HeightRecommendView extends StatelessWidget {
+  const HeightRecommendView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '한 층을',
+          style: TextStyle(
+            fontSize: 36,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        const Text(
+          '오를 마다',
+          style: TextStyle(fontSize: 36),
+        ),
+        const Text(
+          '건강 수명이',
+          style: TextStyle(fontSize: 36),
+        ),
+        Row(
+          children: [
+            Text(
+              '1분 20초',
+              style: TextStyle(
+                fontSize: 36,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            const Text(
+              ' 연장돼요',
+              style: TextStyle(fontSize: 36),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class HeightGoalView extends StatelessWidget {
+  const HeightGoalView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    bool isFirst = true;
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        if (isFirst) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            controller.heightGoalChange(15);
+          });
+          isFirst = false;
+        }
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '하루 ',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    Text(
+                      '${controller.heightGoal}',
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const Text(
+                      '층이면',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "자유의 여신상",
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Color(0xffE45B47),
+                        // Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+                const Text(
+                  '정복!',
+                  style: TextStyle(fontSize: 28),
+                ),
+              ],
+            ),
+            const SizedBox(height: 50.0),
+            Align(
+              alignment: Alignment.centerRight,
+              child: NumberPicker(
+                onChanged: (value) => controller.heightGoalChange(value),
+                itemCount: 1,
+                itemHeight: 112.0,
+                itemWidth: 200.0,
+                value: controller.heightGoal!,
+                minValue: 0,
+                maxValue: 200,
+                selectedTextStyle: TextStyle(
+                  fontSize: 96.0,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -288,7 +740,7 @@ class CarouselIndicator extends StatelessWidget {
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
         return SizedBox(
-          height: 100.0,
+          height: 45.0,
           child: DotsIndicator(
             dotsCount: count,
             position: controller.pageIndex.toDouble(),
@@ -303,197 +755,237 @@ class CarouselIndicator extends StatelessWidget {
   }
 }
 
+class CalorieCheckView extends StatelessWidget {
+  const CalorieCheckView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int calorie = 0;
+    bool isFirst = true;
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        if (isFirst) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            calorie = (controller.weight! * controller.weightGoal! * 0.012 +
+                    controller.weight! * controller.distanceGoal! * 0.072 +
+                    controller.weight! * controller.heightGoal! * 0.12)
+                .ceil();
+            controller.calorieGoalChange(calorie);
+          });
+          isFirst = false;
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '하루에',
+                  style: TextStyle(fontSize: 28),
+                ),
+                Row(
+                  children: const [
+                    Text(
+                      '북극곰 한 마리',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    Text(
+                      '를 들고',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: const [
+                    Text(
+                      '한강대교',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    Text(
+                      '를 달리고',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: const [
+                    Text(
+                      '자유의 여신',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    Text(
+                      '을 정복하면',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 200.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Text(
+                      '총 ',
+                      style: TextStyle(fontSize: 36),
+                    ),
+                    Text(
+                      '${controller.calorieGoal}kcal',
+                      style: TextStyle(
+                        fontSize: 36,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const Text(
+                      '를',
+                      style: TextStyle(fontSize: 36),
+                    ),
+                  ],
+                ),
+                const Text(
+                  '소모 할 수 있어요',
+                  style: TextStyle(fontSize: 36),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class RecommendView extends StatelessWidget {
+  const RecommendView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text(
+            '건강을 위해',
+            style: TextStyle(fontSize: 36),
+          ),
+          Text(
+            '음식을 참아보는 건',
+            style: TextStyle(fontSize: 36),
+          ),
+          Text(
+            '어떨까요?',
+            style: TextStyle(fontSize: 36),
+          ),
+          SizedBox(height: 120.0),
+        ],
+      ),
+    );
+  }
+}
+
+class CalorieExplanationView extends StatelessWidget {
+  const CalorieExplanationView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Text(
+                  '오늘 ',
+                  style: TextStyle(fontSize: 36),
+                ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 2000),
+                  child: Text(
+                    controller.example['name']!,
+                    style: const TextStyle(fontSize: 36),
+                  ),
+                ),
+              ],
+            ),
+            const Text(
+              '먹는 걸 참으면',
+              style: TextStyle(fontSize: 36),
+            ),
+            Row(
+              children: [
+                const Text(
+                  '추가로 ',
+                  style: TextStyle(fontSize: 36),
+                ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: Text(
+                    controller.example['kcal']!,
+                    style: const TextStyle(fontSize: 36),
+                  ),
+                ),
+              ],
+            ),
+            const Text(
+              '감량할 수 있어요',
+              style: TextStyle(fontSize: 36),
+            ),
+            const SizedBox(height: 30.0),
+            Center(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: Image.network(
+                  controller.example['image']!,
+                  width: 300.0,
+                  height: 300.0,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 // Carousel 다음 버튼
 class CarouselNextButton extends StatelessWidget {
   const CarouselNextButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<RegisterPresenter>(builder: (controller) {
-      bool lastPage = controller.pageIndex == CarouselView.widgetCount - 1;
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        bool lastPage = controller.pageIndex == CarouselView.widgetCount - 1;
 
-      return SizedBox(
-        width: 120.0,
-        height: 45.0,
-        child: ElevatedButton(
-          onPressed: () {
-            controller.nextPressed();
-            FocusScope.of(context).unfocus();
-          },
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.zero,
-            elevation: 0.0,
-            side: BorderSide(color: Theme.of(context).colorScheme.primary),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
+        return SizedBox(
+          width: 120.0,
+          height: 45.0,
+          child: ElevatedButton(
+            onPressed: () {
+              controller.nextPressed();
+              FocusScope.of(context).unfocus();
+            },
+            style: OutlinedButton.styleFrom(
+              padding: EdgeInsets.zero,
+              elevation: 0.0,
+              side: BorderSide(color: Theme.of(context).colorScheme.primary),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
             ),
+            child: lastPage ? const Text('완료') : const Text('다음'),
           ),
-          child: lastPage ? const Text('완료') : const Text('다음'),
-        ),
-      );
-      //   FWButton(
-      //   onPressed: () {
-      //     controller.nextPressed();
-      //     FocusScope.of(context).unfocus();
-      //   },
-      //   width: 120.0,
-      //   height: 45.0,
-      //   text: lastPage ? '완료' : '다음',
-      // );
-    });
+        );
+      },
+    );
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:get/get_state_manager/src/simple/get_state.dart';
-// import 'package:pistachio/model/enum/enum.dart';
-// import 'package:pistachio/presenter/page/register.dart';
-//
-// class Register extends StatelessWidget {
-//   const Register({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetBuilder<RegisterPresenter>(
-//       builder: (controller) {
-//         return SingleChildScrollView(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Padding(
-//                 padding:
-//                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     const Text(
-//                       'Nickname',
-//                       style: TextStyle(fontSize: 20.0),
-//                     ),
-//                     const SizedBox(height: 8.0),
-//                     SizedBox(
-//                       width: double.infinity,
-//                       child: TextFormField(
-//                         controller: RegisterPresenter.nickNameCont,
-//                         decoration: const InputDecoration(
-//                           border: OutlineInputBorder(),
-//                           hintText: 'Nickname',
-//                           isDense: true,
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               const Divider(thickness: 1.0),
-//               const Padding(
-//                 padding:
-//                 EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-//                 child: Text(
-//                   'Sex',
-//                   style: TextStyle(fontSize: 16.0),
-//                 ),
-//               ),
-//               Column(
-//                 children: Sex.values.map((method) {
-//                   return ListTile(
-//                     title: Text(method.kr),
-//                     leading: Radio<Sex>(
-//                       value: method,
-//                       groupValue: controller.sex,
-//                       onChanged: controller.setSex,
-//                     ),
-//                   );
-//                 }).toList(),
-//               ),
-//               const Divider(thickness: 1.0),
-//               Padding(
-//                 padding:
-//                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     const Text(
-//                       'Height',
-//                       style: TextStyle(fontSize: 20.0),
-//                     ),
-//                     const SizedBox(height: 8.0),
-//                     SizedBox(
-//                       width: double.infinity,
-//                       child: TextFormField(
-//                         controller: RegisterPresenter.heightCont,
-//                         decoration: const InputDecoration(
-//                           border: OutlineInputBorder(),
-//                           hintText: 'height',
-//                           isDense: true,
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               const Divider(thickness: 1.0),
-//               Padding(
-//                 padding:
-//                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     const Text(
-//                       'Weight',
-//                       style: TextStyle(fontSize: 20.0),
-//                     ),
-//                     const SizedBox(height: 8.0),
-//                     SizedBox(
-//                       width: double.infinity,
-//                       child: TextFormField(
-//                         controller: RegisterPresenter.weightCont,
-//                         decoration: const InputDecoration(
-//                           border: OutlineInputBorder(),
-//                           hintText: 'weight',
-//                           isDense: true,
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               const Divider(thickness: 1.0),
-//               Padding(
-//                 padding:
-//                 const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     const Text(
-//                       'Birthday',
-//                       style: TextStyle(fontSize: 20.0),
-//                     ),
-//                     const SizedBox(height: 8.0),
-//                     SizedBox(
-//                       width: double.infinity,
-//                       child: TextFormField(
-//                         controller: RegisterPresenter.birthdayCont,
-//                         decoration: const InputDecoration(
-//                           border: OutlineInputBorder(),
-//                           hintText: 'Ex) 19990828',
-//                           isDense: true,
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               Center(
-//                 child: OutlinedButton(
-//                   onPressed: controller.submitted,
-//                   child: const Text('추가하기'),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }

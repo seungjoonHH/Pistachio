@@ -72,22 +72,4 @@ class PUser {
     json['records'] = records;
     return json;
   }
-
-  static DateTime? stringToDate(String string) {
-    try {
-      String yy = string.substring(0, 2);
-      int year = int.parse('${int.parse(yy) > 50 ? '19' : '20'}$yy');
-      int month = int.parse(string.substring(2, 4));
-      int day = int.parse(string.substring(4));
-
-      if (month > 12) return null;
-      if (month == 2 && day > 29) return null;
-      if ([4, 6, 9, 11].contains(month) && day > 30) return null;
-      if (day > 31) return null;
-
-      return DateTime(year, month, day);
-    } catch (e) {
-      return null;
-    }
-  }
 }

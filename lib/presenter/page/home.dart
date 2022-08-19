@@ -20,10 +20,7 @@ class HomePresenter extends GetxController {
     PUser user = userPresenter.loggedUser;
 
     for (var type in ActivityType.values) {
-      for (var goal in user.goals) {
-        if (goal['type'] != type.kr) continue;
-        myGoals[type] = goal['amount'].toInt();
-      }
+      myGoals[type] = user.goals[type.name].toInt();
     }
     update();
   }

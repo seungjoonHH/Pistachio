@@ -37,8 +37,8 @@ dependencies:
   firebase_messaging: ^12.0.2
   firebase_in_app_messaging: ^0.6.0+21
   flutter_local_notifications: ^9.7.0
-  flutter_shake_animated: ^0.0.5
   dots_indicator: ^2.1.0
+  flutter_shake_animated: ^0.0.5
   numberpicker: ^2.1.1
 
 dev_dependencies:
@@ -58,8 +58,8 @@ flutter:
     - assets/image/level/distance/
     - assets/image/level/height/
     - assets/image/widget/bottom_bar/
-    - assets/image/collection/default/
-    - assets/image/collection/complete/
+    - assets/image/challenge/default/
+    - assets/image/challenge/complete/
     - assets/image/page/login/
     - assets/image/page/timer/
     - assets/image/page/home/

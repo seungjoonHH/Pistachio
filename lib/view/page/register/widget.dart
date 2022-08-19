@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../global/theme.dart';
 import '../../../model/enum/enum.dart';
 import '../../../presenter/page/register.dart';

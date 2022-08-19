@@ -64,7 +64,7 @@ class ChallengeCard extends StatelessWidget {
       padding: const EdgeInsets.all(17.0),
       child: PCard(
         color: challenge.theme['background'],
-        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
         child: Column(
           children: [
             Column(
@@ -74,7 +74,7 @@ class ChallengeCard extends StatelessWidget {
                   challenge.imageUrls['default'],
                   height: 206.0,
                 ),
-                PText('이번주의\n첼린지',
+                PText('이번주의\n챌린지',
                   style: textTheme.headlineLarge,
                   color: PTheme.white,
                   maxLines: 2,

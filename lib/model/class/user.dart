@@ -17,8 +17,8 @@ class PUser {
   String? collectionId;
   List<String> partyIds = [];
   List<Map<String, dynamic>> collectionIds = [];
-  List<Map<String, dynamic>> goals = [];
-  List<Map<String, dynamic>> records = [];
+  Map<String, dynamic> goals = {};
+  Map<String, dynamic> records = {};
 
   /// accessors & mutators
   DateTime? get regDate => _regDate?.toDate();
@@ -36,17 +36,18 @@ class PUser {
 
     return getAmounts(type, firstDate, lastDate);
   }
-  int getAmounts(ActivityType type, [DateTime? startDate, DateTime? endDate]) {
+  int getAmounts(ActivityType activityType, [DateTime? startDate, DateTime? endDate]) {
     int result = 0;
 
-    for (var record in records) {
-      if (record['type'] != type.kr) continue;
-      for (var item in record['recordList']) {
-        if (startDate != null && item['date'].toDate().isBefore(startDate)) continue;
-        if (endDate != null && item['date'].toDate().isAfter(endDate)) continue;
-        result += item['amount'] as int;
+    records.forEach((type, recordList) {
+      if (activityType.name == type) {
+        for (var record in recordList) {
+          if (startDate != null && record['date'].toDate().isBefore(startDate)) continue;
+          if (endDate != null && record['date'].toDate().isAfter(endDate)) continue;
+          result += record['amount'] as int;
+        }
       }
-    }
+    });
     return result;
   }
 
@@ -70,8 +71,8 @@ class PUser {
     collectionId = json['collectionId'];
     partyIds = (json['partyIds'] ?? []).cast<String>();
     collectionIds = (json['collectionIds'] ?? []).cast<Map<String, dynamic>>();
-    goals = (json['goals'] ?? []).cast<Map<String, dynamic>>();
-    records = (json['records'] ?? []).cast<Map<String, dynamic>>();
+    goals = json['goals'];
+    records = json['records'];
   }
 
   Map<String, dynamic> toJson() {

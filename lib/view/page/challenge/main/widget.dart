@@ -64,47 +64,44 @@ class ChallengeCard extends StatelessWidget {
       padding: const EdgeInsets.all(17.0),
       child: PCard(
         color: challenge.theme['background'],
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SvgPicture.asset(
-                    challenge.imageUrls['default'],
-                    height: 206.0,
+        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+        child: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  challenge.imageUrls['default'],
+                  height: 206.0,
+                ),
+                PText('이번주의\n첼린지',
+                  style: textTheme.headlineLarge,
+                  color: PTheme.white,
+                  maxLines: 2,
+                  border: true,
+                ),
+                PText(
+                  challenge.descriptions['sub']!.replaceAll('#', ''),
+                  style: textTheme.titleSmall,
+                  color: PTheme.white,
+                  maxLines: 2,
+                ),
+              ],
+            ),
+            const SizedBox(height: 30.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                PButton(
+                  onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
+                  text: '알아보러 가기',
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 70.0, vertical: 5.0,
                   ),
-                  PText('이번주의\n첼린지',
-                    style: textTheme.headlineLarge,
-                    color: PTheme.white,
-                    maxLines: 2,
-                    border: true,
-                  ),
-                  PText(
-                    challenge.descriptions['sub']!.replaceAll('#', ''),
-                    style: textTheme.titleSmall,
-                    color: PTheme.white,
-                    maxLines: 2,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  PButton(
-                    onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
-                    text: '알아보러 가기',
-                    backgroundColor: challenge.theme['button'],
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 70.0, vertical: 5.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

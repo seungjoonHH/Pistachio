@@ -1,4 +1,4 @@
-/* 챌린지 디테일 위젯 */
+/* 챌린지 난이도 위젯 */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,11 +6,10 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
-import 'package:pistachio/presenter/page/challenge/complete.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
-// 챌린지 디테일 리스트 뷰
+// 챌린지 난이도 리스트 뷰
 class ChallengeListView extends StatelessWidget {
   const ChallengeListView({Key? key}) : super(key: key);
 
@@ -20,7 +19,7 @@ class ChallengeListView extends StatelessWidget {
       child: GetBuilder<ChallengePresenter>(
         builder: (controller) {
           return Column(
-            children: controller.challenges.map((ch) => ChallengeDetailBody(
+            children: controller.challenges.map((ch) => ChallengeDifficultyBody(
               challenge: ch
             )).toList(),
           );
@@ -30,8 +29,8 @@ class ChallengeListView extends StatelessWidget {
   }
 }
 
-class ChallengeDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChallengeDetailAppBar({Key? key}) : super(key: key);
+class ChallengeDifficultyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const ChallengeDifficultyAppBar({Key? key}) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(60.0);
@@ -52,8 +51,8 @@ class ChallengeDetailAppBar extends StatelessWidget implements PreferredSizeWidg
   }
 }
 
-class ChallengeDetailBody extends StatelessWidget {
-  const ChallengeDetailBody({Key? key, required this.challenge}) : super(key: key);
+class ChallengeDifficultyBody extends StatelessWidget {
+  const ChallengeDifficultyBody({Key? key, required this.challenge}) : super(key: key);
 
   final Challenge challenge;
 
@@ -63,28 +62,38 @@ class ChallengeDetailBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
-          child: SvgPicture.asset(
-            challenge.imageUrls['default'],
-            width: 500.0,
-            fit: BoxFit.fitHeight,
+          child: PText(
+            '챌린지 난이도',
+            style: textTheme.titleLarge,
+            color: PTheme.white,
+            maxLines: 1,
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(34.0),
           child: PText(
-            challenge.descriptions['detail']!.replaceAll('#', ''),
+            '권장 참여 인원 : 1-2명',
             style: textTheme.titleSmall,
             color: PTheme.white,
-            maxLines: 7,
+            maxLines: 1,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(34.0),
+          child: PText(
+            '아기고래를 바다로 옮겨요!',
+            style: textTheme.titleSmall,
+            color: PTheme.white,
+            maxLines: 1,
           ),
         ),
         Container(
-          height: 80.0,
+          height: 130.0,
         ),
         Center(
           child: PButton(
-            onPressed: () => ChallengeComplete.toChallengeComplete(challenge),
-            text: '챌린지 하러가기',
+            onPressed: () => ChallengePresenter.toChallengeMain(),
+            text: '컬랙션 보러가기',
             //backgroundColor: challenge.theme['button'],
           ),
         )

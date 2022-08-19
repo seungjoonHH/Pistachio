@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.877102769091-3n2rva28bo3f3allnp7dagoodltqkubn</string>
+				<string>com.googleusercontent.apps.877102769091-vi7a7cjccg024646uqtji51o1gnvf47o</string>
 			</array>
 		</dict>
 	</array>
@@ -39,6 +39,7 @@
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>bluetooth-central</string>
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>

@@ -28,7 +28,7 @@ class Challenge {
   String? id;
   String? title;
   String? collectionId;
-  ExerciseType? type;
+  ActivityType? type;
   Map<String, dynamic> theme = {};
   Map<String, dynamic> imageUrls = {};
   Map<String, dynamic> descriptions = {};
@@ -47,7 +47,7 @@ class Challenge {
     title = json['title'];
     imageUrls = idToImageUrls(id!);
     collectionId = json['collectionId'];
-    type = toType(json['type']);
+    type = toActivityType(json['type']);
     theme = themeAsColor(json['theme']);
     levels = json['levels'];
     descriptions = json['descriptions'];

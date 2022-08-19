@@ -3,8 +3,8 @@ import 'package:pistachio/model/enum/enum.dart';
 
 class Challenge {
   /// static variables
-  static String defaultAsset = 'assets/image/collection/default/';
-  static String completeAsset = 'assets/image/collection/complete/';
+  static String defaultAsset = 'assets/image/challenge/default/';
+  static String completeAsset = 'assets/image/challenge/complete/';
 
   /// static methods
   static Map<String, dynamic> idToImageUrls(String id) => {

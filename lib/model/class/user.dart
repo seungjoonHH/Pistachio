@@ -9,8 +9,8 @@ class PUser {
   String? uid;
   String? name;
   String? nickname;
-  double? weight;
-  double? height;
+  int? weight;
+  int? height;
   Sex? sex;
   Timestamp? _regDate;
   Timestamp? _dateOfBirth;
@@ -22,8 +22,11 @@ class PUser {
 
   /// accessors & mutators
   DateTime? get regDate => _regDate?.toDate();
+
   DateTime? get dateOfBirth => _dateOfBirth?.toDate();
+
   set regDate(DateTime? date) => _regDate = toTimestamp(date);
+
   set dateOfBirth(DateTime? date) => _dateOfBirth = toTimestamp(date);
 
   String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);
@@ -63,8 +66,8 @@ class PUser {
     uid = json['uid'];
     name = json['name'];
     nickname = json['nickname'];
-    weight = json['weight'];
-    height = json['height'];
+    weight = json['weight'].toInt();
+    height = json['height'].toInt();
     sex = toSex(json['sex']);
     _regDate = json['regDate'];
     _dateOfBirth = json['dateOfBirth'];

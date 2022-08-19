@@ -1,7 +1,6 @@
 /* 테마 관련 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 /// global variables
@@ -242,86 +241,106 @@ class PTheme {
   /// typography
   static const fontFamily = 'Noto_Sans_KR';
 
-  static TextTheme textTheme = TextTheme(
+  static TextTheme textTheme = const TextTheme(
+
+    //Display
+    displayLarge: TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w700,
+      fontSize: 57.0,
+      height: (64 / 57),
+    ),
+    displayMedium: TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w700,
+      fontSize: 45.0,
+      height: (52 / 45),
+    ),
+    displaySmall: TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w700,
+      fontSize: 36.0,
+      height: (44 / 36),
+    ),
 
     //Headline
     headlineLarge: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
-      fontSize: 32.0.sp,
-      height: (40 / 32).h,
+      fontSize: 32.0,
+      height: (40 / 32),
     ),
     headlineMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
-      fontSize: 24.0.sp,
-      height: (36 / 24).h,
+      fontSize: 28.0,
+      height: (36 / 28),
     ),
     headlineSmall: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
-      fontSize: 16.0.sp,
-      height: (32 / 16).h,
+      fontSize: 24.0,
+      height: (32 / 24),
     ),
 
     //Title
     titleLarge: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 22.0.sp,
-      height: (28 / 22).h,
+      fontSize: 22.0,
+      height: (28 / 22),
     ),
     titleMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 18.0.sp,
-      height: (24 / 18).h,
+      fontSize: 16.0,
+      height: (24 / 16),
     ),
     titleSmall: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 14.0.sp,
-      height: (20 / 14).h,
+      fontSize: 14.0,
+      height: (20 / 14),
     ),
 
     //Label
     labelLarge: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 16.0.sp,
-      height: (20 / 16).h,
+      fontSize: 14.0,
+      height: (20 / 14),
     ),
     labelMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 12.0.sp,
-      height: (16 / 12).h,
+      fontSize: 12.0,
+      height: (16 / 12),
     ),
     labelSmall: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 11.0.sp,
-      height: (16 / 11).h,
+      fontSize: 11.0,
+      height: (16 / 11),
     ),
 
     //Body
     bodyLarge: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w400,
-      fontSize: 16.0.sp,
-      height: (24 / 16).h,
+      fontSize: 16.0,
+      height: (24 / 16),
     ),
     bodyMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w400,
-      fontSize: 14.0.sp,
-      height: (20 / 14).h,
+      fontSize: 14.0,
+      height: (20 / 14),
     ),
     bodySmall: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w400,
-      fontSize: 12.0.sp,
-      height: (16 / 12).h,
+      fontSize: 12.0,
+      height: (16 / 12),
     ),
   );
 }

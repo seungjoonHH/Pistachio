@@ -37,3 +37,6 @@ String get kr => ['상', '중', '하'][index];
 }
 
 enum DialogType { none, mono, bi }
+
+// 로그인 형식 { 구글, ... }
+enum LoginType { google, apple }

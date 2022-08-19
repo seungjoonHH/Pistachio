@@ -2,17 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/firebase/auth/apple.dart';
+import 'package:pistachio/presenter/firebase/auth/google.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
-import 'package:pistachio/presenter/firebase/login/google.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
 
-/// enums
-// 로그인 형식 { 구글, ... }
-enum LoginType { google }
-
-/// class
-class LoginPresenter {
+class AuthPresenter {
   /// static methods
   // 로그인 형식에 따른 피트윈 로그인
   static Future pLogin(LoginType type) async {
@@ -25,7 +22,11 @@ class LoginPresenter {
     // 로그인 형식에 따른 로그인 방식
     switch (type) {
       case LoginType.google:
-        userCredential = await GoogleLoginPresenter.signInWithGoogle();
+        userCredential = await GoogleAuth.signInWithGoogle();
+        break;
+      case LoginType.apple:
+        userCredential = await AppleAuth.signInWithApple();
+        break;
     }
 
     if (userCredential == null) return;

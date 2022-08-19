@@ -8,20 +8,20 @@ class DialogButtonData {
   late DialogType type;
   Color color;
   String text;
-  BorderRadius radius;
   VoidCallback onPressed;
 
   DialogButtonData(type, {
     Color? color,
     required this.text,
-    required this.radius,
     required this.onPressed,
   }) : color = color ?? PTheme.black;
 }
 
 void showPDialog({
-  required String title,
+  String? title,
   required Widget content,
+  EdgeInsets? titlePadding = const EdgeInsets.only(top: 50.0),
+  EdgeInsets? contentPadding = const EdgeInsets.all(20.0),
   DialogType type = DialogType.none,
   String? buttonText,
   VoidCallback? onPressed,
@@ -55,10 +55,7 @@ void showPDialog({
       data = [
         DialogButtonData(type,
           text: buttonText ?? '확인',
-          color: colorScheme.primaryContainer,
-          radius: const BorderRadius.vertical(
-            bottom: Radius.circular(20.0),
-          ),
+          color: PTheme.black,
           onPressed: onPressed!,
         ),
       ]; break;
@@ -66,18 +63,12 @@ void showPDialog({
       data = [
         DialogButtonData(type,
           text: leftText ?? '취소',
-          color: colorScheme.primaryContainer.withOpacity(.3),
-          radius: const BorderRadius.only(
-            bottomLeft: Radius.circular(20.0),
-          ),
+          color: PTheme.grey,
           onPressed: leftPressed!,
         ),
         DialogButtonData(type,
           text: rightText ?? '확인',
-          color: colorScheme.primaryContainer,
-          radius: const BorderRadius.only(
-            bottomRight: Radius.circular(20.0),
-          ),
+          color: PTheme.black,
           onPressed: rightPressed!,
         ),
       ]; break;
@@ -87,21 +78,21 @@ void showPDialog({
 
   Get.dialog(
     AlertDialog(
+      shape: const RoundedRectangleBorder(
+        side: BorderSide(color: PTheme.black, width: 1.5),
+        borderRadius: BorderRadius.zero,
+      ),
+      backgroundColor: PTheme.blush,
       title: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 30.0, vertical: 10.0,
-        ),
-        decoration: BoxDecoration(
-          color: type == DialogType.none
-              ? colorScheme.primaryContainer
-              : Colors.transparent,
-          borderRadius: const BorderRadius.vertical(
+        padding: titlePadding,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.vertical(
             top: Radius.circular(20.0),
           ),
         ),
         child: Center(
-          child: PText(title,
-            style: textTheme.labelLarge,
+          child: PText(title ?? '',
+            style: textTheme.headlineSmall,
             bold: true,
           ),
         ),
@@ -112,7 +103,7 @@ void showPDialog({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(20.0),
+            padding: contentPadding,
             constraints: const BoxConstraints(minHeight: 80.0),
             child: content,
           ),
@@ -120,14 +111,15 @@ void showPDialog({
             children: data.map((datum) => Expanded(
               child: Material(
                 color: datum.color,
-                borderRadius: datum.radius,
                 child: InkWell(
                   onTap: datum.onPressed,
-                  borderRadius: datum.radius,
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: PText(datum.text),
+                      child: PText(datum.text,
+                        color: PTheme.white,
+                        style: textTheme.labelLarge,
+                      ),
                     ),
                   ),
                 ),

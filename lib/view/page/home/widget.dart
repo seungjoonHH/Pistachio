@@ -63,9 +63,8 @@ class HomeRandomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PCard(
-      color: const Color(0xFF68DAD3),
+      color: const Color(0xFFFDECE4),
       stretch: true,
-      onPressed: () {},
       child: Column(
         children: [
           Column(

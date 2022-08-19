@@ -19,19 +19,20 @@ class GlobalPresenter extends GetxController {
   int navIndex = 0;
 
   void navigate(int index) {
-    navIndex = index;
+    navIndex = index == 1 ? navIndex : index;
 
-    switch (navIndex) {
+    switch (index) {
       case 0: HomePresenter.toHome(); break;
-      case 1: ChallengePresenter.toChallengeMain(); break;
-      case 2: break;
-      case 3: break;
-      case 4: break;
+      case 1: openBottomBar(); break;
+      case 2: ChallengePresenter.toChallengeMain(); break;
     }
     update();
   }
 
   static final barCont = BottomSheetBarController();
+
+  static void openBottomBar() async => await barCont.expand();
+  static void closeBottomBar() async => await barCont.collapse();
 
   static void initControllers() {
     Get.put(GlobalPresenter());

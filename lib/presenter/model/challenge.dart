@@ -11,7 +11,7 @@ class ChallengePresenter extends GetxController {
   static String asset = 'assets/json/data/challenges.json';
 
   /// static methods
-  static void toChallengeMain() => Get.toNamed('/challenge/main');
+  static void toChallengeMain() => Get.offAllNamed('/challenge/main');
 
   List<Challenge> challenges = [];
 

@@ -7,7 +7,7 @@ class NotificationPresenter extends GetxController {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
-  void onInit() async{
+  void onInit() async {
     // 첫 빌드시, 권한 확인
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
@@ -25,8 +25,8 @@ class NotificationPresenter extends GetxController {
     super.onInit();
   }
   // 디바이스 고유 토큰 가져오기
-  void _getToken() async{
-    String? token= await messaging.getToken();
+  void _getToken() async {
+    String? token = await messaging.getToken();
     try {
       print(token);
     } catch(e) {}

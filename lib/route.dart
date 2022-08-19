@@ -25,16 +25,6 @@ class PRoute {
   /// static methods
 // 라우트 문자열, 페이지 매핑
   static Map<String, Widget> get pages => {
-    // '/developer': const DeveloperPage(),
-    // '/timer': const TimerPage(),
-    // '/challenge/main': const ChallengeMainPage(),
-    // '/challenge/setting': const ChallengeSettingPage(),
-    // '/challenge/list': const ChallengeListPage(),
-    // '/challenge/type': const ChallengeTypePage(),
-    // '/complete': const CompletePage(),
-    // '/detail': const ChallengeDetailPage(),
-    // '/record': const RecordPage(),
-    // '/start': const StartPage(),
     '/home': const HomePage(),
     '/login': const LoginPage(),
     '/register': const RegisterPage(),

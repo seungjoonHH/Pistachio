@@ -57,6 +57,7 @@ flutter:
     - assets/image/widget/bottom_bar/
     - assets/image/collection/default/
     - assets/image/collection/complete/
+    - assets/image/page/login/
     - assets/image/page/timer/
     - assets/image/page/home/
     - assets/json/lottie/

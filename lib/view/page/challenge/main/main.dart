@@ -1,9 +1,11 @@
 /* 챌린지 메인 페이지 */
 
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/view/page/challenge/main/widget.dart';
-import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:pistachio/view/widget/widget/app_bar.dart';
+import 'package:pistachio/view/widget/widget/bottom_bar.dart';
 
 /// class
 class ChallengeMainPage extends StatelessWidget {
@@ -11,10 +13,13 @@ class ChallengeMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const HomeAppBar(),
-      backgroundColor: colorScheme.background,
-      body: const ChallengeListView(),
+    return GestureDetector(
+      onTap: GlobalPresenter.closeBottomBar,
+      child: const Scaffold(
+        appBar: PAppBar(title: '챌린지'),
+        backgroundColor: PTheme.offWhite,
+        bottomSheet: PBottomSheetBar(body: ChallengeListView()),
+      ),
     );
   }
 }

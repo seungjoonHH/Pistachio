@@ -1,14 +1,13 @@
 import 'package:get/get.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 
 class NotificationPresenter extends GetxController {
   // 메시징 서비스 기본 객체 생성
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
-  void onInit() async{
+  void onInit() async {
     // 첫 빌드시, 권한 확인
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
@@ -26,9 +25,9 @@ class NotificationPresenter extends GetxController {
     super.onInit();
   }
   // 디바이스 고유 토큰 가져오기
-  void _getToken() async{
-    String? token= await messaging.getToken();
-    try{
+  void _getToken() async {
+    String? token = await messaging.getToken();
+    try {
       print(token);
     } catch(e) {}
   }

@@ -1,13 +1,8 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
-import 'package:pistachio/view/page/exercise/main/widget.dart';
-import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class ExerciseMainPage extends StatelessWidget {
   const ExerciseMainPage({Key? key}) : super(key: key);

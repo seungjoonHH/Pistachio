@@ -1,7 +1,6 @@
 /* 테마 관련 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 /// global variables
@@ -20,20 +19,13 @@ class PTheme {
   static const Color grey = Color(0xFF929292);
   static const Color light = Color(0xFFF5F5F5);
   static const Color white = Colors.white;
-  // static const Color fitween1 = Color(0xFF0086FF);
-  // static const Color fitween2 = Color(0xFF00DBFF);
-  // static const Color fitween3 = Color(0xFFA5C8FF);
-  // static const Color fitween4 = Color(0xFFD4E3FF);
-  // static const LinearGradient fitweenGradient = LinearGradient(
-  //   colors: [fitween1, fitween2],
-  //   begin: Alignment.topCenter,
-  //   end: Alignment.bottomCenter,
-  // );
-  // static const LinearGradient cardGradient = LinearGradient(
-  //   colors: [fitween4, fitween3],
-  //   begin: Alignment.topCenter,
-  //   end: Alignment.bottomCenter,
-  // );
+  static const Color buttonColor = Color(0xFFD6BDAC);
+  static const Color parkGreen = Color(0xFF59A86B);
+  static const Color offWhite = Color(0xFFF4E9E7);
+  static const Color brickRed = Color(0xFFE45B47);
+  static const Color dessertGold = Color(0xFFE5953E);
+  static const Color crystalBlue = Color(0xFFC8E7D8);
+  static const Color blush = Color(0xFFECCFC0);
 
   // materialColor
   static const MaterialColor primary = MaterialColor(0xFFAEDB9F, {
@@ -68,19 +60,19 @@ class PTheme {
     0: Color(0xFF000000),
   });
 
-  static const MaterialColor tertiary = MaterialColor(0xFFD7CFBB, {
+  static const MaterialColor tertiary = MaterialColor(0xFF386569, {
     100: Color(0xFFFFFFFF),
-    99: Color(0xFFFFFBFF),
-    95: Color(0xFFFFF0C1),
-    90: Color(0xFFFFE168),
-    80: Color(0xFFE2C54B),
-    70: Color(0xFFC5AA31),
-    60: Color(0xFFA98F13),
-    50: Color(0xFF8C7600),
-    40: Color(0xFF6F5D00),
-    30: Color(0xFF544600),
-    20: Color(0xFF3A3000),
-    10: Color(0xFF221B00),
+    99: Color(0xFFF3FFFF),
+    95: Color(0xFFCAF9FD),
+    90: Color(0xFFBCEBEE),
+    80: Color(0xFFA0CFD2),
+    70: Color(0xFF85B3B6),
+    60: Color(0xFF6B989C),
+    50: Color(0xFF517F82),
+    40: Color(0xFF386569),
+    30: Color(0xFF1E4D51),
+    20: Color(0xFF00373A),
+    10: Color(0xFF002022),
     0: Color(0xFF000000),
   });
 
@@ -132,6 +124,7 @@ class PTheme {
     0: Color(0xFF000000),
   });
 
+
   // colorScheme
   static const ColorScheme lightScheme = ColorScheme(
     brightness: Brightness.light,
@@ -139,14 +132,14 @@ class PTheme {
     onPrimary: Color(0xFFFFFFFF),
     primaryContainer: Color(0xFFB0F49E),
     onPrimaryContainer: Color(0xFF002200),
-    secondary: Color(0xFF54634D),
+    secondary: Color(0xFF316B24),
     onSecondary: Color(0xFFFFFFFF),
-    secondaryContainer: Color(0xFFD7E8CD),
-    onSecondaryContainer: Color(0xFF121F0E),
-    tertiary: Color(0xFF6F5D00),
+    secondaryContainer: Color(0xFFB2F49C),
+    onSecondaryContainer: Color(0xFF022200),
+    tertiary: Color(0xFF006970),
     onTertiary: Color(0xFFFFFFFF),
-    tertiaryContainer: Color(0xFFFFE168),
-    onTertiaryContainer: Color(0xFF221B00),
+    tertiaryContainer: Color(0xFF7AF4FF),
+    onTertiaryContainer: Color(0xFF002022),
     error: Color(0xFFBA1A1A),
     errorContainer: Color(0xFFFFDAD6),
     onError: Color(0xFFFFFFFF),
@@ -171,14 +164,14 @@ class PTheme {
     onPrimary: Color(0xFF003A00),
     primaryContainer: Color(0xFF15520F),
     onPrimaryContainer: Color(0xFFB0F49E),
-    secondary: Color(0xFFBBCBB2),
-    onSecondary: Color(0xFF263422),
-    secondaryContainer: Color(0xFF3C4B37),
-    onSecondaryContainer: Color(0xFFD7E8CD),
-    tertiary: Color(0xFFE2C54B),
-    onTertiary: Color(0xFF3A3000),
-    tertiaryContainer: Color(0xFF544600),
-    onTertiaryContainer: Color(0xFFFFE168),
+    secondary: Color(0xFF97D782),
+    onSecondary: Color(0xFF043900),
+    secondaryContainer: Color(0xFF18520D),
+    onSecondaryContainer: Color(0xFFB2F49C),
+    tertiary: Color(0xFF4DD9E4),
+    onTertiary: Color(0xFF00363A),
+    tertiaryContainer: Color(0xFF004F54),
+    onTertiaryContainer: Color(0xFF7AF4FF),
     error: Color(0xFFFFB4AB),
     errorContainer: Color(0xFF93000A),
     onError: Color(0xFF690005),
@@ -248,86 +241,106 @@ class PTheme {
   /// typography
   static const fontFamily = 'Noto_Sans_KR';
 
-  static TextTheme textTheme = TextTheme(
+  static TextTheme textTheme = const TextTheme(
+
+    //Display
+    displayLarge: TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w700,
+      fontSize: 57.0,
+      height: (64 / 57),
+    ),
+    displayMedium: TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w700,
+      fontSize: 45.0,
+      height: (52 / 45),
+    ),
+    displaySmall: TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w700,
+      fontSize: 36.0,
+      height: (44 / 36),
+    ),
 
     //Headline
     headlineLarge: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
-      fontSize: 32.0.sp,
-      height: (40 / 32).h,
+      fontSize: 32.0,
+      height: (40 / 32),
     ),
     headlineMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
-      fontSize: 24.0.sp,
-      height: (36 / 24).h,
+      fontSize: 28.0,
+      height: (36 / 28),
     ),
     headlineSmall: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
-      fontSize: 16.0.sp,
-      height: (32 / 16).h,
+      fontSize: 24.0,
+      height: (32 / 24),
     ),
 
     //Title
     titleLarge: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 22.0.sp,
-      height: (28 / 22).h,
+      fontSize: 22.0,
+      height: (28 / 22),
     ),
     titleMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 18.0.sp,
-      height: (24 / 18).h,
+      fontSize: 16.0,
+      height: (24 / 16),
     ),
     titleSmall: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 14.0.sp,
-      height: (20 / 14).h,
+      fontSize: 14.0,
+      height: (20 / 14),
     ),
 
     //Label
     labelLarge: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 16.0.sp,
-      height: (20 / 16).h,
+      fontSize: 14.0,
+      height: (20 / 14),
     ),
     labelMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 12.0.sp,
-      height: (16 / 12).h,
+      fontSize: 12.0,
+      height: (16 / 12),
     ),
     labelSmall: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 11.0.sp,
-      height: (16 / 11).h,
+      fontSize: 11.0,
+      height: (16 / 11),
     ),
 
     //Body
     bodyLarge: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w400,
-      fontSize: 16.0.sp,
-      height: (24 / 16).h,
+      fontSize: 16.0,
+      height: (24 / 16),
     ),
     bodyMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w400,
-      fontSize: 14.0.sp,
-      height: (20 / 14).h,
+      fontSize: 14.0,
+      height: (20 / 14),
     ),
     bodySmall: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w400,
-      fontSize: 12.0.sp,
-      height: (16 / 12).h,
+      fontSize: 12.0,
+      height: (16 / 12),
     ),
   );
 }

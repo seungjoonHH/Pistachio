@@ -64,32 +64,26 @@ class ChallengeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(17.0),
       child: PCard(
-<<<<<<< HEAD
         color: PTheme.offWhite,
         padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-=======
-        color: challenge.theme['background'],
-        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
->>>>>>> upstream/main
         child: Column(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /*SvgPicture.asset(
+                SvgPicture.asset(
                   challenge.imageUrls['default'],
                   height: 206.0,
-                ),*/
+                ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 0.0, 0.0),
-                  child: PText('이번주의\n첼린지',
+                  child: PText('향고래에게\n 무슨 일이?',
                     style: textTheme.headlineLarge,
                     color: PTheme.black,
                     maxLines: 2,
                     border: true,
                   ),
                 ),
-<<<<<<< HEAD
                 Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                   child: PText(
@@ -98,21 +92,7 @@ class ChallengeCard extends StatelessWidget {
                     color: PTheme.black,
                     maxLines: 2,
                   ),
-                )
-=======
-                PText('이번주의\n챌린지',
-                  style: textTheme.headlineLarge,
-                  color: PTheme.white,
-                  maxLines: 2,
-                  border: true,
                 ),
-                PText(
-                  challenge.descriptions['sub']!.replaceAll('#', ''),
-                  style: textTheme.titleSmall,
-                  color: PTheme.white,
-                  maxLines: 2,
-                ),
->>>>>>> upstream/main
               ],
             ),
             const SizedBox(height: 30.0),

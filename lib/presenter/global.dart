@@ -12,8 +12,10 @@ import 'package:pistachio/presenter/notification.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/presenter/page/monthlyQuest.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
+import 'package:pistachio/view/page/monthlyQuest/monthlyQuest.dart';
 
 class GlobalPresenter extends GetxController {
   int navIndex = 0;
@@ -22,9 +24,15 @@ class GlobalPresenter extends GetxController {
     navIndex = index == 1 ? navIndex : index;
 
     switch (index) {
-      case 0: HomePresenter.toHome(); break;
-      case 1: openBottomBar(); break;
-      case 2: ChallengePresenter.toChallengeMain(); break;
+      case 0:
+        HomePresenter.toHome();
+        break;
+      case 1:
+        openBottomBar();
+        break;
+      case 2:
+        ChallengePresenter.toChallengeMain();
+        break;
     }
     update();
   }
@@ -32,6 +40,7 @@ class GlobalPresenter extends GetxController {
   static final barCont = BottomSheetBarController();
 
   static void openBottomBar() async => await barCont.expand();
+
   static void closeBottomBar() async => await barCont.collapse();
 
   static void initControllers() {
@@ -43,7 +52,6 @@ class GlobalPresenter extends GetxController {
     Get.put(CollectionPresenter());
     Get.put(LevelPresenter());
     Get.put(QuestPresenter());
-
     Get.put(RegisterPresenter());
     Get.put(HomePresenter());
     Get.put(CompletePresenter());
@@ -52,6 +60,7 @@ class GlobalPresenter extends GetxController {
     Get.put(ExerciseMain());
     Get.put(ExerciseDetailSetting());
     Get.put(RecordMain());
+    Get.put(MonthlyQuestPresenter());
   }
 
   static void importData() {

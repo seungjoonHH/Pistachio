@@ -146,7 +146,7 @@ class ChallengeDifficultyBody extends StatelessWidget {
                 //backgroundColor: challenge.theme['button'],
               ),
             )
-        )npm install -g firebase-tools
+        )
       ],
     );
   }

@@ -8,6 +8,7 @@ import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
+import 'package:pistachio/view/widget/widget/card.dart';
 
 // 챌린지 완료 리스트 뷰
 class ChallengeListView extends StatelessWidget {
@@ -29,28 +30,6 @@ class ChallengeListView extends StatelessWidget {
   }
 }
 
-class ChallengeCompleteAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChallengeCompleteAppBar({Key? key}) : super(key: key);
-
-  @override
-  Size get preferredSize => const Size.fromHeight(60.0);
-
-  @override
-  Widget build(BuildContext context) {
-    Challenge challenge = Get.arguments;
-
-    return GetBuilder<ChallengePresenter>(
-        builder: (controller) {
-          return AppBar(
-            elevation: 0.0,
-            iconTheme: const IconThemeData(color: PTheme.light),
-            backgroundColor: challenge.theme['background'],
-          );
-        }
-    );
-  }
-}
-
 class ChallengeCompleteBody extends StatelessWidget {
   const ChallengeCompleteBody({Key? key, required this.challenge}) : super(key: key);
 
@@ -61,31 +40,62 @@ class ChallengeCompleteBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
+          child: Center(
+            child: SvgPicture.asset(
+              challenge.imageUrls['complete'],
+              width: 500.0,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+        ),
         Center(
-          child: SvgPicture.asset(
-            challenge.imageUrls['complete'],
-            width: 360.0,
-            fit: BoxFit.fitHeight,
+          child: PCard(
+            color: PTheme.offWhite,
+            padding: EdgeInsets.fromLTRB(17.0, 0.0, 17.0, 0.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                  child: PText('향고래 바다로\n돌려보내기 성공!',
+                    align: TextAlign.center,
+                    style: textTheme.headlineLarge,
+                    color: PTheme.black,
+                    maxLines: 2,
+                    border: true,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 80.0),
+                  child: PText(
+                    challenge.descriptions['complete']!.replaceAll('#', ''),
+                    align: TextAlign.center,
+                    style: textTheme.labelLarge,
+                    color: PTheme.black,
+                    maxLines: 8,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 60.0),
+                  child: SvgPicture.asset(
+                    'assets/image/page/challenge/left_wing.svg',
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(34.0),
-          child: PText(
-            challenge.descriptions['complete']!.replaceAll('#', ''),
-            style: textTheme.titleSmall,
-            color: PTheme.white,
-            maxLines: 7,
-          ),
-        ),
-        Container(
-          height: 130.0,
-        ),
-        Center(
-          child: PButton(
-            onPressed: () => ChallengePresenter.toChallengeMain(),
-            text: '컬랙션 보러가기',
-            //backgroundColor: challenge.theme['button'],
-          ),
+            padding: EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 0.0),
+            child: Center(
+              child: PButton(
+                onPressed: () => ChallengePresenter.toChallengeMain(),
+                text: '컬랙션 보러가기',
+                //backgroundColor: challenge.theme['button'],
+              ),
+            )
         )
       ],
     );

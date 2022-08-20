@@ -45,6 +45,7 @@ class ChallengeAppBar extends StatelessWidget implements PreferredSizeWidget {
             iconTheme: const IconThemeData(color: PTheme.light),
             backgroundColor: PTheme.offWhite,
             title: PText('챌린지',
+              border: true,
               style: textTheme.headlineMedium,
             ),
           );
@@ -63,8 +64,8 @@ class ChallengeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(17.0),
       child: PCard(
-        color: challenge.theme['background'],
-        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+        color: PTheme.offWhite,
+        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
         child: Column(
           children: [
             Column(
@@ -74,17 +75,23 @@ class ChallengeCard extends StatelessWidget {
                   challenge.imageUrls['default'],
                   height: 206.0,
                 ),
-                PText('이번주의\n첼린지',
-                  style: textTheme.headlineLarge,
-                  color: PTheme.white,
-                  maxLines: 2,
-                  border: true,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 0.0, 0.0),
+                  child: PText('향고래에게\n 무슨 일이?',
+                    style: textTheme.headlineLarge,
+                    color: PTheme.black,
+                    maxLines: 2,
+                    border: true,
+                  ),
                 ),
-                PText(
-                  challenge.descriptions['sub']!.replaceAll('#', ''),
-                  style: textTheme.titleSmall,
-                  color: PTheme.white,
-                  maxLines: 2,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                  child: PText(
+                    challenge.descriptions['sub']!.replaceAll('#', ''),
+                    style: textTheme.titleSmall,
+                    color: PTheme.black,
+                    maxLines: 2,
+                  ),
                 ),
               ],
             ),

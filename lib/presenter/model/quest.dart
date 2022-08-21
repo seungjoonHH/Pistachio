@@ -13,8 +13,8 @@ class QuestPresenter extends GetxController {
   Future importFile() async {
     String string = await rootBundle.loadString(asset);
     Map<String, dynamic> list = jsonDecode(string);
-    list.forEach((key, value) {
-      quests[toActivityType(key)!] = value.toInt();
+    list.forEach((type, amount) {
+      quests[toActivityType(type)!] = amount.toInt();
     });
     update();
   }

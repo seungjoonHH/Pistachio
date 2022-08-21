@@ -36,6 +36,13 @@ class UserPresenter extends GetxController {
   }
 
   /* 파이어베이스 관련 */
+  // 파이어베이스에서 로드
+  void load() async {
+    var json = (await f.collection('users').doc(loggedUser.uid).get()).data();
+    if (json == null) return;
+    loggedUser = PUser.fromJson(json);
+  }
+
   // 파이어베이스에 최신화
   void save() => f.collection('users').doc(loggedUser.uid).set(loggedUser.toJson());
 

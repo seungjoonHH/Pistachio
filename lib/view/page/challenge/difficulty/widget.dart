@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/presenter/page/challenge/complete.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
@@ -20,33 +21,11 @@ class ChallengeListView extends StatelessWidget {
         builder: (controller) {
           return Column(
             children: controller.challenges.map((ch) => ChallengeDifficultyBody(
-              challenge: ch
+                challenge: ch
             )).toList(),
           );
         }
       ),
-    );
-  }
-}
-
-class ChallengeDifficultyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChallengeDifficultyAppBar({Key? key}) : super(key: key);
-
-  @override
-  Size get preferredSize => const Size.fromHeight(60.0);
-
-  @override
-  Widget build(BuildContext context) {
-    Challenge challenge = Get.arguments;
-
-    return GetBuilder<ChallengePresenter>(
-        builder: (controller) {
-          return AppBar(
-            elevation: 0.0,
-            iconTheme: const IconThemeData(color: PTheme.light),
-            backgroundColor: challenge.theme['background'],
-          );
-        }
     );
   }
 }
@@ -61,12 +40,82 @@ class ChallengeDifficultyBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: PText(
-            '챌린지 난이도',
-            style: textTheme.titleLarge,
-            color: PTheme.white,
-            maxLines: 1,
+        Padding(
+          padding: EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 60.0),
+          child: Center(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/image/page/challenge/left_wing.svg',
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                      child: PText(
+                        '챌린지 난이도',
+                        style: textTheme.titleLarge,
+                        color: PTheme.black,
+                        maxLines: 1,
+                      ),
+                    ),
+                    SvgPicture.asset(
+                      'assets/image/page/challenge/right_wing.svg',
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 0.0),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/image/page/challenge/left_wing.svg',
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                        child: SvgPicture.asset(
+                          'assets/image/page/challenge/left_wing.svg',
+                        ),
+                      ),
+                      SvgPicture.asset(
+                        'assets/image/page/challenge/left_wing.svg',
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PText(
+                        '쉬움',
+                        style: textTheme.titleLarge,
+                        color: PTheme.white,
+                        border: true,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                        child: PText(
+                          '보통',
+                          style: textTheme.titleLarge,
+                          color: PTheme.white,
+                          border: true,
+                        ),
+                      ),
+                      PText(
+                        '어려움',
+                        style: textTheme.titleLarge,
+                        color: PTheme.white,
+                        border: true,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
           ),
         ),
         Padding(
@@ -74,7 +123,7 @@ class ChallengeDifficultyBody extends StatelessWidget {
           child: PText(
             '권장 참여 인원 : 1-2명',
             style: textTheme.titleSmall,
-            color: PTheme.white,
+            color: PTheme.black,
             maxLines: 1,
           ),
         ),
@@ -83,19 +132,20 @@ class ChallengeDifficultyBody extends StatelessWidget {
           child: PText(
             '아기고래를 바다로 옮겨요!',
             style: textTheme.titleSmall,
-            color: PTheme.white,
+            color: PTheme.black,
             maxLines: 1,
           ),
         ),
-        Container(
-          height: 130.0,
-        ),
-        Center(
-          child: PButton(
-            onPressed: () => ChallengePresenter.toChallengeMain(),
-            text: '컬랙션 보러가기',
-            //backgroundColor: challenge.theme['button'],
-          ),
+        Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 260.0, 0.0, 0.0),
+            child: Center(
+              child: PButton(
+                //onPressed: () => ChallengePresenter.toChallengeMain(),
+                onPressed: () => ChallengeComplete.toChallengeComplete(challenge),
+                text: '완료',
+                //backgroundColor: challenge.theme['button'],
+              ),
+            )
         )
       ],
     );

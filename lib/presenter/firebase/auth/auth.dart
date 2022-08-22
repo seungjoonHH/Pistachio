@@ -8,6 +8,8 @@ import 'package:pistachio/presenter/firebase/auth/google.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/presenter/page/onboarding.dart';
+import 'package:pistachio/presenter/page/register.dart';
 
 class AuthPresenter {
   /// static methods
@@ -45,14 +47,13 @@ class AuthPresenter {
     data['uid'] = userCredential.user!.uid;
     data['name'] = userCredential.user!.displayName;
     data['email'] = userCredential.user!.email;
-    data['regDate'] = Timestamp.now();
 
     userPresenter.data = {...data};
 
     // 신규 회원일 경우
     if (isNewcomer) {
       // 회원가입 페이지로 이동
-      Get.toNamed('/register');
+      OnboardingPresenter.toOnboarding();
     }
 
     // 기존 회원일 경우

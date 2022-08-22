@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/page/home.dart';
@@ -77,8 +78,7 @@ class HomeRandomCard extends StatelessWidget {
               ),
               PText('1층 당 3초의 수명이 연장되어요.',
                 style: textTheme.labelMedium,
-                color: PTheme.white,
-                border: true,
+                color: PTheme.black,
               ),
             ],
           ),
@@ -121,16 +121,16 @@ class DailyActivityCardView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                  DailyActivityCircularGraph(recordType: ActivityType.distance),
-                  DailyActivityCircularGraph(recordType: ActivityType.height),
+                  DailyActivityCircularGraph(type: ActivityType.distance),
+                  DailyActivityCircularGraph(type: ActivityType.height),
                 ],
               ),
               const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                  DailyActivityCircularGraph(recordType: ActivityType.weight),
-                  DailyActivityCircularGraph(recordType: ActivityType.calorie),
+                  DailyActivityCircularGraph(type: ActivityType.weight),
+                  DailyActivityCircularGraph(type: ActivityType.calorie),
                 ],
               ),
             ],
@@ -144,24 +144,47 @@ class DailyActivityCardView extends StatelessWidget {
 class DailyActivityCircularGraph extends StatelessWidget {
   const DailyActivityCircularGraph({
     Key? key,
-    required this.recordType,
+    required this.type,
   }) : super(key: key);
 
-  final ActivityType recordType;
+  final ActivityType type;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomePresenter>(
       builder: (controller) {
-        int todayRecord = controller.todayRecords[recordType] ?? 0;
-        int goal = controller.myGoals[recordType] ?? 1;
+        int todayRecord = controller.todayRecords[type] ?? 0;
+        int goal = controller.myGoals[type] ?? 1;
+
+        double earlierPercent = min(todayRecord / goal, 1);
+        double laterPercent = max(min(todayRecord - goal, goal) / goal, 0);
+        double totalPercent = max(earlierPercent + laterPercent, .0001);
+
+        const int totalDuration = 1500;
+        int earlierDuration = totalDuration * earlierPercent ~/ totalPercent;
+        if (laterPercent == 0) earlierDuration = totalDuration;
+        int laterDuration = totalDuration * laterPercent ~/ totalPercent;
 
         return Column(
           children: [
-            PCircularIndicator(
-              percent: min(todayRecord / goal, 1),
-              centerText: recordType.kr,
-              color: recordType.color,
+            Stack(
+              children: [
+                PCircularIndicator(
+                  percent: earlierPercent,
+                  centerText: type.kr,
+                  color: type.color,
+                  duration: earlierDuration,
+                  onAnimationEnd: () => controller.showLaterGraph(type),
+                ),
+                PCircularIndicator(
+                  visible: controller.graphStates[type]!,
+                  percent: laterPercent,
+                  centerText: type.kr,
+                  duration: laterDuration,
+                  color: PTheme.white.withOpacity(.3),
+                  backgroundColor: Colors.transparent,
+                ),
+              ],
             ),
             const SizedBox(height: 10.0),
             Row(
@@ -171,7 +194,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
                   style: textTheme.labelLarge,
                 ),
                 PText(
-                  '/$goal ${recordType.unit}',
+                  '/$goal ${type.unit}',
                   style: textTheme.labelLarge,
                 ),
               ],
@@ -246,8 +269,9 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
             child: GetBuilder<HomePresenter>(
               builder: (controller) {
                 final questPresenter = Get.find<QuestPresenter>();
-                int record = controller.thisMonthRecords[type]!;
-                int goal = questPresenter.quests[type]!;
+                int record = controller.thisMonthRecords[type] ?? 0;
+                int goal = questPresenter.quests[type] ?? 1;
+                if (type == ActivityType.weight) goal ~/= weight + 1;
                 double percent = min(record / goal, 1);
 
                 return Stack(

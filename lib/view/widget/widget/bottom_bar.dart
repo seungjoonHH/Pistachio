@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
+import 'package:pistachio/presenter/page/exercise/input.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -147,7 +148,7 @@ class RecordNavigateButton extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () => ExerciseInput.toExerciseInput(type),
           child: AspectRatio(
             aspectRatio: 1.0,
             child: Container(

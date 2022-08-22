@@ -37,29 +37,26 @@ class PButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Material(
-            color: fill ? backgroundColor : Colors.transparent,
-            child: InkWell(
-              onTap: onPressed,
-              child: Container(
-                padding: padding,
-                constraints: constraints,
-                decoration: BoxDecoration(
-                  border: Border.all(color: PTheme.black, width: 1.5),
-                ),
-                child: Center(
-                  child: child ?? PText(text!, color: textColor),
-                ),
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Material(
+          color: fill ? backgroundColor : Colors.transparent,
+          child: InkWell(
+            onTap: onPressed,
+            child: Container(
+              padding: padding,
+              constraints: constraints,
+              decoration: BoxDecoration(
+                border: Border.all(color: PTheme.black, width: 1.5),
+              ),
+              child: Center(
+                child: child ?? PText(text!, color: textColor),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
 
     return Row(

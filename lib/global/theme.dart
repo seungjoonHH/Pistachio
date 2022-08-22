@@ -239,7 +239,7 @@ class PTheme {
   }[Theme.of(Get.context!).brightness]!;
 
   /// typography
-  static const fontFamily = 'Noto_Sans_KR';
+  static const fontFamily = 'BMJUA';
 
   static TextTheme textTheme = const TextTheme(
 

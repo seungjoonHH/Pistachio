@@ -4,11 +4,13 @@ import 'package:pistachio/view/page/challenge/detail/detail.dart';
 import 'package:pistachio/view/page/challenge/difficulty/difficulty.dart';
 import 'package:pistachio/view/page/challenge/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/complete/complete.dart';
+import 'package:pistachio/view/page/exercise/input/input.dart';
 import 'package:pistachio/view/page/exercise/main/main.dart';
 import 'package:pistachio/view/page/exercise/setting/detail/detail.dart';
 import 'package:pistachio/view/page/exercise/setting/type/type.dart';
 import 'package:pistachio/view/page/home/home.dart';
 import 'package:pistachio/view/page/login/login.dart';
+import 'package:pistachio/view/page/onboarding/onboarding.dart';
 import 'package:pistachio/view/page/record/detail/detail.dart';
 import 'package:pistachio/view/page/record/main/main.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +32,12 @@ class PRoute {
     '/home': const HomePage(),
     '/login': const LoginPage(),
     '/register': const RegisterPage(),
+    '/onboarding': const OnboardingPage(),
     '/exercise/main': const ExerciseMainPage(),
     '/exercise/complete': const ExerciseCompletePage(),
     '/exercise/setting/type': const ExerciseTypeSettingPage(),
     '/exercise/setting/detail': const ExerciseDetailSettingPage(),
+    '/exercise/input': const ExerciseInputPage(),
     '/record/main': const RecordMainPage(),
     '/record/detail': const RecordDetailPage(),
     '/challenge/main': const ChallengeMainPage(),

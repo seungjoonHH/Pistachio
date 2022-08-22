@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -36,53 +35,63 @@ class CarouselView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
+    Map image = {
+      3: 'distanceRecommend.svg',
+      4: 'distanceGoal.svg',
+      5: 'heightRecommend.svg',
+      6: 'heightGoal.svg',
+    };
 
-    return Stack(
-      children: [
-        SvgPicture.asset(
-          'assets/image/page/register/heightGoal.svg',
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(top: 30.0),
-                alignment: Alignment.topCenter,
+    return GetBuilder<RegisterPresenter>(builder: (controller) {
+      return Stack(
+        children: [
+          controller.pageIndex > 2 && controller.pageIndex < 7
+              ? SvgPicture.asset(
+                  'assets/image/page/register/${image[controller.pageIndex]}',
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                )
+              : Container(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
                 child: Container(
-                  constraints: BoxConstraints(minWidth: screenSize.width),
-                  child: CarouselSlider(
-                    carouselController: RegisterPresenter.carouselCont,
-                    items: carouselWidgets()
-                        .map(
-                          (widget) => Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 30.0),
-                            child: widget,
-                          ),
-                        )
-                        .toList(),
-                    options: CarouselOptions(
-                      height: double.infinity,
-                      initialPage: 0,
-                      reverse: false,
-                      enableInfiniteScroll: false,
-                      scrollPhysics: const NeverScrollableScrollPhysics(),
-                      viewportFraction: 1.0,
-                      // onPageChanged: controller.pageChanged,
+                  padding: const EdgeInsets.only(top: 60.0),
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    constraints: BoxConstraints(minWidth: screenSize.width),
+                    child: CarouselSlider(
+                      carouselController: RegisterPresenter.carouselCont,
+                      items: carouselWidgets()
+                          .map(
+                            (widget) => Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30.0),
+                              child: widget,
+                            ),
+                          )
+                          .toList(),
+                      options: CarouselOptions(
+                        height: double.infinity,
+                        initialPage: 0,
+                        reverse: false,
+                        enableInfiniteScroll: false,
+                        scrollPhysics: const NeverScrollableScrollPhysics(),
+                        viewportFraction: 1.0,
+                        // onPageChanged: controller.pageChanged,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const CarouselButton(),
-          ],
-        ),
-      ],
-    );
+              const CarouselButton(),
+            ],
+          ),
+        ],
+      );
+    });
   }
 }
 
@@ -502,13 +511,13 @@ class DistanceGoalView extends StatelessWidget {
               child: NumberPicker(
                 onChanged: (value) => controller.distanceGoalChange(value),
                 itemCount: 1,
-                itemHeight: 112.0,
+                itemHeight: 132.0,
                 itemWidth: 200.0,
                 value: controller.distanceGoal!,
                 minValue: 0,
                 maxValue: 200,
                 selectedTextStyle: TextStyle(
-                  fontSize: 96.0,
+                  fontSize: 120.0,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
@@ -625,7 +634,7 @@ class HeightGoalView extends StatelessWidget {
           isFirst = false;
         }
         return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Column(
@@ -671,19 +680,22 @@ class HeightGoalView extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 50.0),
-            Align(
-              alignment: Alignment.centerRight,
-              child: NumberPicker(
-                onChanged: (value) => controller.heightGoalChange(value),
-                itemCount: 1,
-                itemHeight: 112.0,
-                itemWidth: 200.0,
-                value: controller.heightGoal!,
-                minValue: 0,
-                maxValue: 200,
-                selectedTextStyle: TextStyle(
-                  fontSize: 96.0,
-                  color: Theme.of(context).colorScheme.primary,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 32.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: NumberPicker(
+                  onChanged: (value) => controller.heightGoalChange(value),
+                  itemCount: 1,
+                  itemHeight: 132.0,
+                  itemWidth: 200.0,
+                  value: controller.heightGoal!,
+                  minValue: 0,
+                  maxValue: 200,
+                  selectedTextStyle: TextStyle(
+                    fontSize: 120.0,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
             ),
@@ -918,61 +930,35 @@ class CarouselButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
         bool lastPage = controller.pageIndex == CarouselView.widgetCount - 1;
 
         return Row(
           children: [
-            SizedBox(
-              width: screenSize.width / 2.0,
-              child: PButton(
-                onPressed: () {
-                  controller.backPressed();
-                },
-                text: '이전',
-                stretch: true,
-                backgroundColor: Colors.white,
-              ),
+            PButton(
+              onPressed: () {
+                controller.backPressed();
+              },
+              text: '이전',
+              textColor: Colors.black,
+              stretch: true,
+              backgroundColor: Colors.white,
+              multiple: true,
+              padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 20.0),
             ),
-            SizedBox(
-              width: screenSize.width / 2.0,
-              child: PButton(
-                onPressed: () {
-                  controller.nextPressed();
-                },
-                text: lastPage ? '완료' : '다음',
-                stretch: true,
-                backgroundColor: Colors.black,
-              ),
-            )
+            PButton(
+              onPressed: () {
+                controller.nextPressed();
+              },
+              text: lastPage ? '완료' : '다음',
+              stretch: true,
+              backgroundColor: Colors.black,
+              multiple: true,
+              padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 20.0),
+            ),
           ],
         );
-        //   SizedBox(
-        //   width: 120.0,
-        //   height: 45.0,
-        //   child: ElevatedButton(
-        //     onPressed: () {
-        //       isNext ? controller.nextPressed() : controller.backPressed();
-        //       FocusScope.of(context).unfocus();
-        //     },
-        //     style: OutlinedButton.styleFrom(
-        //       padding: EdgeInsets.zero,
-        //       elevation: 0.0,
-        //       side: BorderSide(color: Theme.of(context).colorScheme.primary),
-        //       shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(20.0),
-        //       ),
-        //     ),
-        //     child: isNext
-        //         ? lastPage
-        //             ? const Text('완료')
-        //             : const Text('다음')
-        //         : const Text('이전'),
-        //   ),
-        // );
       },
     );
   }

@@ -1,6 +1,6 @@
+import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:pistachio/view/page/register/widget.dart';
-import 'package:pistachio/view/widget/widget/app_bar.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -8,7 +8,6 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: RegisterAppBar(),
       body: CarouselView(),
     );
   }

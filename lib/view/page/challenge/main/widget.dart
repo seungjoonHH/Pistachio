@@ -71,26 +71,43 @@ class ChallengeCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(
-                  challenge.imageUrls['default'],
-                  height: 206.0,
+                Container(
+                  padding: const EdgeInsets.all(2.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2.0),
+                    color: PTheme.black
+                  ),
+                  child: SvgPicture.asset(
+                    challenge.imageUrls['default'],
+                    height: 206.0,
+                  ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 0.0, 0.0),
-                  child: PText('향고래에게\n 무슨 일이?',
-                    style: textTheme.headlineLarge,
+                  padding: EdgeInsets.fromLTRB(17.0, 30.0, 0.0, 0.0),
+                  child: PText(challenge.title ?? "",
+                    style: textTheme.titleLarge,
                     color: PTheme.black,
                     maxLines: 2,
                     border: true,
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                  padding: EdgeInsets.fromLTRB(17.0, 0.0, 0.0, 0.0),
+                  child: PText('8/1~8/31',
+                    style: textTheme.labelLarge,
+                    color: PTheme.black,
+                    maxLines: 2,
+                    border: true,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(17.0, 20.0, 0.0, 0.0),
                   child: PText(
                     challenge.descriptions['sub']!.replaceAll('#', ''),
                     style: textTheme.titleSmall,
                     color: PTheme.black,
                     maxLines: 2,
+
                   ),
                 ),
               ],

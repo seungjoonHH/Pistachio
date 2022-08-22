@@ -5,7 +5,7 @@ import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class PAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const PAppBar({Key? key, required this.title}) : super(key: key);
+  const PAppBar({Key? key, this.title = ''}) : super(key: key);
 
   final String title;
 
@@ -18,7 +18,7 @@ class PAppBar extends StatelessWidget implements PreferredSizeWidget {
         builder: (controller) {
           return AppBar(
             elevation: 0.0,
-            iconTheme: const IconThemeData(color: PTheme.light),
+            iconTheme: const IconThemeData(color: PTheme.black),
             backgroundColor: PTheme.offWhite,
             title: PText(title, style: textTheme.titleLarge),
           );

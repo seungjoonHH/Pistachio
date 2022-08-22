@@ -31,6 +31,15 @@ class PUser {
 
   String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);
 
+  void setRecord(ActivityType type, DateTime date, int amount) {
+    for (var record in records[type.name] ?? []) {
+      if (record['date'] == toTimestamp(date)) {
+        record['amount'] += amount; return;
+      }
+    }
+    records[type.name].add({'date': toTimestamp(date), 'amount': amount});
+  }
+
   int getTodayAmounts(ActivityType type) => getAmounts(type, today, tomorrow);
   int getThisMonthAmounts(ActivityType type) {
     DateTime firstDate = DateTime(today.year, today.month, 1);
@@ -55,7 +64,12 @@ class PUser {
   }
 
   /// constructors
-  PUser();
+  PUser() {
+    for (var type in ActivityType.values) {
+      goals[type.name] = null;
+      records[type.name] = [];
+    }
+  }
 
   PUser.fromJson(Map<String, dynamic> json) {
     fromJson(json);

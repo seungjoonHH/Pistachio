@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/user.dart';
@@ -26,6 +27,8 @@ class RegisterPresenter extends GetxController {
   static final birthdayCont = TextEditingController();
 
   static final carouselCont = CarouselController();
+
+  static void toRegister() => Get.toNamed('/register');
 
   /// static methods
   // 컨트롤러를 모두 초기화
@@ -169,6 +172,7 @@ class RegisterPresenter extends GetxController {
     };
 
     userPresenter.login(newcomer);
+    userPresenter.loggedUser.regDate = DateTime.now();
 
     // 파이어베이스에 저장
     userPresenter.save();

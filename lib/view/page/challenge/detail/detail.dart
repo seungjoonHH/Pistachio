@@ -15,7 +15,8 @@ class ChallengeDetailPage extends StatelessWidget {
     Challenge challenge = Get.arguments;
 
     return Scaffold(
-      appBar: const ChallengeDetailAppBar(),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(backgroundColor: Colors.transparent),
       backgroundColor: PTheme.offWhite,
       body: const ChallengeListView(),
     );

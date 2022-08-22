@@ -1,8 +1,8 @@
 /* 챌린지 완료 페이지 */
 
-import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/page/challenge/complete/widget.dart';
 import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/global/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,8 +15,9 @@ class ChallengeCompletePage extends StatelessWidget {
     Challenge challenge = Get.arguments;
 
     return Scaffold(
-      appBar: const ChallengeCompleteAppBar(),
-      backgroundColor: challenge.theme['background'],
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(backgroundColor: Colors.transparent),
+      backgroundColor: PTheme.offWhite,
       body: const ChallengeListView(),
     );
   }

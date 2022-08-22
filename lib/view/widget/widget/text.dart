@@ -13,7 +13,7 @@ class PText extends StatelessWidget {
     this.bold = false,
     this.italic = false,
     this.border = false,
-    this.borderWidth = 1.0,
+    this.borderWidth = .8,
     this.align = TextAlign.left,
   }) : style = style ?? textTheme.bodyMedium, super(key: key);
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pistachio/view/page/monthlyQuest/widget.dart';
-import '../../widget/widget/app_bar.dart';
+import '../../../global/theme.dart';
+import '../../widget/widget/text.dart';
 
 class MonthlyQuestPage extends StatelessWidget {
   const MonthlyQuestPage({Key? key}) : super(key: key);
@@ -8,7 +9,9 @@ class MonthlyQuestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: PText('월간 목표', style: textTheme.titleMedium),
+      ),
       body: const MonthlyQuestView(),
     );
   }

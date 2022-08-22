@@ -4,9 +4,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../global/theme.dart';
 import '../../../model/enum/enum.dart';
 import '../../../presenter/page/register.dart';
@@ -71,48 +71,61 @@ class CarouselView extends StatelessWidget {
     bool keyboardDisabled =
         WidgetsBinding.instance.window.viewInsets.bottom < 100.0;
 
-    return Column(
+    return Stack(
       children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.only(top: 30.0),
-            alignment: Alignment.topCenter,
-            child: Container(
-              constraints: BoxConstraints(minWidth: screenSize.width),
-              child: CarouselSlider(
-                carouselController: RegisterPresenter.carouselCont,
-                items: carouselWidgets()
-                    .map((widget) => Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                          child: widget,
-                        ))
-                    .toList(),
-                options: CarouselOptions(
-                  height: double.infinity,
-                  initialPage: 0,
-                  reverse: false,
-                  enableInfiniteScroll: false,
-                  scrollPhysics: const NeverScrollableScrollPhysics(),
-                  viewportFraction: 1.0,
-                  // onPageChanged: controller.pageChanged,
+        SvgPicture.asset(
+          'assets/image/page/register/heightGoal.svg',
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+        ),
+        Column(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(top: 30.0),
+                alignment: Alignment.topCenter,
+                child: Container(
+                  constraints: BoxConstraints(minWidth: screenSize.width),
+                  child: CarouselSlider(
+                    carouselController: RegisterPresenter.carouselCont,
+                    items: carouselWidgets()
+                        .map(
+                          (widget) => Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 30.0),
+                            child: widget,
+                          ),
+                        )
+                        .toList(),
+                    options: CarouselOptions(
+                      height: double.infinity,
+                      initialPage: 0,
+                      reverse: false,
+                      enableInfiniteScroll: false,
+                      scrollPhysics: const NeverScrollableScrollPhysics(),
+                      viewportFraction: 1.0,
+                      // onPageChanged: controller.pageChanged,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        Container(
-          height: keyboardDisabled ? 150.0 : 100.0,
-          padding: const EdgeInsets.fromLTRB(28.0, 32.0, 28.0, 0.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Carousel 인디케이터
-              CarouselIndicator(count: widgetCount),
-              // Carousel 다음 버튼
-              const CarouselNextButton(),
-            ],
-          ),
+            Container(
+              height: keyboardDisabled ? 150.0 : 100.0,
+              padding: const EdgeInsets.fromLTRB(28.0, 32.0, 28.0, 0.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Carousel 인디케이터
+                  CarouselIndicator(count: widgetCount),
+                  // Carousel 다음 버튼
+                  const CarouselNextButton(),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -761,20 +774,8 @@ class CalorieCheckView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int calorie = 0;
-    bool isFirst = true;
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
-        if (isFirst) {
-          Future.delayed(const Duration(milliseconds: 500), () {
-            calorie = (controller.weight! * controller.weightGoal! * 0.012 +
-                    controller.weight! * controller.distanceGoal! * 0.072 +
-                    controller.weight! * controller.heightGoal! * 0.12)
-                .ceil();
-            controller.calorieGoalChange(calorie);
-          });
-          isFirst = false;
-        }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

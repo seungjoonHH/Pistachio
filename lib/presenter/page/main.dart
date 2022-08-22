@@ -8,12 +8,6 @@ class MainPresenter extends GetxController {
   // 리프레시 컨트롤러
   static final refreshCont = RefreshController(initialRefresh: false);
 
-  /// static methods
-  // 메인 페이지로 이동
-  static void toMain() {
-    Get.offAllNamed('/home');
-  }
-
 // // 리프레시 중 실행 함수
 // static void onRefresh() async {
 //   final crewPresenter = Get.find<CrewPresenter>();

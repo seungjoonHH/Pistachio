@@ -3,10 +3,6 @@
     "id": "2000000",
     "title": "향고래에게\n무슨 일이?",
     "type": "weight",
-    "theme": {
-      "background": 4281440465,
-      "button": 4279321962
-    },
     "levels": {
       "easy": {
         "word": "아기",
@@ -16,12 +12,12 @@
       "normal": {
         "word": "엄마",
         "goal": 300.0,
-        "maxMember": 2
+        "maxMember": 3
       },
       "hard": {
         "word": "아빠",
         "goal": 600.0,
-        "maxMember": 3
+        "maxMember": 5
       }
     },
     "descriptions": {

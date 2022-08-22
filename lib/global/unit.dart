@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
 
 // 성비
@@ -19,6 +20,16 @@ const double sexRatio = .994;
 
 int get weight => Get.find<UserPresenter>().loggedUser.weight ?? 0;
 int get height => Get.find<UserPresenter>().loggedUser.height ?? 0;
+
+int convertAmount(ActivityType type, int amount) {
+  switch (type) {
+    case ActivityType.distance:
+      Walking.velocity * .5 + Jogging.velocity * .3 + Running.velocity * .2;
+      return (amount * Jogging.velocity).ceil();
+    case ActivityType.weight: return (amount * weight).ceil();
+    default: return amount;
+  }
+}
 
 // 걷기
 class Walking {

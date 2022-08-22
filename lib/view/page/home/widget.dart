@@ -6,11 +6,13 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
+import 'package:pistachio/model/class/collection.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
+import 'package:pistachio/view/widget/widget/collection.dart';
 import 'package:pistachio/view/widget/widget/indicator.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -63,7 +65,6 @@ class HomeRandomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return PCard(
       color: const Color(0xFFFDECE4),
-      stretch: true,
       child: Column(
         children: [
           Column(
@@ -113,7 +114,6 @@ class DailyActivityCardView extends StatelessWidget {
           ],
         ),
         PCard(
-          stretch: true,
           color: const Color(0xFFE9D0C3),
           padding: const EdgeInsets.all(30.0),
           child: Column(
@@ -331,53 +331,15 @@ class CollectionCardView extends StatelessWidget {
           ],
         ),
         PCard(
-          stretch: true,
           color: PTheme.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
-              CollectionWidget(),
-              CollectionWidget(),
-              CollectionWidget(),
+              CollectionWidget(detail: true),
+              CollectionWidget(detail: true),
+              CollectionWidget(detail: true),
             ],
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class CollectionWidget extends StatelessWidget {
-  const CollectionWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 100.0,
-          height: 100.0,
-          decoration: const ShapeDecoration(
-            color: PTheme.grey,
-            shape: PolygonBorder(
-              sides: 6,
-              side: BorderSide(width: 1.5),
-            ),
-          ),
-        ),
-        const SizedBox(height: 10.0),
-        PText(
-          '부지런맨\n(움직이기)',
-          maxLines: 2,
-          align: TextAlign.center,
-        ),
-        Container(
-          padding: const EdgeInsets.all(5.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: PTheme.black, width: 1.5),
-          ),
-          child: PText('15', border: true),
         ),
       ],
     );

@@ -5,6 +5,7 @@ import 'package:pistachio/view/page/challenge/difficulty/widget.dart';
 import 'package:pistachio/model/class/challenge.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/view/widget/widget/app_bar.dart';
 
 /// class
 class ChallengeDifficultyPage extends StatelessWidget {
@@ -15,10 +16,9 @@ class ChallengeDifficultyPage extends StatelessWidget {
     Challenge challenge = Get.arguments;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(backgroundColor: Colors.transparent),
+      appBar: const PAppBar(color: Colors.transparent),
       backgroundColor: PTheme.offWhite,
-      body: const ChallengeListView(),
+      body: ChallengeDifficultyView(challenge: challenge),
     );
   }
 }

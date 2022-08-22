@@ -12,24 +12,12 @@ class Challenge {
     'complete': '$completeAsset$id.png',
   };
 
-  static Map<String, dynamic> themeAsColor(Map<String, dynamic> json) {
-    Map<String, dynamic> theme = {};
-    json.forEach((key, value) => theme[key] = Color(value));
-    return theme;
-  }
-
-  static Map<String, dynamic> themeAsInt(Map<String, dynamic> json) {
-    Map<String, dynamic> theme = {};
-    json.forEach((key, value) => theme[key] = value.value);
-    return theme;
-  }
-
   /// attributes
   String? id;
   String? title;
   String? collectionId;
   ActivityType? type;
-  Map<String, dynamic> theme = {};
+  Color? theme;
   Map<String, dynamic> imageUrls = {};
   Map<String, dynamic> descriptions = {};
   Map<String, dynamic> levels = {};
@@ -48,7 +36,6 @@ class Challenge {
     imageUrls = idToImageUrls(id!);
     collectionId = json['collectionId'];
     type = toActivityType(json['type']);
-    theme = themeAsColor(json['theme']);
     levels = json['levels'];
     descriptions = json['descriptions'];
   }
@@ -59,7 +46,6 @@ class Challenge {
     json['title'] = title;
     json['collectionId'] = collectionId;
     json['type'] = type?.name;
-    json['theme'] = themeAsInt(theme);
     json['levels'] = levels;
     json['descriptions'] = descriptions;
     return json;

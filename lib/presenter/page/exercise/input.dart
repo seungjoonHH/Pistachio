@@ -19,17 +19,6 @@ class ExerciseInput extends GetxController {
     ActivityType.weight: MuscularExercise.calorie,
   };
 
-  int convertAmount(ActivityType type, int amount) {
-    switch (type) {
-      case ActivityType.distance:
-        return (amount * Jogging.velocity).ceil();
-      case ActivityType.weight:
-        return (amount * weight).ceil();
-      default:
-        return amount;
-    }
-  }
-
   void completeButtonPressed(ActivityType type) {
     final userPresenter = Get.find<UserPresenter>();
 

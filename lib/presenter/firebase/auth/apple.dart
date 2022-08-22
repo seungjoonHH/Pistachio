@@ -2,6 +2,7 @@
 import 'dart:io';
 // Needed because we can't import `dart:html` into a mobile app,
 // while on the flip-side access to `dart:io` throws at runtime (hence the `kIsWeb` check below)
+//import 'html_shim.dart' if (dart.library.html) 'dart:html' show window;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,8 @@ class AppleAuth {
         // For web your redirect URI needs to be the host of the "current page",
         // while for Android you will be using the API server that redirects back into your app via a deep link
         kIsWeb
-            ? Uri.parse('pistachio-8c35b.firebaseapp.com')
+            //? Uri.parse('https://${window.location.host}/')
+            ? Uri.parse('https://pistachio-8c35b.firebaseapp.com')
             : Uri.parse(
           'https://pistachio-8c35b.firebaseapp.com/callback.apple',
         ),
@@ -42,7 +44,7 @@ class AppleAuth {
     final signInWithAppleEndpoint = Uri(
       scheme: 'https',
       host: 'pistachio-8c35b.firebaseapp.com',
-      path: '/sign_in_with_apple',
+      path: '/callback.apple',
       queryParameters: <String, String>{
         'code': credential.authorizationCode,
         if (credential.givenName != null)

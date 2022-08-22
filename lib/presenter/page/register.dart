@@ -6,6 +6,7 @@ import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import '../../view/page/register/widget.dart';
+import 'home.dart';
 import 'main.dart';
 
 /// class
@@ -163,13 +164,19 @@ class RegisterPresenter extends GetxController {
       int.parse(birthdayCont.text.substring(4, 6)),
       int.parse(birthdayCont.text.substring(6)),
     );
+    newcomer.goals = {
+      'weight': weightGoal,
+      'height': heightGoal,
+      'distance': distanceGoal,
+      'calorie': calorieGoal,
+    };
 
     userPresenter.login(newcomer);
     userPresenter.loggedUser.regDate = DateTime.now();
 
     // 파이어베이스에 저장
     userPresenter.save();
-    MainPresenter.toMain();
+    HomePresenter.toHome();
 
     clearConts();
   }
@@ -199,6 +206,11 @@ class RegisterPresenter extends GetxController {
         int.parse(birthdayCont.text.substring(4, 6)),
         int.parse(birthdayCont.text.substring(6)),
       );
+    } else if (pageIndex == 6) {
+      calorieGoal = (weight! * weightGoal! * 0.012 +
+              weight! * distanceGoal! * 0.072 +
+              weight! * heightGoal! * 0.12)
+          .ceil();
     } else if (pageIndex == CarouselView.widgetCount - 1) {
       submitted();
       return;

@@ -10,6 +10,7 @@ import 'package:pistachio/view/page/exercise/setting/detail/detail.dart';
 import 'package:pistachio/view/page/exercise/setting/type/type.dart';
 import 'package:pistachio/view/page/home/home.dart';
 import 'package:pistachio/view/page/login/login.dart';
+import 'package:pistachio/view/page/monthlyQuest/monthlyQuest.dart';
 import 'package:pistachio/view/page/onboarding/onboarding.dart';
 import 'package:pistachio/view/page/record/detail/detail.dart';
 import 'package:pistachio/view/page/record/main/main.dart';
@@ -29,28 +30,31 @@ class PRoute {
   /// static methods
 // 라우트 문자열, 페이지 매핑
   static Map<String, Widget> get pages => {
-    '/home': const HomePage(),
-    '/login': const LoginPage(),
-    '/register': const RegisterPage(),
-    '/onboarding': const OnboardingPage(),
-    '/exercise/main': const ExerciseMainPage(),
-    '/exercise/complete': const ExerciseCompletePage(),
-    '/exercise/setting/type': const ExerciseTypeSettingPage(),
-    '/exercise/setting/detail': const ExerciseDetailSettingPage(),
-    '/exercise/input': const ExerciseInputPage(),
-    '/record/main': const RecordMainPage(),
-    '/record/detail': const RecordDetailPage(),
-    '/challenge/main': const ChallengeMainPage(),
-    '/challenge/detail': const ChallengeDetailPage(),
-    '/challenge/difficulty': const ChallengeDifficultyPage(),
-    '/challenge/complete': const ChallengeCompletePage(),
-  };
+        '/home': const HomePage(),
+        '/login': const LoginPage(),
+        '/register': const RegisterPage(),
+        '/onboarding': const OnboardingPage(),
+        '/exercise/main': const ExerciseMainPage(),
+        '/exercise/complete': const ExerciseCompletePage(),
+        '/exercise/setting/type': const ExerciseTypeSettingPage(),
+        '/exercise/setting/detail': const ExerciseDetailSettingPage(),
+        '/exercise/input': const ExerciseInputPage(),
+        '/record/main': const RecordMainPage(),
+        '/record/detail': const RecordDetailPage(),
+        '/challenge/main': const ChallengeMainPage(),
+        '/challenge/detail': const ChallengeDetailPage(),
+        '/challenge/difficulty': const ChallengeDifficultyPage(),
+        '/challenge/complete': const ChallengeCompletePage(),
+        '/monthlyQuest': const MonthlyQuestPage(),
+      };
 
   // 겟페이지 리스트
-  static List<GetPage> get getPages => pages.entries.map((page) => GetPage(
-    name: page.key,
-    page: () => page.value,
-    transition: transition,
-    transitionDuration: duration,
-  )).toList();
+  static List<GetPage> get getPages => pages.entries
+      .map((page) => GetPage(
+            name: page.key,
+            page: () => page.value,
+            transition: transition,
+            transitionDuration: duration,
+          ))
+      .toList();
 }

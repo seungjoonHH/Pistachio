@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -57,7 +56,6 @@ class SeeMoreButton extends StatelessWidget {
   }
 }
 
-
 class HomeRandomCard extends StatelessWidget {
   const HomeRandomCard({Key? key}) : super(key: key);
 
@@ -71,12 +69,14 @@ class HomeRandomCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PText('수명이 99초 연장되었어요',
+              PText(
+                '수명이 99초 연장되었어요',
                 style: textTheme.titleLarge,
                 color: PTheme.white,
                 border: true,
               ),
-              PText('1층 당 3초의 수명이 연장되어요.',
+              PText(
+                '1층 당 3초의 수명이 연장되어요.',
                 style: textTheme.labelMedium,
                 color: PTheme.black,
               ),
@@ -189,7 +189,8 @@ class DailyActivityCircularGraph extends StatelessWidget {
             const SizedBox(height: 10.0),
             Row(
               children: [
-                PText('$todayRecord',
+                PText(
+                  '$todayRecord',
                   color: PTheme.brickRed,
                   style: textTheme.labelLarge,
                 ),
@@ -217,7 +218,11 @@ class MonthlyQuestWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             PText('월간 목표', style: textTheme.titleMedium),
-            SeeMoreButton(onPressed: () {}),
+            SeeMoreButton(
+              onPressed: () {
+                Get.toNamed('/monthlyQuest');
+              },
+            ),
           ],
         ),
         ListView.separated(
@@ -266,44 +271,44 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: GetBuilder<HomePresenter>(
-              builder: (controller) {
-                final questPresenter = Get.find<QuestPresenter>();
-                int record = controller.thisMonthRecords[type] ?? 0;
-                int goal = questPresenter.quests[type] ?? 1;
-                if (type == ActivityType.weight) goal ~/= weight + 1;
-                double percent = min(record / goal, 1);
+            child: GetBuilder<HomePresenter>(builder: (controller) {
+              final questPresenter = Get.find<QuestPresenter>();
+              int record = controller.thisMonthRecords[type] ?? 0;
+              int goal = questPresenter.quests[type] ?? 1;
+              if (type == ActivityType.weight) goal ~/= weight + 1;
+              double percent = min(record / goal, 1);
 
-                return Stack(
-                  children: [
-                    LinearPercentIndicator(
-                      padding: const EdgeInsets.only(left: 1.0),
-                      progressColor: type.color,
-                      lineHeight: double.infinity,
-                      backgroundColor: Colors.transparent,
-                      percent: percent,
-                    ),
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            PText(type.kr,
-                              style: textTheme.titleMedium,
-                            ),
-                            PText('${(percent * 100).ceil()} %',
-                              style: textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
+              return Stack(
+                children: [
+                  LinearPercentIndicator(
+                    padding: const EdgeInsets.only(left: 1.0),
+                    progressColor: type.color,
+                    lineHeight: double.infinity,
+                    backgroundColor: Colors.transparent,
+                    percent: percent,
+                  ),
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          PText(
+                            type.kr,
+                            style: textTheme.titleMedium,
+                          ),
+                          PText(
+                            '${(percent * 100).ceil()} %',
+                            style: textTheme.titleMedium,
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                );
-              }
-            ),
+                  ),
+                ],
+              );
+            }),
           ),
         ],
       ),
@@ -361,7 +366,8 @@ class CollectionWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10.0),
-        PText('부지런맨\n(움직이기)',
+        PText(
+          '부지런맨\n(움직이기)',
           maxLines: 2,
           align: TextAlign.center,
         ),

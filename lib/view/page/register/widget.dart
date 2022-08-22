@@ -7,43 +7,11 @@ import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
-import '../../../global/theme.dart';
 import '../../../model/enum/enum.dart';
 import '../../../presenter/page/register.dart';
-import '../../widget/widget/text.dart';
+import '../../widget/button/button.dart';
 
 // 회원가입 페이지 위젯 모음
-
-// 회원가입 페이지 AppBar
-class RegisterAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const RegisterAppBar({Key? key}) : super(key: key);
-
-  @override
-  Size get preferredSize => const Size.fromHeight(60.0);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      leading: GetBuilder<RegisterPresenter>(
-        builder: (controller) => IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: controller.backPressed,
-        ),
-      ),
-      elevation: 0.0,
-      title: PText(
-        'Pistachio',
-        color: PTheme.light,
-        style: textTheme.titleLarge,
-      ),
-      iconTheme: const IconThemeData(color: PTheme.light),
-      backgroundColor: PTheme.primary[30],
-    );
-  }
-}
 
 // Carousel 뷰 위젯
 class CarouselView extends StatelessWidget {
@@ -68,8 +36,6 @@ class CarouselView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    bool keyboardDisabled =
-        WidgetsBinding.instance.window.viewInsets.bottom < 100.0;
 
     return Stack(
       children: [
@@ -80,6 +46,7 @@ class CarouselView extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
         ),
         Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Container(
@@ -111,20 +78,7 @@ class CarouselView extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              height: keyboardDisabled ? 150.0 : 100.0,
-              padding: const EdgeInsets.fromLTRB(28.0, 32.0, 28.0, 0.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Carousel 인디케이터
-                  CarouselIndicator(count: widgetCount),
-                  // Carousel 다음 버튼
-                  const CarouselNextButton(),
-                ],
-              ),
-            ),
+            const CarouselButton(),
           ],
         ),
       ],
@@ -958,35 +912,67 @@ class CalorieExplanationView extends StatelessWidget {
   }
 }
 
-// Carousel 다음 버튼
-class CarouselNextButton extends StatelessWidget {
-  const CarouselNextButton({Key? key}) : super(key: key);
+// Carousel 버튼
+class CarouselButton extends StatelessWidget {
+  const CarouselButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
         bool lastPage = controller.pageIndex == CarouselView.widgetCount - 1;
 
-        return SizedBox(
-          width: 120.0,
-          height: 45.0,
-          child: ElevatedButton(
-            onPressed: () {
-              controller.nextPressed();
-              FocusScope.of(context).unfocus();
-            },
-            style: OutlinedButton.styleFrom(
-              padding: EdgeInsets.zero,
-              elevation: 0.0,
-              side: BorderSide(color: Theme.of(context).colorScheme.primary),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
+        return Row(
+          children: [
+            SizedBox(
+              width: screenSize.width / 2.0,
+              child: PButton(
+                onPressed: () {
+                  controller.backPressed();
+                },
+                text: '이전',
+                stretch: true,
+                backgroundColor: Colors.white,
               ),
             ),
-            child: lastPage ? const Text('완료') : const Text('다음'),
-          ),
+            SizedBox(
+              width: screenSize.width / 2.0,
+              child: PButton(
+                onPressed: () {
+                  controller.nextPressed();
+                },
+                text: lastPage ? '완료' : '다음',
+                stretch: true,
+                backgroundColor: Colors.black,
+              ),
+            )
+          ],
         );
+        //   SizedBox(
+        //   width: 120.0,
+        //   height: 45.0,
+        //   child: ElevatedButton(
+        //     onPressed: () {
+        //       isNext ? controller.nextPressed() : controller.backPressed();
+        //       FocusScope.of(context).unfocus();
+        //     },
+        //     style: OutlinedButton.styleFrom(
+        //       padding: EdgeInsets.zero,
+        //       elevation: 0.0,
+        //       side: BorderSide(color: Theme.of(context).colorScheme.primary),
+        //       shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(20.0),
+        //       ),
+        //     ),
+        //     child: isNext
+        //         ? lastPage
+        //             ? const Text('완료')
+        //             : const Text('다음')
+        //         : const Text('이전'),
+        //   ),
+        // );
       },
     );
   }

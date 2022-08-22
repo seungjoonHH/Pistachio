@@ -12,13 +12,6 @@ class ExerciseInput extends GetxController {
   static void toExerciseInput(ActivityType type) {
     Get.toNamed('/exercise/input', arguments: type);
   }
-
-  Map<ActivityType, int> get calories => {
-    ActivityType.distance: Jogging.calorie,
-    ActivityType.height: StairClimbing.calorie,
-    ActivityType.weight: MuscularExercise.calorie,
-  };
-
   void completeButtonPressed(ActivityType type) {
     final userPresenter = Get.find<UserPresenter>();
 

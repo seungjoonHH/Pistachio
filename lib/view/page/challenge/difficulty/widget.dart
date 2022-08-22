@@ -98,9 +98,8 @@ class ChallengeDifficultyView extends StatelessWidget {
                 const SizedBox(height: 20.0),
                 SizedBox(
                   height: 400.0,
-                  child: PText(
-                    challenge.descriptions['detail']
-                        .replaceAll('##', challenge.levels['easy']['word']),
+                  child: PText(challenge.descriptions['detail']
+                      .replaceAll('##', challenge.levels['easy']['word']),
                     style: textTheme.titleSmall,
                   ),
                 ),

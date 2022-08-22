@@ -21,6 +21,14 @@ const double sexRatio = .994;
 int get weight => Get.find<UserPresenter>().loggedUser.weight ?? 0;
 int get height => Get.find<UserPresenter>().loggedUser.height ?? 0;
 
+Map<ActivityType, int> get calories => {
+  ActivityType.distance: (
+      Walking.calorie * .5 + Jogging.calorie * .3 * Running.calorie * .2
+  ).ceil(),
+  ActivityType.height: StairClimbing.calorie,
+  ActivityType.weight: MuscularExercise.calorie,
+};
+
 int convertAmount(ActivityType type, int amount) {
   switch (type) {
     case ActivityType.distance:

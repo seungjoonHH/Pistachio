@@ -21,8 +21,9 @@ class ChallengeListView extends StatelessWidget {
       child: GetBuilder<ChallengePresenter>(
         builder: (controller) {
           return Column(
-            children: controller.challenges.map((ch) => ChallengeCard(
-              challenge: ch
+            children: controller.challenges.map((ch) => Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ChallengeCard(challenge: ch),
             )).toList(),
           );
         }
@@ -61,72 +62,47 @@ class ChallengeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(17.0),
-      child: PCard(
-        color: PTheme.offWhite,
-        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return PCard(
+      color: PTheme.offWhite,
+      padding: EdgeInsets.zero,
+      stretch: true,
+      child: Column(
+        children: [
+          Image.asset(
+            challenge.imageUrls['default'],
+            fit: BoxFit.fitWidth,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(2.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.0),
-                    color: PTheme.black
-                  ),
-                  child: SvgPicture.asset(
-                    challenge.imageUrls['default'],
-                    height: 206.0,
-                  ),
+                PText(challenge.title ?? '',
+                  style: textTheme.titleLarge,
+                  color: PTheme.black,
+                  maxLines: 2,
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(17.0, 30.0, 0.0, 0.0),
-                  child: PText(challenge.title ?? "",
-                    style: textTheme.titleLarge,
-                    color: PTheme.black,
-                    maxLines: 2,
-                    border: true,
-                  ),
+                PText('8/1~8/31',
+                  style: textTheme.labelLarge,
+                  color: PTheme.black,
+                  maxLines: 2,
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(17.0, 0.0, 0.0, 0.0),
-                  child: PText('8/1~8/31',
-                    style: textTheme.labelLarge,
-                    color: PTheme.black,
-                    maxLines: 2,
-                    border: true,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(17.0, 20.0, 0.0, 0.0),
-                  child: PText(
-                    challenge.descriptions['sub']!.replaceAll('#', ''),
-                    style: textTheme.titleSmall,
-                    color: PTheme.black,
-                    maxLines: 2,
-
-                  ),
+                const SizedBox(height: 20.0),
+                PText(
+                  challenge.descriptions['sub']!.replaceAll('#', ''),
+                  style: textTheme.titleSmall,
+                  color: PTheme.black,
+                  maxLines: 2,
                 ),
               ],
             ),
-            const SizedBox(height: 30.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                PButton(
-                  onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
-                  text: '알아보러 가기',
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 70.0, vertical: 5.0,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+          PButton(
+            onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
+            text: '알아보러 가기',
+            stretch: true,
+          ),
+        ],
       ),
     );
   }

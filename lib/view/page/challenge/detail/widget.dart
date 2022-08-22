@@ -12,94 +12,76 @@ import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 
 // 챌린지 디테일 리스트 뷰
-class ChallengeListView extends StatelessWidget {
-  const ChallengeListView({Key? key}) : super(key: key);
+class ChallengeDetailView extends StatelessWidget {
+  const ChallengeDetailView({
+    Key? key,
+    required this.challenge,
+  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: GetBuilder<ChallengePresenter>(
-        builder: (controller) {
-          return Column(
-            children: controller.challenges.map((ch) => ChallengeDetailBody(
-                challenge: ch
-            )).toList(),
-          );
-        }
-      ),
-    );
-  }
-}
-
-class ChallengeDetailBody extends StatelessWidget {
-  const ChallengeDetailBody({Key? key, required this.challenge}) : super(key: key);
   final Challenge challenge;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      alignment: Alignment.topCenter,
       children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
-          child: Center(
-            child: SvgPicture.asset(
+        Column(
+          children: [
+            Image.asset(
               challenge.imageUrls['default'],
-              width: 500.0,
+              height: 250.0,
               fit: BoxFit.fitHeight,
             ),
-          ),
+            const Expanded(child: SizedBox()),
+          ],
         ),
-        Center(
-          child: PCard(
-            color: PTheme.offWhite,
-            padding: EdgeInsets.fromLTRB(17.0, 0.0, 17.0, 0.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-                  child: PText('향고래 바다로\n돌려보내기',
-                    align: TextAlign.center,
-                    style: textTheme.headlineLarge,
-                    color: PTheme.black,
-                    maxLines: 2,
-                    border: true,
-                  ),
+        Positioned(
+          top: 200.0,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              PCard(
+                color: PTheme.offWhite,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    PText(challenge.title!,
+                      align: TextAlign.center,
+                      style: textTheme.headlineLarge,
+                      color: PTheme.black,
+                      maxLines: 2,
+                    ),
+                    PText('8/1~8/31',
+                      align: TextAlign.center,
+                      style: textTheme.labelLarge,
+                      color: PTheme.black,
+                      maxLines: 2,
+                    ),
+                    const SizedBox(height: 30.0),
+                    PText(
+                      challenge.descriptions['detail']!.replaceAll('#', ''),
+                      align: TextAlign.center,
+                      style: textTheme.labelLarge,
+                      color: PTheme.black,
+                      maxLines: 10,
+                    ),
+                    const SizedBox(height: 80.0),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                  child: PText('8/1~8/31',
-                    align: TextAlign.center,
-                    style: textTheme.labelLarge,
-                    color: PTheme.black,
-                    maxLines: 2,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 80.0),
-                  child: PText(
-                    challenge.descriptions['detail']!.replaceAll('#', ''),
-                    align: TextAlign.center,
-                    style: textTheme.labelLarge,
-                    color: PTheme.black,
-                    maxLines: 8,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
-            child: Center(
-              child: PButton(
-                onPressed: () => ChallengeDifficulty.toChallengeDifficulty(challenge),
-                text: '챌린지 하러가기',
-                //backgroundColor: challenge.theme['button'],
               ),
-            )
-        )
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 50.0,
+          child: PButton(
+            onPressed: () => ChallengeDifficulty.toChallengeDifficulty(challenge),
+            text: '챌린지 하러가기',
+            stretch: true,
+            constraints: const BoxConstraints(maxWidth: 340.0),
+          ),
+        ),
       ],
     );
   }

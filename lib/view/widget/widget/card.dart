@@ -8,18 +8,16 @@ class PCard extends StatelessWidget {
     this.padding = const EdgeInsets.all(20.0),
     this.onPressed,
     this.color = PTheme.light,
-    this.stretch = false,
   }) : super(key: key);
 
   final Widget child;
   final EdgeInsets padding;
   final VoidCallback? onPressed;
   final Color color;
-  final bool stretch;
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Material(
+    return Material(
       color: color,
       child: InkWell(
         onTap: onPressed,
@@ -34,17 +32,6 @@ class PCard extends StatelessWidget {
           child: child,
         ),
       ),
-    );
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            stretch ? Expanded(child: content) : content,
-          ],
-        ),
-      ],
     );
   }
 }

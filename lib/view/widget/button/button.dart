@@ -62,7 +62,11 @@ class PButton extends StatelessWidget {
         ),
       ),
     );
-    return multiple ? Expanded(child: content) : content;
+    return Center(
+      child: multiple
+          ? Expanded(child: content)
+          : content,
+    );
   }
 }
 

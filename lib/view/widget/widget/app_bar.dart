@@ -5,9 +5,14 @@ import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class PAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const PAppBar({Key? key, this.title = ''}) : super(key: key);
+  const PAppBar({
+    Key? key,
+    this.title = '',
+    this.color = PTheme.offWhite,
+  }) : super(key: key);
 
   final String title;
+  final Color? color;
 
   @override
   Size get preferredSize => const Size.fromHeight(60.0);
@@ -19,7 +24,7 @@ class PAppBar extends StatelessWidget implements PreferredSizeWidget {
           return AppBar(
             elevation: 0.0,
             iconTheme: const IconThemeData(color: PTheme.black),
-            backgroundColor: PTheme.offWhite,
+            backgroundColor: color,
             title: PText(title, style: textTheme.titleLarge),
           );
         }

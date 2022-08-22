@@ -65,13 +65,13 @@ class ChallengeCard extends StatelessWidget {
     return PCard(
       color: PTheme.offWhite,
       padding: EdgeInsets.zero,
-      stretch: true,
       child: Column(
         children: [
           Image.asset(
             challenge.imageUrls['default'],
             fit: BoxFit.fitWidth,
           ),
+          const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(

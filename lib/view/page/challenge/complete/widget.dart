@@ -43,7 +43,7 @@ class ChallengeCompleteBody extends StatelessWidget {
         Padding(
           padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
           child: Center(
-            child: SvgPicture.asset(
+            child: Image.asset(
               challenge.imageUrls['complete'],
               width: 500.0,
               fit: BoxFit.fitHeight,

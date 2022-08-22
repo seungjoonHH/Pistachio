@@ -8,8 +8,8 @@ class Challenge {
 
   /// static methods
   static Map<String, dynamic> idToImageUrls(String id) => {
-    'default': '$defaultAsset$id.svg',
-    'complete': '$completeAsset$id.svg',
+    'default': '$defaultAsset$id.png',
+    'complete': '$completeAsset$id.png',
   };
 
   static Map<String, dynamic> themeAsColor(Map<String, dynamic> json) {

@@ -163,12 +163,12 @@ class ExerciseDetailSettingView extends StatelessWidget {
                 children: [
                   PButton(
                     onPressed: Get.back,
-                    constraints: const BoxConstraints(minWidth: 150.0),
+                    // constraints: const BoxConstraints(minWidth: 150.0),
                     text: '돌아가기',
                   ),
                   PButton(
                     onPressed: () => ExerciseMain.toExerciseMain(ExerciseState.stop),
-                    constraints: const BoxConstraints(minWidth: 150.0),
+                    // constraints: const BoxConstraints(minWidth: 150.0),
                     text: '운동하기',
                   ),
                 ],

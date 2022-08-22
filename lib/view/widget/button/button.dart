@@ -19,6 +19,7 @@ class PButton extends StatelessWidget {
     Color? backgroundColor,
     Color? textColor,
     this.stretch = false,
+    this.multiple = false,
   }) : assert(
   text == null || child == null,
   ), backgroundColor = backgroundColor ?? PTheme.black,
@@ -34,38 +35,34 @@ class PButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final bool stretch;
+  final bool multiple;
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Material(
-          color: fill ? backgroundColor : Colors.transparent,
-          child: InkWell(
-            onTap: onPressed,
-            child: Container(
-              padding: padding,
-              constraints: constraints,
-              decoration: BoxDecoration(
-                border: Border.all(color: PTheme.black, width: 1.5),
-              ),
-              child: Center(
-                child: child ?? PText(text!, color: textColor),
-              ),
-            ),
+    Widget content = Material(
+      color: fill ? backgroundColor : Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          padding: padding,
+          constraints: multiple ? null : constraints ?? BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: PTheme.black, width: 1.5),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (stretch) const Expanded(child: SizedBox()),
+              child ?? PText(text!, color: textColor),
+              if (stretch) const Expanded(child: SizedBox()),
+            ],
           ),
         ),
-      ],
+      ),
     );
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        stretch ? Expanded(child: content) : content,
-      ],
-    );
+    return multiple ? Expanded(child: content) : content;
   }
 }
 

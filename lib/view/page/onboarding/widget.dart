@@ -67,7 +67,7 @@ class CarouselView extends StatelessWidget {
               child: controller.visible
                   ? const PButton(
                 onPressed: RegisterPresenter.toRegister,
-                text: '설정하러 가기',
+                text: '시작하기',
                 stretch: true,
               ) : CarouselIndicator(count: messages.length),
             ),

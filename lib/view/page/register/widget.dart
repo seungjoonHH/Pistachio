@@ -57,7 +57,6 @@ class CarouselView extends StatelessWidget {
                   )
                 : Container(),
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Container(
@@ -113,7 +112,20 @@ class UserInfoView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('닉네임을 입력하세요.'),
+                  Center(
+                    child: PText(
+                      '보다 나은 서비스를 위해\n정보를 입력해주세요!',
+                      style: textTheme.headlineSmall,
+                      color: PTheme.black,
+                      maxLines: 2,
+                      align: TextAlign.center,
+                    ),
+                  ),
+                  PText(
+                    '별명',
+                    style: textTheme.headlineSmall,
+                    color: PTheme.black,
+                  ),
                   const SizedBox(height: 8.0),
                   ShakeWidget(
                     autoPlay: controller.invalids[0],
@@ -122,24 +134,22 @@ class UserInfoView extends StatelessWidget {
                       controller: RegisterPresenter.nickNameCont,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: '별명',
+                        hintText: '별명을 입력해주세요',
                         isDense: true,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  const Text('한글, 영문, 숫자만 입력해주세요.'),
+                  const SizedBox(height: 40.0),
                 ],
-              ),
-              Divider(
-                height: 40.0,
-                thickness: 2.0,
-                color: Theme.of(context).colorScheme.primaryContainer,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('생년월일을 입력하세요.'),
+                  PText(
+                    '생년월일',
+                    style: textTheme.headlineSmall,
+                    color: PTheme.black,
+                  ),
                   const SizedBox(height: 8.0),
                   ShakeWidget(
                     autoPlay: controller.invalids[1],
@@ -153,17 +163,17 @@ class UserInfoView extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 40.0),
                 ],
-              ),
-              Divider(
-                height: 40.0,
-                thickness: 2.0,
-                color: Theme.of(context).colorScheme.primaryContainer,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('성별을 선택하세요.'),
+                  PText(
+                    '성별',
+                    style: textTheme.headlineSmall,
+                    color: PTheme.black,
+                  ),
                   const SizedBox(height: 8.0),
                   ShakeWidget(
                     autoPlay: controller.invalids[2],
@@ -202,28 +212,27 @@ class SexSelectionButton extends StatelessWidget {
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
         return SizedBox(
-          width: 128.0,
-          height: 40.0,
+          width: 160.0,
+          height: 50.0,
           child: ElevatedButton(
             onPressed: () => controller.setSex(sex),
             style: OutlinedButton.styleFrom(
               padding: EdgeInsets.zero,
               elevation: 0.0,
               backgroundColor: sex == controller.newcomer.sex
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onPrimary,
-              side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                  ? PTheme.black
+                  : PTheme.white,
+              side: BorderSide(color: PTheme.black),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            child: Text(
+            child: PText(
               texts[sex]!,
-              style: TextStyle(
-                color: sex == controller.newcomer.sex
-                    ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.primary,
-              ),
+              style: textTheme.headlineSmall,
+              color: sex == controller.newcomer.sex
+                  ? PTheme.white
+                  : PTheme.black,
             ),
           ),
         );
@@ -959,6 +968,7 @@ class CarouselButton extends StatelessWidget {
               text: '이전',
               textColor: Colors.black,
               backgroundColor: Colors.white,
+              padding: EdgeInsets.all(15.0),
               stretch: true,
               multiple: true,
             ),
@@ -966,6 +976,7 @@ class CarouselButton extends StatelessWidget {
               onPressed: controller.nextPressed,
               text: lastPage ? '완료' : '다음',
               backgroundColor: Colors.black,
+              padding: EdgeInsets.all(15.0),
               stretch: true,
               multiple: true,
             ),

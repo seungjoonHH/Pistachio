@@ -12,6 +12,8 @@ import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/register.dart';
 
 class AuthPresenter {
+  static String? appleName;
+
   /// static methods
   // 로그인 형식에 따른 피트윈 로그인
   static Future pLogin(LoginType type) async {
@@ -44,9 +46,12 @@ class AuthPresenter {
     isNewcomer = json == null || json['nickname'] == null;
 
     Map<String, dynamic> data = {};
+    print(userCredential.user);
     data['uid'] = userCredential.user!.uid;
-    data['name'] = userCredential.user!.displayName;
+    data['name'] = userCredential.user!.displayName ?? appleName;
     data['email'] = userCredential.user!.email;
+
+    print(appleName);
 
     userPresenter.data = {...data};
 

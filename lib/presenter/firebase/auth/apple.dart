@@ -10,29 +10,30 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
+import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 /// class
 class AppleAuth {
   // 애플 로그인
   static Future<UserCredential?> signInWithApple() async {
-    print(1);
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
       ],
     );
-    print(2);
-    print(credential);
 
-    final oauthCredential = OAuthProvider("apple.com").credential(
+    final oauthCredential = await OAuthProvider("apple.com").credential(
       idToken: credential.identityToken,
       accessToken: credential.authorizationCode,
     );
 
     print(credential);
     print(oauthCredential);
+
+    AuthPresenter.appleName = '${credential.givenName} ${credential.familyName}';
+
 
       /*webAuthenticationOptions: WebAuthenticationOptions(
         clientId:

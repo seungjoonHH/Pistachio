@@ -11,7 +11,9 @@ class MonthlyQuestPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: PText('월간 목표', style: textTheme.titleMedium),
+        backgroundColor: Colors.transparent,
       ),
+      backgroundColor: PTheme.offWhite,
       body: const MonthlyQuestView(),
     );
   }

@@ -9,10 +9,12 @@ class PAppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     this.title = '',
     this.color = PTheme.offWhite,
+    this.actions
   }) : super(key: key);
 
   final String title;
   final Color? color;
+  final List<Widget>? actions;
 
   @override
   Size get preferredSize => const Size.fromHeight(60.0);
@@ -26,6 +28,7 @@ class PAppBar extends StatelessWidget implements PreferredSizeWidget {
             iconTheme: const IconThemeData(color: PTheme.black),
             backgroundColor: color,
             title: PText(title, style: textTheme.titleLarge),
+            actions: actions,
           );
         }
     );

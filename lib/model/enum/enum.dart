@@ -57,6 +57,9 @@ enum Difficulty {
   String get kr => ['쉬움', '보통', '어려움'][index];
 }
 
+Difficulty? toDifficulty(String? string) =>
+    Difficulty.values.firstWhereOrNull((diff) => diff.name == string);
+
 enum DialogType { none, mono, bi }
 
 // 로그인 형식 { 구글, ... }

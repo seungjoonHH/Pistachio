@@ -6,9 +6,11 @@ import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
-import '../../../model/enum/enum.dart';
-import '../../../presenter/page/register.dart';
-import '../../widget/button/button.dart';
+import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/page/register.dart';
+import 'package:pistachio/view/widget/button/button.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 // 회원가입 페이지 위젯 모음
 
@@ -42,56 +44,58 @@ class CarouselView extends StatelessWidget {
       6: 'heightGoal.svg',
     };
 
-    return GetBuilder<RegisterPresenter>(builder: (controller) {
-      return Stack(
-        children: [
-          controller.pageIndex > 2 && controller.pageIndex < 7
-              ? SvgPicture.asset(
-                  'assets/image/page/register/${image[controller.pageIndex]}',
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                )
-              : Container(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.only(top: 60.0),
-                  alignment: Alignment.topCenter,
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        return Stack(
+          children: [
+            controller.pageIndex > 2 && controller.pageIndex < 7
+                ? SvgPicture.asset(
+                    'assets/image/page/register/${image[controller.pageIndex]}',
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  )
+                : Container(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
                   child: Container(
-                    constraints: BoxConstraints(minWidth: screenSize.width),
-                    child: CarouselSlider(
-                      carouselController: RegisterPresenter.carouselCont,
-                      items: carouselWidgets()
-                          .map(
-                            (widget) => Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30.0),
-                              child: widget,
-                            ),
-                          )
-                          .toList(),
-                      options: CarouselOptions(
-                        height: double.infinity,
-                        initialPage: 0,
-                        reverse: false,
-                        enableInfiniteScroll: false,
-                        scrollPhysics: const NeverScrollableScrollPhysics(),
-                        viewportFraction: 1.0,
-                        // onPageChanged: controller.pageChanged,
+                    padding: const EdgeInsets.only(top: 60.0),
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      constraints: BoxConstraints(minWidth: screenSize.width),
+                      child: CarouselSlider(
+                        carouselController: RegisterPresenter.carouselCont,
+                        items: carouselWidgets()
+                            .map(
+                              (widget) => Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 30.0),
+                                child: widget,
+                              ),
+                            )
+                            .toList(),
+                        options: CarouselOptions(
+                          height: double.infinity,
+                          initialPage: 0,
+                          reverse: false,
+                          enableInfiniteScroll: false,
+                          scrollPhysics: const NeverScrollableScrollPhysics(),
+                          viewportFraction: 1.0,
+                          // onPageChanged: controller.pageChanged,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              const CarouselButton(),
-            ],
-          ),
-        ],
-      );
-    });
+                const CarouselButton(),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -196,16 +200,16 @@ class SexSelectionButton extends StatelessWidget {
     };
 
     return GetBuilder<RegisterPresenter>(
-      builder: (register) {
+      builder: (controller) {
         return SizedBox(
           width: 128.0,
           height: 40.0,
           child: ElevatedButton(
-            onPressed: () => register.setSex(sex),
+            onPressed: () => controller.setSex(sex),
             style: OutlinedButton.styleFrom(
               padding: EdgeInsets.zero,
               elevation: 0.0,
-              backgroundColor: sex == register.sex
+              backgroundColor: sex == controller.newcomer.sex
                   ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.onPrimary,
               side: BorderSide(color: Theme.of(context).colorScheme.primary),
@@ -216,7 +220,7 @@ class SexSelectionButton extends StatelessWidget {
             child: Text(
               texts[sex]!,
               style: TextStyle(
-                color: sex == register.sex
+                color: sex == controller.newcomer.sex
                     ? Theme.of(context).colorScheme.onPrimary
                     : Theme.of(context).colorScheme.primary,
               ),
@@ -241,14 +245,13 @@ class WeightHeightView extends StatelessWidget {
           GetBuilder<RegisterPresenter>(
             builder: (controller) {
               return NumberPicker(
-                onChanged: (value) => controller.weightChanged(value),
+                onChanged: controller.setWeight,
                 itemCount: 3,
-                value: controller.weight!,
+                value: controller.newcomer.weight ?? 60,
                 minValue: 30,
                 maxValue: 220,
                 selectedTextStyle: Theme.of(context)
-                    .textTheme
-                    .headline5
+                    .textTheme.headline5
                     ?.copyWith(color: Theme.of(context).colorScheme.primary),
               );
             },
@@ -262,8 +265,8 @@ class WeightHeightView extends StatelessWidget {
           GetBuilder<RegisterPresenter>(
             builder: (controller) {
               return NumberPicker(
-                onChanged: (value) => controller.heightChanged(value),
-                value: controller.height!,
+                onChanged: controller.setHeight,
+                value: controller.newcomer.height ?? 170,
                 minValue: 100,
                 maxValue: 220,
                 selectedTextStyle: Theme.of(context)
@@ -347,18 +350,19 @@ class WeightGoalView extends StatelessWidget {
                     GetBuilder<RegisterPresenter>(
                       builder: (controller) {
                         if (isFirst) {
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            controller.weightGoalChange(10);
-                          });
+                          Future.delayed(const Duration(
+                            milliseconds: 500,
+                          ), () => controller.setGoal(
+                            ActivityType.weight, 10,
+                          ));
                           isFirst = false;
                         }
                         return NumberPicker(
-                          onChanged: (value) =>
-                              controller.weightGoalChange(value),
+                          onChanged: (value) => controller.setGoal(ActivityType.weight, value),
                           itemCount: 1,
                           itemHeight: 48,
                           itemWidth: 80,
-                          value: controller.weightGoal!,
+                          value: controller.newcomer.goals[ActivityType.weight.name] ?? 0,
                           minValue: 0,
                           maxValue: 200,
                           selectedTextStyle: TextStyle(
@@ -430,20 +434,16 @@ class DistanceRecommendView extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  '${ageGroup}0',
+                Text('${ageGroup}0',
                   style: const TextStyle(fontSize: 36),
                 ),
-                const Text(
-                  '대 ',
+                const Text('대 ',
                   style: TextStyle(fontSize: 36),
                 ),
-                Text(
-                  controller.sex!.kr,
+                Text(controller.newcomer.sex!.kr,
                   style: const TextStyle(fontSize: 36),
                 ),
-                const Text(
-                  ' 평균',
+                const Text(' 평균',
                   style: TextStyle(fontSize: 36),
                 )
               ],
@@ -455,31 +455,25 @@ class DistanceRecommendView extends StatelessWidget {
                   style: TextStyle(fontSize: 36),
                 ),
                 ageGroup < 6
-                    ? controller.sex == Sex.male
-                        ? const Text(
-                            '30 ~ 60',
+                    ? controller.newcomer.sex == Sex.male
+                        ? const Text('30 ~ 60',
                             style: TextStyle(fontSize: 36),
                           )
-                        : const Text(
-                            '10 ~ 30',
+                        : const Text('10 ~ 30',
                             style: TextStyle(fontSize: 36),
                           )
-                    : const Text(
-                        '30 ~ 50',
+                    : const Text('30 ~ 50',
                         style: TextStyle(fontSize: 36),
                       ),
-                const Text(
-                  '분',
+                const Text('분',
                   style: TextStyle(fontSize: 36),
                 ),
               ],
             ),
-            const Text(
-              '유산소 운동이',
+            const Text('유산소 운동이',
               style: TextStyle(fontSize: 36),
             ),
-            const Text(
-              '적당해요',
+            const Text('적당해요',
               style: TextStyle(fontSize: 36),
             ),
           ],
@@ -499,7 +493,7 @@ class DistanceGoalView extends StatelessWidget {
       builder: (controller) {
         if (isFirst) {
           Future.delayed(const Duration(milliseconds: 500), () {
-            controller.distanceGoalChange(15);
+            controller.setGoal(ActivityType.distance, 15);
           });
           isFirst = false;
         }
@@ -509,11 +503,11 @@ class DistanceGoalView extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: NumberPicker(
-                onChanged: (value) => controller.distanceGoalChange(value),
+                onChanged: (value) => controller.setGoal(ActivityType.distance, value),
                 itemCount: 1,
                 itemHeight: 132.0,
                 itemWidth: 200.0,
-                value: controller.distanceGoal!,
+                value: controller.distanceMinute,
                 minValue: 0,
                 maxValue: 200,
                 selectedTextStyle: TextStyle(
@@ -534,7 +528,7 @@ class DistanceGoalView extends StatelessWidget {
                       style: TextStyle(fontSize: 28),
                     ),
                     Text(
-                      '${controller.distanceGoal}',
+                      '${controller.distanceMinute}',
                       style: TextStyle(
                         fontSize: 28,
                         color: Theme.of(context).colorScheme.primary,
@@ -566,6 +560,9 @@ class DistanceGoalView extends StatelessWidget {
                 const Text(
                   '가능해요!',
                   style: TextStyle(fontSize: 28),
+                ),
+                PText('* 약 ${controller.newcomer.goals[ActivityType.distance.name]} m',
+                  color: PTheme.brickRed,
                 ),
               ],
             ),
@@ -629,7 +626,7 @@ class HeightGoalView extends StatelessWidget {
       builder: (controller) {
         if (isFirst) {
           Future.delayed(const Duration(milliseconds: 500), () {
-            controller.heightGoalChange(15);
+            controller.setGoal(ActivityType.height, 15);
           });
           isFirst = false;
         }
@@ -643,12 +640,10 @@ class HeightGoalView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text(
-                      '하루 ',
+                    const Text('하루 ',
                       style: TextStyle(fontSize: 28),
                     ),
-                    Text(
-                      '${controller.heightGoal}',
+                    Text('${controller.newcomer.goals[ActivityType.height.name] ?? 0}',
                       style: TextStyle(
                         fontSize: 28,
                         color: Theme.of(context).colorScheme.primary,
@@ -685,11 +680,11 @@ class HeightGoalView extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: NumberPicker(
-                  onChanged: (value) => controller.heightGoalChange(value),
+                  onChanged: (value) => controller.setGoal(ActivityType.height, value),
                   itemCount: 1,
                   itemHeight: 132.0,
                   itemWidth: 200.0,
-                  value: controller.heightGoal!,
+                  value: controller.newcomer.goals[ActivityType.height.name] ?? 0,
                   minValue: 0,
                   maxValue: 200,
                   selectedTextStyle: TextStyle(
@@ -802,7 +797,7 @@ class CalorieCheckView extends StatelessWidget {
                       style: TextStyle(fontSize: 36),
                     ),
                     Text(
-                      '${controller.calorieGoal}kcal',
+                      '${controller.newcomer.goals[ActivityType.calorie.name]} kcal',
                       style: TextStyle(
                         fontSize: 36,
                         color: Theme.of(context).colorScheme.primary,
@@ -815,7 +810,7 @@ class CalorieCheckView extends StatelessWidget {
                   ],
                 ),
                 const Text(
-                  '소모 할 수 있어요',
+                  '소모할 수 있어요',
                   style: TextStyle(fontSize: 36),
                 ),
               ],
@@ -937,25 +932,19 @@ class CarouselButton extends StatelessWidget {
         return Row(
           children: [
             PButton(
-              onPressed: () {
-                controller.backPressed();
-              },
+              onPressed: controller.backPressed,
               text: '이전',
               textColor: Colors.black,
-              stretch: true,
               backgroundColor: Colors.white,
+              stretch: true,
               multiple: true,
-              padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 20.0),
             ),
             PButton(
-              onPressed: () {
-                controller.nextPressed();
-              },
+              onPressed: controller.nextPressed,
               text: lastPage ? '완료' : '다음',
-              stretch: true,
               backgroundColor: Colors.black,
+              stretch: true,
               multiple: true,
-              padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 20.0),
             ),
           ],
         );

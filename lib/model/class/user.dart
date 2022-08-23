@@ -65,6 +65,8 @@ class PUser {
 
   /// constructors
   PUser() {
+    weight = 60;
+    height = 170;
     for (var type in ActivityType.values) {
       goals[type.name] = null;
       records[type.name] = [];

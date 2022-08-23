@@ -50,11 +50,11 @@ ActivityType? toActivityType(String? string) =>
     ActivityType.values.firstWhereOrNull((type) => type.name == string);
 
 enum Difficulty {
-  hard,
+  easy,
   normal,
-  easy;
+  hard;
 
-  String get kr => ['상', '중', '하'][index];
+  String get kr => ['쉬움', '보통', '어려움'][index];
 }
 
 enum DialogType { none, mono, bi }

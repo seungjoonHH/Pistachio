@@ -1,5 +1,6 @@
 /* 구글 로그인 관련 프리젠터 */
 import 'dart:io';
+import 'dart:convert';
 // Needed because we can't import `dart:html` into a mobile app,
 // while on the flip-side access to `dart:io` throws at runtime (hence the `kIsWeb` check below)
 //import 'html_shim.dart' if (dart.library.html) 'dart:html' show window;
@@ -15,12 +16,25 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 class AppleAuth {
   // 애플 로그인
   static Future<UserCredential?> signInWithApple() async {
+    print(1);
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
       ],
-      webAuthenticationOptions: WebAuthenticationOptions(
+    );
+    print(2);
+    print(credential);
+
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: credential.identityToken,
+      accessToken: credential.authorizationCode,
+    );
+
+    print(credential);
+    print(oauthCredential);
+
+      /*webAuthenticationOptions: WebAuthenticationOptions(
         clientId:
         'com.fitween.pistachio',
 
@@ -34,14 +48,14 @@ class AppleAuth {
           'https://pistachio-8c35b.firebaseapp.com/callback.apple',
         ),
       ),
-    );
+    );*/
 
     // ignore: avoid_print
-    print(credential);
+
 
     // This is the endpoint that will convert an authorization code obtained
     // via Sign in with Apple into a session in your system
-    final signInWithAppleEndpoint = Uri(
+    /*final signInWithAppleEndpoint = Uri(
       scheme: 'https',
       host: 'pistachio-8c35b.firebaseapp.com',
       path: '/callback.apple',
@@ -66,9 +80,9 @@ class AppleAuth {
     // If we got this far, a session based on the Apple ID credential has been created in your system,
     // and you can now set this as the app's session
     // ignore: avoid_print
-    print(session);
+    print(session);*/
 
-    return null;
+    return await a.signInWithCredential(oauthCredential);
   }
 
   // 애플 로그아웃

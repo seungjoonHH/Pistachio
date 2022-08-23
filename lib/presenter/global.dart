@@ -6,6 +6,7 @@ import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
+import 'package:pistachio/presenter/page/challenge/difficulty.dart';
 import 'package:pistachio/presenter/page/complete.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
@@ -13,7 +14,7 @@ import 'package:pistachio/presenter/notification.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/presenter/page/home.dart';
-import 'package:pistachio/presenter/page/monthlyQuest.dart';
+import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
@@ -53,6 +54,7 @@ class GlobalPresenter extends GetxController {
     Get.put(CollectionPresenter());
     Get.put(LevelPresenter());
     Get.put(QuestPresenter());
+
     Get.put(OnboardingPresenter());
     Get.put(RegisterPresenter());
     Get.put(HomePresenter());
@@ -63,7 +65,8 @@ class GlobalPresenter extends GetxController {
     Get.put(ExerciseDetailSetting());
     Get.put(ExerciseInput());
     Get.put(RecordMain());
-    Get.put(MonthlyQuestPresenter());
+    Get.put(QuestMain());
+    Get.put(ChallengeDifficulty());
   }
 
   static void importData() {

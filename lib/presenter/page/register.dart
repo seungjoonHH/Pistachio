@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -34,7 +36,7 @@ class RegisterPresenter extends GetxController {
   void clearConts() {
     nickNameCont.clear();
     birthdayCont.clear();
-    sex = null;
+    newcomer = PUser();
   }
 
   // 현재 페이지 인덱스 증가
@@ -53,35 +55,7 @@ class RegisterPresenter extends GetxController {
   // 추가될 유저
   PUser newcomer = PUser();
 
-  // 성별
-  Sex? sex;
-
-  // 체중
-  int? weight = 60;
-
-  // 신장
-  int? height = 170;
-
-  // 목표
-  Map goal = {
-    "거리": 0,
-    "높이": 0,
-    '무게': 0,
-    '칼로리': 0,
-  };
-
-  // 무게 목표
-  int weightGoal = 0;
-
-  // 거리 목표
-  int distanceGoalMinute = 0;
-  int distanceGoalStep = 0;
-
-  // 높이 목표
-  int heightGoal = 0;
-
-  // 칼로리 목표
-  int calorieGoal = 0;
+  int distanceMinute = 15;
 
   // List<Map<String, String>> examples = [
   //   {
@@ -108,47 +82,38 @@ class RegisterPresenter extends GetxController {
     'name': '공깃밥',
     'kcal': '313kal',
     'image':
-        'https://e7.pngegg.com/pngimages/973/964/png-clipart-jasmine-rice-cooked-rice-white-rice-basmati-translucent-food-cereal.png'
+    'https://e7.pngegg.com/pngimages/973/964/png-clipart-jasmine-rice-cooked-rice-white-rice-basmati-translucent-food-cereal.png'
   };
 
   /// methods
   // 성별 설정
   void setSex(Sex? value) {
     if (value == null) return;
-    sex = value;
+    newcomer.sex = value;
     update();
   }
 
-  // 체중 변경 트리거
-  void weightChanged(int value) {
-    weight = value;
+  // 체중 설정
+  void setWeight(int value) {
+    newcomer.weight = value;
     update();
   }
 
-  // 신장 변경 트리거
-  void heightChanged(int value) {
-    height = value;
+  // 신장 설정
+  void setHeight(int value) {
+    newcomer.height = value;
     update();
   }
 
-  void weightGoalChange(int value) {
-    weightGoal = value;
-    update();
-  }
+  void setGoal(ActivityType type, int value) {
+    int goal = value;
 
-  void distanceGoalChange(int value) {
-    distanceGoalMinute = value;
-    distanceGoalStep = convertAmount(ActivityType.distance, distanceGoalMinute);
-    update();
-  }
+    if (type == ActivityType.distance) {
+      distanceMinute = value;
+      goal = convertAmount(type, value);
+    }
 
-  void heightGoalChange(int value) {
-    heightGoal = value;
-    update();
-  }
-
-  void calorieGoalChange(int value) {
-    calorieGoal = value;
+    newcomer.goals[type.name] = goal;
     update();
   }
 
@@ -157,20 +122,11 @@ class RegisterPresenter extends GetxController {
     final userPresenter = Get.find<UserPresenter>();
 
     newcomer.nickname = nickNameCont.text;
-    newcomer.sex = sex;
-    newcomer.height = height;
-    newcomer.weight = weight;
     newcomer.dateOfBirth = DateTime.utc(
       int.parse(birthdayCont.text.substring(0, 4)),
       int.parse(birthdayCont.text.substring(4, 6)),
       int.parse(birthdayCont.text.substring(6)),
     );
-    newcomer.goals = {
-      'weight': weightGoal,
-      'height': heightGoal,
-      'distance': distanceGoalStep,
-      'calorie': calorieGoal,
-    };
 
     userPresenter.login(newcomer);
     userPresenter.loggedUser.regDate = DateTime.now();
@@ -186,11 +142,11 @@ class RegisterPresenter extends GetxController {
   void nextPressed() {
     if (pageIndex == 0) {
       bool nicknameInvalid = nickNameCont.text == '';
-      nicknameInvalid |=
-          RegExp(r'[`~!@#$%^&*|"' r"'‘’””;:/?]").hasMatch(nickNameCont.text);
+      nicknameInvalid |= RegExp(r'[`~!@#$%^&*|"' r"'‘’””;:/?]")
+          .hasMatch(nickNameCont.text);
       bool birthdayInvalid = birthdayCont.text.length != 8;
       birthdayInvalid |= int.tryParse(birthdayCont.text) == null;
-      bool sexInvalid = (sex == null);
+      bool sexInvalid = (newcomer.sex == null);
 
       bool invalid = nicknameInvalid || birthdayInvalid || sexInvalid;
 
@@ -201,20 +157,14 @@ class RegisterPresenter extends GetxController {
         return;
       }
       newcomer.nickname = nickNameCont.text;
-      newcomer.sex = sex;
       newcomer.dateOfBirth = DateTime.utc(
         int.parse(birthdayCont.text.substring(0, 4)),
         int.parse(birthdayCont.text.substring(4, 6)),
         int.parse(birthdayCont.text.substring(6)),
       );
     } else if (pageIndex == 6) {
-      // calorieGoal = calories[ActivityType.weight] +
-      //     calories[ActivityType.weight] +
-      //     calories[ActivityType.weight];
-      calorieGoal = (weight! * weightGoal * 0.012 +
-              weight! * distanceGoalMinute * 0.072 +
-              weight! * heightGoal * 0.12)
-          .ceil();
+      newcomer.goals[ActivityType.calorie.name] = allCalories;
+      update();
     } else if (pageIndex == CarouselView.widgetCount - 1) {
       submitted();
       return;

@@ -5,8 +5,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/page/challenge/complete.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
+import 'package:pistachio/presenter/page/challenge/difficulty.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/collection.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
@@ -22,101 +24,97 @@ class ChallengeDifficultyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+    return GetBuilder<ChallengeDifficulty>(
+      builder: (controller) {
+        String word = challenge.levels[controller.difficulty.name]['word'];
+        String description = challenge.descriptions['detail'].replaceAll('##', '#$word#');
+        List<String> descriptions = description.split('#');
+        List<Color> colors = List.generate(
+          descriptions.length, (index) => index % 2 == 0
+            ? PTheme.black : PTheme.brickRed,
+        );
+
+        return Stack(
+          alignment: Alignment.center,
           children: [
             Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Column(
                   children: [
-                    SvgPicture.asset(
-                      'assets/image/page/challenge/left_wing.svg',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/image/page/challenge/left_wing.svg',
+                        ),
+                        PText(
+                          '챌린지 난이도',
+                          style: textTheme.titleLarge,
+                          color: PTheme.black,
+                        ),
+                        SvgPicture.asset(
+                          'assets/image/page/challenge/right_wing.svg',
+                        ),
+                      ],
                     ),
-                    PText(
-                      '챌린지 난이도',
-                      style: textTheme.titleLarge,
-                      color: PTheme.black,
-                    ),
-                    SvgPicture.asset(
-                      'assets/image/page/challenge/right_wing.svg',
+                    const SizedBox(height: 40.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: Difficulty.values.map((diff) => Column(
+                        children: [
+                          CollectionWidget(
+                            highlight: diff == controller.difficulty,
+                            onPressed: () => controller.changeDifficulty(diff),
+                          ),
+                          const SizedBox(height: 20.0),
+                          PText(diff.kr,
+                            style: textTheme.titleLarge,
+                            color: diff == controller.difficulty
+                                ? PTheme.brickRed
+                                : PTheme.black,
+                          ),
+                        ],
+                      )).toList(),
                     ),
                   ],
                 ),
-                const SizedBox(height: 40.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [
-                        const CollectionWidget(),
-                        const SizedBox(height: 20.0),
-                        PText('쉬움',
-                          style: textTheme.titleLarge,
-                          color: PTheme.white,
-                          border: true,
-                        ),
-                      ],
+                    PText('권장 참여 인원 : 1-2명',
+                      style: textTheme.titleSmall,
                     ),
-                    Column(
-                      children: [
-                        const CollectionWidget(),
-                        const SizedBox(height: 20.0),
-                        PText('중간',
-                          style: textTheme.titleLarge,
-                          color: PTheme.white,
-                          border: true,
+                    const SizedBox(height: 20.0),
+                    SizedBox(
+                      height: 400.0,
+                      child: RichText(
+                        text: TextSpan(
+                          children: List.generate(descriptions.length, (index) => TextSpan(
+                            text: descriptions[index],
+                            style: textTheme.labelLarge?.apply(color: colors[index]),
+                          )).toList(),
                         ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        const CollectionWidget(),
-                        const SizedBox(height: 20.0),
-                        PText('어려움',
-                          style: textTheme.titleLarge,
-                          color: PTheme.white,
-                          border: true,
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PText('권장 참여 인원 : 1-2명',
-                  style: textTheme.titleSmall,
-                ),
-                const SizedBox(height: 20.0),
-                SizedBox(
-                  height: 400.0,
-                  child: PText(challenge.descriptions['detail']
-                      .replaceAll('##', challenge.levels['easy']['word']),
-                    style: textTheme.titleSmall,
-                  ),
-                ),
-              ],
+            Positioned(
+              bottom: 50.0,
+              child: PButton(
+                onPressed: () => ChallengeComplete.toChallengeComplete(challenge),
+                text: '완료',
+                stretch: true,
+                constraints: const BoxConstraints(maxWidth: 340.0),
+              ),
             ),
           ],
-        ),
-        Positioned(
-          bottom: 50.0,
-          child: PButton(
-            onPressed: () => ChallengeComplete.toChallengeComplete(challenge),
-            text: '완료',
-            stretch: true,
-            constraints: const BoxConstraints(maxWidth: 340.0),
-          ),
-        ),
-      ],
+        );
+      }
     );
   }
 }

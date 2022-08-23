@@ -1,12 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
-import 'package:pistachio/model/class/collection.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/page/home.dart';
@@ -64,7 +62,8 @@ class HomeRandomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PCard(
-      color: const Color(0xFFFDECE4),
+      color: PTheme.white,
+      rounded: true,
       child: Column(
         children: [
           Column(
@@ -73,9 +72,9 @@ class HomeRandomCard extends StatelessWidget {
               PText(
                 '수명이 99초 연장되었어요',
                 style: textTheme.titleLarge,
-                color: PTheme.white,
-                border: true,
+                color: PTheme.black,
               ),
+              const SizedBox(height: 10.0),
               PText(
                 '1층 당 3초의 수명이 연장되어요.',
                 style: textTheme.labelMedium,

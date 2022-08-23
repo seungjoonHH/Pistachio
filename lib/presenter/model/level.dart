@@ -10,13 +10,12 @@ import 'package:pistachio/model/enum/enum.dart';
 // level/*.json 파일 관련
 class LevelPresenter extends GetxController {
   static String asset = 'assets/json/data/level/';
-  Map<ActivityType, List<Level>> levels = {};
+  static Map<ActivityType, List<Level>> levels = {};
 
-  Future importFile(ActivityType type) async {
+  static Future importFile(ActivityType type) async {
     String string = await rootBundle.loadString('$asset${type.name}.json');
     List<dynamic> list = jsonDecode(string);
     levels[type] = list.map((json) => Level.fromJson(json)).toList();
-    update();
   }
 
   Map<String, dynamic> getTier(ActivityType type, int amount) {

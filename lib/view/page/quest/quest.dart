@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pistachio/view/page/monthlyQuest/widget.dart';
-import '../../../global/theme.dart';
-import '../../widget/widget/text.dart';
+import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/view/page/quest/widget.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
-class MonthlyQuestPage extends StatelessWidget {
-  const MonthlyQuestPage({Key? key}) : super(key: key);
+class QuestPage extends StatelessWidget {
+  const QuestPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -62,6 +62,7 @@ flutter:
     - assets/image/widget/bottom_bar/
     - assets/image/challenge/default/
     - assets/image/challenge/complete/
+    - assets/image/collection/
     - assets/image/page/login/
     - assets/image/page/onboarding/
     - assets/image/page/timer/

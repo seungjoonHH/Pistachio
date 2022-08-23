@@ -70,18 +70,12 @@ class GlobalPresenter extends GetxController {
   }
 
   static void importData() {
-    final exercisePresenter = Get.find<ExercisePresenter>();
-    final collectionPresenter = Get.find<CollectionPresenter>();
-    final challengePresenter = Get.find<ChallengePresenter>();
-    final levelPresenter = Get.find<LevelPresenter>();
-    final questPresenter = Get.find<QuestPresenter>();
-    exercisePresenter.importFile();
-    collectionPresenter.importFile();
-    challengePresenter.importFile();
-    challengePresenter.importFile();
-    levelPresenter.importFile(ActivityType.distance);
-    levelPresenter.importFile(ActivityType.height);
-    levelPresenter.importFile(ActivityType.weight);
-    questPresenter.importFile();
+    ExercisePresenter.importFile();
+    CollectionPresenter.importFile();
+    ChallengePresenter.importFile();
+    LevelPresenter.importFile(ActivityType.distance);
+    LevelPresenter.importFile(ActivityType.height);
+    LevelPresenter.importFile(ActivityType.weight);
+    QuestPresenter.importFile();
   }
 }

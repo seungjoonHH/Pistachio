@@ -15,7 +15,11 @@ class ExerciseInput extends GetxController {
   void completeButtonPressed(ActivityType type) {
     final userPresenter = Get.find<UserPresenter>();
 
-    int amount = convertAmount(type, int.parse(inputCont.text));
+    int amount = int.parse(inputCont.text);
+
+    if (type == ActivityType.distance) amount = convertDistance(amount);
+    if (type == ActivityType.weight) amount = convertWeight(amount);
+
     userPresenter.loggedUser.setRecord(type, today, amount);
     userPresenter.loggedUser.setRecord(ActivityType.calorie, today, calories[type] ?? 0);
     userPresenter.save();

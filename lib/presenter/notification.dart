@@ -9,27 +9,27 @@ class NotificationPresenter extends GetxController {
   @override
   void onInit() async {
     // 첫 빌드시, 권한 확인
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: true,
-      badge: true,
-      carPlay: true,
-      criticalAlert: true,
-      provisional: true,
-      sound: true,
-    );
+    // NotificationSettings settings = await messaging.requestPermission(
+    //   alert: true,
+    //   announcement: true,
+    //   badge: true,
+    //   carPlay: true,
+    //   criticalAlert: true,
+    //   provisional: true,
+    //   sound: true,
+    // );
     // authenticated 된 상태인지 아닌지 확인
-    print(settings.authorizationStatus);
+    // print(settings.authorizationStatus);
     _getToken();
     _onMessage();
     super.onInit();
   }
   // 디바이스 고유 토큰 가져오기
   void _getToken() async {
-    String? token = await messaging.getToken();
-    try {
-      print(token);
-    } catch(e) {}
+    // String? token = await messaging.getToken();
+    // try {
+    //   print(token);
+    // } catch(e) {}
   }
 
   /// * 안드로이드에서 foreground 알림 위한 flutter_local_notification 라이브러리 *
@@ -82,13 +82,13 @@ class NotificationPresenter extends GetxController {
         );
       }
       // 개발 확인 용으로 print 구문 추가
-      print('foreground 상황에서 메시지를 받았다.');
+      // print('foreground 상황에서 메시지를 받았다.');
       // 데이터 유무 확인
-      print('Message data: ${message.data}');
+      // print('Message data: ${message.data}');
       // notification 유무 확인
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification!.body}');
-      }
+      // if (message.notification != null) {
+      //   print('Message also contained a notification: ${message.notification!.body}');
+      // }
     });
   }
 }

@@ -13,12 +13,11 @@ class ChallengePresenter extends GetxController {
   /// static methods
   static void toChallengeMain() => Get.offAllNamed('/challenge/main');
 
-  List<Challenge> challenges = [];
+  static List<Challenge> challenges = [];
 
-  Future importFile() async {
+  static Future importFile() async {
     String string = await rootBundle.loadString(asset);
     List<dynamic> list = jsonDecode(string);
     challenges = list.map((json) => Challenge.fromJson(json)).toList();
-    update();
   }
 }

@@ -9,6 +9,7 @@ class PUser {
   String? uid;
   String? name;
   String? nickname;
+  String? email;
   int? weight;
   int? height;
   Sex? sex;
@@ -82,6 +83,7 @@ class PUser {
     uid = json['uid'];
     name = json['name'];
     nickname = json['nickname'];
+    email = json['email'];
     weight = json['weight'].toInt();
     height = json['height'].toInt();
     sex = toSex(json['sex']);
@@ -99,6 +101,7 @@ class PUser {
     json['uid'] = uid;
     json['name'] = name;
     json['nickname'] = nickname;
+    json['email'] = email;
     json['weight'] = weight;
     json['height'] = height;
     json['sex'] = sex?.name;

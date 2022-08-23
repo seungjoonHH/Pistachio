@@ -271,9 +271,8 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
           Expanded(
             flex: 3,
             child: GetBuilder<HomePresenter>(builder: (controller) {
-              final questPresenter = Get.find<QuestPresenter>();
               int record = controller.thisMonthRecords[type] ?? 0;
-              int goal = questPresenter.quests[type] ?? 1;
+              int goal = QuestPresenter.quests[type] ?? 1;
               if (type == ActivityType.weight) goal ~/= weight + 1;
               double percent = min(record / goal, 1);
 

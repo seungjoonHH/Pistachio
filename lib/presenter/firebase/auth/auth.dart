@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/user.dart';
@@ -9,7 +8,6 @@ import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/onboarding.dart';
-import 'package:pistachio/presenter/page/register.dart';
 
 class AuthPresenter {
   static String? appleName;
@@ -46,12 +44,9 @@ class AuthPresenter {
     isNewcomer = json == null || json['nickname'] == null;
 
     Map<String, dynamic> data = {};
-    print(userCredential.user);
     data['uid'] = userCredential.user!.uid;
     data['name'] = userCredential.user!.displayName ?? appleName;
     data['email'] = userCredential.user!.email;
-
-    print(appleName);
 
     userPresenter.data = {...data};
 

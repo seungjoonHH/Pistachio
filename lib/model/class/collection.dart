@@ -1,5 +1,7 @@
 /* 컬렉션 모델 구조 */
 class Collection {
+  static const asset = 'assets/image/collection/';
+
   /// attributes
   String? id;
   String? title;
@@ -17,7 +19,7 @@ class Collection {
   void fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
-    imageUrl = json['imageUrl'];
+    imageUrl = '$asset$id.png';
     description = json['description'];
   }
 
@@ -25,7 +27,6 @@ class Collection {
     Map<String, dynamic> json = {};
     json['id'] = id;
     json['title'] = title;
-    json['imageUrl'] = imageUrl;
     json['description'] = description;
     return json;
   }

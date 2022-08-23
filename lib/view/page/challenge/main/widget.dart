@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/challenge/detail.dart';
 import 'package:pistachio/view/widget/button/button.dart';
+import 'package:pistachio/view/widget/widget/collection.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 
@@ -72,19 +74,31 @@ class ChallengeCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                PText(challenge.title ?? '',
-                  style: textTheme.titleLarge,
-                  color: PTheme.black,
-                  maxLines: 2,
-                ),
-                PText('8/1~8/31',
-                  style: textTheme.labelLarge,
-                  color: PTheme.black,
-                  maxLines: 2,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        PText(challenge.title ?? '',
+                          style: textTheme.titleLarge,
+                          color: PTheme.black,
+                          maxLines: 2,
+                        ),
+                        PText('8/1~8/31',
+                          style: textTheme.labelLarge,
+                          color: PTheme.black,
+                          maxLines: 2,
+                        ),
+                      ],
+                    ),
+                    CollectionWidget(
+                      collection: challenge.collections[Difficulty.hard],
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20.0),
-                PText(
-                  challenge.descriptions['sub']!.replaceAll('#', ''),
+                PText(challenge.descriptions['sub']!,
                   style: textTheme.titleSmall,
                   color: PTheme.black,
                   maxLines: 2,

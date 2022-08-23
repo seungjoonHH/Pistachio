@@ -67,10 +67,8 @@ class ChallengeDifficultyView extends StatelessWidget {
                         child: Column(
                           children: [
                             CollectionWidget(
-                              highlight: diff == controller.difficulty,
-                              collection: CollectionPresenter.getCollection(
-                                challenge.levels[diff.name]['collection']!,
-                              ),
+                              selected: diff == controller.difficulty,
+                              collection: challenge.collections[diff],
                               onPressed: () => controller.changeDifficulty(diff),
                             ),
                             const SizedBox(height: 20.0),
@@ -90,8 +88,8 @@ class ChallengeDifficultyView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PText('권장 참여 인원 : 1-2명',
-                      style: textTheme.titleSmall,
+                    PText('권장 참여 인원 : 1~${challenge.levels[controller.difficulty.name]['maxMember']}명',
+                      style: textTheme.headlineSmall,
                     ),
                     const SizedBox(height: 20.0),
                     SizedBox(

@@ -1,6 +1,7 @@
 /* 사용자 모델 구조 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/enum/enum.dart';
 

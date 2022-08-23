@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
+import 'package:pistachio/view/page/exercise/input/widget.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
@@ -28,6 +30,28 @@ class ExerciseInputPage extends StatelessWidget {
       ActivityType.calorie: '',
     };
 
+    Map<ActivityType, String> riveName = {
+      ActivityType.distance: 'assets/rive/input/jogger.riv',
+      ActivityType.height: 'assets/rive/input/2967-6217-dog-psych.riv',
+      ActivityType.weight: 'assets/rive/input/lumberjack_squats.riv',
+      ActivityType.calorie: 'assets/rive/input/2967-6217-dog-psych.riv',
+    };
+
+    Map<ActivityType, String> riveArtboard = {
+      ActivityType.distance: 'Joggers',
+      ActivityType.height: 'Shiba_inu',
+      ActivityType.weight: 'Squat',
+      ActivityType.calorie: 'Shiba_inu',
+    };
+
+    Map<ActivityType, String> riveAnimations = {
+      ActivityType.distance: 'Stand',
+      ActivityType.height: 'Shiba_inu',
+      ActivityType.weight: 'Squat',
+      ActivityType.calorie: 'Shiba_inu',
+    };
+
+
     return Scaffold(
       appBar: const PAppBar(),
       body: Padding(
@@ -51,6 +75,11 @@ class ExerciseInputPage extends StatelessWidget {
                 ),
               ],
             ),
+            RAnimation(
+              rname: riveName[type]!,
+              abname: riveArtboard[type]!,
+              aname: riveAnimations[type]!,),
+
             GetBuilder<ExerciseInput>(
               builder: (controller) {
                 return PButton(

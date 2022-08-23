@@ -7,15 +7,13 @@ import 'package:pistachio/model/enum/enum.dart';
 // quests.json 파일 관련
 class QuestPresenter extends GetxController {
   static String asset = 'assets/json/data/quests.json';
+  static Map<ActivityType, int> quests = {};
 
-  Map<ActivityType, int> quests = {};
-
-  Future importFile() async {
+  static Future importFile() async {
     String string = await rootBundle.loadString(asset);
     Map<String, dynamic> list = jsonDecode(string);
     list.forEach((type, amount) {
       quests[toActivityType(type)!] = amount.toInt();
     });
-    update();
   }
 }

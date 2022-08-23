@@ -18,7 +18,7 @@ class ChallengeCompletePage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(backgroundColor: Colors.transparent),
       backgroundColor: PTheme.offWhite,
-      body: const ChallengeListView(),
+      body: ChallengeCompleteView(challenge: challenge),
     );
   }
 }

@@ -16,15 +16,13 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 class AppleAuth {
   // 애플 로그인
   static Future<UserCredential?> signInWithApple() async {
-    print(1);
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
       ],
     );
-    print(2);
-    print(credential);
+    print(credential.userIdentifier);
 
     final oauthCredential = OAuthProvider("apple.com").credential(
       idToken: credential.identityToken,

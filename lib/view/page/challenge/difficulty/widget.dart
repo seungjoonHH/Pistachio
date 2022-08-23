@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/page/challenge/complete.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/challenge/difficulty.dart';
@@ -62,20 +63,26 @@ class ChallengeDifficultyView extends StatelessWidget {
                     const SizedBox(height: 40.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: Difficulty.values.map((diff) => Column(
-                        children: [
-                          CollectionWidget(
-                            highlight: diff == controller.difficulty,
-                            onPressed: () => controller.changeDifficulty(diff),
-                          ),
-                          const SizedBox(height: 20.0),
-                          PText(diff.kr,
-                            style: textTheme.titleLarge,
-                            color: diff == controller.difficulty
-                                ? PTheme.brickRed
-                                : PTheme.black,
-                          ),
-                        ],
+                      children: Difficulty.values.map((diff) => GestureDetector(
+                        onTap: () => controller.changeDifficulty(diff),
+                        child: Column(
+                          children: [
+                            CollectionWidget(
+                              highlight: diff == controller.difficulty,
+                              collection: CollectionPresenter.getCollection(
+                                challenge.levels[diff.name]['collection']!,
+                              ),
+                              onPressed: () => controller.changeDifficulty(diff),
+                            ),
+                            const SizedBox(height: 20.0),
+                            PText(diff.kr,
+                              style: textTheme.titleLarge,
+                              color: diff == controller.difficulty
+                                  ? PTheme.brickRed
+                                  : PTheme.black,
+                            ),
+                          ],
+                        ),
                       )).toList(),
                     ),
                   ],

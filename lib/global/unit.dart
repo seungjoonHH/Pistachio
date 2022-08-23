@@ -28,39 +28,32 @@ int get height => Get.find<UserPresenter>().loggedUser.height
 // 15분 간 소모 칼로리
 Map<ActivityType, int> get calories => {
   ActivityType.distance: (
-      Walking.calorie * .5 + Jogging.calorie * .3 * Running.calorie * .2
+      Walking.calorie * .5 + Jogging.calorie * .3 + Running.calorie * .2
   ).ceil(),
   ActivityType.height: StairClimbing.calorie,
   ActivityType.weight: MuscularExercise.calorie,
 };
 
 Map<ActivityType, int> get velocities => {
-  ActivityType.distance: (
-      Walking.velocity * .5 + Jogging.velocity * .3 * Running.velocity * .2
-  ).ceil(),
+  ActivityType.distance: 1,
   ActivityType.height: StairClimbing.velocity.ceil(),
   ActivityType.weight: MuscularExercise.velocity.ceil(),
 };
 
-int get allCalories => ActivityType.values.sublist(0, 3)
-      .map((type) => getCalories(type)).sum;
-
-int getCalories(ActivityType type) {
-  double caloriePerMin = calories[type]!.toDouble() / 15;
+int getCalories(ActivityType type, int amount) {
+  double caloriePerMin = calories[type]! / 15;
   double velocity = velocities[type]!.toDouble();
-  return (caloriePerMin * velocity).ceil();
+  print(velocity);
+  return (caloriePerMin * velocity * amount).ceil();
 }
 
-int convertAmount(ActivityType type, int amount) {
-  switch (type) {
-    case ActivityType.distance:
-      double velocity = Walking.velocity * .5
-          + Jogging.velocity * .3 + Running.velocity * .2;
-      return (amount * velocity).ceil();
-    case ActivityType.weight: return (amount * weight).ceil();
-    default: return amount;
-  }
+int convertDistance(int amount) {
+  double velocity = Walking.velocity * .5
+      + Jogging.velocity * .3 + Running.velocity * .2;
+  return (amount * velocity).ceil();
 }
+
+int convertWeight(int amount) => amount * weight;
 
 // 걷기
 class Walking {
@@ -86,13 +79,13 @@ class Running {
 // 계단오르기
 class StairClimbing {
   static const double coefficient = 1.6;
-  static const double velocity = 1;
+  static const double velocity = 4;
   static int get calorie => (weight * coefficient).ceil();
 }
 
 // 근력운동
 class MuscularExercise {
   static const double coefficient = 1.225;
-  static const double velocity = 40;
+  static const double velocity = 14;
   static int get calorie => (weight * coefficient).ceil();
 }

@@ -18,15 +18,11 @@ class ChallengeListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: GetBuilder<ChallengePresenter>(
-        builder: (controller) {
-          return Column(
-            children: controller.challenges.map((ch) => Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ChallengeCard(challenge: ch),
-            )).toList(),
-          );
-        }
+      child: Column(
+        children: ChallengePresenter.challenges.map((ch) => Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ChallengeCard(challenge: ch),
+        )).toList(),
       ),
     );
   }

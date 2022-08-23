@@ -70,8 +70,8 @@ class CarouselView extends StatelessWidget {
                         items: carouselWidgets()
                             .map(
                               (widget) => Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 30.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30.0),
                                 child: widget,
                               ),
                             )
@@ -251,7 +251,8 @@ class WeightHeightView extends StatelessWidget {
                 minValue: 30,
                 maxValue: 220,
                 selectedTextStyle: Theme.of(context)
-                    .textTheme.headline5
+                    .textTheme
+                    .headline5
                     ?.copyWith(color: Theme.of(context).colorScheme.primary),
               );
             },
@@ -350,19 +351,25 @@ class WeightGoalView extends StatelessWidget {
                     GetBuilder<RegisterPresenter>(
                       builder: (controller) {
                         if (isFirst) {
-                          Future.delayed(const Duration(
-                            milliseconds: 500,
-                          ), () => controller.setGoal(
-                            ActivityType.weight, 10,
-                          ));
+                          Future.delayed(
+                              const Duration(
+                                milliseconds: 500,
+                              ),
+                              () => controller.setGoal(
+                                    ActivityType.weight,
+                                    10,
+                                  ));
                           isFirst = false;
                         }
                         return NumberPicker(
-                          onChanged: (value) => controller.setGoal(ActivityType.weight, value),
+                          onChanged: (value) =>
+                              controller.setGoal(ActivityType.weight, value),
                           itemCount: 1,
                           itemHeight: 48,
                           itemWidth: 80,
-                          value: controller.newcomer.goals[ActivityType.weight.name] ?? 0,
+                          value: controller
+                                  .newcomer.goals[ActivityType.weight.name] ??
+                              0,
                           minValue: 0,
                           maxValue: 200,
                           selectedTextStyle: TextStyle(
@@ -434,16 +441,20 @@ class DistanceRecommendView extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text('${ageGroup}0',
+                Text(
+                  '${ageGroup}0',
                   style: const TextStyle(fontSize: 36),
                 ),
-                const Text('대 ',
+                const Text(
+                  '대 ',
                   style: TextStyle(fontSize: 36),
                 ),
-                Text(controller.newcomer.sex!.kr,
+                Text(
+                  controller.newcomer.sex!.kr,
                   style: const TextStyle(fontSize: 36),
                 ),
-                const Text(' 평균',
+                const Text(
+                  ' 평균',
                   style: TextStyle(fontSize: 36),
                 )
               ],
@@ -456,24 +467,30 @@ class DistanceRecommendView extends StatelessWidget {
                 ),
                 ageGroup < 6
                     ? controller.newcomer.sex == Sex.male
-                        ? const Text('30 ~ 60',
+                        ? const Text(
+                            '30 ~ 60',
                             style: TextStyle(fontSize: 36),
                           )
-                        : const Text('10 ~ 30',
+                        : const Text(
+                            '10 ~ 30',
                             style: TextStyle(fontSize: 36),
                           )
-                    : const Text('30 ~ 50',
+                    : const Text(
+                        '30 ~ 50',
                         style: TextStyle(fontSize: 36),
                       ),
-                const Text('분',
+                const Text(
+                  '분',
                   style: TextStyle(fontSize: 36),
                 ),
               ],
             ),
-            const Text('유산소 운동이',
+            const Text(
+              '유산소 운동이',
               style: TextStyle(fontSize: 36),
             ),
-            const Text('적당해요',
+            const Text(
+              '적당해요',
               style: TextStyle(fontSize: 36),
             ),
           ],
@@ -503,7 +520,8 @@ class DistanceGoalView extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: NumberPicker(
-                onChanged: (value) => controller.setGoal(ActivityType.distance, value),
+                onChanged: (value) =>
+                    controller.setGoal(ActivityType.distance, value),
                 itemCount: 1,
                 itemHeight: 132.0,
                 itemWidth: 200.0,
@@ -561,7 +579,8 @@ class DistanceGoalView extends StatelessWidget {
                   '가능해요!',
                   style: TextStyle(fontSize: 28),
                 ),
-                PText('* 약 ${controller.newcomer.goals[ActivityType.distance.name]} m',
+                PText(
+                  '* 약 ${controller.newcomer.goals[ActivityType.distance.name]} m',
                   color: PTheme.brickRed,
                 ),
               ],
@@ -640,10 +659,12 @@ class HeightGoalView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text('하루 ',
+                    const Text(
+                      '하루 ',
                       style: TextStyle(fontSize: 28),
                     ),
-                    Text('${controller.newcomer.goals[ActivityType.height.name] ?? 0}',
+                    Text(
+                      '${controller.newcomer.goals[ActivityType.height.name] ?? 0}',
                       style: TextStyle(
                         fontSize: 28,
                         color: Theme.of(context).colorScheme.primary,
@@ -680,11 +701,13 @@ class HeightGoalView extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: NumberPicker(
-                  onChanged: (value) => controller.setGoal(ActivityType.height, value),
+                  onChanged: (value) =>
+                      controller.setGoal(ActivityType.height, value),
                   itemCount: 1,
                   itemHeight: 132.0,
                   itemWidth: 200.0,
-                  value: controller.newcomer.goals[ActivityType.height.name] ?? 0,
+                  value:
+                      controller.newcomer.goals[ActivityType.height.name] ?? 0,
                   minValue: 0,
                   maxValue: 200,
                   selectedTextStyle: TextStyle(

@@ -70,11 +70,6 @@ class GlobalPresenter extends GetxController {
   }
 
   static void importData() {
-    final exercisePresenter = Get.find<ExercisePresenter>();
-    final collectionPresenter = Get.find<CollectionPresenter>();
-    final challengePresenter = Get.find<ChallengePresenter>();
-    final levelPresenter = Get.find<LevelPresenter>();
-    final questPresenter = Get.find<QuestPresenter>();
     ExercisePresenter.importFile();
     CollectionPresenter.importFile();
     ChallengePresenter.importFile();

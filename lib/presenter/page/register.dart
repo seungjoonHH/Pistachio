@@ -6,9 +6,9 @@ import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import '../../global/unit.dart';
 import '../../view/page/register/widget.dart';
 import 'home.dart';
-import 'main.dart';
 
 /// class
 class RegisterPresenter extends GetxController {
@@ -83,24 +83,27 @@ class RegisterPresenter extends GetxController {
     'name': '공깃밥',
     'kcal': '313kal',
     'image':
-        'https://e7.pngegg.com/pngimages/973/964/png-clipart-jasmine-rice-cooked-rice-white-rice-basmati-translucent-food-cereal.png'
+    'https://e7.pngegg.com/pngimages/973/964/png-clipart-jasmine-rice-cooked-rice-white-rice-basmati-translucent-food-cereal.png'
   };
 
   /// methods
   // 성별 설정
   void setSex(Sex? value) {
     if (value == null) return;
-    newcomer.sex = value; update();
+    newcomer.sex = value;
+    update();
   }
 
   // 체중 설정
   void setWeight(int value) {
-    newcomer.weight = value; update();
+    newcomer.weight = value;
+    update();
   }
 
   // 신장 설정
   void setHeight(int value) {
-    newcomer.height = value; update();
+    newcomer.height = value;
+    update();
   }
 
   void setGoal(ActivityType type, int value) {

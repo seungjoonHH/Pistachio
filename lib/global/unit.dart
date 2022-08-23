@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -43,7 +42,6 @@ Map<ActivityType, int> get velocities => {
 int getCalories(ActivityType type, int amount) {
   double caloriePerMin = calories[type]! / 15;
   double velocity = velocities[type]!.toDouble();
-  print(velocity);
   return (caloriePerMin * velocity * amount).ceil();
 }
 

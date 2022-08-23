@@ -1,12 +1,8 @@
 /* 챌린지 완료 위젯 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
-import 'package:pistachio/presenter/model/challenge.dart';
-import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/page/challenge/difficulty.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/collection.dart';
@@ -62,7 +58,7 @@ class ChallengeCompleteView extends StatelessWidget {
                       color: PTheme.black,
                       maxLines: 10,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 80.0,
                       child: CollectionWidget(
                         // collection: CollectionPresenter.getCollection(

@@ -28,7 +28,7 @@ class PBottomSheetBar extends StatelessWidget {
       controller: GlobalPresenter.barCont,
       borderRadiusExpanded: radius,
       isDismissable: false,
-      color: PTheme.offWhite,
+      color: PTheme.blush,
       expandedBuilder: (scrollCont) => Container(
         width: double.infinity,
         height: 480.0.h,

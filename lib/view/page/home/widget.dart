@@ -64,7 +64,8 @@ class HomeRandomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PCard(
-      color: const Color(0xFFFDECE4),
+      color: PTheme.white,
+      rounded: true,
       child: Column(
         children: [
           Column(
@@ -73,9 +74,9 @@ class HomeRandomCard extends StatelessWidget {
               PText(
                 '수명이 99초 연장되었어요',
                 style: textTheme.titleLarge,
-                color: PTheme.white,
-                border: true,
+                color: PTheme.black,
               ),
+              const SizedBox(height: 10.0),
               PText(
                 '1층 당 3초의 수명이 연장되어요.',
                 style: textTheme.labelMedium,

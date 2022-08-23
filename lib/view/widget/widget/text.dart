@@ -76,6 +76,7 @@ class PTexts extends StatelessWidget {
     this.border = false,
     this.borderWidth = 1.0,
     this.alignment = MainAxisAlignment.center,
+    this.maxLines = 1,
   }) : assert(texts.length == colors.length),
         style = style ?? textTheme.bodyMedium,
         super(key: key);
@@ -88,6 +89,7 @@ class PTexts extends StatelessWidget {
   final bool border;
   final double borderWidth;
   final MainAxisAlignment alignment;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +105,7 @@ class PTexts extends StatelessWidget {
             italic: italic,
             border: border,
             borderWidth: borderWidth,
+            maxLines: maxLines,
           ),
           PText(texts[i],
             color: colors[i],
@@ -111,6 +114,7 @@ class PTexts extends StatelessWidget {
             italic: italic,
             border: border,
             borderWidth: borderWidth,
+            maxLines: maxLines,
           ),
         ],
       )),

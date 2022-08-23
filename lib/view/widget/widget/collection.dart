@@ -9,23 +9,46 @@ class CollectionWidget extends StatelessWidget {
     Key? key,
     this.collection,
     this.detail = false,
+    this.highlight = false,
+    this.onPressed,
   }) : super(key: key);
 
   final Collection? collection;
   final bool detail;
+  final bool highlight;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
+    PolygonBorder side = PolygonBorder(
+      sides: 6,
+      side: BorderSide(
+        width: 1.5,
+        color: highlight
+            ? PTheme.brickRed
+            : PTheme.black,
+      ),
+    );
+
     return Column(
       children: [
-        Container(
-          width: 100.0,
-          height: 100.0,
-          decoration: const ShapeDecoration(
-            color: PTheme.grey,
-            shape: PolygonBorder(
-              sides: 6,
-              side: BorderSide(width: 1.5),
+        Material(
+          color: PTheme.grey,
+          shape: side,
+          child: InkWell(
+            onTap: onPressed,
+            customBorder: side,
+            child: Column(
+              children: [
+                Container(
+                  width: 100.0,
+                  height: 100.0,
+                  decoration: ShapeDecoration(
+                    color: highlight ? null : PTheme.white.withOpacity(.7),
+                    shape: side,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

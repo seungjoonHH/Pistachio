@@ -262,7 +262,7 @@ class WeightHeightView extends StatelessWidget {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .headline5
-                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ?.copyWith(color: PTheme.black),
               );
             },
           ),
@@ -282,7 +282,7 @@ class WeightHeightView extends StatelessWidget {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .headline5
-                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ?.copyWith(color: PTheme.black),
               );
             },
           ),
@@ -298,7 +298,7 @@ class WeightHeightView extends StatelessWidget {
         elevation: 3.0,
         shape: RoundedRectangleBorder(
           side: const BorderSide(
-            color: Colors.transparent,
+            color: PTheme.black,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
@@ -817,7 +817,7 @@ class CalorieCheckView extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 200.0),
+            const SizedBox(height: 210.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

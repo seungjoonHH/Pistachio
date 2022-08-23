@@ -1,7 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
+import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/quest.dart';
 import '../../../global/theme.dart';
+import '../../../global/unit.dart';
+import '../../../presenter/page/home.dart';
 import '../../widget/widget/text.dart';
 
 class MonthlyQuestView extends StatelessWidget {
@@ -9,6 +16,13 @@ class MonthlyQuestView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final questPresenter = Get.find<QuestPresenter>();
+    int weightGoal = questPresenter.quests[ActivityType.weight] ?? 1;
+    weightGoal ~/= weight + 1;
+    int distanceGoal = questPresenter.quests[ActivityType.distance] ?? 1;
+    distanceGoal ~/= 10000;
+    int heightGoal = questPresenter.quests[ActivityType.height] ?? 1;
+
     return Column(
       children: [
         Padding(
@@ -31,49 +45,27 @@ class MonthlyQuestView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        width: 80.0,
-                        height: 80.0,
-                        decoration: const ShapeDecoration(
-                          color: PTheme.grey,
-                          shape: PolygonBorder(
-                            sides: 6,
-                            side: BorderSide(width: 1.5),
-                          ),
-                        ),
-                        child: const Align(
+                      Polygon(
+                        size: 80.0,
+                        widget: Align(
                           alignment: Alignment.center,
-                          child: Text('1000회'),
+                          child: Text('$weightGoal${ActivityType.weight.unit}'),
                         ),
                       ),
-                      Container(
-                        width: 100.0,
-                        height: 100.0,
-                        decoration: const ShapeDecoration(
-                          color: PTheme.grey,
-                          shape: PolygonBorder(
-                            sides: 6,
-                            side: BorderSide(width: 1.5),
-                          ),
-                        ),
-                        child: const Align(
+                      Polygon(
+                        size: 100.0,
+                        widget: Align(
                           alignment: Alignment.center,
-                          child: Text('10만보'),
+                          child: Text('$distanceGoal'
+                              '만'
+                              '${ActivityType.distance.unit}'),
                         ),
                       ),
-                      Container(
-                        width: 80.0,
-                        height: 80.0,
-                        decoration: const ShapeDecoration(
-                          color: PTheme.grey,
-                          shape: PolygonBorder(
-                            sides: 6,
-                            side: BorderSide(width: 1.5),
-                          ),
-                        ),
-                        child: const Align(
+                      Polygon(
+                        size: 80.0,
+                        widget: Align(
                           alignment: Alignment.center,
-                          child: Text('500층'),
+                          child: Text('$heightGoal${ActivityType.height.unit}'),
                         ),
                       ),
                     ],
@@ -102,139 +94,28 @@ class MonthlyQuestView extends StatelessWidget {
                   maxLines: 3,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 80.0,
-                    height: 80.0,
-                    decoration: const ShapeDecoration(
-                      color: PTheme.grey,
-                      shape: PolygonBorder(
-                        sides: 6,
-                        side: BorderSide(width: 1.5),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('10만보 걷기를 성공하세요'),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: SizedBox(
-                              height: 30.0,
-                              child: LinearPercentIndicator(
-                                padding: const EdgeInsets.only(left: 1.0),
-                                progressColor: Colors.red,
-                                lineHeight: double.infinity,
-                                backgroundColor: Colors.tealAccent,
-                                center: PText(
-                                  '23,567/100,000 보',
-                                  style: textTheme.titleMedium,
-                                ),
-                                percent: 0.1,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                children: const [
+                  Polygon(size: 80.0),
+                  MonthlyQuestGraph(type: ActivityType.distance),
                 ],
               ),
               const SizedBox(height: 16.0),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 80.0,
-                    height: 80.0,
-                    decoration: const ShapeDecoration(
-                      color: PTheme.grey,
-                      shape: PolygonBorder(
-                        sides: 6,
-                        side: BorderSide(width: 1.5),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('10만보 걷기를 성공하세요'),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: SizedBox(
-                              height: 30.0,
-                              child: LinearPercentIndicator(
-                                padding: const EdgeInsets.only(left: 1.0),
-                                progressColor: Colors.red,
-                                lineHeight: double.infinity,
-                                backgroundColor: Colors.tealAccent,
-                                center: PText(
-                                  '23,567/100,000 보',
-                                  style: textTheme.titleMedium,
-                                ),
-                                percent: 0.1,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                children: const [
+                  Polygon(size: 80.0),
+                  MonthlyQuestGraph(type: ActivityType.weight),
                 ],
               ),
               const SizedBox(height: 16.0),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 80.0,
-                    height: 80.0,
-                    decoration: const ShapeDecoration(
-                      color: PTheme.grey,
-                      shape: PolygonBorder(
-                        sides: 6,
-                        side: BorderSide(width: 1.5),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('10만보 걷기를 성공하세요'),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: SizedBox(
-                              height: 30.0,
-                              child: LinearPercentIndicator(
-                                padding: const EdgeInsets.only(left: 1.0),
-                                progressColor: Colors.red,
-                                lineHeight: double.infinity,
-                                backgroundColor: Colors.tealAccent,
-                                center: PText(
-                                  '23,567/100,000 보',
-                                  style: textTheme.titleMedium,
-                                ),
-                                percent: 0.1,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                children: const [
+                  Polygon(size: 80.0),
+                  MonthlyQuestGraph(type: ActivityType.height),
                 ],
               ),
             ],
@@ -242,5 +123,87 @@ class MonthlyQuestView extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class Polygon extends StatelessWidget {
+  final double size;
+  final Widget? widget;
+
+  const Polygon({Key? key, required this.size, this.widget}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: const ShapeDecoration(
+        color: PTheme.grey,
+        shape: PolygonBorder(
+          sides: 6,
+          side: BorderSide(width: 1.5),
+        ),
+      ),
+      child: widget,
+    );
+  }
+}
+
+class MonthlyQuestGraph extends StatelessWidget {
+  final ActivityType type;
+
+  const MonthlyQuestGraph({Key? key, required this.type}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<QuestPresenter>(builder: (controller) {
+      final homePresenter = Get.find<HomePresenter>();
+      int record = homePresenter.thisMonthRecords[type] ?? 0;
+      int goal = controller.quests[type] ?? 1;
+      if (type == ActivityType.weight) goal ~/= weight + 1;
+      double percent = min(record / goal, 1);
+
+      return Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  type == ActivityType.distance
+                      ? Text(
+                          '${goal ~/ 10000}만${type.unit} ${type.quest}',
+                          style: TextStyle(color: type.color),
+                        )
+                      : Text(
+                          '$goal${type.unit} ${type.quest}',
+                          style: TextStyle(color: type.color),
+                        ),
+                  const Text('를 성공하세요'),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: SizedBox(
+                  height: 30.0,
+                  child: LinearPercentIndicator(
+                    padding: const EdgeInsets.only(left: 1.0),
+                    progressColor: Colors.red,
+                    lineHeight: double.infinity,
+                    backgroundColor: colorScheme.background,
+                    center: PText(
+                      '$record/$goal ${type.unit}',
+                      style: textTheme.titleMedium,
+                    ),
+                    percent: percent,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

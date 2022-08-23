@@ -358,7 +358,7 @@ class WeightGoalView extends StatelessWidget {
                           itemCount: 1,
                           itemHeight: 48,
                           itemWidth: 80,
-                          value: controller.weightGoal!,
+                          value: controller.weightGoal,
                           minValue: 0,
                           maxValue: 200,
                           selectedTextStyle: TextStyle(
@@ -513,7 +513,7 @@ class DistanceGoalView extends StatelessWidget {
                 itemCount: 1,
                 itemHeight: 132.0,
                 itemWidth: 200.0,
-                value: controller.distanceGoal!,
+                value: controller.distanceGoalMinute,
                 minValue: 0,
                 maxValue: 200,
                 selectedTextStyle: TextStyle(
@@ -534,7 +534,7 @@ class DistanceGoalView extends StatelessWidget {
                       style: TextStyle(fontSize: 28),
                     ),
                     Text(
-                      '${controller.distanceGoal}',
+                      '${controller.distanceGoalMinute}',
                       style: TextStyle(
                         fontSize: 28,
                         color: Theme.of(context).colorScheme.primary,
@@ -689,7 +689,7 @@ class HeightGoalView extends StatelessWidget {
                   itemCount: 1,
                   itemHeight: 132.0,
                   itemWidth: 200.0,
-                  value: controller.heightGoal!,
+                  value: controller.heightGoal,
                   minValue: 0,
                   maxValue: 200,
                   selectedTextStyle: TextStyle(

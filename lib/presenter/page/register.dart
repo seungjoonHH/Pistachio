@@ -1,13 +1,12 @@
 import 'package:carousel_slider/carousel_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import '../../global/unit.dart';
 import '../../view/page/register/widget.dart';
 import 'home.dart';
-import 'main.dart';
 
 /// class
 class RegisterPresenter extends GetxController {
@@ -72,16 +71,17 @@ class RegisterPresenter extends GetxController {
   };
 
   // 무게 목표
-  int? weightGoal = 0;
+  int weightGoal = 0;
 
   // 거리 목표
-  int? distanceGoal = 0;
+  int distanceGoalMinute = 0;
+  int distanceGoalStep = 0;
 
   // 높이 목표
-  int? heightGoal = 0;
+  int heightGoal = 0;
 
   // 칼로리 목표
-  int? calorieGoal = 0;
+  int calorieGoal = 0;
 
   // List<Map<String, String>> examples = [
   //   {
@@ -137,7 +137,8 @@ class RegisterPresenter extends GetxController {
   }
 
   void distanceGoalChange(int value) {
-    distanceGoal = value;
+    distanceGoalMinute = value;
+    distanceGoalStep = convertAmount(ActivityType.distance, distanceGoalMinute);
     update();
   }
 
@@ -167,7 +168,7 @@ class RegisterPresenter extends GetxController {
     newcomer.goals = {
       'weight': weightGoal,
       'height': heightGoal,
-      'distance': distanceGoal,
+      'distance': distanceGoalStep,
       'calorie': calorieGoal,
     };
 
@@ -207,9 +208,12 @@ class RegisterPresenter extends GetxController {
         int.parse(birthdayCont.text.substring(6)),
       );
     } else if (pageIndex == 6) {
-      calorieGoal = (weight! * weightGoal! * 0.012 +
-              weight! * distanceGoal! * 0.072 +
-              weight! * heightGoal! * 0.12)
+      // calorieGoal = calories[ActivityType.weight] +
+      //     calories[ActivityType.weight] +
+      //     calories[ActivityType.weight];
+      calorieGoal = (weight! * weightGoal * 0.012 +
+              weight! * distanceGoalMinute * 0.072 +
+              weight! * heightGoal * 0.12)
           .ceil();
     } else if (pageIndex == CarouselView.widgetCount - 1) {
       submitted();

@@ -10,6 +10,8 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 
+import '../health/health.dart';
+
 /// class
 class UserPresenter extends GetxController {
   /// attributes
@@ -29,10 +31,11 @@ class UserPresenter extends GetxController {
   /* 로그인 관련 */
   // 로그인
   // 매개변수로 받은 사용자 정보와 User Credential 정보를 병합하여 현재 로그인된 사용자자 최신화
-  void login(PUser user) {
+  Future login(PUser user) async {
     Map<String, dynamic> json = user.toJson();
     data.forEach((key, value) => json[key] = value);
     loggedUser = PUser.fromJson(json);
+    await HealthPresenter.fetchStepData();
   }
 
   // 로그아웃
@@ -50,21 +53,25 @@ class UserPresenter extends GetxController {
   }
 
   // 파이어베이스에 최신화
-  void save() => f.collection('users').doc(loggedUser.uid).set(loggedUser.toJson());
+  void save() =>
+      f.collection('users').doc(loggedUser.uid).set(loggedUser.toJson());
 
   // 파이어베이스에서 삭제
   void delete() => f.collection('users').doc(loggedUser.uid).delete();
 
   set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
+
   Map<String, Party> get myParties => loggedUser.parties;
 
   String get randomCode {
     int length = 7;
     const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     return String.fromCharCodes(
-      Iterable.generate(length, (_) => chars.codeUnitAt(
-        Random().nextInt(chars.length),
-      )),
+      Iterable.generate(
+          length,
+          (_) => chars.codeUnitAt(
+                Random().nextInt(chars.length),
+              )),
     );
   }
 
@@ -75,7 +82,7 @@ class UserPresenter extends GetxController {
       'id': code,
       'challengeId': challenge.id,
       'difficulty': diff.name,
-      'goals': <String, dynamic>{ loggedUser.uid!: 0 },
+      'goals': <String, dynamic>{loggedUser.uid!: 0},
       'leaderUid': loggedUser.uid,
     });
 

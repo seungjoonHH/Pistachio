@@ -64,7 +64,6 @@ class GlobalPresenter extends GetxController {
     Get.put(ExerciseInput());
     Get.put(RecordMain());
     Get.put(QuestMain());
-    Get.put(ChallengeDifficulty());
     Get.put(MyPresenter());
     Get.put(ChallengeMain());
     Get.put(ChallengeCreate());

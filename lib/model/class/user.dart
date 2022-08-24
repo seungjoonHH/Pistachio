@@ -1,7 +1,6 @@
 /* 사용자 모델 구조 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/enum/enum.dart';
@@ -36,16 +35,28 @@ class PUser {
 
   String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);
 
+  void addRecord(ActivityType type, DateTime date, int amount) {
+    for (var record in records[type.name] ?? []) {
+      if (record['date'] == toTimestamp(date)) {
+        record['amount'] += amount;
+        return;
+      }
+    }
+    records[type.name].add({'date': toTimestamp(date), 'amount': amount});
+  }
+
   void setRecord(ActivityType type, DateTime date, int amount) {
     for (var record in records[type.name] ?? []) {
       if (record['date'] == toTimestamp(date)) {
-        record['amount'] += amount; return;
+        record['amount'] = amount;
+        return;
       }
     }
     records[type.name].add({'date': toTimestamp(date), 'amount': amount});
   }
 
   int getTodayAmounts(ActivityType type) => getAmounts(type, today, tomorrow);
+
   int getThisMonthAmounts(ActivityType type) {
     DateTime firstDate = DateTime(today.year, today.month, 1);
     DateTime lastDate = DateTime(today.year, today.month + 1, 1)
@@ -53,7 +64,9 @@ class PUser {
 
     return getAmounts(type, firstDate, lastDate);
   }
-  int getAmounts(ActivityType activityType, [DateTime? startDate, DateTime? endDate]) {
+
+  int getAmounts(ActivityType activityType,
+      [DateTime? startDate, DateTime? endDate]) {
     int result = 0;
 
     records.forEach((type, recordList) {

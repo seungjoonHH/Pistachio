@@ -223,7 +223,7 @@ class SexSelectionButton extends StatelessWidget {
               backgroundColor: sex == controller.newcomer.sex
                   ? PTheme.black
                   : PTheme.white,
-              side: BorderSide(color: PTheme.black),
+              side: const BorderSide(color: PTheme.black),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -993,7 +993,7 @@ class CarouselButton extends StatelessWidget {
               text: '이전',
               textColor: Colors.black,
               backgroundColor: Colors.white,
-              padding: EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15.0),
               stretch: true,
               multiple: true,
             ),
@@ -1001,7 +1001,7 @@ class CarouselButton extends StatelessWidget {
               onPressed: controller.nextPressed,
               text: lastPage ? '완료' : '다음',
               backgroundColor: Colors.black,
-              padding: EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15.0),
               stretch: true,
               multiple: true,
             ),

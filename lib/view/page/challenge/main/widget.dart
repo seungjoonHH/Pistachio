@@ -14,7 +14,7 @@ import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/collection.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
-
+import '../../../../presenter/model/user.dart';
 
 class ChallengeMainView extends StatelessWidget {
   const ChallengeMainView({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class ChallengeMainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: const [
         ChallengeTabBar(),
         ChallengeTabView(),
       ],
@@ -49,7 +49,6 @@ class ChallengeTabBar extends StatelessWidget {
   }
 }
 
-
 class ChallengeTabView extends StatelessWidget {
   const ChallengeTabView({Key? key}) : super(key: key);
 
@@ -60,8 +59,8 @@ class ChallengeTabView extends StatelessWidget {
     return Expanded(
       child: TabBarView(
         controller: controller.tabCont,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
           ChallengeListView(),
           MyChallengeListView(),
         ],
@@ -70,7 +69,6 @@ class ChallengeTabView extends StatelessWidget {
   }
 }
 
-
 class ChallengeListView extends StatelessWidget {
   const ChallengeListView({Key? key}) : super(key: key);
 
@@ -78,14 +76,17 @@ class ChallengeListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: ChallengePresenter.challenges.map((ch) => Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ChallengeCard(challenge: ch),
-        )).toList(),
+        children: ChallengePresenter.challenges
+            .map((ch) => Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ChallengeCard(challenge: ch),
+                ))
+            .toList(),
       ),
     );
   }
 }
+
 class ChallengeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ChallengeAppBar({Key? key}) : super(key: key);
 
@@ -94,19 +95,18 @@ class ChallengeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ChallengePresenter>(
-        builder: (controller) {
-          return AppBar(
-            elevation: 0.0,
-            iconTheme: const IconThemeData(color: PTheme.white),
-            backgroundColor: PTheme.background,
-            title: PText('챌린지',
-              border: true,
-              style: textTheme.headlineMedium,
-            ),
-          );
-        }
-    );
+    return GetBuilder<ChallengePresenter>(builder: (controller) {
+      return AppBar(
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: PTheme.white),
+        backgroundColor: PTheme.background,
+        title: PText(
+          '챌린지',
+          border: true,
+          style: textTheme.headlineMedium,
+        ),
+      );
+    });
   }
 }
 
@@ -138,12 +138,14 @@ class ChallengeCard extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        PText(challenge.title ?? '',
+                        PText(
+                          challenge.title ?? '',
                           style: textTheme.titleLarge,
                           color: PTheme.black,
                           maxLines: 2,
                         ),
-                        PText('8/1~8/31',
+                        PText(
+                          '8/1~8/31',
                           style: textTheme.labelLarge,
                           color: PTheme.black,
                           maxLines: 2,
@@ -157,7 +159,8 @@ class ChallengeCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20.0),
-                PText(challenge.descriptions['sub']!,
+                PText(
+                  challenge.descriptions['sub']!,
                   style: textTheme.titleSmall,
                   color: PTheme.black,
                   maxLines: 2,
@@ -246,8 +249,8 @@ class MyPartyListTile extends StatelessWidget {
                           Expanded(
                             child: Row(
                               children: [
-                                Icon(Icons.people_alt, size: 14.0),
-                                SizedBox(width: 10.0),
+                                const Icon(Icons.people_alt, size: 14.0),
+                                const SizedBox(width: 10.0),
                                 PText('${party.members.length}/${
                                   party.challenge!.levels[party.difficulty.name]['maxMember']
                                 }'),
@@ -261,7 +264,7 @@ class MyPartyListTile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              const SizedBox(
                 width: 50.0,
                 child: Icon(Icons.arrow_forward_ios),
               ),

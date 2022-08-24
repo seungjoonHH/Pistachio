@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -185,36 +186,86 @@ class MyChallengeListView extends StatelessWidget {
     return ListView.separated(
       shrinkWrap: true,
       itemCount: controller.myParties.length,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(20.0),
-      itemBuilder: (_, index) => MyChallengeListTile(
-        challenge: controller.myParties.values.toList()[index].challenge!,
+      itemBuilder: (_, index) => MyPartyListTile(
+        party: controller.myParties.values.toList()[index],
       ),
       separatorBuilder: (_, index) => const SizedBox(height: 20.0),
     );
   }
 }
 
-class MyChallengeListTile extends StatelessWidget {
-  const MyChallengeListTile({
+class MyPartyListTile extends StatelessWidget {
+  const MyPartyListTile({
     Key? key,
-    required this.challenge,
+    required this.party,
   }) : super(key: key);
 
-  final Challenge challenge;
+  final Party party;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: PTheme.black),
-      ),
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: AspectRatio(
-          aspectRatio: 1.0,
-          child: Image.asset(
-            challenge.imageUrls['focus'],
-            fit: BoxFit.cover,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          height: 80.0,
+          decoration: BoxDecoration(
+            border: Border.all(color: PTheme.black, width: 1.5),
+          ),
+          child: Row(
+            children: [
+              AspectRatio(
+                aspectRatio: 1.0,
+                child: Image.asset(
+                  party.challenge!.imageUrls['focus'],
+                  width: 100.0,
+                  height: 100.0,
+                ),
+              ),
+              const VerticalDivider(
+                width: 1.5,
+                thickness: 1.5,
+                color: PTheme.black,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PText(party.challenge!.title!.replaceAll('\n', ' '),
+                        style: textTheme.bodyLarge,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Icon(Icons.people_alt, size: 14.0),
+                                SizedBox(width: 10.0),
+                                PText('${party.members.length}/${
+                                  party.challenge!.levels[party.difficulty.name]['maxMember']
+                                }'),
+                              ],
+                            ),
+                          ),
+                          Expanded(child: PText('난이도 : ${party.difficulty.kr}')),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                width: 50.0,
+                child: Icon(Icons.arrow_forward_ios),
+              ),
+            ],
           ),
         ),
       ),

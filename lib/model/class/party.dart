@@ -7,7 +7,7 @@ class Party {
   String? id;
   String? challengeId;
   Difficulty difficulty = Difficulty.easy;
-  Map<String, dynamic> goals = {};
+  Map<String, dynamic> records = {};
   String? leaderUid;
 
   PUser? leader;
@@ -26,7 +26,7 @@ class Party {
     id = json['id'];
     challengeId = json['challengeId'];
     difficulty = toDifficulty(json['difficulty'])!;
-    goals = json['goals'];
+    records = json['records'] ?? <String, dynamic>{};
     leaderUid = json['leaderUid'];
   }
 
@@ -35,7 +35,7 @@ class Party {
     json['id'] = id;
     json['challengeId'] = challengeId;
     json['difficulty'] = difficulty.name;
-    json['goals'] = goals;
+    json['records'] = records;
     json['leaderUid'] = leaderUid;
     return json;
   }

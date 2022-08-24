@@ -7,10 +7,10 @@ class ChallengeMain extends GetxController with GetSingleTickerProviderStateMixi
   List<Widget> tabs = ['이달의 챌린지', '내 챌린지'].map((title) => PText(title)).toList();
   late TabController tabCont;
 
-  static void toChallengeMain() {
+  static void toChallengeMain() async {
     final userPresenter = Get.find<UserPresenter>();
-    userPresenter.loadMyParties();
-    Get.toNamed('/challenge/main');
+    await userPresenter.loadMyParties();
+    Get.offAllNamed('/challenge/main');
   }
 
   @override

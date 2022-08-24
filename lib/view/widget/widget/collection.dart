@@ -53,7 +53,7 @@ class CollectionWidget extends StatelessWidget {
                   height: size,
                   decoration: ShapeDecoration(
                     color: onPressed != null && !selected
-                        ? PTheme.white.withOpacity(.7) : null,
+                        ? PTheme.black.withOpacity(.5) : null,
                     shape: side,
                   ),
                 ),

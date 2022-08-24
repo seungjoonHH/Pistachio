@@ -20,6 +20,7 @@ class PTheme {
   static const Color bar = Color(0xFFECCFC0);
   static const Color surface = Color(0xFFFFF4F1);
   static const Color background = Color(0xFFF4E9E7);
+  static const Color outline = Color(0xFF73796E);
   static const Color colorA = Color(0xFF59A86B);
   static const Color colorB = Color(0xFFE45B47);
   static const Color colorC = Color(0xFFE5953E);

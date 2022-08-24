@@ -32,23 +32,23 @@ class ExerciseInputPage extends StatelessWidget {
 
     Map<ActivityType, String> riveName = {
       ActivityType.distance: 'assets/rive/input/jogger.riv',
-      ActivityType.height: 'assets/rive/input/2967-6217-dog-psych.riv',
+      ActivityType.height: 'assets/rive/input/1738-3431-raster-graphics-example.riv',
       ActivityType.weight: 'assets/rive/input/lumberjack_squats.riv',
-      ActivityType.calorie: 'assets/rive/input/2967-6217-dog-psych.riv',
+      ActivityType.calorie: 'assets/rive/input/537-1015-sport-charts.riv',
     };
 
     Map<ActivityType, String> riveArtboard = {
       ActivityType.distance: 'Joggers',
-      ActivityType.height: 'Shiba_inu',
+      ActivityType.height: 'New Artboard',
       ActivityType.weight: 'Squat',
-      ActivityType.calorie: 'Shiba_inu',
+      ActivityType.calorie: 'New Artboard',
     };
 
     Map<ActivityType, String> riveAnimations = {
-      ActivityType.distance: 'Stand',
-      ActivityType.height: 'Shiba_inu',
-      ActivityType.weight: 'Squat',
-      ActivityType.calorie: 'Shiba_inu',
+      ActivityType.distance: 'Jog',
+      ActivityType.height: 'Animation 1',
+      ActivityType.weight: 'Demo',
+      ActivityType.calorie: 'Example',
     };
 
 

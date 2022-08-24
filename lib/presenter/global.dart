@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/collection.dart';
@@ -12,12 +13,12 @@ import 'package:pistachio/presenter/page/exercise/input.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
 import 'package:pistachio/presenter/notification.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
-import 'package:get/get.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
+import 'package:pistachio/presenter/page/my.dart';
 
 class GlobalPresenter extends GetxController {
   int navIndex = 0;
@@ -67,6 +68,7 @@ class GlobalPresenter extends GetxController {
     Get.put(RecordMain());
     Get.put(QuestMain());
     Get.put(ChallengeDifficulty());
+    Get.put(MyPresenter());
   }
 
   static void importData() {

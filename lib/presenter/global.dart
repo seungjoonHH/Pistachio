@@ -21,6 +21,10 @@ import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/presenter/page/my.dart';
+import 'package:pistachio/presenter/page/setting/setting.dart';
+import 'package:pistachio/presenter/page/setting/edit_nickname.dart';
+import 'package:pistachio/presenter/page/setting/edit_height.dart';
+import 'package:pistachio/presenter/page/setting/edit_weight.dart';
 
 class GlobalPresenter extends GetxController {
   int navIndex = 0;
@@ -67,6 +71,10 @@ class GlobalPresenter extends GetxController {
     Get.put(MyPresenter());
     Get.put(ChallengeMain());
     Get.put(ChallengeCreate());
+    Get.put(SettingPresenter());
+    Get.put(EditNicknamePresenter());
+    Get.put(EditHeightPresenter());
+    Get.put(EditWeightPresenter());
   }
 
   static void importData() {

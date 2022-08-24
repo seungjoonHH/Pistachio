@@ -82,7 +82,7 @@ void showPDialog({
         side: BorderSide(color: PTheme.black, width: 1.5),
         borderRadius: BorderRadius.zero,
       ),
-      backgroundColor: PTheme.blush,
+      backgroundColor: PTheme.bar,
       title: Container(
         padding: titlePadding,
         decoration: const BoxDecoration(

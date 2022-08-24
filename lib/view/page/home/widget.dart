@@ -50,7 +50,7 @@ class SeeMoreButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PTextButton(
       text: '더 보기',
-      color: PTheme.dessertGold,
+      color: PTheme.colorC,
       onPressed: onPressed,
     );
   }
@@ -168,14 +168,14 @@ class DailyActivityCircularGraph extends StatelessWidget {
           children: [
             Stack(
               children: [
-                PCircularIndicator(
+                PCircularPercentIndicator(
                   percent: earlierPercent,
                   centerText: type.kr,
                   color: type.color,
                   duration: earlierDuration,
                   onAnimationEnd: () => controller.showLaterGraph(type),
                 ),
-                PCircularIndicator(
+                PCircularPercentIndicator(
                   visible: controller.graphStates[type]!,
                   percent: laterPercent,
                   centerText: type.kr,
@@ -190,7 +190,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
               children: [
                 PText(
                   '$todayRecord',
-                  color: PTheme.brickRed,
+                  color: PTheme.colorB,
                   style: textTheme.labelLarge,
                 ),
                 PText(
@@ -219,7 +219,7 @@ class MonthlyQuestWidget extends StatelessWidget {
             PText('월간 목표', style: textTheme.titleMedium),
             SeeMoreButton(
               onPressed: () {
-                Get.toNamed('/monthlyQuest');
+                Get.toNamed('/quest');
               },
             ),
           ],
@@ -271,9 +271,8 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
           Expanded(
             flex: 3,
             child: GetBuilder<HomePresenter>(builder: (controller) {
-              final questPresenter = Get.find<QuestPresenter>();
               int record = controller.thisMonthRecords[type] ?? 0;
-              int goal = questPresenter.quests[type] ?? 1;
+              int goal = QuestPresenter.quests[type] ?? 1;
               if (type == ActivityType.weight) goal ~/= weight + 1;
               double percent = min(record / goal, 1);
 

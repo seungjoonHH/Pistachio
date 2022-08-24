@@ -37,6 +37,7 @@ class RegisterPresenter extends GetxController {
     nickNameCont.clear();
     birthdayCont.clear();
     newcomer = PUser();
+    distanceMinute = 0;
   }
 
   // 현재 페이지 인덱스 증가
@@ -55,7 +56,7 @@ class RegisterPresenter extends GetxController {
   // 추가될 유저
   PUser newcomer = PUser();
 
-  int distanceMinute = 15;
+  int distanceMinute = 0;
 
   // List<Map<String, String>> examples = [
   //   {
@@ -106,15 +107,12 @@ class RegisterPresenter extends GetxController {
   }
 
   void setGoal(ActivityType type, int value) {
-    int goal = value;
-
+    int amount = value;
     if (type == ActivityType.distance) {
-      distanceMinute = value;
-      goal = convertAmount(type, value);
+      distanceMinute = amount;
+      amount = convertDistance(amount);
     }
-
-    newcomer.goals[type.name] = goal;
-    update();
+    newcomer.goals[type.name] = amount; update();
   }
 
   // 새 크루 정보 제출 시
@@ -163,8 +161,15 @@ class RegisterPresenter extends GetxController {
         int.parse(birthdayCont.text.substring(6)),
       );
     } else if (pageIndex == 6) {
-      newcomer.goals[ActivityType.calorie.name] = allCalories;
+      int goal = 0;
+      for (var type in ActivityType.values.sublist(0, 3)) {
+        int amount = newcomer.goals[type.name].toInt();
+        if (type == ActivityType.distance) amount = distanceMinute;
+        goal += getCalories(type, amount);
+      }
+      newcomer.goals[ActivityType.calorie.name] = goal;
       update();
+
     } else if (pageIndex == CarouselView.widgetCount - 1) {
       submitted();
       return;

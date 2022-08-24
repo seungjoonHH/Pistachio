@@ -8,11 +8,13 @@ class PAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PAppBar({
     Key? key,
     this.title = '',
-    this.color = PTheme.offWhite,
+    this.color = PTheme.background,
+    this.actions
   }) : super(key: key);
 
   final String title;
   final Color? color;
+  final List<Widget>? actions;
 
   @override
   Size get preferredSize => const Size.fromHeight(60.0);
@@ -26,6 +28,7 @@ class PAppBar extends StatelessWidget implements PreferredSizeWidget {
             iconTheme: const IconThemeData(color: PTheme.black),
             backgroundColor: color,
             title: PText(title, style: textTheme.titleLarge),
+            actions: actions,
           );
         }
     );
@@ -44,8 +47,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (controller) {
         return AppBar(
           elevation: 0.0,
-          iconTheme: const IconThemeData(color: PTheme.light),
-          backgroundColor: PTheme.offWhite,
+          iconTheme: const IconThemeData(color: PTheme.white),
+          backgroundColor: PTheme.background,
           title: const Align(
             alignment: Alignment.centerRight,
             child: MyNavigationButton(),

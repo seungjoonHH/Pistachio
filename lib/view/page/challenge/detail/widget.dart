@@ -1,12 +1,9 @@
 /* 챌린지 디테일 위젯 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
-import 'package:pistachio/presenter/model/challenge.dart';
-import 'package:pistachio/presenter/page/challenge/difficulty.dart';
+import 'package:pistachio/presenter/page/challenge/create.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
@@ -42,7 +39,7 @@ class ChallengeDetailView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               PCard(
-                color: PTheme.offWhite,
+                color: PTheme.background,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -60,7 +57,7 @@ class ChallengeDetailView extends StatelessWidget {
                     ),
                     const SizedBox(height: 30.0),
                     PText(
-                      challenge.descriptions['detail']!.replaceAll('#', ''),
+                      challenge.descriptions['detail']!.replaceAll('##', challenge.word),
                       align: TextAlign.center,
                       style: textTheme.labelLarge,
                       color: PTheme.black,
@@ -76,7 +73,7 @@ class ChallengeDetailView extends StatelessWidget {
         Positioned(
           bottom: 50.0,
           child: PButton(
-            onPressed: () => ChallengeDifficulty.toChallengeDifficulty(challenge),
+            onPressed: () => ChallengeCreate.toChallengeCreate(challenge),
             text: '챌린지 하러가기',
             stretch: true,
             constraints: const BoxConstraints(maxWidth: 340.0),

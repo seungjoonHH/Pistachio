@@ -10,6 +10,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/view/widget/button/button.dart';
+import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 // 회원가입 페이지 위젯 모음
@@ -57,7 +58,6 @@ class CarouselView extends StatelessWidget {
                   )
                 : Container(),
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Container(
@@ -113,7 +113,20 @@ class UserInfoView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('닉네임을 입력하세요.'),
+                  Center(
+                    child: PText(
+                      '보다 나은 서비스를 위해\n정보를 입력해주세요!',
+                      style: textTheme.headlineSmall,
+                      color: PTheme.black,
+                      maxLines: 2,
+                      align: TextAlign.center,
+                    ),
+                  ),
+                  PText(
+                    '별명',
+                    style: textTheme.headlineSmall,
+                    color: PTheme.black,
+                  ),
                   const SizedBox(height: 8.0),
                   ShakeWidget(
                     autoPlay: controller.invalids[0],
@@ -122,24 +135,22 @@ class UserInfoView extends StatelessWidget {
                       controller: RegisterPresenter.nickNameCont,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: '별명',
+                        hintText: '별명을 입력해주세요',
                         isDense: true,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  const Text('한글, 영문, 숫자만 입력해주세요.'),
+                  const SizedBox(height: 40.0),
                 ],
-              ),
-              Divider(
-                height: 40.0,
-                thickness: 2.0,
-                color: Theme.of(context).colorScheme.primaryContainer,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('생년월일을 입력하세요.'),
+                  PText(
+                    '생년월일',
+                    style: textTheme.headlineSmall,
+                    color: PTheme.black,
+                  ),
                   const SizedBox(height: 8.0),
                   ShakeWidget(
                     autoPlay: controller.invalids[1],
@@ -153,17 +164,17 @@ class UserInfoView extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 40.0),
                 ],
-              ),
-              Divider(
-                height: 40.0,
-                thickness: 2.0,
-                color: Theme.of(context).colorScheme.primaryContainer,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('성별을 선택하세요.'),
+                  PText(
+                    '성별',
+                    style: textTheme.headlineSmall,
+                    color: PTheme.black,
+                  ),
                   const SizedBox(height: 8.0),
                   ShakeWidget(
                     autoPlay: controller.invalids[2],
@@ -202,28 +213,27 @@ class SexSelectionButton extends StatelessWidget {
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
         return SizedBox(
-          width: 128.0,
-          height: 40.0,
+          width: 160.0,
+          height: 50.0,
           child: ElevatedButton(
             onPressed: () => controller.setSex(sex),
             style: OutlinedButton.styleFrom(
               padding: EdgeInsets.zero,
               elevation: 0.0,
               backgroundColor: sex == controller.newcomer.sex
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onPrimary,
-              side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                  ? PTheme.black
+                  : PTheme.white,
+              side: BorderSide(color: PTheme.black),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            child: Text(
+            child: PText(
               texts[sex]!,
-              style: TextStyle(
-                color: sex == controller.newcomer.sex
-                    ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.primary,
-              ),
+              style: textTheme.headlineSmall,
+              color: sex == controller.newcomer.sex
+                  ? PTheme.white
+                  : PTheme.black,
             ),
           ),
         );
@@ -253,7 +263,7 @@ class WeightHeightView extends StatelessWidget {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .headline5
-                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ?.copyWith(color: PTheme.black),
               );
             },
           ),
@@ -273,7 +283,7 @@ class WeightHeightView extends StatelessWidget {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .headline5
-                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ?.copyWith(color: PTheme.black),
               );
             },
           ),
@@ -282,29 +292,53 @@ class WeightHeightView extends StatelessWidget {
       ),
     };
 
-    return ListView.separated(
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: contents.length,
-      itemBuilder: (context, index) => Card(
-        elevation: 3.0,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(
-            color: Colors.transparent,
+    return Column(
+      children: [
+        Center(
+          child: PText(
+            '보다 나은 서비스를 위해\n정보를 입력해주세요!',
+            style: textTheme.headlineSmall,
+            color: PTheme.black,
+            maxLines: 2,
+            align: TextAlign.center,
           ),
-          borderRadius: BorderRadius.circular(10),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: contents.length,
+          itemBuilder: (context, index) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(contents.keys.toList()[index]),
-              contents[contents.keys.toList()[index]]!,
+              PText(contents.keys.toList()[index],
+                style: textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 10.0),
+              PCard(
+                rounded: true,
+                color: Colors.transparent,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    contents[contents.keys.toList()[index]]!,
+                  ],
+                ),
+              ),
+
             ],
           ),
+          separatorBuilder: (context, index) => const SizedBox(height: 10.0),
         ),
-      ),
-      separatorBuilder: (context, index) => const SizedBox(height: 10.0),
+        Center(
+          child: PText(
+            '*체중과 신장은 간편한 계산을 위해서만 사용될 뿐\n다른 곳에는 이용되지 않아요!',
+            style: textTheme.bodyMedium,
+            color: colorScheme.outline,
+            maxLines: 2,
+            align: TextAlign.center,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -581,7 +615,7 @@ class DistanceGoalView extends StatelessWidget {
                 ),
                 PText(
                   '* 약 ${controller.newcomer.goals[ActivityType.distance.name]} m',
-                  color: PTheme.brickRed,
+                  color: PTheme.colorB,
                 ),
               ],
             ),
@@ -808,7 +842,7 @@ class CalorieCheckView extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 200.0),
+            const SizedBox(height: 210.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -959,6 +993,7 @@ class CarouselButton extends StatelessWidget {
               text: '이전',
               textColor: Colors.black,
               backgroundColor: Colors.white,
+              padding: EdgeInsets.all(15.0),
               stretch: true,
               multiple: true,
             ),
@@ -966,6 +1001,7 @@ class CarouselButton extends StatelessWidget {
               onPressed: controller.nextPressed,
               text: lastPage ? '완료' : '다음',
               backgroundColor: Colors.black,
+              padding: EdgeInsets.all(15.0),
               stretch: true,
               multiple: true,
             ),

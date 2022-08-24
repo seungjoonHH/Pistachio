@@ -55,7 +55,7 @@ class PButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (stretch) const Expanded(child: SizedBox()),
-              child ?? PText(text!, color: textColor),
+              child ?? PText(text!, color: textColor, style: textTheme.titleMedium),
               if (stretch) const Expanded(child: SizedBox()),
             ],
           ),

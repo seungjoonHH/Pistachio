@@ -29,10 +29,10 @@ enum ActivityType {
   String get prefix => ['이동한', '오른', '들은', '감량한'][index];
 
   Color get color => [
-        PTheme.brickRed,
-        PTheme.crystalBlue,
-        PTheme.dessertGold,
-        PTheme.parkGreen
+        PTheme.colorB,
+        PTheme.colorD,
+        PTheme.colorC,
+        PTheme.colorA
       ][index];
 
   String get asset => [
@@ -56,6 +56,9 @@ enum Difficulty {
 
   String get kr => ['쉬움', '보통', '어려움'][index];
 }
+
+Difficulty? toDifficulty(String? string) =>
+    Difficulty.values.firstWhereOrNull((diff) => diff.name == string);
 
 enum DialogType { none, mono, bi }
 

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/presenter/model/challenge.dart';
+import 'package:pistachio/presenter/page/challenge/main.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +50,7 @@ class HomeDrawer extends StatelessWidget{
               text: '홈',
             ),
             const HomeDrawerTile(
-              onPressed: ChallengePresenter.toChallengeMain,
+              onPressed: ChallengeMain.toChallengeMain,
               iconData: Icons.people_alt_outlined,
               text: '챌린지',
             ),

@@ -1,4 +1,3 @@
-import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/page/register/widget.dart';
@@ -9,7 +8,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: PTheme.offWhite,
+      backgroundColor: PTheme.background,
       body: CarouselView(),
     );
   }

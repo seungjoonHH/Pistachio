@@ -3,12 +3,12 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
-class PCircularIndicator extends StatelessWidget {
-  const PCircularIndicator({
+class PCircularPercentIndicator extends StatelessWidget {
+  const PCircularPercentIndicator({
     Key? key,
     required this.percent,
     required this.color,
-    this.backgroundColor = PTheme.offWhite,
+    this.backgroundColor = PTheme.background,
     this.radius = 60.0,
     this.lineWidth = 16.0,
     this.centerText = '',
@@ -73,5 +73,19 @@ class PCircularIndicator extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class PCircularProgressIndicator extends StatelessWidget {
+  const PCircularProgressIndicator({
+    Key? key,
+    required this.visible,
+  }) : super(key: key);
+
+  final bool visible;
+
+  @override
+  Widget build(BuildContext context) {
+    return visible ? const CircularProgressIndicator() : Container();
   }
 }

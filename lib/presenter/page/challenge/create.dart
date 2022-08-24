@@ -2,9 +2,9 @@ import 'package:pistachio/model/class/challenge.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
-class ChallengeDifficulty extends GetxController {
-  static void toChallengeDifficulty(Challenge challenge) {
-    Get.toNamed('/challenge/difficulty', arguments: challenge);
+class ChallengeCreate extends GetxController {
+  static void toChallengeCreate(Challenge challenge) {
+    Get.toNamed('/challenge/create', arguments: challenge);
   }
 
   Difficulty difficulty = Difficulty.easy;

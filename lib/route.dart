@@ -10,8 +10,8 @@ import 'package:pistachio/view/page/exercise/setting/detail/detail.dart';
 import 'package:pistachio/view/page/exercise/setting/type/type.dart';
 import 'package:pistachio/view/page/home/home.dart';
 import 'package:pistachio/view/page/login/login.dart';
-import 'package:pistachio/view/page/monthlyQuest/monthlyQuest.dart';
 import 'package:pistachio/view/page/onboarding/onboarding.dart';
+import 'package:pistachio/view/page/quest/quest.dart';
 import 'package:pistachio/view/page/record/detail/detail.dart';
 import 'package:pistachio/view/page/record/main/main.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +43,9 @@ class PRoute {
         '/record/detail': const RecordDetailPage(),
         '/challenge/main': const ChallengeMainPage(),
         '/challenge/detail': const ChallengeDetailPage(),
-        '/challenge/difficulty': const ChallengeDifficultyPage(),
+        '/challenge/create': const ChallengeCreatePage(),
         '/challenge/complete': const ChallengeCompletePage(),
-        '/monthlyQuest': const MonthlyQuestPage(),
+        '/quest': const QuestPage(),
       };
 
   // 겟페이지 리스트

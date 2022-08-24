@@ -66,10 +66,9 @@ class ExerciseSelectionButtonView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ExerciseDetailSetting>(
       builder: (controller) {
-        final exercisePresenter = Get.find<ExercisePresenter>();
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: exercisePresenter.exercises.map((ex) => ExerciseSelectionButton(
+          children: ExercisePresenter.exercises.map((ex) => ExerciseSelectionButton(
             text: ex.name!,
             color: controller.selectedIndex == ex.index
                 ? colorScheme.primary
@@ -110,8 +109,7 @@ class ExerciseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ExerciseDetailSetting>(
       builder: (controller) {
-        final exercisePresenter = Get.find<ExercisePresenter>();
-        Exercise exercise = exercisePresenter.exercises[controller.selectedIndex];
+        Exercise exercise = ExercisePresenter.exercises[controller.selectedIndex];
         return Card(
           color: colorScheme.background,
           child: Column(

@@ -12,12 +12,14 @@ class ExerciseInput extends GetxController {
   static void toExerciseInput(ActivityType type) {
     Get.toNamed('/exercise/input', arguments: type);
   }
+
   void completeButtonPressed(ActivityType type) {
     final userPresenter = Get.find<UserPresenter>();
 
     int amount = convertAmount(type, int.parse(inputCont.text));
-    userPresenter.loggedUser.setRecord(type, today, amount);
-    userPresenter.loggedUser.setRecord(ActivityType.calorie, today, calories[type] ?? 0);
+    userPresenter.loggedUser.addRecord(type, today, amount);
+    userPresenter.loggedUser
+        .addRecord(ActivityType.calorie, today, calories[type] ?? 0);
     userPresenter.save();
     inputCont.clear();
     HomePresenter.toHome();

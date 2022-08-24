@@ -34,11 +34,9 @@ class AuthPresenter {
     if (userCredential == null) return;
 
     // 파이어베이스 데이터
-    Map<String, dynamic>? json = (await f
-        .collection('users')
-        .doc(userCredential.user!.uid)
-        .get()
-    ).data();
+    Map<String, dynamic>? json =
+        (await f.collection('users').doc(userCredential.user!.uid).get())
+            .data();
 
     // 파이어베이스에 문서가 없거나 json 데이터에 닉네임이 없을 경우 신규 회원
     isNewcomer = json == null || json['nickname'] == null;
@@ -60,7 +58,7 @@ class AuthPresenter {
     else {
       // 파이어베이스 데이터로 로그인
       PUser stranger = PUser.fromJson(json);
-      userPresenter.login(stranger);
+      await userPresenter.login(stranger);
       HomePresenter.toHome();
     }
   }

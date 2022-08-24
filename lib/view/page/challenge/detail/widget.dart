@@ -24,10 +24,13 @@ class ChallengeDetailView extends StatelessWidget {
       children: [
         Column(
           children: [
-            Image.asset(
-              challenge.imageUrls['default'],
-              height: 250.0,
-              fit: BoxFit.fitHeight,
+            Hero(
+              tag: challenge.id!,
+              child: Image.asset(
+                challenge.imageUrls['default'],
+                height: 250.0,
+                fit: BoxFit.fitHeight,
+              ),
             ),
             const Expanded(child: SizedBox()),
           ],

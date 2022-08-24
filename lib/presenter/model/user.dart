@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/class/collection.dart';
 import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
@@ -60,7 +61,6 @@ class UserPresenter extends GetxController {
   void delete() => f.collection('users').doc(loggedUser.uid).delete();
 
   set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
-
   Map<String, Party> get myParties => loggedUser.parties;
 
   String get randomCode {
@@ -122,4 +122,7 @@ class UserPresenter extends GetxController {
   void saveMyParty(Party party) async {
     await f.collection('parties').doc(party.id).set(party.toJson());
   }
+
+  set myCollections(List<Collection> collections) => loggedUser.collections = collections;
+  List<Collection> get myCollections => loggedUser.collections;
 }

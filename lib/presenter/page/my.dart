@@ -1,7 +1,5 @@
 /* 마이 페이지 프리젠터 */
 
-import 'package:pistachio/global/date.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// class

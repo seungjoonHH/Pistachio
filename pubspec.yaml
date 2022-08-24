@@ -66,7 +66,7 @@ flutter:
     - assets/image/challenge/default/
     - assets/image/challenge/complete/
     - assets/image/challenge/focus/
-    - assets/image/collection/
+    - assets/image/badge/
     - assets/image/page/login/
     - assets/image/page/onboarding/
     - assets/image/page/timer/

@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pistachio/global/date.dart';
+import 'package:pistachio/model/class/collection.dart';
 import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
@@ -18,7 +19,7 @@ class PUser {
   Timestamp? _dateOfBirth;
   String? collectionId;
   List<String> partyIds = [];
-  List<Map<String, dynamic>> collectionIds = [];
+  List<Collection> collections = [];
   Map<String, dynamic> goals = {};
   Map<String, dynamic> records = {};
 
@@ -108,7 +109,7 @@ class PUser {
     _dateOfBirth = json['dateOfBirth'];
     collectionId = json['collectionId'];
     partyIds = (json['partyIds'] ?? []).cast<String>();
-    collectionIds = (json['collectionIds'] ?? []).cast<Map<String, dynamic>>();
+    collections = toCollections((json['collections'] ?? []).cast<Map<String, dynamic>>());
     goals = json['goals'];
     records = json['records'];
   }
@@ -126,9 +127,21 @@ class PUser {
     json['dateOfBirth'] = _dateOfBirth;
     json['collectionId'] = collectionId;
     json['partyIds'] = partyIds;
-    json['collectionIds'] = collectionIds;
+    json['collections'] = collectionsToJsonList(collections);
     json['goals'] = goals;
     json['records'] = records;
     return json;
+  }
+
+  static List<Collection> toCollections(List<Map<String, dynamic>> jsonList) {
+    List<Collection> collections = [];
+    for (var json in jsonList) { collections.add(Collection.fromJson(json)); }
+    return collections;
+  }
+
+  static List<Map<String, dynamic>> collectionsToJsonList(List<Collection> collections) {
+    List<Map<String, dynamic>> jsonList = [];
+    for (Collection collection in collections) { jsonList.add(collection.toJson()); }
+    return jsonList;
   }
 }

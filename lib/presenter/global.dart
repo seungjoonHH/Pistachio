@@ -48,7 +48,7 @@ class GlobalPresenter extends GetxController {
     Get.put(UserPresenter());
     Get.put(ExercisePresenter());
     Get.put(ChallengePresenter());
-    Get.put(CollectionPresenter());
+    Get.put(BadgePresenter());
     Get.put(LevelPresenter());
     Get.put(QuestPresenter());
     Get.put(PartyPresenter());
@@ -71,7 +71,7 @@ class GlobalPresenter extends GetxController {
 
   static void importData() {
     ExercisePresenter.importFile();
-    CollectionPresenter.importFile();
+    BadgePresenter.importFile();
     ChallengePresenter.importFile();
     LevelPresenter.importFile(ActivityType.distance);
     LevelPresenter.importFile(ActivityType.height);

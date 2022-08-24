@@ -11,7 +11,7 @@ import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/challenge/detail.dart';
 import 'package:pistachio/presenter/page/challenge/main.dart';
 import 'package:pistachio/view/widget/button/button.dart';
-import 'package:pistachio/view/widget/widget/collection.dart';
+import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 import '../../../../presenter/model/user.dart';
@@ -122,9 +122,12 @@ class ChallengeCard extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Column(
         children: [
-          Image.asset(
-            challenge.imageUrls['default'],
-            fit: BoxFit.fitWidth,
+          Hero(
+            tag: challenge.id!,
+            child: Image.asset(
+              challenge.imageUrls['default'],
+              fit: BoxFit.fitWidth,
+            ),
           ),
           const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
           Padding(
@@ -152,9 +155,9 @@ class ChallengeCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    CollectionWidget(
+                    BadgeWidget(
                       size: 80.0,
-                      collection: challenge.collections[Difficulty.hard],
+                      badge: challenge.badges[Difficulty.hard],
                     ),
                   ],
                 ),

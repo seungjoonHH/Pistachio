@@ -1,7 +1,7 @@
 /* 라우트 관련 */
+import 'package:pistachio/view/page/challenge/create/create.dart';
 import 'package:pistachio/view/page/challenge/main/main.dart';
 import 'package:pistachio/view/page/challenge/detail/detail.dart';
-import 'package:pistachio/view/page/challenge/difficulty/difficulty.dart';
 import 'package:pistachio/view/page/challenge/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/input/input.dart';

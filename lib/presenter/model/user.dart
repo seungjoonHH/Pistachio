@@ -75,19 +75,30 @@ class UserPresenter extends GetxController {
     );
   }
 
-  void addMyParties(Challenge challenge, Difficulty diff) {
+  Future getMembers(Party party) async {
+    for (String uid in party.records.keys) {
+      var json = (await f.collection('users').doc(uid).get()).data();
+
+      if (json == null) return;
+      PUser member = PUser.fromJson(json);
+      party.members.add(member);
+    }
+  }
+
+  void addMyParties(Challenge challenge, Difficulty diff) async {
     String code = randomCode;
 
     Party newParty = Party.fromJson({
       'id': code,
       'challengeId': challenge.id,
       'difficulty': diff.name,
-      'goals': <String, dynamic>{loggedUser.uid!: 0},
+      'records': <String, dynamic>{ loggedUser.uid!: 0 },
       'leaderUid': loggedUser.uid,
     });
 
     newParty.challenge = ChallengePresenter.getChallenge(newParty.challengeId!);
     myParties[code] = newParty;
+    await getMembers(newParty);
     saveMyParty(newParty);
 
     loggedUser.partyIds.add(newParty.id!);
@@ -96,12 +107,14 @@ class UserPresenter extends GetxController {
     update();
   }
 
-  void loadMyParties() async {
+  Future loadMyParties() async {
     for (String id in loggedUser.partyIds) {
       var json = (await f.collection('parties').doc(id).get()).data();
       if (json == null) return;
       Party party = Party.fromJson(json);
       party.challenge = ChallengePresenter.getChallenge(party.challengeId!);
+      await getMembers(party);
+
       myParties[json['id']] = party;
     }
   }

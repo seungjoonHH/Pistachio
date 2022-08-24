@@ -1,7 +1,6 @@
 /* 사용자 모델 구조 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/enum/enum.dart';
@@ -73,10 +72,8 @@ class PUser {
     records.forEach((type, recordList) {
       if (activityType.name == type) {
         for (var record in recordList) {
-          if (startDate != null && record['date'].toDate().isBefore(startDate))
-            continue;
-          if (endDate != null && record['date'].toDate().isAfter(endDate))
-            continue;
+          if (startDate != null && record['date'].toDate().isBefore(startDate)) continue;
+          if (endDate != null && record['date'].toDate().isAfter(endDate)) continue;
           result += record['amount'] as int;
         }
       }

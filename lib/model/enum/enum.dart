@@ -29,10 +29,10 @@ enum ActivityType {
   String get prefix => ['이동한', '오른', '들은', '감량한'][index];
 
   Color get color => [
-        PTheme.brickRed,
-        PTheme.crystalBlue,
-        PTheme.dessertGold,
-        PTheme.parkGreen
+        PTheme.colorB,
+        PTheme.colorD,
+        PTheme.colorC,
+        PTheme.colorA
       ][index];
 
   String get asset => [

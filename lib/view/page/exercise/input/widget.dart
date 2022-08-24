@@ -2,24 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
 class RAnimation extends StatelessWidget {
-  const RAnimation({Key? key,
-    required this.rname,
-    required this.abname,
-    required this.aname}) : super(key: key);
+  const RAnimation(
+      {Key? key,
+      required this.rName,
+      required this.abName,
+      required this.aName})
+      : super(key: key);
 
-  final String rname;
-  final String abname;
-  final String aname;
+  final String rName;
+  final String abName;
+  final String aName;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300,
       height: 300,
-      child: RiveAnimation.asset(
-        rname,
-        artboard: abname,
-        animations: [aname]),
+      child: RiveAnimation.asset(rName, artboard: abName, animations: [aName]),
     );
   }
 }

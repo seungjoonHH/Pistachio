@@ -7,7 +7,7 @@ class PCard extends StatelessWidget {
     required this.child,
     this.padding = const EdgeInsets.all(20.0),
     this.onPressed,
-    this.color = PTheme.light,
+    this.color = PTheme.white,
     this.rounded = false,
   }) : super(key: key);
 

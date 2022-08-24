@@ -1,3 +1,4 @@
+import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
@@ -7,8 +8,10 @@ class Party {
   String? challengeId;
   Difficulty difficulty = Difficulty.easy;
   Map<String, dynamic> goals = {};
-  List<String> memberUids = [];
+  String? leaderUid;
 
+  PUser? leader;
+  Challenge? challenge;
   List<PUser> members = [];
 
   /// constructors
@@ -22,18 +25,18 @@ class Party {
   void fromJson(Map<String, dynamic> json) {
     id = json['id'];
     challengeId = json['challengeId'];
-    difficulty = json['difficulty'];
+    difficulty = toDifficulty(json['difficulty'])!;
     goals = json['goals'];
-    memberUids = json['memberUids'];
+    leaderUid = json['leaderUid'];
   }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};
     json['id'] = id;
     json['challengeId'] = challengeId;
-    json['difficulty'] = difficulty;
+    json['difficulty'] = difficulty.name;
     json['goals'] = goals;
-    json['memberUids'] = memberUids;
+    json['leaderUid'] = leaderUid;
     return json;
   }
 

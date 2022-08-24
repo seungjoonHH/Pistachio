@@ -20,8 +20,8 @@ class ChallengeMainPage extends StatelessWidget {
           title: '챌린지',
 
         ),
-        backgroundColor: PTheme.offWhite,
-        bottomSheet: PBottomSheetBar(body: ChallengeListView()),
+        backgroundColor: PTheme.background,
+        bottomSheet: PBottomSheetBar(body: ChallengeMainView()),
       ),
     );
   }

@@ -27,7 +27,7 @@ class CollectionWidget extends StatelessWidget {
       side: BorderSide(
         width: 1.5,
         color: onPressed != null && selected
-            ? PTheme.brickRed : PTheme.black,
+            ? PTheme.colorB : PTheme.black,
       ),
     );
 
@@ -52,8 +52,8 @@ class CollectionWidget extends StatelessWidget {
                   width: size,
                   height: size,
                   decoration: ShapeDecoration(
-                    color: onPressed != null && selected ? null
-                        : PTheme.white.withOpacity(.7),
+                    color: onPressed != null && !selected
+                        ? PTheme.white.withOpacity(.7) : null,
                     shape: side,
                   ),
                 ),

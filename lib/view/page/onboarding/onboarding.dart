@@ -8,7 +8,7 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: PTheme.offWhite,
+      backgroundColor: PTheme.background,
       body: CarouselView(),
     );
   }

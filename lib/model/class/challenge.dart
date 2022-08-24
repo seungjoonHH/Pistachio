@@ -5,19 +5,20 @@ import 'package:pistachio/presenter/model/collection.dart';
 
 class Challenge {
   /// static variables
-  static String defaultAsset = 'assets/image/challenge/default/';
-  static String completeAsset = 'assets/image/challenge/complete/';
+  static String imageAsset = 'assets/image/challenge/';
 
   /// static methods
   static Map<String, dynamic> idToImageUrls(String id) => {
-    'default': '$defaultAsset$id.png',
-    'complete': '$completeAsset$id.png',
+    'default': '${imageAsset}default/$id.png',
+    'complete': '${imageAsset}complete/$id.png',
+    'focus': '${imageAsset}focus/$id.png',
   };
 
   /// attributes
   String? id;
   String? title;
   ActivityType? type;
+  String? word;
   Color? theme;
   Map<String, dynamic> imageUrls = {};
   Map<String, dynamic> descriptions = {};
@@ -38,6 +39,7 @@ class Challenge {
     title = json['title'];
     imageUrls = idToImageUrls(id!);
     type = toActivityType(json['type']);
+    word = json['word'];
     levels = json['levels'];
     descriptions = json['descriptions'];
     levels.forEach((string, level) {
@@ -51,6 +53,7 @@ class Challenge {
     json['id'] = id;
     json['title'] = title;
     json['type'] = type?.name;
+    json['word'] = word;
     json['levels'] = levels;
     json['descriptions'] = descriptions;
     return json;

@@ -1,8 +1,16 @@
 /* 사용자 모델 프리젠터 */
 
+import 'dart:math';
+
 import 'package:get/get.dart';
+import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
+import 'package:pistachio/presenter/model/challenge.dart';
+
+import '../health/health.dart';
 
 /// class
 class UserPresenter extends GetxController {
@@ -23,10 +31,11 @@ class UserPresenter extends GetxController {
   /* 로그인 관련 */
   // 로그인
   // 매개변수로 받은 사용자 정보와 User Credential 정보를 병합하여 현재 로그인된 사용자자 최신화
-  void login(PUser user) {
+  Future login(PUser user) async {
     Map<String, dynamic> json = user.toJson();
     data.forEach((key, value) => json[key] = value);
     loggedUser = PUser.fromJson(json);
+    await HealthPresenter.fetchStepData();
   }
 
   // 로그아웃
@@ -44,8 +53,60 @@ class UserPresenter extends GetxController {
   }
 
   // 파이어베이스에 최신화
-  void save() => f.collection('users').doc(loggedUser.uid).set(loggedUser.toJson());
+  void save() =>
+      f.collection('users').doc(loggedUser.uid).set(loggedUser.toJson());
 
   // 파이어베이스에서 삭제
   void delete() => f.collection('users').doc(loggedUser.uid).delete();
+
+  set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
+
+  Map<String, Party> get myParties => loggedUser.parties;
+
+  String get randomCode {
+    int length = 7;
+    const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    return String.fromCharCodes(
+      Iterable.generate(
+          length,
+          (_) => chars.codeUnitAt(
+                Random().nextInt(chars.length),
+              )),
+    );
+  }
+
+  void addMyParties(Challenge challenge, Difficulty diff) {
+    String code = randomCode;
+
+    Party newParty = Party.fromJson({
+      'id': code,
+      'challengeId': challenge.id,
+      'difficulty': diff.name,
+      'goals': <String, dynamic>{loggedUser.uid!: 0},
+      'leaderUid': loggedUser.uid,
+    });
+
+    newParty.challenge = ChallengePresenter.getChallenge(newParty.challengeId!);
+    myParties[code] = newParty;
+    saveMyParty(newParty);
+
+    loggedUser.partyIds.add(newParty.id!);
+    save();
+
+    update();
+  }
+
+  void loadMyParties() async {
+    for (String id in loggedUser.partyIds) {
+      var json = (await f.collection('parties').doc(id).get()).data();
+      if (json == null) return;
+      Party party = Party.fromJson(json);
+      party.challenge = ChallengePresenter.getChallenge(party.challengeId!);
+      myParties[json['id']] = party;
+    }
+  }
+
+  void saveMyParty(Party party) async {
+    await f.collection('parties').doc(party.id).set(party.toJson());
+  }
 }

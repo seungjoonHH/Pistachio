@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
     const backgroundAsset = 'assets/image/page/login/background.svg';
 
     return Scaffold(
-      backgroundColor: PTheme.offWhite,
+      backgroundColor: PTheme.background,
       body: Stack(
         alignment: Alignment.center,
         children: [

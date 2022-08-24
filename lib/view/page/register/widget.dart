@@ -615,7 +615,7 @@ class DistanceGoalView extends StatelessWidget {
                 ),
                 PText(
                   '* 약 ${controller.newcomer.goals[ActivityType.distance.name]} m',
-                  color: PTheme.brickRed,
+                  color: PTheme.colorB,
                 ),
               ],
             ),

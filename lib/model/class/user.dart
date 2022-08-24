@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pistachio/global/date.dart';
+import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
 class PUser {
@@ -21,6 +22,8 @@ class PUser {
   List<Map<String, dynamic>> collectionIds = [];
   Map<String, dynamic> goals = {};
   Map<String, dynamic> records = {};
+
+  Map<String, Party> parties = {};
 
   /// accessors & mutators
   DateTime? get regDate => _regDate?.toDate();

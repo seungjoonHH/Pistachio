@@ -9,10 +9,6 @@ import 'package:pistachio/model/class/challenge.dart';
 /// class
 class ChallengePresenter extends GetxController {
   static String asset = 'assets/json/data/challenges.json';
-
-  /// static methods
-  static void toChallengeMain() => Get.offAllNamed('/challenge/main');
-
   static List<Challenge> challenges = [];
 
   static Future importFile() async {
@@ -20,4 +16,7 @@ class ChallengePresenter extends GetxController {
     List<dynamic> list = jsonDecode(string);
     challenges = list.map((json) => Challenge.fromJson(json)).toList();
   }
+
+  static Challenge? getChallenge(String id) => challenges
+      .firstWhereOrNull((challenge) => challenge.id == id);
 }

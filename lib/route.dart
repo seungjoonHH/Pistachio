@@ -43,9 +43,9 @@ class PRoute {
         '/record/detail': const RecordDetailPage(),
         '/challenge/main': const ChallengeMainPage(),
         '/challenge/detail': const ChallengeDetailPage(),
-        '/challenge/difficulty': const ChallengeDifficultyPage(),
+        '/challenge/create': const ChallengeCreatePage(),
         '/challenge/complete': const ChallengeCompletePage(),
-        '/monthlyQuest': const QuestPage(),
+        '/quest': const QuestPage(),
       };
 
   // 겟페이지 리스트

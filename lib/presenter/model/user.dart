@@ -1,8 +1,14 @@
 /* 사용자 모델 프리젠터 */
 
+import 'dart:math';
+
 import 'package:get/get.dart';
+import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
+import 'package:pistachio/presenter/model/challenge.dart';
 
 /// class
 class UserPresenter extends GetxController {
@@ -48,4 +54,52 @@ class UserPresenter extends GetxController {
 
   // 파이어베이스에서 삭제
   void delete() => f.collection('users').doc(loggedUser.uid).delete();
+
+  set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
+  Map<String, Party> get myParties => loggedUser.parties;
+
+  String get randomCode {
+    int length = 7;
+    const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    return String.fromCharCodes(
+      Iterable.generate(length, (_) => chars.codeUnitAt(
+        Random().nextInt(chars.length),
+      )),
+    );
+  }
+
+  void addMyParties(Challenge challenge, Difficulty diff) {
+    String code = randomCode;
+
+    Party newParty = Party.fromJson({
+      'id': code,
+      'challengeId': challenge.id,
+      'difficulty': diff.name,
+      'goals': <String, dynamic>{ loggedUser.uid!: 0 },
+      'leaderUid': loggedUser.uid,
+    });
+
+    newParty.challenge = ChallengePresenter.getChallenge(newParty.challengeId!);
+    myParties[code] = newParty;
+    saveMyParty(newParty);
+
+    loggedUser.partyIds.add(newParty.id!);
+    save();
+
+    update();
+  }
+
+  void loadMyParties() async {
+    for (String id in loggedUser.partyIds) {
+      var json = (await f.collection('parties').doc(id).get()).data();
+      if (json == null) return;
+      Party party = Party.fromJson(json);
+      party.challenge = ChallengePresenter.getChallenge(party.challengeId!);
+      myParties[json['id']] = party;
+    }
+  }
+
+  void saveMyParty(Party party) async {
+    await f.collection('parties').doc(party.id).set(party.toJson());
+  }
 }

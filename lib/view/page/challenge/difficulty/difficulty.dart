@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 
 /// class
-class ChallengeDifficultyPage extends StatelessWidget {
-  const ChallengeDifficultyPage({Key? key}) : super(key: key);
+class ChallengeCreatePage extends StatelessWidget {
+  const ChallengeCreatePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,8 @@ class ChallengeDifficultyPage extends StatelessWidget {
 
     return Scaffold(
       appBar: const PAppBar(color: Colors.transparent),
-      backgroundColor: PTheme.offWhite,
-      body: ChallengeDifficultyView(challenge: challenge),
+      backgroundColor: PTheme.background,
+      body: ChallengeCreateView(challenge: challenge),
     );
   }
 }

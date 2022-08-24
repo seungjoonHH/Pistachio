@@ -14,18 +14,16 @@ ColorScheme colorScheme = Theme.of(Get.context!).colorScheme;
 class PTheme {
   /// colors
   // simple
-  static const Color black = Colors.black;
-  static const Color dark = Color(0xFF1F1F1F);
-  static const Color grey = Color(0xFF929292);
-  static const Color light = Color(0xFFF5F5F5);
-  static const Color white = Colors.white;
-  static const Color buttonColor = Color(0xFFD6BDAC);
-  static const Color parkGreen = Color(0xFF59A86B);
-  static const Color offWhite = Color(0xFFF4E9E7);
-  static const Color brickRed = Color(0xFFE45B47);
-  static const Color dessertGold = Color(0xFFE5953E);
-  static const Color crystalBlue = Color(0xFFC8E7D8);
-  static const Color blush = Color(0xFFECCFC0);
+  static const Color black = Color(0xFF1F1F1F);
+  static const Color grey = Color(0xFF73796E);
+  static const Color white = Color(0xFFFDFDFD);
+  static const Color bar = Color(0xFFECCFC0);
+  static const Color surface = Color(0xFFFFF4F1);
+  static const Color background = Color(0xFFF4E9E7);
+  static const Color colorA = Color(0xFF59A86B);
+  static const Color colorB = Color(0xFFE45B47);
+  static const Color colorC = Color(0xFFE5953E);
+  static const Color colorD = Color(0xFF71A3EE);
 
   // materialColor
   static const MaterialColor primary = MaterialColor(0xFFAEDB9F, {
@@ -191,52 +189,52 @@ class PTheme {
   );
 
   // surface
-  static Map<int, Color> get surface => {
-    Brightness.light: {
-      1: Color.alphaBlend(
-        primary[40]!.withOpacity(.05),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-      2: Color.alphaBlend(
-        primary[40]!.withOpacity(.08),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-      3: Color.alphaBlend(
-        primary[40]!.withOpacity(.11),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-      4: Color.alphaBlend(
-        primary[40]!.withOpacity(.12),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-      5: Color.alphaBlend(
-        primary[40]!.withOpacity(.14),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-    },
-    Brightness.dark: {
-      1: Color.alphaBlend(
-        primary[80]!.withOpacity(.05),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-      2: Color.alphaBlend(
-        primary[80]!.withOpacity(.08),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-      3: Color.alphaBlend(
-        primary[80]!.withOpacity(.11),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-      4: Color.alphaBlend(
-        primary[80]!.withOpacity(.12),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-      5: Color.alphaBlend(
-        primary[80]!.withOpacity(.14),
-        Theme.of(Get.context!).colorScheme.surface,
-      ),
-    },
-  }[Theme.of(Get.context!).brightness]!;
+  // static Map<int, Color> get surface => {
+  //   Brightness.light: {
+  //     1: Color.alphaBlend(
+  //       primary[40]!.withOpacity(.05),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //     2: Color.alphaBlend(
+  //       primary[40]!.withOpacity(.08),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //     3: Color.alphaBlend(
+  //       primary[40]!.withOpacity(.11),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //     4: Color.alphaBlend(
+  //       primary[40]!.withOpacity(.12),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //     5: Color.alphaBlend(
+  //       primary[40]!.withOpacity(.14),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //   },
+  //   Brightness.dark: {
+  //     1: Color.alphaBlend(
+  //       primary[80]!.withOpacity(.05),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //     2: Color.alphaBlend(
+  //       primary[80]!.withOpacity(.08),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //     3: Color.alphaBlend(
+  //       primary[80]!.withOpacity(.11),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //     4: Color.alphaBlend(
+  //       primary[80]!.withOpacity(.12),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //     5: Color.alphaBlend(
+  //       primary[80]!.withOpacity(.14),
+  //       Theme.of(Get.context!).colorScheme.surface,
+  //     ),
+  //   },
+  // }[Theme.of(Get.context!).brightness]!;
 
   /// typography
   static const fontFamily = 'BMJUA';

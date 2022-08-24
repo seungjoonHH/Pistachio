@@ -86,7 +86,7 @@ class ExerciseInputPage extends StatelessWidget {
                   onPressed: () => controller.completeButtonPressed(type),
                   text: '입력 완료',
                   stretch: true,
-                  backgroundColor: PTheme.crystalBlue,
+                  backgroundColor: PTheme.colorD,
                   textColor: PTheme.black,
                 );
               }

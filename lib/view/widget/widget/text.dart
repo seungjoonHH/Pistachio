@@ -15,7 +15,7 @@ class PText extends StatelessWidget {
     this.border = false,
     this.borderWidth = .8,
     this.align = TextAlign.left,
-  }) : style = style ?? textTheme.bodyMedium, super(key: key);
+  }) : style = style ?? PTheme.textTheme.bodyMedium, super(key: key);
 
   final String data;
   final TextStyle? style;

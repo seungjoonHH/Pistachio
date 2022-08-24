@@ -31,7 +31,8 @@ class ExerciseInputPage extends StatelessWidget {
 
     Map<ActivityType, String> riveName = {
       ActivityType.distance: 'assets/rive/input/jogger.riv',
-      ActivityType.height: 'assets/rive/input/1738-3431-raster-graphics-example.riv',
+      ActivityType.height:
+          'assets/rive/input/1738-3431-raster-graphics-example.riv',
       ActivityType.weight: 'assets/rive/input/lumberjack_squats.riv',
       ActivityType.calorie: 'assets/rive/input/537-1015-sport-charts.riv',
     };
@@ -49,7 +50,6 @@ class ExerciseInputPage extends StatelessWidget {
       ActivityType.weight: 'Demo',
       ActivityType.calorie: 'Example',
     };
-
 
     return Scaffold(
       appBar: const PAppBar(),
@@ -75,21 +75,19 @@ class ExerciseInputPage extends StatelessWidget {
               ],
             ),
             RAnimation(
-              rname: riveName[type]!,
-              abname: riveArtboard[type]!,
-              aname: riveAnimations[type]!,),
-
-            GetBuilder<ExerciseInput>(
-              builder: (controller) {
-                return PButton(
-                  onPressed: () => controller.completeButtonPressed(type),
-                  text: '입력 완료',
-                  stretch: true,
-                  backgroundColor: PTheme.colorD,
-                  textColor: PTheme.black,
-                );
-              }
+              rName: riveName[type]!,
+              abName: riveArtboard[type]!,
+              aName: riveAnimations[type]!,
             ),
+            GetBuilder<ExerciseInput>(builder: (controller) {
+              return PButton(
+                onPressed: () => controller.completeButtonPressed(type),
+                text: '입력 완료',
+                stretch: true,
+                backgroundColor: PTheme.colorD,
+                textColor: PTheme.black,
+              );
+            }),
           ],
         ),
       ),

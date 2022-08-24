@@ -26,6 +26,10 @@ class HealthPresenter {
     // This requires a special request authorization call.
     //
     // The location permission is requested for Workouts using the Distance information.
+    await HealthFactory.hasPermissions(
+      [HealthDataType.STEPS],
+      permissions: [HealthDataAccess.WRITE],
+    );
     await Permission.activityRecognition.request();
     await Permission.location.request();
 
@@ -53,9 +57,8 @@ class HealthPresenter {
   }
 
   /// Add some random health data.
-  static Future addData(int minutes) async {
+  static Future addData(int minutes, int steps) async {
     HealthFactory health = HealthFactory();
-    int steps = 0;
     final now = DateTime.now();
     final earlier = now.subtract(Duration(minutes: minutes));
 
@@ -78,7 +81,6 @@ class HealthPresenter {
     }
 
     // Store a count of steps taken
-    steps = Random().nextInt(10);
     await health.writeHealthData(
         steps.toDouble(), HealthDataType.STEPS, earlier, now);
 

@@ -14,9 +14,11 @@ import 'package:pistachio/view/page/onboarding/onboarding.dart';
 import 'package:pistachio/view/page/quest/quest.dart';
 import 'package:pistachio/view/page/record/detail/detail.dart';
 import 'package:pistachio/view/page/record/main/main.dart';
+import 'package:pistachio/view/page/register/register.dart';
+import 'package:pistachio/view/page/my/my.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/view/page/register/register.dart';
+
 
 /// class
 class PRoute {
@@ -45,6 +47,8 @@ class PRoute {
         '/challenge/detail': const ChallengeDetailPage(),
         '/challenge/create': const ChallengeCreatePage(),
         '/challenge/complete': const ChallengeCompletePage(),
+        '/monthlyQuest': const QuestPage(),
+        '/my': const MyPage(),
         '/quest': const QuestPage(),
       };
 

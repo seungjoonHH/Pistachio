@@ -9,14 +9,14 @@ class CollectionWidget extends StatelessWidget {
     Key? key,
     this.collection,
     this.detail = false,
-    this.highlight = false,
+    this.selected = false,
     this.onPressed,
     this.size = 100.0,
   }) : super(key: key);
 
   final Collection? collection;
   final bool detail;
-  final bool highlight;
+  final bool selected;
   final VoidCallback? onPressed;
   final double size;
 
@@ -26,9 +26,8 @@ class CollectionWidget extends StatelessWidget {
       sides: 6,
       side: BorderSide(
         width: 1.5,
-        color: highlight
-            ? PTheme.brickRed
-            : PTheme.black,
+        color: onPressed != null && selected
+            ? PTheme.brickRed : PTheme.black,
       ),
     );
 
@@ -53,7 +52,7 @@ class CollectionWidget extends StatelessWidget {
                   width: size,
                   height: size,
                   decoration: ShapeDecoration(
-                    color: highlight ? null
+                    color: onPressed != null && selected ? null
                         : PTheme.white.withOpacity(.7),
                     shape: side,
                   ),

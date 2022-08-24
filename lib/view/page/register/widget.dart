@@ -10,6 +10,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/view/widget/button/button.dart';
+import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 // 회원가입 페이지 위젯 모음
@@ -262,7 +263,7 @@ class WeightHeightView extends StatelessWidget {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .headline5
-                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ?.copyWith(color: PTheme.black),
               );
             },
           ),
@@ -282,7 +283,7 @@ class WeightHeightView extends StatelessWidget {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .headline5
-                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ?.copyWith(color: PTheme.black),
               );
             },
           ),
@@ -291,29 +292,53 @@ class WeightHeightView extends StatelessWidget {
       ),
     };
 
-    return ListView.separated(
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: contents.length,
-      itemBuilder: (context, index) => Card(
-        elevation: 3.0,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(
-            color: Colors.transparent,
+    return Column(
+      children: [
+        Center(
+          child: PText(
+            '보다 나은 서비스를 위해\n정보를 입력해주세요!',
+            style: textTheme.headlineSmall,
+            color: PTheme.black,
+            maxLines: 2,
+            align: TextAlign.center,
           ),
-          borderRadius: BorderRadius.circular(10),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: contents.length,
+          itemBuilder: (context, index) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(contents.keys.toList()[index]),
-              contents[contents.keys.toList()[index]]!,
+              PText(contents.keys.toList()[index],
+                style: textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 10.0),
+              PCard(
+                rounded: true,
+                color: Colors.transparent,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    contents[contents.keys.toList()[index]]!,
+                  ],
+                ),
+              ),
+
             ],
           ),
+          separatorBuilder: (context, index) => const SizedBox(height: 10.0),
         ),
-      ),
-      separatorBuilder: (context, index) => const SizedBox(height: 10.0),
+        Center(
+          child: PText(
+            '*체중과 신장은 간편한 계산을 위해서만 사용될 뿐\n다른 곳에는 이용되지 않아요!',
+            style: textTheme.bodyMedium,
+            color: colorScheme.outline,
+            maxLines: 2,
+            align: TextAlign.center,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -817,7 +842,7 @@ class CalorieCheckView extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 200.0),
+            const SizedBox(height: 210.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

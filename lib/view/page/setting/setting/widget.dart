@@ -3,7 +3,8 @@
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/setting/edit_nickname.dart';
-import 'package:pistachio/presenter/page/setting/edit_status.dart';
+import 'package:pistachio/presenter/page/setting/edit_height.dart';
+import 'package:pistachio/presenter/page/setting/edit_weight.dart';
 import 'package:pistachio/presenter/page/setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -124,8 +125,8 @@ class NameTextField extends StatelessWidget {
   }
 }
 
-class StatusMessageTextField extends StatelessWidget {
-  const StatusMessageTextField({Key? key}) : super(key: key);
+class HeightTextField extends StatelessWidget {
+  const HeightTextField({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +154,7 @@ class StatusMessageTextField extends StatelessWidget {
                       primary: Colors.white,
                       side: BorderSide(width: 1.0, color: colorScheme.outline),
                     ),
-                    onPressed: EditStatusPresenter.toEditStatus,
+                    onPressed: EditHeightPresenter.toEditHeight,
                     child: Stack(
                       children: [
                         const Align(
@@ -164,6 +165,62 @@ class StatusMessageTextField extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             userPresenter.loggedUser.height.toString(),
+                            style: textTheme.labelLarge,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class WeightTextField extends StatelessWidget {
+  const WeightTextField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<SettingPresenter>(
+      builder: (controller) {
+        final userPresenter = Get.find<UserPresenter>();
+        return Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
+                    child: Text('체중',
+                      style: textTheme.headlineSmall,
+                    ),
+                  ),
+                  OutlinedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      primary: Colors.white,
+                      side: BorderSide(width: 1.0, color: colorScheme.outline),
+                    ),
+                    onPressed: EditWeightPresenter.toEditWeight,
+                    child: Stack(
+                      children: [
+                        const Align(
+                            alignment: Alignment.centerRight,
+                            child: Icon(Icons.keyboard_arrow_right_outlined)
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            userPresenter.loggedUser.weight.toString(),
                             style: textTheme.labelLarge,
                           ),
                         )

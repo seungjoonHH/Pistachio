@@ -6,5 +6,5 @@ import 'package:get/get.dart';
 class EditHeightPresenter extends GetxController {
   /// static methods
   // 닉네임 수정 페이지로 이동
-  static void toEditStatus() => Get.toNamed('/editHeight');
+  static void toEditHeight() => Get.toNamed('/editHeight');
 }

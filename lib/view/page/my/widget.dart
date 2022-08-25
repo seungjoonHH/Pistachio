@@ -2,6 +2,7 @@
 
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -44,15 +45,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0.0,
-      leadingWidth: 600.0,
       actions: const [
         IconButton(
           icon: Icon(
             Icons.settings,
             color: Colors.black
           ),
-            onPressed: null
-          //onPressed: SettingPresenter.toSetting,
+          onPressed: SettingPresenter.toSetting,
         ),
       ],
     );
@@ -68,44 +67,43 @@ class MyProfileImage extends StatelessWidget {
       builder: (controller) {
         return Column(
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 11.0),
-                  child: Container(
-                    width: 64.0,
-                    height: 64.0,
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    child: Material(
-                      child: InkWell(
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 11.0),
+              child: Container(
+                width: 64.0,
+                height: 64.0,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Material(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50.0),
+                    onTap: () {},
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: PTheme.black.withOpacity(.1),
                         borderRadius: BorderRadius.circular(50.0),
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: PTheme.black.withOpacity(.1),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          /*child: CircleAvatar(
+                      ),
+                      /*child: CircleAvatar(
                             backgroundImage: NetworkImage(controller.loggedUser.imageUrl!),
                           ),*/
-                        ),
-                      ),
                     ),
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(controller.loggedUser.nickname!,
-                      style: textTheme.headlineMedium,
-                    ),
-                    Text(controller.loggedUser.height.toString(),
-                      style: textTheme.bodySmall,
-                    ),
-                  ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(controller.loggedUser.nickname!,
+                  style: textTheme.headlineMedium,
+                ),
+                Text(controller.loggedUser.height.toString(),
+                  style: textTheme.labelMedium,
+                ),
+                Text(controller.loggedUser.weight.toString(),
+                  style: textTheme.labelMedium,
                 ),
               ],
             ),

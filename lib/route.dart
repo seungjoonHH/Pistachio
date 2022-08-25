@@ -16,6 +16,10 @@ import 'package:pistachio/view/page/record/detail/detail.dart';
 import 'package:pistachio/view/page/record/main/main.dart';
 import 'package:pistachio/view/page/register/register.dart';
 import 'package:pistachio/view/page/my/my.dart';
+import 'package:pistachio/view/page/setting/setting/setting.dart';
+import 'package:pistachio/view/page/setting/edit_height/edit_height.dart';
+import 'package:pistachio/view/page/setting/edit_weight/edit_weight.dart';
+import 'package:pistachio/view/page/setting/edit_nickname/edit_nickname.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -50,6 +54,10 @@ class PRoute {
         '/monthlyQuest': const QuestPage(),
         '/my': const MyPage(),
         '/quest': const QuestPage(),
+        '/setting': const SettingPage(),
+        '/editNickname': const EditNicknamePage(),
+        '/editHeight': const EditHeightPage(),
+        '/editWeight': const EditWeightPage(),
       };
 
   // 겟페이지 리스트

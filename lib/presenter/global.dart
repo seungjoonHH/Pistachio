@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/loading.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/exercise.dart';
 import 'package:pistachio/presenter/model/level.dart';
@@ -45,6 +46,7 @@ class GlobalPresenter extends GetxController {
   static void initControllers() {
     Get.put(GlobalPresenter());
 
+    Get.put(LoadingPresenter());
     Get.put(UserPresenter());
     Get.put(ExercisePresenter());
     Get.put(ChallengePresenter());

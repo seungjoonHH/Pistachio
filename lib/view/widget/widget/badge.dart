@@ -97,6 +97,8 @@ class BadgeWidget extends StatelessWidget {
     this.selected = false,
     this.onPressed,
     this.size = 80.0,
+    this.border = true,
+    this.color = PTheme.grey,
   }) : super(key: key);
 
   final Badge? badge;
@@ -104,6 +106,8 @@ class BadgeWidget extends StatelessWidget {
   final bool selected;
   final VoidCallback? onPressed;
   final double size;
+  final bool border;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +116,8 @@ class BadgeWidget extends StatelessWidget {
       side: BorderSide(
         width: 1.5,
         color: onPressed != null && selected
-            ? PTheme.colorB : PTheme.black,
+            ? PTheme.colorB : border
+            ? PTheme.black : Colors.transparent,
       ),
     );
 
@@ -127,7 +132,7 @@ class BadgeWidget extends StatelessWidget {
           children: [
             Material(
               color: badge == null
-                  ? PTheme.grey : Colors.transparent,
+                  ? color : Colors.transparent,
               shape: side,
               child: InkWell(
                 onTap: onPressed,

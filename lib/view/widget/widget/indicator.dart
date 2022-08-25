@@ -87,6 +87,16 @@ class PCircularProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return visible ? const CircularProgressIndicator() : Container();
+    return visible ? Stack(
+      alignment: Alignment.center,
+      children: const [
+        CircularProgressIndicator(
+          color: PTheme.colorA,
+        ),
+        // Container(
+        //   color: PTheme.black.withOpacity(.3),
+        // ),
+      ],
+    ) : Container();
   }
 }

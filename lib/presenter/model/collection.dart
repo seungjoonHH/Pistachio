@@ -8,7 +8,7 @@ import 'package:pistachio/model/class/badge.dart';
 
 // collections.json 파일 관련
 class BadgePresenter extends GetxController {
-  static String asset = 'assets/json/data/collections.json';
+  static String asset = 'assets/json/data/badges.json';
   static List<Badge> badges = [];
 
   static Future importFile() async {

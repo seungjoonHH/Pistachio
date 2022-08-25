@@ -25,6 +25,9 @@ class PTheme {
   static const Color colorB = Color(0xFFE45B47);
   static const Color colorC = Color(0xFFE5953E);
   static const Color colorD = Color(0xFF71A3EE);
+  static const gradient = LinearGradient(colors: [
+    colorA, colorB, colorC, colorD,
+  ]);
 
   // materialColor
   static const MaterialColor primary = MaterialColor(0xFFAEDB9F, {

@@ -60,18 +60,16 @@ class UserPresenter extends GetxController {
   // 파이어베이스에서 삭제
   void delete() => f.collection('users').doc(loggedUser.uid).delete();
 
-  set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
   Map<String, Party> get myParties => loggedUser.parties;
+  set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
 
   String get randomCode {
     int length = 7;
     const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     return String.fromCharCodes(
-      Iterable.generate(
-          length,
-          (_) => chars.codeUnitAt(
-                Random().nextInt(chars.length),
-              )),
+      Iterable.generate(length, (_) => chars.codeUnitAt(
+        Random().nextInt(chars.length),
+      )),
     );
   }
 
@@ -84,6 +82,7 @@ class UserPresenter extends GetxController {
       party.members.add(member);
     }
   }
+
 
   void addMyParties(Challenge challenge, Difficulty diff) async {
     String code = randomCode;
@@ -114,9 +113,9 @@ class UserPresenter extends GetxController {
       Party party = Party.fromJson(json);
       party.challenge = ChallengePresenter.getChallenge(party.challengeId!);
       await getMembers(party);
-
       myParties[json['id']] = party;
     }
+    update();
   }
 
   void saveMyParty(Party party) async {

@@ -27,11 +27,9 @@ class PUser {
 
   /// accessors & mutators
   DateTime? get regDate => _regDate?.toDate();
-
   DateTime? get dateOfBirth => _dateOfBirth?.toDate();
 
   set regDate(DateTime? date) => _regDate = toTimestamp(date);
-
   set dateOfBirth(DateTime? date) => _dateOfBirth = toTimestamp(date);
 
   String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);

@@ -23,8 +23,8 @@ class SettingPresenter extends GetxController {
   // 설정 페이지로 이동
   static void toSetting() => Get.toNamed('/setting');
 
-  // 프로필 이미지 수정 버튼 클릭 시
-  static void imageEditButtonPressed() => showAddPhotoSelectionModalSheet();
+  // 뱃지 수정 버튼 클릭 시
+  static void imageEditButtonPressed() => showBedgeSelectionModalSheet();
 
   // 로그아웃 버튼 클릭 시
   static void logoutButtonPressed() => AuthPresenter.pLogout();
@@ -33,7 +33,7 @@ class SettingPresenter extends GetxController {
   static void accountDeleteButtonPressed() => showDeleteAccountConfirmDialog();
 
   // 사진 추가 방식 선택 모달 시트 표시
-  static void showAddPhotoSelectionModalSheet() {
+  static void showBedgeSelectionModalSheet() {
     Map<String, VoidCallback> buttonData = {
       '카메라': Get.back,
       '갤러리': Get.back,
@@ -70,6 +70,7 @@ class SettingPresenter extends GetxController {
 
     if (nicknameCont.text == '') return;
     userPresenter.loggedUser.nickname = nicknameCont.text;
+    userPresenter.save();
     nicknameCont.clear();
     Get.back();
     update();
@@ -81,6 +82,7 @@ class SettingPresenter extends GetxController {
 
     if (heightCont.text == '') return;
     userPresenter.loggedUser.height = int.parse(heightCont.text);
+    userPresenter.save();
     heightCont.clear();
     Get.back();
     update();
@@ -90,8 +92,9 @@ class SettingPresenter extends GetxController {
   void weightSubmitted() {
     final userPresenter = Get.find<UserPresenter>();
 
-    if (heightCont.text == '') return;
+    if (weightCont.text == '') return;
     userPresenter.loggedUser.weight = int.parse(weightCont.text);
+    userPresenter.save();
     weightCont.clear();
     Get.back();
     update();

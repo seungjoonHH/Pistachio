@@ -6,8 +6,8 @@ import 'package:pistachio/view/page/setting/edit_weight/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EditHeightPage extends StatelessWidget {
-  const EditHeightPage({Key? key}) : super(key: key);
+class EditWeightPage extends StatelessWidget {
+  const EditWeightPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

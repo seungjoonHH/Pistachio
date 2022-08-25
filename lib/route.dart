@@ -56,8 +56,8 @@ class PRoute {
         '/quest': const QuestPage(),
         '/setting': const SettingPage(),
         '/editNickname': const EditNicknamePage(),
-        //'/editHeight': const EditHeightPage(),
-        //'/editWeight': const EditWeightPage(),
+        '/editHeight': const EditHeightPage(),
+        '/editWeight': const EditWeightPage(),
       };
 
   // 겟페이지 리스트

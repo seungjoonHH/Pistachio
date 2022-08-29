@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:flutter_svg/svg.dart';
@@ -43,13 +42,14 @@ class CarouselView extends StatelessWidget {
       4: 'distanceGoal.svg',
       5: 'heightRecommend.svg',
       6: 'heightGoal.svg',
+      7: 'calorieGoal.svg'
     };
 
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
         return Stack(
           children: [
-            controller.pageIndex > 2 && controller.pageIndex < 7
+            controller.pageIndex > 2 && controller.pageIndex < 8
                 ? SvgPicture.asset(
                     'assets/image/page/register/${image[controller.pageIndex]}',
                     alignment: Alignment.center,
@@ -220,10 +220,9 @@ class SexSelectionButton extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               padding: EdgeInsets.zero,
               elevation: 0.0,
-              backgroundColor: sex == controller.newcomer.sex
-                  ? PTheme.black
-                  : PTheme.white,
-              side: BorderSide(color: PTheme.black),
+              backgroundColor:
+                  sex == controller.newcomer.sex ? PTheme.black : PTheme.white,
+              side: const BorderSide(color: PTheme.black),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -231,9 +230,8 @@ class SexSelectionButton extends StatelessWidget {
             child: PText(
               texts[sex]!,
               style: textTheme.headlineSmall,
-              color: sex == controller.newcomer.sex
-                  ? PTheme.white
-                  : PTheme.black,
+              color:
+                  sex == controller.newcomer.sex ? PTheme.white : PTheme.black,
             ),
           ),
         );
@@ -310,7 +308,8 @@ class WeightHeightView extends StatelessWidget {
           itemBuilder: (context, index) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PText(contents.keys.toList()[index],
+              PText(
+                contents.keys.toList()[index],
                 style: textTheme.headlineSmall,
               ),
               const SizedBox(height: 10.0),
@@ -324,7 +323,6 @@ class WeightHeightView extends StatelessWidget {
                   ],
                 ),
               ),
-
             ],
           ),
           separatorBuilder: (context, index) => const SizedBox(height: 10.0),
@@ -758,35 +756,6 @@ class HeightGoalView extends StatelessWidget {
   }
 }
 
-// Carousel 인디케이터 위젯
-class CarouselIndicator extends StatelessWidget {
-  const CarouselIndicator({
-    Key? key,
-    required this.count,
-  }) : super(key: key);
-
-  final int count;
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<RegisterPresenter>(
-      builder: (controller) {
-        return SizedBox(
-          height: 45.0,
-          child: DotsIndicator(
-            dotsCount: count,
-            position: controller.pageIndex.toDouble(),
-            decorator: DotsDecorator(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              activeColor: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 class CalorieCheckView extends StatelessWidget {
   const CalorieCheckView({Key? key}) : super(key: key);
 
@@ -805,36 +774,45 @@ class CalorieCheckView extends StatelessWidget {
                   style: TextStyle(fontSize: 28),
                 ),
                 Row(
-                  children: const [
+                  children: [
                     Text(
                       '북극곰 한 마리',
-                      style: TextStyle(fontSize: 28),
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: ActivityType.weight.color,
+                      ),
                     ),
-                    Text(
+                    const Text(
                       '를 들고',
                       style: TextStyle(fontSize: 28),
                     ),
                   ],
                 ),
                 Row(
-                  children: const [
+                  children: [
                     Text(
                       '한강대교',
-                      style: TextStyle(fontSize: 28),
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: ActivityType.distance.color,
+                      ),
                     ),
-                    Text(
+                    const Text(
                       '를 달리고',
                       style: TextStyle(fontSize: 28),
                     ),
                   ],
                 ),
                 Row(
-                  children: const [
+                  children: [
                     Text(
                       '자유의 여신',
-                      style: TextStyle(fontSize: 28),
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: ActivityType.height.color,
+                      ),
                     ),
-                    Text(
+                    const Text(
                       '을 정복하면',
                       style: TextStyle(fontSize: 28),
                     ),

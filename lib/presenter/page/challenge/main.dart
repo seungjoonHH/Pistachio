@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/presenter/loading.dart';
+import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class ChallengeMain extends GetxController with GetSingleTickerProviderStateMixin {
+  static final scrollCont = ScrollController();
+
   List<Widget> tabs = ['이달의 챌린지', '내 챌린지'].map((title) => PText(title)).toList();
   late TabController tabCont;
 

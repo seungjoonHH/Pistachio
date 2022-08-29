@@ -15,16 +15,20 @@ class Challenge {
   };
 
   /// attributes
+  bool locked = false;
   String? id;
   String? title;
   ActivityType? type;
   String? word;
   Color? theme;
+  int? period;
   Map<String, dynamic> imageUrls = {};
   Map<String, dynamic> descriptions = {};
   Map<String, dynamic> levels = {};
 
   Map<Difficulty, Badge> badges = {};
+
+  String? get titleOneLine => title?.replaceAll('\n', ' ');
 
   /// constructors
   Challenge();
@@ -35,12 +39,14 @@ class Challenge {
 
   /// methods
   void fromJson(Map<String, dynamic> json) {
+    locked = json['locked'];
     id = json['id'];
     title = json['title'];
     imageUrls = idToImageUrls(id!);
     type = toActivityType(json['type']);
     word = json['word'];
     levels = json['levels'];
+    period = json['period'];
     descriptions = json['descriptions'];
     levels.forEach((string, level) {
       String id = level['collection'];
@@ -55,6 +61,7 @@ class Challenge {
     json['type'] = type?.name;
     json['word'] = word;
     json['levels'] = levels;
+    json['period'] = period;
     json['descriptions'] = descriptions;
     return json;
   }

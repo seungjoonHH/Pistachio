@@ -3,6 +3,7 @@ import 'package:pistachio/view/page/challenge/create/create.dart';
 import 'package:pistachio/view/page/challenge/main/main.dart';
 import 'package:pistachio/view/page/challenge/detail/detail.dart';
 import 'package:pistachio/view/page/challenge/complete/complete.dart';
+import 'package:pistachio/view/page/challenge/party/party.dart';
 import 'package:pistachio/view/page/exercise/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/input/input.dart';
 import 'package:pistachio/view/page/exercise/main/main.dart';
@@ -51,7 +52,7 @@ class PRoute {
         '/challenge/detail': const ChallengeDetailPage(),
         '/challenge/create': const ChallengeCreatePage(),
         '/challenge/complete': const ChallengeCompletePage(),
-        '/monthlyQuest': const QuestPage(),
+        '/challenge/party/main': const ChallengePartyMainPage(),
         '/my': const MyPage(),
         '/quest': const QuestPage(),
         '/setting': const SettingPage(),
@@ -61,12 +62,10 @@ class PRoute {
       };
 
   // 겟페이지 리스트
-  static List<GetPage> get getPages => pages.entries
-      .map((page) => GetPage(
-            name: page.key,
-            page: () => page.value,
-            transition: transition,
-            transitionDuration: duration,
-          ))
-      .toList();
+  static List<GetPage> get getPages => pages.entries.map((page) => GetPage(
+    name: page.key,
+    page: () => page.value,
+    transition: transition,
+    transitionDuration: duration,
+  )).toList();
 }

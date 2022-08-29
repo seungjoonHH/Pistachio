@@ -9,7 +9,7 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/challenge/create.dart';
 import 'package:pistachio/view/widget/button/button.dart';
-import 'package:pistachio/view/widget/widget/collection.dart';
+import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 // 챌린지 난이도 리스트 뷰
@@ -53,8 +53,7 @@ class ChallengeCreateView extends StatelessWidget {
                         SvgPicture.asset(
                           'assets/image/page/challenge/left_wing.svg',
                         ),
-                        PText(
-                          '챌린지 난이도',
+                        PText('챌린지 난이도',
                           style: textTheme.titleLarge,
                           color: PTheme.black,
                         ),
@@ -70,10 +69,13 @@ class ChallengeCreateView extends StatelessWidget {
                         onTap: () => controller.changeDifficulty(diff),
                         child: Column(
                           children: [
-                            CollectionWidget(
-                              selected: diff == controller.difficulty,
-                              collection: challenge.collections[diff],
-                              onPressed: () => controller.changeDifficulty(diff),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: BadgeWidget(
+                                selected: diff == controller.difficulty,
+                                badge: challenge.badges[diff],
+                                onPressed: () => controller.changeDifficulty(diff),
+                              ),
                             ),
                             const SizedBox(height: 20.0),
                             PText(diff.kr,

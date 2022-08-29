@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/class/collection.dart';
 import 'package:pistachio/model/class/party.dart';
 import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
@@ -59,35 +60,44 @@ class UserPresenter extends GetxController {
   // 파이어베이스에서 삭제
   void delete() => f.collection('users').doc(loggedUser.uid).delete();
 
-  set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
-
   Map<String, Party> get myParties => loggedUser.parties;
+  set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
 
   String get randomCode {
     int length = 7;
     const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     return String.fromCharCodes(
-      Iterable.generate(
-          length,
-          (_) => chars.codeUnitAt(
-                Random().nextInt(chars.length),
-              )),
+      Iterable.generate(length, (_) => chars.codeUnitAt(
+        Random().nextInt(chars.length),
+      )),
     );
   }
 
-  void addMyParties(Challenge challenge, Difficulty diff) {
+  Future getMembers(Party party) async {
+    for (String uid in party.records.keys) {
+      var json = (await f.collection('users').doc(uid).get()).data();
+
+      if (json == null) return;
+      PUser member = PUser.fromJson(json);
+      party.members.add(member);
+    }
+  }
+
+
+  void addMyParties(Challenge challenge, Difficulty diff) async {
     String code = randomCode;
 
     Party newParty = Party.fromJson({
       'id': code,
       'challengeId': challenge.id,
       'difficulty': diff.name,
-      'goals': <String, dynamic>{loggedUser.uid!: 0},
+      'records': <String, dynamic>{ loggedUser.uid!: 0 },
       'leaderUid': loggedUser.uid,
     });
 
     newParty.challenge = ChallengePresenter.getChallenge(newParty.challengeId!);
     myParties[code] = newParty;
+    await getMembers(newParty);
     saveMyParty(newParty);
 
     loggedUser.partyIds.add(newParty.id!);
@@ -96,17 +106,22 @@ class UserPresenter extends GetxController {
     update();
   }
 
-  void loadMyParties() async {
+  Future loadMyParties() async {
     for (String id in loggedUser.partyIds) {
       var json = (await f.collection('parties').doc(id).get()).data();
       if (json == null) return;
       Party party = Party.fromJson(json);
       party.challenge = ChallengePresenter.getChallenge(party.challengeId!);
+      await getMembers(party);
       myParties[json['id']] = party;
     }
+    update();
   }
 
   void saveMyParty(Party party) async {
     await f.collection('parties').doc(party.id).set(party.toJson());
   }
+
+  set myCollections(List<Collection> collections) => loggedUser.collections = collections;
+  List<Collection> get myCollections => loggedUser.collections;
 }

@@ -1,7 +1,7 @@
 /* 라우트 관련 */
+import 'package:pistachio/view/page/challenge/create/create.dart';
 import 'package:pistachio/view/page/challenge/main/main.dart';
 import 'package:pistachio/view/page/challenge/detail/detail.dart';
-import 'package:pistachio/view/page/challenge/difficulty/difficulty.dart';
 import 'package:pistachio/view/page/challenge/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/input/input.dart';
@@ -14,9 +14,15 @@ import 'package:pistachio/view/page/onboarding/onboarding.dart';
 import 'package:pistachio/view/page/quest/quest.dart';
 import 'package:pistachio/view/page/record/detail/detail.dart';
 import 'package:pistachio/view/page/record/main/main.dart';
+import 'package:pistachio/view/page/register/register.dart';
+import 'package:pistachio/view/page/my/my.dart';
+import 'package:pistachio/view/page/setting/setting/setting.dart';
+import 'package:pistachio/view/page/setting/edit_height/edit_height.dart';
+import 'package:pistachio/view/page/setting/edit_weight/edit_weight.dart';
+import 'package:pistachio/view/page/setting/edit_nickname/edit_nickname.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/view/page/register/register.dart';
+
 
 /// class
 class PRoute {
@@ -45,7 +51,13 @@ class PRoute {
         '/challenge/detail': const ChallengeDetailPage(),
         '/challenge/create': const ChallengeCreatePage(),
         '/challenge/complete': const ChallengeCompletePage(),
+        '/monthlyQuest': const QuestPage(),
+        '/my': const MyPage(),
         '/quest': const QuestPage(),
+        '/setting': const SettingPage(),
+        '/editNickname': const EditNicknamePage(),
+        '/editHeight': const EditHeightPage(),
+        '/editWeight': const EditWeightPage(),
       };
 
   // 겟페이지 리스트

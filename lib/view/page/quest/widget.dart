@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
-import '../../../global/theme.dart';
-import '../../../global/unit.dart';
-import '../../../presenter/page/home.dart';
-import '../../widget/widget/text.dart';
+import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 class MonthlyQuestView extends StatelessWidget {
   const MonthlyQuestView({Key? key}) : super(key: key);
@@ -80,16 +80,15 @@ class MonthlyQuestView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PText(
-                '이달의 목표',
-                style: textTheme.titleMedium,
-                bold: true,
+              PText('이달의 목표',
+                style: textTheme.headlineSmall,
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: PText(
                   '월간 목표 달성으로 자신의 한계에 도전해 보세요.\n이번 8월의 목표를 달성하시면 특별 뱃지를 획득 하실 수 있습니다.',
-                  style: textTheme.bodyMedium,
+                  style: textTheme.bodySmall,
+                  color: PTheme.outline,
                   maxLines: 3,
                 ),
               ),

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pistachio/model/class/collection.dart';
+import 'package:pistachio/model/class/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 
@@ -24,7 +24,7 @@ class Challenge {
   Map<String, dynamic> descriptions = {};
   Map<String, dynamic> levels = {};
 
-  Map<Difficulty, Collection> collections = {};
+  Map<Difficulty, Badge> badges = {};
 
   /// constructors
   Challenge();
@@ -44,7 +44,7 @@ class Challenge {
     descriptions = json['descriptions'];
     levels.forEach((string, level) {
       String id = level['collection'];
-      collections[toDifficulty(string)!] = CollectionPresenter.getCollection(id)!;
+      badges[toDifficulty(string)!] = BadgePresenter.getBadge(id)!;
     });
   }
 

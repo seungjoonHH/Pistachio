@@ -5,7 +5,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/presenter/page/challenge/create.dart';
 import 'package:pistachio/view/widget/button/button.dart';
-import 'package:pistachio/view/widget/widget/collection.dart';
+import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 
@@ -60,7 +60,7 @@ class ChallengeCompleteView extends StatelessWidget {
                     ),
                     const SizedBox(
                       height: 80.0,
-                      child: CollectionWidget(
+                      child: BadgeWidget(
                         // collection: CollectionPresenter.getCollection(
                         //   challenge.levels[diff],
                         // )!,

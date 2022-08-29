@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pistachio/global/date.dart';
+import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
-import '../../model/class/user.dart';
-import '../model/user.dart';
+import 'package:pistachio/presenter/model/user.dart';
 
 class HealthPresenter {
   // create a HealthFactory for use in the app

@@ -7,10 +7,11 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
+import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
-import 'package:pistachio/view/widget/widget/collection.dart';
+import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/indicator.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -113,7 +114,7 @@ class DailyActivityCardView extends StatelessWidget {
           ],
         ),
         PCard(
-          color: const Color(0xFFE9D0C3),
+          color: PTheme.bar,
           padding: const EdgeInsets.all(30.0),
           child: Column(
             children: [
@@ -167,6 +168,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
         return Column(
           children: [
             Stack(
+              alignment: Alignment.center,
               children: [
                 PCircularPercentIndicator(
                   percent: earlierPercent,
@@ -319,6 +321,8 @@ class CollectionCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPresenter = Get.find<UserPresenter>();
+
     return Column(
       children: [
         Row(
@@ -330,13 +334,19 @@ class CollectionCardView extends StatelessWidget {
         ),
         PCard(
           color: PTheme.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              CollectionWidget(detail: true),
-              CollectionWidget(detail: true),
-              CollectionWidget(detail: true),
+          child: userPresenter.myCollections.isEmpty ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PText('컬렉션이 없어요'),
             ],
+          ) : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: userPresenter.myCollections.map((collection) {
+              return CollectionWidget(
+                collection: collection,
+                detail: true,
+              );
+            }).toList(),
           ),
         ),
       ],

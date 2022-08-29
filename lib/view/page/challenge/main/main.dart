@@ -16,10 +16,7 @@ class ChallengeMainPage extends StatelessWidget {
     return GestureDetector(
       onTap: GlobalPresenter.closeBottomBar,
       child: const Scaffold(
-        appBar: PAppBar(
-          title: '챌린지',
-
-        ),
+        appBar: PAppBar(title: '챌린지'),
         backgroundColor: PTheme.background,
         bottomSheet: PBottomSheetBar(body: ChallengeMainView()),
       ),

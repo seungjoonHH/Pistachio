@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/widget/input_field.dart';
+import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/exercise.dart';
 import 'package:pistachio/presenter/model/level.dart';
@@ -10,6 +12,7 @@ import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/challenge/create.dart';
 import 'package:pistachio/presenter/page/challenge/main.dart';
+import 'package:pistachio/presenter/page/challenge/party/main.dart';
 import 'package:pistachio/presenter/page/complete.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
 import 'package:pistachio/presenter/page/exercise/main.dart';
@@ -49,10 +52,13 @@ class GlobalPresenter extends GetxController {
   static void initControllers() {
     Get.put(GlobalPresenter());
 
+    Get.put(LoadingPresenter());
+    Get.put(InputFieldPresenter());
+
     Get.put(UserPresenter());
     Get.put(ExercisePresenter());
     Get.put(ChallengePresenter());
-    Get.put(CollectionPresenter());
+    Get.put(BadgePresenter());
     Get.put(LevelPresenter());
     Get.put(QuestPresenter());
     Get.put(PartyPresenter());
@@ -71,6 +77,7 @@ class GlobalPresenter extends GetxController {
     Get.put(MyPresenter());
     Get.put(ChallengeMain());
     Get.put(ChallengeCreate());
+    Get.put(ChallengePartyMain());
     Get.put(SettingPresenter());
     Get.put(EditNicknamePresenter());
     Get.put(EditHeightPresenter());
@@ -79,7 +86,7 @@ class GlobalPresenter extends GetxController {
 
   static void importData() {
     ExercisePresenter.importFile();
-    CollectionPresenter.importFile();
+    BadgePresenter.importFile();
     ChallengePresenter.importFile();
     LevelPresenter.importFile(ActivityType.distance);
     LevelPresenter.importFile(ActivityType.height);

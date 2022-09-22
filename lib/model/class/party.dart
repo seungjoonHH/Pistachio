@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/model/class/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
@@ -9,10 +11,18 @@ class Party {
   Difficulty difficulty = Difficulty.easy;
   Map<String, dynamic> records = {};
   String? leaderUid;
+  Timestamp? _startDate;
+  Timestamp? _endDate;
 
   PUser? leader;
   Challenge? challenge;
   List<PUser> members = [];
+
+  /// accessors & mutators
+  DateTime? get startDate => _startDate?.toDate();
+  DateTime? get endDate => _endDate?.toDate();
+  set startDate(DateTime? date) => _startDate = toTimestamp(date);
+  set endDate(DateTime? date) => _endDate = toTimestamp(date);
 
   /// constructors
   Party();

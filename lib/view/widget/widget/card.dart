@@ -9,6 +9,8 @@ class PCard extends StatelessWidget {
     this.onPressed,
     this.color = PTheme.white,
     this.rounded = false,
+    this.border = true,
+    this.borderColor = PTheme.black,
   }) : super(key: key);
 
   final Widget child;
@@ -16,6 +18,8 @@ class PCard extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color color;
   final bool rounded;
+  final bool border;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,7 @@ class PCard extends StatelessWidget {
           padding: padding,
           decoration: BoxDecoration(
             border: Border.all(
-              color: PTheme.black,
+              color: border ? borderColor : Colors.transparent,
               width: 1.5,
             ),
             borderRadius: radius,

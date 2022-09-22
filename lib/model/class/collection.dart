@@ -1,33 +1,33 @@
-/* 컬렉션 모델 구조 */
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pistachio/global/date.dart';
+import 'package:pistachio/model/class/badge.dart';
+import 'package:pistachio/presenter/model/collection.dart';
+
 class Collection {
-  static const asset = 'assets/image/collection/';
+  List<Timestamp> dateList = [];
+  String? badgeId;
 
-  /// attributes
-  String? id;
-  String? title;
-  String? imageUrl;
-  String? description;
+  Badge? badge;
 
-  /// constructors
+  set dates(List<DateTime?> dates) => dates.map((date) => toTimestamp(date)).toList();
+  List<DateTime?> get dates => dateList.map((date) => date.toDate()).toList();
+
   Collection();
 
   Collection.fromJson(Map<String, dynamic> json) {
-    fromJson(json);
+   fromJson(json);
   }
 
-  /// methods
   void fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    imageUrl = '$asset$id.png';
-    description = json['description'];
+    dateList = json['dates'].cast<Timestamp>();
+    badgeId = json['badgeId'];
+    badge = BadgePresenter.getBadge(badgeId!);
   }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};
-    json['id'] = id;
-    json['title'] = title;
-    json['description'] = description;
+    json['dates'] = dateList;
+    json['badgeId'] = badgeId;
     return json;
   }
 }

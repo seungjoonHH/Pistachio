@@ -128,17 +128,10 @@ class UserInfoView extends StatelessWidget {
                     color: PTheme.black,
                   ),
                   const SizedBox(height: 8.0),
-                  ShakeWidget(
-                    autoPlay: controller.invalids[0],
-                    shakeConstant: ShakeHorizontalConstant2(),
-                    child: TextFormField(
-                      controller: RegisterPresenter.nickNameCont,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: '별명을 입력해주세요',
-                        isDense: true,
-                      ),
-                    ),
+                  PInputField(
+                    invalid: controller.fields['nickname']!.invalid,
+                    controller: controller.fields['nickname']!.controller,
+                    hintText: '별명을 입력해주세요',
                   ),
                   const SizedBox(height: 40.0),
                 ],
@@ -146,23 +139,15 @@ class UserInfoView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PText(
-                    '생년월일',
+                  PText('생년월일',
                     style: textTheme.headlineSmall,
                     color: PTheme.black,
                   ),
                   const SizedBox(height: 8.0),
-                  ShakeWidget(
-                    autoPlay: controller.invalids[1],
-                    shakeConstant: ShakeHorizontalConstant2(),
-                    child: TextFormField(
-                      controller: RegisterPresenter.birthdayCont,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'YYYYMMDD',
-                        isDense: true,
-                      ),
-                    ),
+                  PInputField(
+                    controller: controller.fields['dateOfBirth']!.controller,
+                    hintText: 'YYYYMMDD',
+                    invalid: controller.fields['dateOfBirth']!.invalid,
                   ),
                   const SizedBox(height: 40.0),
                 ],
@@ -177,7 +162,7 @@ class UserInfoView extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
                   ShakeWidget(
-                    autoPlay: controller.invalids[2],
+                    autoPlay: controller.fields['sex']!.invalid,
                     shakeConstant: ShakeHorizontalConstant2(),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -361,7 +346,7 @@ class WeightGoalView extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      RegisterPresenter.nickNameCont.text,
+                      controller.fields['nickname']!.controller.text,
                       style: TextStyle(
                         fontSize: 36,
                         color: Theme.of(context).colorScheme.primary,
@@ -462,9 +447,9 @@ class DistanceRecommendView extends StatelessWidget {
       builder: (controller) {
         int ageGroup = DateTime.now()
             .difference(DateTime.utc(
-              int.parse(RegisterPresenter.birthdayCont.text.substring(0, 4)),
-              int.parse(RegisterPresenter.birthdayCont.text.substring(4, 6)),
-              int.parse(RegisterPresenter.birthdayCont.text.substring(6)),
+              int.parse(controller.fields['dateOfBirth']!.controller.text.substring(0, 4)),
+              int.parse(controller.fields['dateOfBirth']!.controller.text.substring(4, 6)),
+              int.parse(controller.fields['dateOfBirth']!.controller.text.substring(6)),
             ))
             .inDays;
 

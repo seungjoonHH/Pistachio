@@ -1,13 +1,10 @@
 /* 마이 페이지 위젯 */
 
-import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/model/user.dart';
-import 'package:pistachio/presenter/page/my.dart';
 import 'package:pistachio/presenter/page/setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class MyView extends StatelessWidget {
   const MyView({Key? key}) : super(key: key);

@@ -1,7 +1,10 @@
 /* 커스텀 텍스트 위젯 */
 
+import 'package:flutter_shake_animated/flutter_shake_animated.dart';
+import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:pistachio/presenter/widget/input_field.dart';
 
 /// class
 class PText extends StatelessWidget {
@@ -118,6 +121,43 @@ class PTexts extends StatelessWidget {
           ),
         ],
       )),
+    );
+  }
+}
+
+class PInputField extends StatelessWidget {
+  const PInputField({
+    Key? key,
+    required this.controller,
+    this.hintText,
+    this.invalid,
+  }) : super(key: key);
+
+  final TextEditingController controller;
+  final String? hintText;
+  final bool? invalid;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShakeWidget(
+      autoPlay: invalid ?? false,
+      shakeConstant: ShakeHorizontalConstant2(),
+      child: TextField(
+        controller: controller,
+        cursorColor: PTheme.black,
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(color: PTheme.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(color: PTheme.black, width: 2.0),
+          ),
+          hintText: hintText,
+          isDense: true,
+        ),
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
@@ -9,7 +10,7 @@ class PCircularPercentIndicator extends StatelessWidget {
     required this.percent,
     required this.color,
     this.backgroundColor = PTheme.background,
-    this.radius = 60.0,
+    this.radius = 55.0,
     this.lineWidth = 16.0,
     this.centerText = '',
     this.onAnimationEnd,
@@ -44,8 +45,8 @@ class PCircularPercentIndicator extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: CircularPercentIndicator(
-            radius: radius,
-            lineWidth: lineWidth,
+            radius: radius.w,
+            lineWidth: lineWidth.w,
             percent: percent,
             backgroundColor: backgroundColor,
             progressColor: color,
@@ -64,8 +65,8 @@ class PCircularPercentIndicator extends StatelessWidget {
           ),
         ),
         Container(
-          width: (radius - lineWidth) * 2,
-          height: (radius - lineWidth) * 2,
+          width: (radius.w - lineWidth.w) * 2,
+          height: (radius.w - lineWidth.w) * 2,
           decoration: BoxDecoration(
             border: border,
             shape: BoxShape.circle,
@@ -86,6 +87,16 @@ class PCircularProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return visible ? const CircularProgressIndicator() : Container();
+    return visible ? Stack(
+      alignment: Alignment.center,
+      children: const [
+        CircularProgressIndicator(
+          color: PTheme.colorA,
+        ),
+        // Container(
+        //   color: PTheme.black.withOpacity(.3),
+        // ),
+      ],
+    ) : Container();
   }
 }

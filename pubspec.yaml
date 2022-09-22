@@ -45,6 +45,7 @@ dependencies:
   health: ^4.1.1
   permission_handler: ^10.0.0
   rive: ^0.9.1
+  parallax_animation: ^0.0.3
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +67,7 @@ flutter:
     - assets/image/challenge/default/
     - assets/image/challenge/complete/
     - assets/image/challenge/focus/
-    - assets/image/collection/
+    - assets/image/badge/
     - assets/image/page/login/
     - assets/image/page/onboarding/
     - assets/image/page/timer/

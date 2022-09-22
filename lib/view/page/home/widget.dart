@@ -1,16 +1,20 @@
 import 'dart:math';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
+import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/view/page/onboarding/widget.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
-import 'package:pistachio/view/widget/widget/collection.dart';
+import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/indicator.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -20,19 +24,23 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: const [
-            HomeRandomCard(),
-            SizedBox(height: 30.0),
-            DailyActivityCardView(),
-            SizedBox(height: 30.0),
-            MonthlyQuestWidget(),
-            SizedBox(height: 30.0),
-            CollectionCardView(),
-          ],
-        ),
+      child: Column(
+        children: [
+          HomeRandomCardView(),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: const [
+                SizedBox(height: 30.0),
+                DailyActivityCardView(),
+                SizedBox(height: 30.0),
+                MonthlyQuestWidget(),
+                SizedBox(height: 30.0),
+                CollectionCardView(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -56,8 +64,35 @@ class SeeMoreButton extends StatelessWidget {
   }
 }
 
-class HomeRandomCard extends StatelessWidget {
-  const HomeRandomCard({Key? key}) : super(key: key);
+class HomeRandomCardView extends StatelessWidget {
+  const HomeRandomCardView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> items = [
+      QuestRecommendCard(),
+      LifeExtensionCard(),
+
+    ].map((widget) => Padding(
+      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+      child: widget,
+    )).toList();
+
+    items.shuffle();
+
+    return CarouselSlider(
+      items: items,
+      options: CarouselOptions(
+        height: 240.0,
+        viewportFraction: 1.0,
+        autoPlay: true,
+      ),
+    );
+  }
+}
+
+class QuestRecommendCard extends StatelessWidget {
+  const QuestRecommendCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,16 +104,54 @@ class HomeRandomCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PText(
-                '수명이 99초 연장되었어요',
+              PText('${today.month}월의 목표',
                 style: textTheme.titleLarge,
                 color: PTheme.black,
               ),
               const SizedBox(height: 10.0),
-              PText(
-                '1층 당 3초의 수명이 연장되어요.',
+              PText('를 달성하고 컬렉션을 모아보세요.',
                 style: textTheme.labelMedium,
+                color: PTheme.grey,
+              ),
+            ],
+          ),
+          const SizedBox(height: 20.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BadgeWidget(size: 60.0,),
+              BadgeWidget(),
+              BadgeWidget(size: 60.0,),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+
+class LifeExtensionCard extends StatelessWidget {
+  const LifeExtensionCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PCard(
+      color: PTheme.white,
+      rounded: true,
+      child: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PText('수명이 99초 연장되었어요',
+                style: textTheme.titleLarge,
                 color: PTheme.black,
+              ),
+              const SizedBox(height: 10.0),
+              PText('1층 당 3초의 수명이 연장되어요.',
+                style: textTheme.labelMedium,
+                color: PTheme.grey,
               ),
             ],
           ),
@@ -113,7 +186,7 @@ class DailyActivityCardView extends StatelessWidget {
           ],
         ),
         PCard(
-          color: const Color(0xFFE9D0C3),
+          color: PTheme.bar,
           padding: const EdgeInsets.all(30.0),
           child: Column(
             children: [
@@ -167,6 +240,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
         return Column(
           children: [
             Stack(
+              alignment: Alignment.center,
               children: [
                 PCircularPercentIndicator(
                   percent: earlierPercent,
@@ -319,6 +393,8 @@ class CollectionCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPresenter = Get.find<UserPresenter>();
+
     return Column(
       children: [
         Row(
@@ -330,13 +406,19 @@ class CollectionCardView extends StatelessWidget {
         ),
         PCard(
           color: PTheme.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              CollectionWidget(detail: true),
-              CollectionWidget(detail: true),
-              CollectionWidget(detail: true),
+          child: userPresenter.myCollections.isEmpty ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PText('컬렉션이 없어요'),
             ],
+          ) : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: userPresenter.myCollections.map((collection) {
+              return CollectionWidget(
+                collection: collection,
+                detail: true,
+              );
+            }).toList(),
           ),
         ),
       ],

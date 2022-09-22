@@ -28,10 +28,9 @@ class LoginPage extends StatelessWidget {
               children: [
                 SignInButton(type: LoginType.google),
                 SizedBox(height: 15.0),
-                SignInButton(type: LoginType.apple),
-                /*if (Platform.isIOS) {
+                //SignInButton(type: LoginType.apple),
+                if (Platform.isIOS)
                   SignInButton(type: LoginType.apple),
-                },*/
                 SizedBox(height: 77.0),
               ],
             ),

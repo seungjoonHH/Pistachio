@@ -5,12 +5,11 @@ import 'package:get/get.dart';
 import 'package:parallax_animation/parallax_animation.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/class/challenge.dart';
-import 'package:pistachio/model/class/party.dart';
+import 'package:pistachio/model/class/database/party.dart';
+import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
-import 'package:pistachio/presenter/model/party.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/challenge/detail.dart';
 import 'package:pistachio/presenter/page/challenge/main.dart';
@@ -149,12 +148,16 @@ class ChallengeCard extends StatelessWidget {
           padding: EdgeInsets.zero,
           child: Column(
             children: [
-              ParallaxWidget(
-                background: Image.asset(
-                  challenge.imageUrls['default'],
-                  fit: BoxFit.fitHeight,
-                ),
-                child: Container(height: 200.0),
+              // ParallaxWidget(
+              //   background: Image.asset(
+              //     challenge.imageUrls['default'],
+              //     fit: BoxFit.fitHeight,
+              //   ),
+              //   child: Container(height: 200.0),
+              // ),
+              Image.asset(
+                challenge.imageUrls['default'],
+                fit: BoxFit.fitHeight,
               ),
               const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
               Padding(

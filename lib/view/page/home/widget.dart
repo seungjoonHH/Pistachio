@@ -70,9 +70,8 @@ class HomeRandomCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> items = [
-      QuestRecommendCard(),
-      LifeExtensionCard(),
-
+      const QuestRecommendCard(),
+      const LifeExtensionCard(),
     ].map((widget) => Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
       child: widget,
@@ -328,7 +327,6 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: border,
-        color: colorScheme.surface,
       ),
       height: 80.0,
       child: Row(
@@ -405,7 +403,7 @@ class CollectionCardView extends StatelessWidget {
           ],
         ),
         PCard(
-          color: PTheme.white,
+          color: PTheme.surface,
           child: userPresenter.myCollections.isEmpty ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

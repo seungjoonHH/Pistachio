@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:pistachio/model/class/badge.dart';
+import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 
 class Collection {
+  /// attributes
+  // 일반 변수
   List<Timestamp> dateList = [];
   String? badgeId;
 
-  Badge? badge;
+  // 의존 변수
+  Badge? badge; // badgeId 에 의존
 
   set dates(List<DateTime?> dates) => dates.map((date) => toTimestamp(date)).toList();
   List<DateTime?> get dates => dateList.map((date) => date.toDate()).toList();

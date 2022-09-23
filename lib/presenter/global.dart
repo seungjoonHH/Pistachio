@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:pistachio/model/enum/enum.dart';
-import 'package:pistachio/presenter/widget/input_field.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/collection.dart';
-import 'package:pistachio/presenter/model/exercise.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/party.dart';
 import 'package:pistachio/presenter/model/quest.dart';
@@ -53,10 +51,8 @@ class GlobalPresenter extends GetxController {
     Get.put(GlobalPresenter());
 
     Get.put(LoadingPresenter());
-    Get.put(InputFieldPresenter());
 
     Get.put(UserPresenter());
-    Get.put(ExercisePresenter());
     Get.put(ChallengePresenter());
     Get.put(BadgePresenter());
     Get.put(LevelPresenter());
@@ -85,7 +81,6 @@ class GlobalPresenter extends GetxController {
   }
 
   static void importData() {
-    ExercisePresenter.importFile();
     BadgePresenter.importFile();
     ChallengePresenter.importFile();
     LevelPresenter.importFile(ActivityType.distance);

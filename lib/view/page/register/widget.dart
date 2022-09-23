@@ -21,17 +21,17 @@ class CarouselView extends StatelessWidget {
 
   // 회원가입 페이지 carousel 리스트
   static List<Widget> carouselWidgets() => const [
-        UserInfoView(),
-        WeightHeightView(),
-        WeightGoalView(),
-        DistanceRecommendView(),
-        DistanceGoalView(),
-        HeightRecommendView(),
-        HeightGoalView(),
-        CalorieCheckView(),
-        RecommendView(),
-        CalorieExplanationView(),
-      ];
+    UserInfoView(),
+    WeightHeightView(),
+    WeightGoalView(),
+    DistanceRecommendView(),
+    DistanceGoalView(),
+    HeightRecommendView(),
+    HeightGoalView(),
+    CalorieCheckView(),
+    RecommendView(),
+    CalorieExplanationView(),
+  ];
 
   static int widgetCount = carouselWidgets().length;
 

@@ -29,7 +29,7 @@ class ExerciseInputPage extends StatelessWidget {
       ActivityType.calorie: '',
     };
 
-    Map<ActivityType, String> riveName = {
+    Map<ActivityType, String> riveAssets = {
       ActivityType.distance: 'assets/rive/input/jogger.riv',
       ActivityType.height:
           'assets/rive/input/1738-3431-raster-graphics-example.riv',
@@ -61,21 +61,19 @@ class ExerciseInputPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                PText(
-                  '오늘 ${messages[type]!}\n피스타치오가 알아서 계산해 줄게요.',
+                PText('오늘 ${messages[type]!}\n피스타치오가 알아서 계산해 줄게요.',
                   style: textTheme.bodyLarge,
                   maxLines: 2,
                 ),
-                TextField(
+                const SizedBox(height: 20.0),
+                PInputField(
                   controller: ExerciseInput.inputCont,
-                  decoration: InputDecoration(
-                    hintText: hints[type]!,
-                  ),
+                  hintText: hints[type]!,
                 ),
               ],
             ),
             RAnimation(
-              rName: riveName[type]!,
+              rName: riveAssets[type]!,
               abName: riveArtboard[type]!,
               aName: riveAnimations[type]!,
             ),

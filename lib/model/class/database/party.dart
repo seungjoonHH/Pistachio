@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:pistachio/model/class/challenge.dart';
-import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/class/database/user.dart';
+import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
 class Party {
   /// attributes
+  // 일반 변수
   String? id;
   String? challengeId;
   Difficulty difficulty = Difficulty.easy;
@@ -14,9 +15,10 @@ class Party {
   Timestamp? _startDate;
   Timestamp? _endDate;
 
-  PUser? leader;
-  Challenge? challenge;
-  List<PUser> members = [];
+  // 의존 변수
+  PUser? leader; // leaderUid 에 의존
+  Challenge? challenge; // challengeId 에 의존
+  List<PUser> members = []; // records 에 의존
 
   /// accessors & mutators
   DateTime? get startDate => _startDate?.toDate();
@@ -35,7 +37,7 @@ class Party {
   void fromJson(Map<String, dynamic> json) {
     id = json['id'];
     challengeId = json['challengeId'];
-    difficulty = toDifficulty(json['difficulty'])!;
+    difficulty = Difficulty.toEnum(json['difficulty'])!;
     records = json['records'] ?? <String, dynamic>{};
     leaderUid = json['leaderUid'];
   }

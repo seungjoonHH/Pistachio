@@ -13,7 +13,7 @@ class QuestPresenter extends GetxController {
     String string = await rootBundle.loadString(asset);
     Map<String, dynamic> list = jsonDecode(string);
     list.forEach((type, amount) {
-      quests[toActivityType(type)!] = amount.toInt();
+      quests[ActivityType.toEnum(type)!] = amount.toInt();
     });
   }
 }

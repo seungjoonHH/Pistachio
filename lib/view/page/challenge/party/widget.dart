@@ -2,7 +2,7 @@ import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/class/party.dart';
+import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/presenter/page/challenge/party/main.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 

@@ -1,5 +1,6 @@
 /* 뱃지 모델 구조 */
 class Badge {
+  /// static variables
   static const asset = 'assets/image/badge/';
 
   /// attributes

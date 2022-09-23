@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/unit.dart';
-import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/view/page/register/widget.dart';

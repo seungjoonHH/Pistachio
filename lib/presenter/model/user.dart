@@ -3,10 +3,10 @@
 import 'dart:math';
 
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/challenge.dart';
-import 'package:pistachio/model/class/collection.dart';
-import 'package:pistachio/model/class/party.dart';
-import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/class/json/challenge.dart';
+import 'package:pistachio/model/class/database/collection.dart';
+import 'package:pistachio/model/class/database/party.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/model/challenge.dart';

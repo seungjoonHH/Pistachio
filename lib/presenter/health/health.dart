@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
 

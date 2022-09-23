@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/class/party.dart';
+import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/view/page/challenge/party/widget.dart';
 
 class ChallengePartyMainPage extends StatelessWidget {

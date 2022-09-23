@@ -32,4 +32,5 @@ Timestamp? toTimestamp(DateTime? date) => date == null
 String? dateToString(String format, DateTime? date) => date == null
     ? null : DateFormat(format).format(date);
 
+// 문자열을 날짜 형태로 변환
 DateTime stringToDate(String string) => DateTime.parse(string);

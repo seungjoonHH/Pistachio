@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/level.dart';
+import 'package:pistachio/model/class/json/level.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
 // level/*.json 파일 관련

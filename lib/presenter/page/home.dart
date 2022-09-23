@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/user.dart';

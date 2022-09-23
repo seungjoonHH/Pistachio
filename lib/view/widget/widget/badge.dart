@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/class/badge.dart';
-import 'package:pistachio/model/class/collection.dart';
+import 'package:pistachio/model/class/json/badge.dart';
+import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class CollectionWidget extends StatelessWidget {

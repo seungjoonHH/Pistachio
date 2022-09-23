@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:pistachio/model/class/badge.dart';
+import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 
@@ -15,19 +14,23 @@ class Challenge {
   };
 
   /// attributes
+  // 일반 변수
   bool locked = false;
   String? id;
   String? title;
   ActivityType? type;
   String? word;
-  Color? theme;
   int? period;
+
+  // 복합 변수
   Map<String, dynamic> imageUrls = {};
   Map<String, dynamic> descriptions = {};
   Map<String, dynamic> levels = {};
 
-  Map<Difficulty, Badge> badges = {};
+  // 의존 변수
+  Map<Difficulty, Badge> badges = {}; // levels 에 의존
 
+  /// accessors & mutators
   String? get titleOneLine => title?.replaceAll('\n', ' ');
 
   /// constructors
@@ -43,14 +46,14 @@ class Challenge {
     id = json['id'];
     title = json['title'];
     imageUrls = idToImageUrls(id!);
-    type = toActivityType(json['type']);
+    type = ActivityType.toEnum(json['type']);
     word = json['word'];
     levels = json['levels'];
     period = json['period'];
     descriptions = json['descriptions'];
     levels.forEach((string, level) {
       String id = level['collection'];
-      badges[toDifficulty(string)!] = BadgePresenter.getBadge(id)!;
+      badges[Difficulty.toEnum(string)!] = BadgePresenter.getBadge(id)!;
     });
   }
 

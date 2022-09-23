@@ -1,10 +1,4 @@
 class Level {
-  /// static variables
-  static String asset = 'assets/image/level/';
-
-  /// static methods
-  static String idToImageUrl(String id) => '$asset$id.svg';
-
   /// attributes
   String? id;
   String? title;
@@ -13,6 +7,7 @@ class Level {
 
   /// constructors
   Level();
+
   Level.fromJson(Map<String, dynamic> json) {
     fromJson(json);
   }
@@ -32,4 +27,10 @@ class Level {
     json['amount'] = amount;
     return json;
   }
+
+  /// static variables
+  static String asset = 'assets/image/level/';
+
+  /// static methods
+  static String idToImageUrl(String id) => '$asset$id.svg';
 }

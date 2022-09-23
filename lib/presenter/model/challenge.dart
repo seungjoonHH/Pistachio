@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/class/json/challenge.dart';
 
 /// class
 class ChallengePresenter extends GetxController {

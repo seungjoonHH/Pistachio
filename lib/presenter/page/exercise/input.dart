@@ -27,7 +27,7 @@ class ExerciseInput extends GetxController {
 
     userPresenter.loggedUser.addRecord(type, today, amount);
     userPresenter.loggedUser
-        .addRecord(ActivityType.calorie, today, calories[type] ?? 0);
+        .addRecord(ActivityType.calorie, today, getCalories(type, amount));
     userPresenter.save();
     inputCont.clear();
     HomePresenter.toHome();

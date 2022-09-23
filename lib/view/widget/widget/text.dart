@@ -1,10 +1,8 @@
 /* 커스텀 텍스트 위젯 */
 
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
-import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:pistachio/presenter/widget/input_field.dart';
 
 /// class
 class PText extends StatelessWidget {

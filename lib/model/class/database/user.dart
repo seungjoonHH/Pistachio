@@ -2,12 +2,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:pistachio/model/class/collection.dart';
-import 'package:pistachio/model/class/party.dart';
+import 'package:pistachio/model/class/database/collection.dart';
+import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
 class PUser {
   /// attributes
+  // 일반 변수
   String? uid;
   String? name;
   String? nickname;
@@ -19,21 +20,76 @@ class PUser {
   Timestamp? _dateOfBirth;
   String? collectionId;
   List<String> partyIds = [];
+
+  // 복합 변수
   List<Collection> collections = [];
   Map<String, dynamic> goals = {};
   Map<String, dynamic> records = {};
 
-  Map<String, Party> parties = {};
+  // 의존 변수
+  Map<String, Party> parties = {}; // partyIds 변수에 의존
 
   /// accessors & mutators
   DateTime? get regDate => _regDate?.toDate();
   DateTime? get dateOfBirth => _dateOfBirth?.toDate();
 
+  String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);
+
   set regDate(DateTime? date) => _regDate = toTimestamp(date);
   set dateOfBirth(DateTime? date) => _dateOfBirth = toTimestamp(date);
 
-  String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);
+  /// constructors
+  PUser() {
+    weight = defaultWeight;
+    height = defaultHeight;
+    for (var type in ActivityType.values) {
+      goals[type.name] = null;
+      records[type.name] = [];
+    }
+  }
 
+  PUser.fromJson(Map<String, dynamic> json) {
+    fromJson(json);
+  }
+
+  /// methods
+  void fromJson(Map<String, dynamic> json) {
+    uid = json['uid'];
+    name = json['name'];
+    nickname = json['nickname'];
+    email = json['email'];
+    weight = json['weight'].toInt();
+    height = json['height'].toInt();
+    sex = Sex.toEnum(json['sex']);
+    _regDate = json['regDate'];
+    _dateOfBirth = json['dateOfBirth'];
+    collectionId = json['collectionId'];
+    partyIds = (json['partyIds'] ?? []).cast<String>();
+    collections = toCollections((json['collections'] ?? []).cast<Map<String, dynamic>>());
+    goals = json['goals'];
+    records = json['records'];
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+    json['uid'] = uid;
+    json['name'] = name;
+    json['nickname'] = nickname;
+    json['email'] = email;
+    json['weight'] = weight;
+    json['height'] = height;
+    json['sex'] = sex?.name;
+    json['regDate'] = _regDate;
+    json['dateOfBirth'] = _dateOfBirth;
+    json['collectionId'] = collectionId;
+    json['partyIds'] = partyIds;
+    json['collections'] = collectionsToJsonList(collections);
+    json['goals'] = goals;
+    json['records'] = records;
+    return json;
+  }
+
+  /// methods
   void addRecord(ActivityType type, DateTime date, int amount) {
     for (var record in records[type.name] ?? []) {
       if (record['date'] == toTimestamp(date)) {
@@ -64,8 +120,11 @@ class PUser {
     return getAmounts(type, firstDate, lastDate);
   }
 
-  int getAmounts(ActivityType activityType,
-      [DateTime? startDate, DateTime? endDate]) {
+  int getAmounts(
+    ActivityType activityType, [
+    DateTime? startDate,
+    DateTime? endDate,
+  ]) {
     int result = 0;
 
     records.forEach((type, recordList) {
@@ -80,57 +139,11 @@ class PUser {
     return result;
   }
 
-  /// constructors
-  PUser() {
-    weight = 60;
-    height = 170;
-    for (var type in ActivityType.values) {
-      goals[type.name] = null;
-      records[type.name] = [];
-    }
-  }
+  /// static variables
+  static int defaultWeight = 60;
+  static int defaultHeight = 170;
 
-  PUser.fromJson(Map<String, dynamic> json) {
-    fromJson(json);
-  }
-
-  /// methods
-  void fromJson(Map<String, dynamic> json) {
-    uid = json['uid'];
-    name = json['name'];
-    nickname = json['nickname'];
-    email = json['email'];
-    weight = json['weight'].toInt();
-    height = json['height'].toInt();
-    sex = toSex(json['sex']);
-    _regDate = json['regDate'];
-    _dateOfBirth = json['dateOfBirth'];
-    collectionId = json['collectionId'];
-    partyIds = (json['partyIds'] ?? []).cast<String>();
-    collections = toCollections((json['collections'] ?? []).cast<Map<String, dynamic>>());
-    goals = json['goals'];
-    records = json['records'];
-  }
-
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = {};
-    json['uid'] = uid;
-    json['name'] = name;
-    json['nickname'] = nickname;
-    json['email'] = email;
-    json['weight'] = weight;
-    json['height'] = height;
-    json['sex'] = sex?.name;
-    json['regDate'] = _regDate;
-    json['dateOfBirth'] = _dateOfBirth;
-    json['collectionId'] = collectionId;
-    json['partyIds'] = partyIds;
-    json['collections'] = collectionsToJsonList(collections);
-    json['goals'] = goals;
-    json['records'] = records;
-    return json;
-  }
-
+  /// static methods
   static List<Collection> toCollections(List<Map<String, dynamic>> jsonList) {
     List<Collection> collections = [];
     for (var json in jsonList) { collections.add(Collection.fromJson(json)); }

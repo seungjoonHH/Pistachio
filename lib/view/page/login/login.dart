@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pistachio/global/theme.dart';
@@ -24,10 +25,12 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 SignInButton(type: LoginType.google),
                 SizedBox(height: 15.0),
-                SignInButton(type: LoginType.apple),
+                //SignInButton(type: LoginType.apple),
+                if (Platform.isIOS)
+                  SignInButton(type: LoginType.apple),
                 SizedBox(height: 77.0),
               ],
             ),

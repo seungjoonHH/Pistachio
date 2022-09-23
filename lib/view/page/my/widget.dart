@@ -1,10 +1,11 @@
 /* 마이 페이지 위젯 */
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/setting/setting.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 class MyView extends StatelessWidget {
   const MyView({Key? key}) : super(key: key);
@@ -45,6 +46,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0.0,
+      iconTheme: const IconThemeData(color: PTheme.black),
+      backgroundColor: PTheme.background,
+      title: PText('프로필',
+        border: true,
+        style: textTheme.headlineMedium,
+      ),
       actions: const [
         IconButton(
           icon: Icon(

@@ -1,13 +1,14 @@
 /* 설정 페이지 위젯 */
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/setting/edit_nickname.dart';
 import 'package:pistachio/presenter/page/setting/edit_height.dart';
 import 'package:pistachio/presenter/page/setting/edit_weight.dart';
 import 'package:pistachio/presenter/page/setting/setting.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SettingAppBar({Key? key}) : super(key: key);
@@ -17,7 +18,33 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar();
+    return AppBar(
+      elevation: 0.0,
+      iconTheme: const IconThemeData(color: PTheme.black),
+      backgroundColor: PTheme.background,
+    );
+  }
+}
+
+class SettingView extends StatelessWidget {
+  const SettingView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        children: const [
+          MyProfileImageButton(),
+          NameTextField(),
+          HeightTextField(),
+          WeightTextField(),
+          Expanded(child: SizedBox()),
+          LogoutButton(),
+          DeleteUserButton(),
+        ],
+      ),
+    );
   }
 }
 

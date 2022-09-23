@@ -14,19 +14,7 @@ class SettingPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: const SettingAppBar(),
-      body: Center(
-        child: Column(
-          children: const [
-            MyProfileImageButton(),
-            NameTextField(),
-            HeightTextField(),
-            WeightTextField(),
-            Expanded(child: SizedBox()),
-            LogoutButton(),
-            DeleteUserButton(),
-          ],
-        ),
-      ),
+      bottomSheet: PBottomSheetBar(body: SettingView()),
     );
   }
 }

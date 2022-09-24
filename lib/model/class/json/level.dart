@@ -3,6 +3,7 @@ class Level {
   String? id;
   String? title;
   int? amount;
+  String? description;
   String? imageUrl;
 
   /// constructors
@@ -14,17 +15,19 @@ class Level {
 
   /// methods
   void fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
+    id = '${json['id']}';
+    title = '${json['title']}';
     amount = json['amount'];
+    description = json['description'];
     imageUrl = idToImageUrl(id!);
   }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};
-    json['id'] = id;
+    json['id'] = int.parse(json['id']);
     json['title'] = title;
     json['amount'] = amount;
+    json['description'] = description;
     return json;
   }
 

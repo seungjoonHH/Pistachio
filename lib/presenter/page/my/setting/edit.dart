@@ -4,6 +4,12 @@ import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/presenter/model/user.dart';
 
 class MySettingEdit extends GetxController {
+  static Map<String, String> kr = {
+    'nickname': '별명',
+    'height': '신장',
+    'weight': '체중',
+  };
+
   static final editConts = {
     'nickname': TextEditingController(),
     'height': TextEditingController(),

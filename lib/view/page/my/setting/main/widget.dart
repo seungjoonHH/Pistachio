@@ -74,11 +74,6 @@ class EditTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<UserPresenter>(
       builder: (controller) {
-        Map<String, String> kr = {
-          'nickname': '별명',
-          'height': '신장',
-          'weight': '체중',
-        };
         Map<String, String> value = {
           'nickname': controller.loggedUser.nickname!,
           'height': '${controller.loggedUser.height} cm',
@@ -88,7 +83,7 @@ class EditTextField extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PText(kr[editType]!, style: textTheme.headlineSmall),
+            PText(MySettingEdit.kr[editType]!, style: textTheme.headlineSmall),
             const SizedBox(height: 10.0),
             Material(
               color: PTheme.white,

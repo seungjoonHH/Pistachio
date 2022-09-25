@@ -16,7 +16,7 @@ class MySettingEditPage extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           appBar: PAppBar(
-            title: '별명 수정',
+            title: '${MySettingEdit.kr[editType]} 수정',
             actions: [
               IconButton(
                 icon: const Icon(Icons.send),

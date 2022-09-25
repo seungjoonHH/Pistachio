@@ -18,7 +18,7 @@ class LevelPresenter extends GetxController {
     levels[type] = list.map((json) => Level.fromJson(json)).toList();
   }
 
-  Map<String, dynamic> getTier(ActivityType type, int amount) {
+  static Map<String, dynamic> getTier(ActivityType type, int amount) {
     Map<String, dynamic> result = {};
 
     List<Level> levelList = levels[type] ?? [];

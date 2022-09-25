@@ -25,10 +25,13 @@ void showPDialog({
   DialogType type = DialogType.none,
   String? buttonText,
   VoidCallback? onPressed,
+  Color? color,
   String? leftText,
   String? rightText,
   VoidCallback? leftPressed,
   VoidCallback? rightPressed,
+  Color? leftColor,
+  Color? rightColor,
 }) {
   List<DialogButtonData> data = [];
 
@@ -44,8 +47,8 @@ void showPDialog({
       )); break;
     case DialogType.none:
       assert(onPressed == null && buttonText == null && (
-        leftText == null && leftPressed == null
-          && rightText == null && rightPressed == null
+        leftText == null && leftPressed == null && leftColor == null
+          && rightText == null && rightPressed == null && rightColor == null
       )); break;
   }
 
@@ -55,7 +58,7 @@ void showPDialog({
       data = [
         DialogButtonData(type,
           text: buttonText ?? '확인',
-          color: PTheme.black,
+          color: color ?? PTheme.black,
           onPressed: onPressed!,
         ),
       ]; break;
@@ -63,12 +66,12 @@ void showPDialog({
       data = [
         DialogButtonData(type,
           text: leftText ?? '취소',
-          color: PTheme.grey,
+          color: leftColor ?? PTheme.grey,
           onPressed: leftPressed!,
         ),
         DialogButtonData(type,
           text: rightText ?? '확인',
-          color: PTheme.black,
+          color: rightColor ?? PTheme.black,
           onPressed: rightPressed!,
         ),
       ]; break;
@@ -113,9 +116,12 @@ void showPDialog({
                 color: datum.color,
                 child: InkWell(
                   onTap: datum.onPressed,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: PTheme.black),
+                    ),
+                    child: Center(
                       child: PText(datum.text,
                         color: PTheme.white,
                         style: textTheme.labelLarge,

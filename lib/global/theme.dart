@@ -15,6 +15,7 @@ class PTheme {
   /// colors
   // simple
   static const Color black = Color(0xFF1F1F1F);
+  static const Color lightGrey = Color(0xFFD9D9D9);
   static const Color grey = Color(0xFF73796E);
   static const Color white = Color(0xFFFDFDFD);
   static const Color bar = Color(0xFFECCFC0);

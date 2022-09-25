@@ -3,10 +3,10 @@
 import 'package:get/get.dart';
 
 /// class
-class MyPresenter extends GetxController {
+class MyMain extends GetxController {
 
   /// static methods
   // 마이 페이지로 이동
-  static void toMy() => Get.offAllNamed('/my');
+  static void toMyMain() => Get.toNamed('/my/main');
 }
 

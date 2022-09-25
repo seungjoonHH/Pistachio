@@ -11,7 +11,6 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
-import 'package:pistachio/view/page/onboarding/widget.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
@@ -26,7 +25,7 @@ class HomeView extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          HomeRandomCardView(),
+          const HomeRandomCardView(),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -117,7 +116,7 @@ class QuestRecommendCard extends StatelessWidget {
           const SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: const [
               BadgeWidget(size: 60.0,),
               BadgeWidget(),
               BadgeWidget(size: 60.0,),

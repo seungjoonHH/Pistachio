@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/global.dart';
+import 'package:pistachio/presenter/page/my/main.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class PAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -71,9 +72,7 @@ class MyNavigationButton extends StatelessWidget {
       borderRadius: radius,
       shadowColor: PTheme.grey,
       child: InkWell(
-        onTap: () {
-          Get.toNamed('/my');
-        },
+        onTap: MyMain.toMyMain,
         borderRadius: radius,
         child: Container(
           padding: const EdgeInsets.symmetric(

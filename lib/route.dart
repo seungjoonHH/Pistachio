@@ -9,16 +9,15 @@ import 'package:pistachio/view/page/exercise/input/input.dart';
 import 'package:pistachio/view/page/exercise/main/main.dart';
 import 'package:pistachio/view/page/home/home.dart';
 import 'package:pistachio/view/page/login/login.dart';
+import 'package:pistachio/view/page/my/record/record.dart';
+import 'package:pistachio/view/page/my/setting/edit/edit.dart';
+import 'package:pistachio/view/page/my/setting/main/main.dart';
 import 'package:pistachio/view/page/onboarding/onboarding.dart';
 import 'package:pistachio/view/page/quest/quest.dart';
 import 'package:pistachio/view/page/record/detail/detail.dart';
 import 'package:pistachio/view/page/record/main/main.dart';
 import 'package:pistachio/view/page/register/register.dart';
-import 'package:pistachio/view/page/my/my.dart';
-import 'package:pistachio/view/page/setting/setting/setting.dart';
-import 'package:pistachio/view/page/setting/edit_height/edit_height.dart';
-import 'package:pistachio/view/page/setting/edit_weight/edit_weight.dart';
-import 'package:pistachio/view/page/setting/edit_nickname/edit_nickname.dart';
+import 'package:pistachio/view/page/my/main/my.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,12 +48,11 @@ class PRoute {
     '/challenge/create': const ChallengeCreatePage(),
     '/challenge/complete': const ChallengeCompletePage(),
     '/challenge/party/main': const ChallengePartyMainPage(),
-    '/my': const MyPage(),
+    '/my/main': const MyMainPage(),
+    '/my/record': const MyRecordPage(),
+    '/my/setting/main': const MySettingMainPage(),
+    '/my/setting/edit': const MySettingEditPage(),
     '/quest': const QuestPage(),
-    '/setting': const SettingPage(),
-    '/editNickname': const EditNicknamePage(),
-    '/editHeight': const EditHeightPage(),
-    '/editWeight': const EditWeightPage(),
   };
 
   // 겟페이지 리스트

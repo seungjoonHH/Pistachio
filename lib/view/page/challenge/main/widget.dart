@@ -417,7 +417,7 @@ class MyPartyListViewLoading extends StatelessWidget {
           itemBuilder: (_, index) {
             return Container(
               color: PTheme.background,
-              height: 82.0,
+              height: 80.0,
               child: Row(
                 children: [
                   Container(width: 80.0, height: 80.0, color: controller.color),

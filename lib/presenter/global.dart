@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/page/my/setting/edit.dart';
+import 'package:pistachio/presenter/page/my/setting/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/level.dart';
@@ -21,11 +23,7 @@ import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
-import 'package:pistachio/presenter/page/my.dart';
-import 'package:pistachio/presenter/page/setting/setting.dart';
-import 'package:pistachio/presenter/page/setting/edit_nickname.dart';
-import 'package:pistachio/presenter/page/setting/edit_height.dart';
-import 'package:pistachio/presenter/page/setting/edit_weight.dart';
+import 'package:pistachio/presenter/page/my/main.dart';
 
 class GlobalPresenter extends GetxController {
   int navIndex = 0;
@@ -70,14 +68,12 @@ class GlobalPresenter extends GetxController {
     Get.put(ExerciseInput());
     Get.put(RecordMain());
     Get.put(QuestMain());
-    Get.put(MyPresenter());
+    Get.put(MyMain());
+    Get.put(MySettingMain());
+    Get.put(MySettingEdit());
     Get.put(ChallengeMain());
     Get.put(ChallengeCreate());
     Get.put(ChallengePartyMain());
-    Get.put(SettingPresenter());
-    Get.put(EditNicknamePresenter());
-    Get.put(EditHeightPresenter());
-    Get.put(EditWeightPresenter());
   }
 
   static void importData() {

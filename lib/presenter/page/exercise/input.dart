@@ -18,16 +18,16 @@ class ExerciseInput extends GetxController {
   Future completeButtonPressed(ActivityType type) async {
     final userPresenter = Get.find<UserPresenter>();
     int amount = int.parse(inputCont.text);
+    int converted = amount;
 
     if (type == ActivityType.distance) {
-      amount = convertDistance(amount);
-      await HealthPresenter.addData(int.parse(inputCont.text), amount);
+      converted = convertDistance(amount);
+      await HealthPresenter.addData(int.parse(inputCont.text), converted);
     }
-    if (type == ActivityType.weight) amount = convertWeight(amount);
+    if (type == ActivityType.weight) converted = convertWeight(amount);
 
-    userPresenter.loggedUser.addRecord(type, today, amount);
-    userPresenter.loggedUser
-        .addRecord(ActivityType.calorie, today, getCalories(type, amount));
+    userPresenter.loggedUser.addRecord(type, today, converted);
+    userPresenter.loggedUser.addRecord(ActivityType.calorie, today, getCalories(type, amount));
     userPresenter.save();
     inputCont.clear();
     HomePresenter.toHome();

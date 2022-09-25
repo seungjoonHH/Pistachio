@@ -26,12 +26,12 @@ class LoginPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SignInButton(type: LoginType.google),
-                SizedBox(height: 15.0),
+                const SignInButton(type: LoginType.google),
+                const SizedBox(height: 15.0),
                 //SignInButton(type: LoginType.apple),
                 if (Platform.isIOS)
-                  SignInButton(type: LoginType.apple),
-                SizedBox(height: 77.0),
+                  const SignInButton(type: LoginType.apple),
+                const SizedBox(height: 77.0),
               ],
             ),
           ),

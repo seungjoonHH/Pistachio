@@ -14,11 +14,10 @@ class RecordMain extends GetxController {
 
   void loadTiers() {
     final userPresenter = Get.find<UserPresenter>();
-    final levelPresenter = Get.find<LevelPresenter>();
 
     for (ActivityType type in ActivityType.values) {
       int amount = userPresenter.loggedUser.getAmounts(type);
-      tiers[type] = levelPresenter.getTier(type, amount);
+      tiers[type] = LevelPresenter.getTier(type, amount);
     }
     update();
   }

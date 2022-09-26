@@ -45,6 +45,7 @@ dependencies:
   health: ^4.1.1
   permission_handler: ^10.0.0
   rive: ^0.9.1
+  parallax_animation: ^0.0.3
 
 dev_dependencies:
   flutter_test:

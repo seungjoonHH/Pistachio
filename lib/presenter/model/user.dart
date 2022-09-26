@@ -3,10 +3,10 @@
 import 'dart:math';
 
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/challenge.dart';
-import 'package:pistachio/model/class/collection.dart';
-import 'package:pistachio/model/class/party.dart';
-import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/class/json/challenge.dart';
+import 'package:pistachio/model/class/database/collection.dart';
+import 'package:pistachio/model/class/database/party.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
@@ -47,7 +47,7 @@ class UserPresenter extends GetxController {
 
   /* 파이어베이스 관련 */
   // 파이어베이스에서 로드
-  void load() async {
+  Future load() async {
     var json = (await f.collection('users').doc(loggedUser.uid).get()).data();
     if (json == null) return;
     loggedUser = PUser.fromJson(json);
@@ -124,4 +124,12 @@ class UserPresenter extends GetxController {
 
   set myCollections(List<Collection> collections) => loggedUser.collections = collections;
   List<Collection> get myCollections => loggedUser.collections;
+
+  bool joining(Challenge challenge) {
+    return myParties.values.map((party) => party.challengeId).contains(challenge.id);
+  }
+
+  Party? joiningParty(Challenge challenge) {
+    return myParties.values.toList().firstWhereOrNull((party) => party.challengeId == challenge.id);
+  }
 }

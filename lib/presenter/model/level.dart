@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/level.dart';
+import 'package:pistachio/model/class/json/level.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
 // level/*.json 파일 관련
@@ -18,7 +18,7 @@ class LevelPresenter extends GetxController {
     levels[type] = list.map((json) => Level.fromJson(json)).toList();
   }
 
-  Map<String, dynamic> getTier(ActivityType type, int amount) {
+  static Map<String, dynamic> getTier(ActivityType type, int amount) {
     Map<String, dynamic> result = {};
 
     List<Level> levelList = levels[type] ?? [];

@@ -170,16 +170,12 @@ class MonthlyQuestGraph extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    type == ActivityType.distance
-                        ? Text(
-                            '${goal ~/ 10000}만${type.unit} ${type.quest}',
-                            style: TextStyle(color: type.color),
-                          )
-                        : Text(
-                            '$goal${type.unit} ${type.quest}',
-                            style: TextStyle(color: type.color),
-                          ),
-                    const Text('를 성공하세요'),
+                    type == ActivityType.distance ? Text(
+                      '${goal ~/ 10000}만${type.unit} ${type.verb}',
+                      style: TextStyle(color: type.color),
+                    ) : Text('$goal${type.unit} ${type.verb}',
+                      style: TextStyle(color: type.color),
+                    ),
                   ],
                 ),
                 Padding(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/class/badge.dart';
-import 'package:pistachio/model/class/collection.dart';
+import 'package:pistachio/model/class/json/badge.dart';
+import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class CollectionWidget extends StatelessWidget {
@@ -98,7 +98,7 @@ class BadgeWidget extends StatelessWidget {
     this.onPressed,
     this.size = 80.0,
     this.border = true,
-    this.color = PTheme.grey,
+    this.color = PTheme.lightGrey,
   }) : super(key: key);
 
   final Badge? badge;
@@ -124,11 +124,12 @@ class BadgeWidget extends StatelessWidget {
     return Stack(
       children: [
         if (badge != null)
-          Image.asset(badge!.imageUrl!,
-            width: size.w,
-            height: size.w,
-          ),
+        Image.asset(badge!.imageUrl!,
+          width: size.w,
+          height: size.w,
+        ),
         Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Material(
               color: badge == null
@@ -143,7 +144,7 @@ class BadgeWidget extends StatelessWidget {
                   height: size.w,
                   decoration: ShapeDecoration(
                     color: onPressed != null && !selected
-                        ? PTheme.black.withOpacity(.5) : null,
+                        ? Colors.transparent : null,
                     shape: side,
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/user.dart';
 
 class HomePresenter extends GetxController {
@@ -10,9 +11,12 @@ class HomePresenter extends GetxController {
     Get.offAllNamed('/home');
   }
 
-  void init() {
+  void init() async {
     final userPresenter = Get.find<UserPresenter>();
-    userPresenter.load();
+    final loadingPresenter = Get.find<LoadingPresenter>();
+    loadingPresenter.loadStart();
+
+    await userPresenter.load();
 
     graphStates = {
       ActivityType.distance: false,
@@ -22,6 +26,8 @@ class HomePresenter extends GetxController {
     };
     loadGoals();
     loadRecords();
+
+    loadingPresenter.loadEnd();
   }
 
   late Map<ActivityType, bool> graphStates = {

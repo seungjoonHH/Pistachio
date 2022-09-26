@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/badge.dart';
+import 'package:pistachio/model/class/json/badge.dart';
 
 // collections.json 파일 관련
 class BadgePresenter extends GetxController {

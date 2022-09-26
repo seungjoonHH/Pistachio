@@ -2,18 +2,31 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/unit.dart';
-import 'package:pistachio/model/class/user.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
-import '../../global/unit.dart';
-import '../../view/page/register/widget.dart';
+import 'package:pistachio/view/page/register/widget.dart';
 import 'home.dart';
+
+class Field {
+  bool invalid = false;
+  dynamic controller;
+
+  Field([this.controller]);
+}
 
 /// class
 class RegisterPresenter extends GetxController {
   int pageIndex = 0;
-  List<bool> invalids = [false, false, false];
+  bool invalid = false;
+
+  Map<String, Field> fields = {
+    'nickname': Field(TextEditingController()),
+    'dateOfBirth': Field(TextEditingController()),
+    'sex': Field(),
+  };
 
   static const Duration shakeDuration = Duration(milliseconds: 500);
 
@@ -21,21 +34,18 @@ class RegisterPresenter extends GetxController {
   static const Duration transitionDuration = Duration(milliseconds: 300);
 
   /// static variables
-  // 유저 닉네임 텍스트 수정 컨트롤러
-  static final nickNameCont = TextEditingController();
-
-  // 유저 생년월일 텍스트 수정 컨트롤러
-  static final birthdayCont = TextEditingController();
-
   static final carouselCont = CarouselController();
 
-  static void toRegister() => Get.toNamed('/register');
+  static void toRegister() {
+    final registerPresenter = Get.find<RegisterPresenter>();
+    registerPresenter.init();
+    Get.toNamed('/register');
+  }
 
   /// static methods
   // 컨트롤러를 모두 초기화
-  void clearConts() {
-    nickNameCont.clear();
-    birthdayCont.clear();
+  void init() {
+    for (var field in fields.values) { field.controller?.clear(); }
     newcomer = PUser();
     distanceMinute = 0;
   }
@@ -118,13 +128,8 @@ class RegisterPresenter extends GetxController {
   // 새 크루 정보 제출 시
   void submitted() {
     final userPresenter = Get.find<UserPresenter>();
-
-    newcomer.nickname = nickNameCont.text;
-    newcomer.dateOfBirth = DateTime.utc(
-      int.parse(birthdayCont.text.substring(0, 4)),
-      int.parse(birthdayCont.text.substring(4, 6)),
-      int.parse(birthdayCont.text.substring(6)),
-    );
+    newcomer.nickname = fields['nickname']!.controller.text;
+    newcomer.dateOfBirth = stringToDate(fields['dateOfBirth']!.controller.text);
 
     userPresenter.login(newcomer);
     userPresenter.loggedUser.regDate = DateTime.now();
@@ -133,34 +138,56 @@ class RegisterPresenter extends GetxController {
     userPresenter.save();
     HomePresenter.toHome();
 
-    clearConts();
+    init();
+  }
+
+  void nicknameValidate() async {
+    Field nicknameField = fields['nickname']!;
+    String text = nicknameField.controller.text;
+
+    if (text == '' || RegExp(r'[`~!@#$%^&*|"' r"'‘’””;:/?]").hasMatch(text)) {
+      invalid = true;
+      nicknameField.invalid = true; update();
+      await Future.delayed(const Duration(milliseconds: 1000), () {
+        nicknameField.invalid = false; update();
+      });
+    }
+  }
+
+  void dateOfBirthValidate() async {
+    Field dateOfBirthField = fields['dateOfBirth']!;
+    String text = dateOfBirthField.controller.text;
+
+    if (text.length != 8 || int.tryParse(text) == null) {
+      invalid = true;
+      dateOfBirthField.invalid = true; update();
+      await Future.delayed(const Duration(milliseconds: 1000), () {
+        dateOfBirthField.invalid = false; update();
+      });
+    }
+  }
+
+  void sexValidate() async {
+    Field sexField = fields['sex']!;
+
+    if (newcomer.sex == null) {
+      invalid = true;
+      sexField.invalid = true; update();
+      await Future.delayed(const Duration(milliseconds: 1000), () {
+        sexField.invalid = false; update();
+      });
+    }
   }
 
   // 다음 버튼 클릭 트리거
-  void nextPressed() {
+  void nextPressed() async {
     if (pageIndex == 0) {
-      bool nicknameInvalid = nickNameCont.text == '';
-      nicknameInvalid |= RegExp(r'[`~!@#$%^&*|"' r"'‘’””;:/?]")
-          .hasMatch(nickNameCont.text);
-      bool birthdayInvalid = birthdayCont.text.length != 8;
-      birthdayInvalid |= int.tryParse(birthdayCont.text) == null;
-      bool sexInvalid = (newcomer.sex == null);
-
-      bool invalid = nicknameInvalid || birthdayInvalid || sexInvalid;
-
-      if (invalid) {
-        if (nicknameInvalid) validate(0);
-        if (birthdayInvalid) validate(1);
-        if (sexInvalid) validate(2);
-        return;
-      }
-      newcomer.nickname = nickNameCont.text;
-      newcomer.dateOfBirth = DateTime.utc(
-        int.parse(birthdayCont.text.substring(0, 4)),
-        int.parse(birthdayCont.text.substring(4, 6)),
-        int.parse(birthdayCont.text.substring(6)),
-      );
-    } else if (pageIndex == 6) {
+      nicknameValidate();
+      dateOfBirthValidate();
+      sexValidate();
+      if (invalid) { invalid = false; return; }
+    }
+    else if (pageIndex == 6) {
       int goal = 0;
       for (var type in ActivityType.values.sublist(0, 3)) {
         int amount = newcomer.goals[type.name].toInt();
@@ -170,9 +197,9 @@ class RegisterPresenter extends GetxController {
       newcomer.goals[ActivityType.calorie.name] = goal;
       update();
 
-    } else if (pageIndex == CarouselView.widgetCount - 1) {
-      submitted();
-      return;
+    }
+    else if (pageIndex == CarouselView.widgetCount - 1) {
+      submitted(); return;
     }
     carouselCont.nextPage(
       curve: transitionCurve,
@@ -186,7 +213,7 @@ class RegisterPresenter extends GetxController {
     if (pageIndex == 0) {
       final userPresenter = Get.find<UserPresenter>();
       userPresenter.logout();
-      clearConts();
+      init();
       Get.offAllNamed('/login', arguments: true);
     }
 
@@ -195,15 +222,5 @@ class RegisterPresenter extends GetxController {
       duration: transitionDuration,
     );
     pageIndexDecrease();
-  }
-
-  // 잘못되었을 때 효과 트리거
-  void validate(index) async {
-    invalids[index] = true;
-    update();
-    await Future.delayed(shakeDuration, () {
-      invalids[index] = false;
-      update();
-    });
   }
 }

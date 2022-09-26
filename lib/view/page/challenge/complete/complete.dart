@@ -1,7 +1,7 @@
 /* 챌린지 완료 페이지 */
 
+import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/view/page/challenge/complete/widget.dart';
-import 'package:pistachio/model/class/challenge.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

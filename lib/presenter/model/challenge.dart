@@ -4,12 +4,14 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/challenge.dart';
+import 'package:pistachio/model/class/json/challenge.dart';
 
 /// class
 class ChallengePresenter extends GetxController {
   static String asset = 'assets/json/data/challenges.json';
   static List<Challenge> challenges = [];
+  static List<Challenge> get availableChallenges => challenges
+      .where((challenge) => !challenge.locked).toList();
 
   static Future importFile() async {
     String string = await rootBundle.loadString(asset);

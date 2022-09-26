@@ -1,5 +1,5 @@
-import 'package:pistachio/model/class/challenge.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/model/class/json/challenge.dart';
 
 class ChallengeDetail {
   static void toChallengeDetail(Challenge challenge) {

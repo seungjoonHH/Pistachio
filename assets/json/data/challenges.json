@@ -9,7 +9,7 @@
       "easy": {
         "word": "아기고래",
         "goal": 100.0,
-        "maxMember": 1,
+        "maxMember": 2,
         "collection": "1010000"
       },
       "normal": {
@@ -21,7 +21,7 @@
       "hard": {
         "word": "아빠고래",
         "goal": 600.0,
-        "maxMember": 5,
+        "maxMember": 4,
         "collection": "1010002"
       }
     },

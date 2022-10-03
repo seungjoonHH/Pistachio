@@ -20,8 +20,7 @@ class ChallengePartyMain extends GetxController {
   void init() {
     final userPresenter = Get.find<UserPresenter>();
     value = 0;
-    maxValue = userPresenter.loggedUser
-        .getThisMonthAmounts(ActivityType.weight);
+    maxValue = userPresenter.loggedUser.getThisMonthAmounts(ActivityType.weight);
     animateValue();
   }
 

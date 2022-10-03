@@ -35,7 +35,7 @@ class MyMainView extends StatelessWidget {
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: ActivityType.values.map((type) {
+                    children: ActivityType.activeValues.map((type) {
                       Map<String, dynamic> tier = LevelPresenter.getTier(type, loggedUser.getAmounts(type));
                       return Expanded(
                         child: Material(

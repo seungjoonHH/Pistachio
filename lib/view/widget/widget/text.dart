@@ -78,6 +78,7 @@ class PTexts extends StatelessWidget {
     this.borderWidth = 1.0,
     this.alignment = MainAxisAlignment.center,
     this.maxLines = 1,
+    this.space = true,
   }) : assert(texts.length == colors.length),
         style = style ?? textTheme.bodyMedium,
         super(key: key);
@@ -91,6 +92,7 @@ class PTexts extends StatelessWidget {
   final double borderWidth;
   final MainAxisAlignment alignment;
   final int maxLines;
+  final bool space;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,7 @@ class PTexts extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: List.generate(texts.length, (i) => Row(
         children: [
-          if (i > 0)
+          if (i > 0 && space)
           PText(' ',
             style: style,
             bold: bold,

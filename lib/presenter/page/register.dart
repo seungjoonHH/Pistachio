@@ -21,6 +21,8 @@ class Field {
 class RegisterPresenter extends GetxController {
   int pageIndex = 0;
   bool invalid = false;
+  List<bool> imageExistence = [false, false, true, true, true, true, true];
+  bool imageVisualize = false;
 
   Map<String, Field> fields = {
     'nickname': Field(TextEditingController()),
@@ -30,8 +32,8 @@ class RegisterPresenter extends GetxController {
 
   static const Duration shakeDuration = Duration(milliseconds: 500);
 
-  static Curve transitionCurve = Curves.fastOutSlowIn;
-  static const Duration transitionDuration = Duration(milliseconds: 300);
+  static Curve transitionCurve = Curves.easeInOut;
+  static const Duration transitionDuration = Duration(milliseconds: 350);
 
   /// static variables
   static final carouselCont = CarouselController();
@@ -47,6 +49,7 @@ class RegisterPresenter extends GetxController {
   void init() {
     for (var field in fields.values) { field.controller?.clear(); }
     newcomer = PUser();
+    pageIndex = 0;
     distanceMinute = 0;
   }
 
@@ -67,6 +70,7 @@ class RegisterPresenter extends GetxController {
   PUser newcomer = PUser();
 
   int distanceMinute = 0;
+  int weightPerDay = 0;
 
   // List<Map<String, String>> examples = [
   //   {
@@ -116,13 +120,30 @@ class RegisterPresenter extends GetxController {
     update();
   }
 
+  void initGoal(ActivityType type, int value) async {
+    newcomer.goals[type.name] = 0;
+    if (type == ActivityType.distance) distanceMinute = 0;
+    update();
+    await Future.delayed(const Duration(milliseconds: 500), () {
+      setGoal(type, value);
+      update();
+    });
+  }
+
   void setGoal(ActivityType type, int value) {
     int amount = value;
-    if (type == ActivityType.distance) {
-      distanceMinute = amount;
-      amount = convertDistance(amount);
+
+    switch (type) {
+      case ActivityType.distance:
+        distanceMinute = amount;
+        amount = convertDistance(amount);
+        break;
+      case ActivityType.weight:
+        weightPerDay = amount * newcomer.weight!;
+        break;
+      default:
     }
-    newcomer.goals[type.name] = amount; update();
+    newcomer.goals[type.name] = amount;
   }
 
   // 새 크루 정보 제출 시
@@ -157,8 +178,14 @@ class RegisterPresenter extends GetxController {
   void dateOfBirthValidate() async {
     Field dateOfBirthField = fields['dateOfBirth']!;
     String text = dateOfBirthField.controller.text;
+    DateTime? date = stringToDate(text);
 
-    if (text.length != 8 || int.tryParse(text) == null) {
+    bool condition = text.length != 8;
+    condition |= int.tryParse(text) == null;
+    condition |= date == null;
+    condition |= (today.year - (date?.year ?? 0)) > 99;
+
+    if (condition) {
       invalid = true;
       dateOfBirthField.invalid = true; update();
       await Future.delayed(const Duration(milliseconds: 1000), () {
@@ -179,33 +206,61 @@ class RegisterPresenter extends GetxController {
     }
   }
 
+  void slideBack() async {
+    imageVisualize = false;
+    update();
+    await Future.delayed(const Duration(milliseconds: 5), () {
+      imageVisualize = imageExistence[pageIndex];
+      update();
+    });
+  }
+  void slideNext() async {
+    imageVisualize = false;
+    update();
+    await Future.delayed(const Duration(milliseconds: 5), () {
+      imageVisualize = imageExistence[pageIndex];
+      update();
+    });
+  }
+
   // 다음 버튼 클릭 트리거
   void nextPressed() async {
-    if (pageIndex == 0) {
-      nicknameValidate();
-      dateOfBirthValidate();
-      sexValidate();
-      if (invalid) { invalid = false; return; }
-    }
-    else if (pageIndex == 6) {
-      int goal = 0;
-      for (var type in ActivityType.values.sublist(0, 3)) {
-        int amount = newcomer.goals[type.name].toInt();
-        if (type == ActivityType.distance) amount = distanceMinute;
-        goal += getCalories(type, amount);
-      }
-      newcomer.goals[ActivityType.calorie.name] = goal;
-      update();
-
-    }
-    else if (pageIndex == CarouselView.widgetCount - 1) {
-      submitted(); return;
+    switch (pageIndex) {
+      case 0:
+        nicknameValidate();
+        dateOfBirthValidate();
+        sexValidate();
+        if (invalid) { invalid = false; return; }
+        newcomer.nickname = fields['nickname']!.controller.text;
+        newcomer.dateOfBirth = stringToDate(fields['dateOfBirth']!.controller.text);
+        break;
+      case 1: break;
+      case 2:
+        initGoal(ActivityType.distance, 15);
+        break;
+      case 3: break;
+      case 4:
+        initGoal(ActivityType.height, 15);
+        break;
+      case 5:
+        int goal = 0;
+        for (var type in ActivityType.activeValues.sublist(1)) {
+          int amount = newcomer.goals[type.name].toInt();
+          if (type == ActivityType.distance) amount = distanceMinute;
+          goal += getCalories(type, amount);
+        }
+        newcomer.goals[ActivityType.calorie.name] = goal;
+        update();
+        break;
+      case 6:
+        submitted(); return;
     }
     carouselCont.nextPage(
       curve: transitionCurve,
       duration: transitionDuration,
     );
     pageIndexIncrease();
+    slideNext();
   }
 
   // 뒤로가기 버튼 클릭 트리거
@@ -221,6 +276,7 @@ class RegisterPresenter extends GetxController {
       curve: transitionCurve,
       duration: transitionDuration,
     );
+    slideBack();
     pageIndexDecrease();
   }
 }

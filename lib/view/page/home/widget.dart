@@ -26,24 +26,48 @@ class HomeView extends StatelessWidget {
       child: Column(
         children: [
           const HomeRandomCardView(),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: const [
-                SizedBox(height: 30.0),
-                DailyActivityCardView(),
-                SizedBox(height: 30.0),
-                MonthlyQuestWidget(),
-                SizedBox(height: 30.0),
-                CollectionCardView(),
-              ],
-            ),
+          Column(
+            children: const [
+              SizedBox(height: 30.0),
+              DailyActivityCardView(),
+              SizedBox(height: 30.0),
+              MonthlyQuestWidget(),
+              SizedBox(height: 30.0),
+              CollectionCardView(),
+              SizedBox(height: 30.0),
+            ],
           ),
         ],
       ),
     );
   }
 }
+
+class WidgetHeader extends StatelessWidget {
+  const WidgetHeader({
+    Key? key,
+    required this.title,
+    required this.seeMorePressed,
+  }) : super(key: key);
+
+  final String title;
+  final VoidCallback seeMorePressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          PText(title, style: textTheme.headlineSmall),
+          SeeMoreButton(onPressed: seeMorePressed),
+        ],
+      ),
+    );
+  }
+}
+
 
 class SeeMoreButton extends StatelessWidget {
   const SeeMoreButton({
@@ -117,9 +141,9 @@ class QuestRecommendCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
-              BadgeWidget(size: 60.0,),
+              BadgeWidget(size: 60.0),
               BadgeWidget(),
-              BadgeWidget(size: 60.0,),
+              BadgeWidget(size: 60.0),
             ],
           )
         ],
@@ -176,20 +200,17 @@ class DailyActivityCardView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            PText('오늘의 활동', style: textTheme.titleMedium),
-            SeeMoreButton(onPressed: () {}),
-          ],
-        ),
+        WidgetHeader(title: '오늘 활동량', seeMorePressed: () {}),
+        const SizedBox(height: 10.0),
         PCard(
-          color: PTheme.bar,
-          padding: const EdgeInsets.all(30.0),
+          borderType: BorderType.horizontal,
+          borderWidth: 3.0,
+          color: PTheme.surface,
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
                   DailyActivityCircularGraph(type: ActivityType.distance),
                   DailyActivityCircularGraph(type: ActivityType.height),
@@ -197,7 +218,7 @@ class DailyActivityCardView extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
                   DailyActivityCircularGraph(type: ActivityType.weight),
                   DailyActivityCircularGraph(type: ActivityType.calorie),
@@ -242,6 +263,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
               children: [
                 PCircularPercentIndicator(
                   percent: earlierPercent,
+                  backgroundColor: PTheme.bar,
                   centerText: type.kr,
                   color: type.color,
                   duration: earlierDuration,
@@ -285,25 +307,21 @@ class MonthlyQuestWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            PText('월간 목표', style: textTheme.titleMedium),
-            SeeMoreButton(
-              onPressed: () {
-                Get.toNamed('/quest');
-              },
-            ),
-          ],
-        ),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: ActivityType.values.length,
-          itemBuilder: (_, index) => MonthlyQuestProgressWidget(
-            type: ActivityType.values[index],
+        WidgetHeader(title: '월간 목표', seeMorePressed: () => Get.toNamed('/quest')),
+        const SizedBox(height: 10.0),
+        Container(
+          decoration: const BoxDecoration(
+              border: Border.symmetric(
+                horizontal: BorderSide(
+                  color: PTheme.black, width: 2.5,
+                ),
+              )
           ),
-          separatorBuilder: (_, index) => const SizedBox(height: 20.0),
+          child: Column(
+            children: ActivityType.activeValues.map((type) => MonthlyQuestProgressWidget(
+              type: type,
+            )).toList(),
+          ),
         ),
       ],
     );
@@ -321,63 +339,72 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const String directory = 'assets/image/page/home/';
-    Border border = Border.all(color: PTheme.black, width: 1.5);
 
     return Container(
-      decoration: BoxDecoration(
-        border: border,
+      decoration: const BoxDecoration(
+        border: Border.symmetric(
+          horizontal: BorderSide(
+            color: PTheme.black, width: .5,
+          ),
+        ),
       ),
       height: 80.0,
       child: Row(
         children: [
           Expanded(
             flex: 1,
-            child: SvgPicture.asset('$directory${type.asset}'),
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              color: PTheme.surface,
+              child: SvgPicture.asset('$directory${type.asset}'),
+            ),
           ),
           const VerticalDivider(
             color: PTheme.black,
             width: 0.0,
-            thickness: 1.5,
+            thickness: 1.0,
           ),
           Expanded(
             flex: 3,
-            child: GetBuilder<HomePresenter>(builder: (controller) {
-              int record = controller.thisMonthRecords[type] ?? 0;
-              int goal = QuestPresenter.quests[type] ?? 1;
-              if (type == ActivityType.weight) goal ~/= weight + 1;
-              double percent = min(record / goal, 1);
+            child: GetBuilder<HomePresenter>(
+              builder: (controller) {
+                int record = controller.thisMonthRecords[type] ?? 0;
+                int goal = QuestPresenter.quests[type] ?? 1;
+                if (type == ActivityType.weight) goal ~/= weight + 1;
+                double percent = min(record / goal, 1);
 
-              return Stack(
-                children: [
-                  LinearPercentIndicator(
-                    padding: const EdgeInsets.only(left: 1.0),
-                    progressColor: type.color,
-                    lineHeight: double.infinity,
-                    backgroundColor: Colors.transparent,
-                    percent: percent,
-                  ),
-                  Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          PText(
-                            type.kr,
-                            style: textTheme.titleMedium,
-                          ),
-                          PText(
-                            '${(percent * 100).ceil()} %',
-                            style: textTheme.titleMedium,
-                          ),
-                        ],
+                return Stack(
+                  children: [
+                    LinearPercentIndicator(
+                      padding: const EdgeInsets.only(left: 1.0),
+                      progressColor: type.color,
+                      lineHeight: double.infinity,
+                      backgroundColor: PTheme.surface,
+                      percent: percent < .01 ? .01 : percent,
+                    ),
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            PText(
+                              type.kr,
+                              style: textTheme.titleMedium,
+                            ),
+                            PText(
+                              '${(percent * 100).ceil()} %',
+                              style: textTheme.titleMedium,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            }),
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -394,14 +421,11 @@ class CollectionCardView extends StatelessWidget {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            PText('컬렉션', style: textTheme.titleMedium),
-            SeeMoreButton(onPressed: () {}),
-          ],
-        ),
+        WidgetHeader(title: '컬렉션', seeMorePressed: () {}),
+        const SizedBox(height: 10.0),
         PCard(
+          borderType: BorderType.horizontal,
+          borderWidth: 3.0,
           color: PTheme.surface,
           child: userPresenter.myCollections.isEmpty ? Row(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -244,8 +244,14 @@ class PTheme {
   /// typography
   static const fontFamily = 'BMJUA';
 
-  static TextTheme textTheme = const TextTheme(
+  static TextStyle largeText = const TextStyle(
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.w700,
+    fontSize: 100.0,
+    height: (64 / 57),
+  );
 
+  static TextTheme textTheme = const TextTheme(
     //Display
     displayLarge: TextStyle(
       fontFamily: fontFamily,

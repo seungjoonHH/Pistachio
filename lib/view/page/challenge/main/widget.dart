@@ -256,7 +256,7 @@ class ChallengeCardLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PCard(
-      border: false,
+      borderType: BorderType.none,
       color: PTheme.background,
       padding: EdgeInsets.zero,
       child: Column(

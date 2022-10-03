@@ -33,4 +33,13 @@ String? dateToString(String format, DateTime? date) => date == null
     ? null : DateFormat(format).format(date);
 
 // 문자열을 날짜 형태로 변환
-DateTime stringToDate(String string) => DateTime.parse(string);
+DateTime? stringToDate(String string) {
+  if (DateTime.tryParse(string) == null) return null;
+  DateTime? date = DateTime.parse(string);
+
+  bool available = date.year == int.parse(string.substring(0, 4));
+  available &= date.month == int.parse(string.substring(4, 6));
+  available &= date.day == int.parse(string.substring(6));
+
+  return available ? DateTime.parse(string) : null;
+}

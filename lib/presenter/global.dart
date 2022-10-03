@@ -81,7 +81,7 @@ class GlobalPresenter extends GetxController {
     ChallengePresenter.importFile();
     LevelPresenter.importFile(ActivityType.distance);
     LevelPresenter.importFile(ActivityType.height);
-    LevelPresenter.importFile(ActivityType.weight);
+    // LevelPresenter.importFile(ActivityType.weight);
     QuestPresenter.importFile();
   }
 }

@@ -1,17 +1,25 @@
-import 'dart:async';
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/number.dart';
+import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 // 회원가입 페이지 위젯 모음
 
@@ -23,7 +31,6 @@ class CarouselView extends StatelessWidget {
   static List<Widget> carouselWidgets() => const [
     UserInfoView(),
     WeightHeightView(),
-    WeightGoalView(),
     DistanceRecommendView(),
     DistanceGoalView(),
     HeightRecommendView(),
@@ -31,6 +38,7 @@ class CarouselView extends StatelessWidget {
     CalorieCheckView(),
     RecommendView(),
     CalorieExplanationView(),
+    // WeightGoalView(),
   ];
 
   static int widgetCount = carouselWidgets().length;
@@ -38,25 +46,25 @@ class CarouselView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    Map image = {
-      3: 'distanceRecommend.svg',
-      4: 'distanceGoal.svg',
-      5: 'heightRecommend.svg',
-      6: 'heightGoal.svg',
-    };
+
+    String asset = 'assets/image/page/register/';
 
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
         return Stack(
           children: [
-            controller.pageIndex > 2 && controller.pageIndex < 7
-                ? SvgPicture.asset(
-                    'assets/image/page/register/${image[controller.pageIndex]}',
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                  )
-                : Container(),
+            for (int i = 0; i < controller.imageExistence.length; i++)
+            AnimatedPositioned(
+              left: screenSize.width * (i - controller.pageIndex),
+              duration: const Duration(milliseconds: 350),
+              curve: Curves.easeInOut,
+              width: (screenSize.width * .97).w,
+              height: screenSize.height.h,
+              child: controller.imageExistence[i] ? SvgPicture.asset(
+                '${asset}carousel_${i.toString().padLeft(2, '0')}.svg',
+                alignment: Alignment.center,
+              ) : Container(),
+            ),
             Column(
               children: [
                 Expanded(
@@ -67,15 +75,10 @@ class CarouselView extends StatelessWidget {
                       constraints: BoxConstraints(minWidth: screenSize.width),
                       child: CarouselSlider(
                         carouselController: RegisterPresenter.carouselCont,
-                        items: carouselWidgets()
-                            .map(
-                              (widget) => Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 30.0),
-                                child: widget,
-                              ),
-                            )
-                            .toList(),
+                        items: carouselWidgets().map((widget) => Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                          child: widget,
+                        )).toList(),
                         options: CarouselOptions(
                           height: double.infinity,
                           initialPage: 0,
@@ -110,20 +113,20 @@ class UserInfoView extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: [
+              Center(
+                child: PText(
+                  '보다 나은 서비스를 위해\n정보를 입력해주세요!',
+                  style: textTheme.headlineSmall,
+                  color: PTheme.black,
+                  maxLines: 2,
+                  align: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: PText(
-                      '보다 나은 서비스를 위해\n정보를 입력해주세요!',
-                      style: textTheme.headlineSmall,
-                      color: PTheme.black,
-                      maxLines: 2,
-                      align: TextAlign.center,
-                    ),
-                  ),
-                  PText(
-                    '별명',
+                  PText('별명',
                     style: textTheme.headlineSmall,
                     color: PTheme.black,
                   ),
@@ -155,8 +158,7 @@ class UserInfoView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PText(
-                    '성별',
+                  PText('성별',
                     style: textTheme.headlineSmall,
                     color: PTheme.black,
                   ),
@@ -168,6 +170,7 @@ class UserInfoView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const [
                         SexSelectionButton(sex: Sex.male),
+                        SizedBox(width: 20.0),
                         SexSelectionButton(sex: Sex.female),
                       ],
                     ),
@@ -197,30 +200,13 @@ class SexSelectionButton extends StatelessWidget {
 
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
-        return SizedBox(
-          width: 160.0,
-          height: 50.0,
-          child: ElevatedButton(
-            onPressed: () => controller.setSex(sex),
-            style: OutlinedButton.styleFrom(
-              padding: EdgeInsets.zero,
-              elevation: 0.0,
-              backgroundColor: sex == controller.newcomer.sex
-                  ? PTheme.black
-                  : PTheme.white,
-              side: const BorderSide(color: PTheme.black),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-            ),
-            child: PText(
-              texts[sex]!,
-              style: textTheme.headlineSmall,
-              color: sex == controller.newcomer.sex
-                  ? PTheme.white
-                  : PTheme.black,
-            ),
-          ),
+        return PButton(
+          stretch: true,
+          multiple: true,
+          text: texts[sex],
+          onPressed: () => controller.setSex(sex),
+          backgroundColor: sex == controller.newcomer.sex ? PTheme.black: PTheme.white,
+          textColor: sex == controller.newcomer.sex ? PTheme.white: PTheme.black,
         );
       },
     );
@@ -241,14 +227,11 @@ class WeightHeightView extends StatelessWidget {
             builder: (controller) {
               return NumberPicker(
                 onChanged: controller.setWeight,
-                itemCount: 3,
                 value: controller.newcomer.weight ?? 60,
                 minValue: 30,
                 maxValue: 220,
-                selectedTextStyle: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.copyWith(color: PTheme.black),
+                selectedTextStyle: textTheme.headlineSmall,
+                itemHeight: 30.0,
               );
             },
           ),
@@ -265,10 +248,8 @@ class WeightHeightView extends StatelessWidget {
                 value: controller.newcomer.height ?? 170,
                 minValue: 100,
                 maxValue: 220,
-                selectedTextStyle: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.copyWith(color: PTheme.black),
+                selectedTextStyle: textTheme.headlineSmall,
+                itemHeight: 30.0,
               );
             },
           ),
@@ -288,39 +269,40 @@ class WeightHeightView extends StatelessWidget {
             align: TextAlign.center,
           ),
         ),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: contents.length,
-          itemBuilder: (context, index) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PText(contents.keys.toList()[index],
-                style: textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 10.0),
-              PCard(
-                rounded: true,
-                color: Colors.transparent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    contents[contents.keys.toList()[index]]!,
-                  ],
+        Expanded(
+          flex: 3,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: contents.entries.map((content) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PText(content.key,
+                  style: textTheme.headlineSmall,
                 ),
-              ),
-
-            ],
+                const SizedBox(height: 10.0),
+                PCard(
+                  rounded: true,
+                  color: Colors.transparent,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      content.value,
+                    ],
+                  ),
+                ),
+              ],
+            )).toList(),
           ),
-          separatorBuilder: (context, index) => const SizedBox(height: 10.0),
         ),
-        Center(
-          child: PText(
-            '*체중과 신장은 간편한 계산을 위해서만 사용될 뿐\n다른 곳에는 이용되지 않아요!',
-            style: textTheme.bodyMedium,
-            color: colorScheme.outline,
-            maxLines: 2,
-            align: TextAlign.center,
+        Expanded(
+          child: Center(
+            child: PText(
+              '*체중과 신장은 간편한 계산을 위해서만 사용될 뿐\n다른 곳에는 이용되지 않아요!',
+              style: textTheme.bodyMedium,
+              color: colorScheme.outline,
+              maxLines: 2,
+              align: TextAlign.center,
+            ),
           ),
         ),
       ],
@@ -328,110 +310,173 @@ class WeightHeightView extends StatelessWidget {
   }
 }
 
+class GoalNumberPicker extends StatefulWidget {
+  const GoalNumberPicker({
+    Key? key,
+    required this.type,
+    this.style,
+    this.itemCount = 1,
+    this.itemWidth = 100.0,
+    this.itemHeight = 120.0,
+    this.minValue = 0,
+    this.maxValue = 200,
+    this.color = PTheme.black,
+  }) : super(key: key);
+
+  final ActivityType type;
+  final TextStyle? style;
+  final int itemCount;
+  final double itemWidth;
+  final double itemHeight;
+  final int minValue;
+  final int maxValue;
+  final Color color;
+
+  @override
+  State<GoalNumberPicker> createState() => _GoalNumberPickerState();
+}
+
+class _GoalNumberPickerState extends State<GoalNumberPicker> {
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        int value = widget.type == ActivityType.distance
+            ? controller.distanceMinute
+            : (controller.newcomer.goals[widget.type.name] ?? 0);
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              icon: Icon(Icons.arrow_drop_up,
+                size: 40.0,
+                color: value > widget.minValue
+                    ? PTheme.black
+                    : Colors.transparent,
+              ),
+              onPressed: () {
+                controller.setGoal(widget.type, max(value - 1, widget.minValue));
+                setState(() {});
+              },
+            ),
+            NumberPicker(
+              onChanged: (val) {
+                controller.setGoal(widget.type, val);
+                controller.update();
+              },
+              itemCount: widget.itemCount,
+              itemWidth: widget.itemWidth,
+              itemHeight: widget.itemHeight,
+              value: value,
+              minValue: widget.minValue,
+              maxValue: widget.maxValue,
+              textStyle: widget.style?.apply(color: PTheme.grey),
+              selectedTextStyle: widget.style?.apply(color: widget.color),
+            ),
+            IconButton(
+              icon: Icon(Icons.arrow_drop_down,
+                size: 40.0,
+                color: value < widget.maxValue
+                    ? PTheme.black
+                    : Colors.transparent,
+              ),
+              onPressed: () {
+                controller.setGoal(widget.type, min(value + 1, widget.maxValue));
+                setState(() {});
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+
 class WeightGoalView extends StatelessWidget {
   const WeightGoalView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isFirst = true;
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      controller.fields['nickname']!.controller.text,
-                      style: TextStyle(
-                        fontSize: 36,
-                        color: Theme.of(context).colorScheme.primary,
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 70.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PTexts(
+                    [controller.fields['nickname']!.controller.text, '님의'],
+                    colors: [ActivityType.calorie.color, PTheme.black],
+                    style: textTheme.displaySmall,
+                    alignment: MainAxisAlignment.start,
+                  ),
+                  Row(
+                    children: [
+                      PTexts(
+                        const ['몸무게', '로 하루'],
+                        colors: [ActivityType.calorie.color, PTheme.black],
+                        style: textTheme.displaySmall,
+                        alignment: MainAxisAlignment.start,
+                        space: false,
                       ),
-                    ),
-                    const Text(
-                      '님의',
-                      style: TextStyle(
-                        fontSize: 36,
+                      GoalNumberPicker(
+                        type: ActivityType.weight,
+                        style: textTheme.displaySmall,
+                        color: PTheme.colorB,
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '몸무게로 ',
-                      style: TextStyle(fontSize: 36),
-                    ),
-                    GetBuilder<RegisterPresenter>(
-                      builder: (controller) {
-                        if (isFirst) {
-                          Future.delayed(
-                              const Duration(
-                                milliseconds: 500,
+                      PText('회', style: textTheme.displaySmall),
+                    ],
+                  ),
+                  PText('스쿼트하면', style: textTheme.displaySmall),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Stack(
+                        children: [
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: 200.0.w,
+                            ),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: PText('${LevelPresenter.getTier(
+                                ActivityType.weight, controller.weightPerDay,
+                              )['currentTitle']}',
+                                style: textTheme.displaySmall,
+                                color: PTheme.colorC,
                               ),
-                              () => controller.setGoal(
-                                    ActivityType.weight,
-                                    10,
-                                  ));
-                          isFirst = false;
-                        }
-                        return NumberPicker(
-                          onChanged: (value) =>
-                              controller.setGoal(ActivityType.weight, value),
-                          itemCount: 1,
-                          itemHeight: 48,
-                          itemWidth: 80,
-                          value: controller
-                                  .newcomer.goals[ActivityType.weight.name] ??
-                              0,
-                          minValue: 0,
-                          maxValue: 200,
-                          selectedTextStyle: TextStyle(
-                            fontSize: 36.0,
-                            color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
-                        );
-                      },
-                    ),
-                    const Text(
-                      '회',
-                      style: TextStyle(fontSize: 36),
-                    ),
-                  ],
-                ),
-                const Text(
-                  '스쿼트하면',
-                  style: TextStyle(fontSize: 36),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: const [
-                    Text(
-                      '북극곰',
-                      style: TextStyle(fontSize: 36),
-                    ),
-                    Text(
-                      '(500kg)',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                  ],
-                ),
-                const Text(
-                  '을(를) 들 수 있어요!',
-                  style: TextStyle(fontSize: 36),
-                ),
-              ],
-            ),
-          ],
+                        ],
+                      ),
+                      const SizedBox(width: 10.0),
+                      PText('(${LevelPresenter.getTier(
+                        ActivityType.weight, controller.weightPerDay,
+                      )['currentValue']}${ActivityType.weight.unitAlt})',
+                        style: textTheme.headlineSmall,
+                      ),
+                    ],
+                  ),
+                  PText('${eulReul(LevelPresenter.getTier(
+                    ActivityType.weight, controller.weightPerDay,
+                  )['currentTitle'])} 들 수 있어요!',
+                    style: textTheme.headlineSmall,
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
@@ -445,72 +490,36 @@ class DistanceRecommendView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
-        int ageGroup = DateTime.now()
-            .difference(DateTime.utc(
-              int.parse(controller.fields['dateOfBirth']!.controller.text.substring(0, 4)),
-              int.parse(controller.fields['dateOfBirth']!.controller.text.substring(4, 6)),
-              int.parse(controller.fields['dateOfBirth']!.controller.text.substring(6)),
-            ))
-            .inDays;
+        int ageGroup = today.difference(controller.newcomer.dateOfBirth!).inDays;
+        List<int> recommendTimes = [];
+        ageGroup = (ageGroup / 3650).floor() * 10;
 
-        ageGroup = (ageGroup / 3650).floor();
+        ageGroup < 60 && controller.newcomer.sex == Sex.male;
+
+        if (ageGroup < 20) { recommendTimes = [60]; }
+        else if (ageGroup < 60) { recommendTimes = [20, 40]; }
+        else { recommendTimes = [30, 50]; }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text(
-                  '${ageGroup}0',
-                  style: const TextStyle(fontSize: 36),
-                ),
-                const Text(
-                  '대 ',
-                  style: TextStyle(fontSize: 36),
-                ),
-                Text(
-                  controller.newcomer.sex!.kr,
-                  style: const TextStyle(fontSize: 36),
-                ),
-                const Text(
-                  ' 평균',
-                  style: TextStyle(fontSize: 36),
-                )
-              ],
+            PTexts(
+              ['$ageGroup', '대 ', controller.newcomer.sex!.kr, ' 평균'],
+              colors: const [PTheme.colorA, PTheme.black, PTheme.colorA, PTheme.black],
+              alignment: MainAxisAlignment.start,
+              space: false,
+              style: textTheme.displaySmall,
             ),
-            Row(
-              children: [
-                const Text(
-                  '매일 ',
-                  style: TextStyle(fontSize: 36),
-                ),
-                ageGroup < 6
-                    ? controller.newcomer.sex == Sex.male
-                        ? const Text(
-                            '30 ~ 60',
-                            style: TextStyle(fontSize: 36),
-                          )
-                        : const Text(
-                            '10 ~ 30',
-                            style: TextStyle(fontSize: 36),
-                          )
-                    : const Text(
-                        '30 ~ 50',
-                        style: TextStyle(fontSize: 36),
-                      ),
-                const Text(
-                  '분',
-                  style: TextStyle(fontSize: 36),
-                ),
-              ],
+            PTexts(['매일', '${recommendTimes.length == 1
+                  ? recommendTimes[0]
+                  : recommendTimes.join('~')}', '분',
+            ], colors: [PTheme.black, ActivityType.distance.color, PTheme.black],
+              alignment: MainAxisAlignment.start,
+              style: textTheme.displaySmall,
             ),
-            const Text(
-              '유산소 운동이',
-              style: TextStyle(fontSize: 36),
-            ),
-            const Text(
-              '적당해요',
-              style: TextStyle(fontSize: 36),
+            PText('유산소 운동이\n적당해요',
+              style: textTheme.displaySmall,
+              maxLines: 2,
             ),
           ],
         );
@@ -524,86 +533,65 @@ class DistanceGoalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isFirst = true;
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
-        if (isFirst) {
-          Future.delayed(const Duration(milliseconds: 500), () {
-            controller.setGoal(ActivityType.distance, 15);
-          });
-          isFirst = false;
-        }
         return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Align(
+            Container(
               alignment: Alignment.centerLeft,
-              child: NumberPicker(
-                onChanged: (value) =>
-                    controller.setGoal(ActivityType.distance, value),
-                itemCount: 1,
-                itemHeight: 132.0,
+              child: GoalNumberPicker(
+                type: ActivityType.distance,
                 itemWidth: 200.0,
-                value: controller.distanceMinute,
-                minValue: 0,
-                maxValue: 200,
-                selectedTextStyle: TextStyle(
-                  fontSize: 120.0,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                color: PTheme.colorB,
+                style: PTheme.largeText,
               ),
             ),
-            const SizedBox(height: 200.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                PTexts(['하루 ', controller.distanceMinute.toString(), '분이면'],
+                  colors: const [PTheme.black, PTheme.colorA, PTheme.black],
+                  style: textTheme.displaySmall,
+                  alignment: MainAxisAlignment.end,
+                  space: false,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Text(
-                      '하루 ',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                    Text(
-                      '${controller.distanceMinute}',
-                      style: TextStyle(
-                        fontSize: 28,
-                        color: Theme.of(context).colorScheme.primary,
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 230.0.w),
+                      child: TextScroll(LevelPresenter.getTier(
+                        ActivityType.distance, controller.distanceMinute,
+                      )['currentTitle'],
+                        style: textTheme.displaySmall?.merge(TextStyle(
+                          color: ActivityType.distance.color,
+                          fontWeight: FontWeight.normal,
+                        )),
+                        velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                        intervalSpaces: 5,
                       ),
                     ),
-                    const Text(
-                      '분이면',
-                      style: TextStyle(fontSize: 28),
-                    ),
+                    const SizedBox(width: 10.0),
+                    PText('(${unitDistance(convertDistance(LevelPresenter.getTier(
+                      ActivityType.distance, controller.distanceMinute,
+                    )['currentValue']))})'),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    Text(
-                      "한강대교 왕복",
-                      style: TextStyle(
-                        fontSize: 28,
-                        color: Color(0xffE45B47),
-                        // Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    Text(
-                      '이',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                  ],
-                ),
-                const Text(
-                  '가능해요!',
-                  style: TextStyle(fontSize: 28),
+                PText('${eulReul(LevelPresenter.getTier(
+                  ActivityType.distance, controller.weightPerDay,
+                )['currentTitle'])} 정복할 수 있어요',
+                  style: textTheme.displaySmall,
                 ),
                 PText(
-                  '* 약 ${controller.newcomer.goals[ActivityType.distance.name]} m',
+                  '* 약 ${toLocalString(controller.newcomer.goals[ActivityType.distance.name] ?? 0)}보',
                   color: PTheme.colorB,
                 ),
               ],
             ),
+            const SizedBox(height: 100.0),
           ],
         );
       },
@@ -619,35 +607,14 @@ class HeightRecommendView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '한 층을',
-          style: TextStyle(
-            fontSize: 36,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        const Text(
-          '오를 마다',
-          style: TextStyle(fontSize: 36),
-        ),
-        const Text(
-          '건강 수명이',
-          style: TextStyle(fontSize: 36),
-        ),
-        Row(
-          children: [
-            Text(
-              '1분 20초',
-              style: TextStyle(
-                fontSize: 36,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            const Text(
-              ' 연장돼요',
-              style: TextStyle(fontSize: 36),
-            ),
-          ],
+        PText('한 층을', style: textTheme.displaySmall, color: PTheme.colorA),
+        PText('오를 때마다', style: textTheme.displaySmall),
+        PText('건강 수명이', style: textTheme.displaySmall),
+        PTexts(
+          const ['1분 20초', '연장돼요'],
+          colors: [ActivityType.height.color, PTheme.black],
+          style: textTheme.displaySmall,
+          alignment: MainAxisAlignment.start,
         ),
       ],
     );
@@ -659,83 +626,52 @@ class HeightGoalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isFirst = true;
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
-        if (isFirst) {
-          Future.delayed(const Duration(milliseconds: 500), () {
-            controller.setGoal(ActivityType.height, 15);
-          });
-          isFirst = false;
-        }
         return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '하루 ',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                    Text(
-                      '${controller.newcomer.goals[ActivityType.height.name] ?? 0}',
-                      style: TextStyle(
-                        fontSize: 28,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    const Text(
-                      '층이면',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                  ],
+                PText('하루', style: textTheme.displaySmall),
+                PTexts(['${controller.newcomer.goals[ActivityType.height.name]}', '층이면'],
+                  colors: [ActivityType.calorie.color, PTheme.black],
+                  alignment: MainAxisAlignment.start,
+                  style: textTheme.displaySmall,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "자유의 여신상",
-                      style: TextStyle(
-                        fontSize: 28,
-                        color: Color(0xffE45B47),
-                        // Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ),
-                const Text(
-                  '정복!',
-                  style: TextStyle(fontSize: 28),
-                ),
-              ],
-            ),
-            const SizedBox(height: 50.0),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32.0),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: NumberPicker(
-                  onChanged: (value) =>
-                      controller.setGoal(ActivityType.height, value),
-                  itemCount: 1,
-                  itemHeight: 132.0,
-                  itemWidth: 200.0,
-                  value:
-                      controller.newcomer.goals[ActivityType.height.name] ?? 0,
-                  minValue: 0,
-                  maxValue: 200,
-                  selectedTextStyle: TextStyle(
-                    fontSize: 120.0,
-                    color: Theme.of(context).colorScheme.primary,
+                Container(
+                  constraints: BoxConstraints(maxWidth: 210.0.w),
+                  child: TextScroll(LevelPresenter.getTier(
+                    ActivityType.height,
+                    controller.newcomer.goals[ActivityType.height.name],
+                  )['currentTitle'],
+                    style: textTheme.displaySmall?.merge(const TextStyle(
+                      color: PTheme.colorD,
+                      fontWeight: FontWeight.normal,
+                    )),
+                    velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                    intervalSpaces: 5,
                   ),
                 ),
+                PText('(${LevelPresenter.getTier(
+                  ActivityType.height, controller.newcomer.goals[ActivityType.height.name],
+                )['currentValue']}층)'),
+                PText('정복', style: textTheme.displaySmall),
+              ],
+            ),
+            const Expanded(child: SizedBox()),
+            Align(
+              alignment: Alignment.topRight,
+              child: GoalNumberPicker(
+                type: ActivityType.height,
+                itemWidth: 200.0,
+                color: PTheme.colorD,
+                style: PTheme.largeText,
               ),
             ),
+            const SizedBox(height: 100.0),
           ],
         );
       },
@@ -785,75 +721,35 @@ class CalorieCheckView extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  '하루에',
-                  style: TextStyle(fontSize: 28),
+                PText('하루에', style: textTheme.headlineMedium),
+                PTexts([LevelPresenter.getTier(
+                  ActivityType.distance, controller.distanceMinute)['currentTitle'],
+                  '만큼 걷고',
+                ], colors: [ActivityType.distance.color, PTheme.black],
+                  style: textTheme.headlineMedium,
+                  alignment: MainAxisAlignment.start,
                 ),
-                Row(
-                  children: const [
-                    Text(
-                      '북극곰 한 마리',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                    Text(
-                      '를 들고',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: const [
-                    Text(
-                      '한강대교',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                    Text(
-                      '를 달리고',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: const [
-                    Text(
-                      '자유의 여신',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                    Text(
-                      '을 정복하면',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                  ],
+                PTexts([LevelPresenter.getTier(
+                    ActivityType.height, controller.newcomer.goals[ActivityType.height.name])['currentTitle'],
+                  '만큼 오르면 ...',
+                ], colors: [ActivityType.height.color, PTheme.black],
+                  style: textTheme.headlineMedium,
+                  alignment: MainAxisAlignment.start,
                 ),
               ],
             ),
-            const SizedBox(height: 210.0),
+            SizedBox(height: 300.0.h),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const Text(
-                      '총 ',
-                      style: TextStyle(fontSize: 36),
-                    ),
-                    Text(
-                      '${controller.newcomer.goals[ActivityType.calorie.name]} kcal',
-                      style: TextStyle(
-                        fontSize: 36,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    const Text(
-                      '를',
-                      style: TextStyle(fontSize: 36),
-                    ),
-                  ],
+                PTexts(['총', '${controller.newcomer.goals[ActivityType.calorie.name]} kcal', '를'],
+                  colors: [PTheme.black, ActivityType.calorie.color, PTheme.black],
+                  style: textTheme.displaySmall,
+                  alignment: MainAxisAlignment.end,
                 ),
-                const Text(
-                  '소모할 수 있어요',
-                  style: TextStyle(fontSize: 36),
+                PText('소모 할 수 있어요',
+                  color: PTheme.black,
+                  style: textTheme.displaySmall,
                 ),
               ],
             ),

@@ -6,8 +6,24 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/view/page/login/widget.dart';
 import 'package:pistachio/view/widget/widget/logo.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late double opacity;
+
+  @override
+  void initState() {
+    opacity = .0;
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() => opacity = 1.0);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +34,14 @@ class LoginPage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Positioned.fill(child: SvgPicture.asset(backgroundAsset)),
+          Positioned.fill(
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              opacity: opacity,
+              child: SvgPicture.asset(backgroundAsset),
+            ),
+          ),
           const Positioned(top: 200.0, child: PLogo()),
           Positioned(
             bottom: 20.0,

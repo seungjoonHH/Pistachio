@@ -134,7 +134,8 @@ class UserInfoView extends StatelessWidget {
                   PInputField(
                     invalid: controller.fields['nickname']!.invalid,
                     controller: controller.fields['nickname']!.controller,
-                    hintText: '별명을 입력해주세요',
+                    hintText: controller.fields['nickname']?.hintText ?? '별명을 입력해주세요',
+                    hintColor: controller.fields['nickname']?.hintText == null ? PTheme.grey : PTheme.colorB,
                   ),
                   const SizedBox(height: 40.0),
                 ],
@@ -148,9 +149,10 @@ class UserInfoView extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
                   PInputField(
-                    controller: controller.fields['dateOfBirth']!.controller,
-                    hintText: 'YYYYMMDD',
                     invalid: controller.fields['dateOfBirth']!.invalid,
+                    controller: controller.fields['dateOfBirth']!.controller,
+                    hintText: controller.fields['dateOfBirth']?.hintText ?? 'YYYYMMDD',
+                    hintColor: controller.fields['dateOfBirth']?.hintText == null ? PTheme.grey : PTheme.colorB,
                   ),
                   const SizedBox(height: 40.0),
                 ],

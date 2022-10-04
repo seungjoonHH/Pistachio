@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/number.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
@@ -29,7 +30,7 @@ class MonthlyQuestView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PText(
-                  '${DateTime.now().month}월의 목표',
+                  '${today.month}월의 목표',
                   style: textTheme.headlineSmall,
                 ),
                 Padding(

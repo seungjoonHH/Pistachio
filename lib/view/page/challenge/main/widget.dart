@@ -1,6 +1,7 @@
 /* 챌린지 메인 위젯 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parallax_animation/parallax_animation.dart';
 import 'package:pistachio/global/date.dart';
@@ -155,9 +156,13 @@ class ChallengeCard extends StatelessWidget {
               //   ),
               //   child: Container(height: 200.0),
               // ),
-              Image.asset(
-                challenge.imageUrls['default'],
-                fit: BoxFit.fitHeight,
+              AspectRatio(
+                aspectRatio: 5 / 3,
+                child: Image.asset(
+                  challenge.imageUrls['default'],
+                  height: 200.0.h,
+                  fit: BoxFit.fill,
+                ),
               ),
               const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
               Padding(
@@ -175,7 +180,7 @@ class ChallengeCard extends StatelessWidget {
                               style: textTheme.headlineMedium,
                               maxLines: 2,
                             ),
-                            const SizedBox(height: 10.0),
+                            SizedBox(height: 10.0.h),
                             PText('${today.month}월의 챌린지',
                               style: textTheme.labelLarge,
                               color: PTheme.grey,
@@ -188,7 +193,7 @@ class ChallengeCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20.0),
+                    SizedBox(height: 20.0.h),
                     PText(
                       challenge.descriptions['sub']!,
                       style: textTheme.titleSmall,
@@ -261,7 +266,7 @@ class ChallengeCardLoading extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Column(
         children: [
-          Container(height: 200.0, color: color),
+          Container(height: 200.0.h, color: color),
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 20.0, 20.0, 20.0),
             child: Column(
@@ -273,20 +278,20 @@ class ChallengeCardLoading extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(width: 200.0, height: 70.0, color: color),
-                        const SizedBox(height: 20.0),
-                        Container(width: 200.0, height: 15.0, color: color),
+                        Container(width: 200.0.w, height: 70.0.h, color: color),
+                        SizedBox(height: 20.0.h),
+                        Container(width: 200.0.w, height: 15.0.h, color: color),
                       ],
                     ),
                     BadgeWidget(size: 80.0, border: false, color: color),
                   ],
                 ),
-                const SizedBox(height: 20.0),
-                Container(width: 200.0, height: 40.0, color: color),
+                SizedBox(height: 20.0.h),
+                Container(width: 200.0.w, height: 40.0.h, color: color),
               ],
             ),
           ),
-          Container(width: double.infinity, height: 48.0, color: color),
+          Container(width: double.infinity, height: 48.0.h, color: color),
         ],
       ),
     );

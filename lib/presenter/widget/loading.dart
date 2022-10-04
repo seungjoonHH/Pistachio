@@ -28,5 +28,4 @@ class LoadingPresenter extends GetxController {
     update();
   }
 
-
 }

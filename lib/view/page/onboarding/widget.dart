@@ -85,12 +85,18 @@ class _CarouselViewState extends State<CarouselView> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               height: 50.0,
-              child: controller.visible
-                  ? const PButton(
-                onPressed: RegisterPresenter.toRegister,
-                text: '시작하기',
-                stretch: true,
-              ) : CarouselIndicator(count: messages.length),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CarouselIndicator(count: messages.length),
+                  if (controller.visible)
+                  const PButton(
+                    onPressed: RegisterPresenter.toRegister,
+                    text: '시작하기',
+                    stretch: true,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 50.0),
           ],

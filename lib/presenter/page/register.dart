@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
@@ -12,6 +13,7 @@ import 'home.dart';
 
 class Field {
   bool invalid = false;
+  String? hintText;
   dynamic controller;
 
   Field([this.controller]);
@@ -166,11 +168,30 @@ class RegisterPresenter extends GetxController {
     Field nicknameField = fields['nickname']!;
     String text = nicknameField.controller.text;
 
-    if (text == '' || RegExp(r'[`~!@#$%^&*|"' r"'‘’””;:/?]").hasMatch(text)) {
+    Map<String, bool> conditions = {
+      '두 글자 이상 입력해주세요': text.length < 2,
+      '열 글자 이하 입력해주세요': text.length > 10,
+      '자음 모음은 단독으로 포함될 수 없습니다': hasSeparatedConsonantOrVowel(text),
+      '공백을 포함할 수 없습니다': text.contains(' '),
+      '특수문자는 포함할 수 없습니다': RegExp(r'[`~!@#$%^&*|"' r"'‘’””;:/?]").hasMatch(text),
+      '영어나 한글을 포함해주세요': int.tryParse(text) != null,
+      '별명을 입력해주세요': text == '',
+    };
+
+    conditions.forEach((message, condition) {
+      if (condition) nicknameField.hintText = message;
+    });
+
+    if (conditions.values.any((condition) => condition)) {
       invalid = true;
+      nicknameField.controller.clear();
       nicknameField.invalid = true; update();
-      await Future.delayed(const Duration(milliseconds: 1000), () {
+      await Future.delayed(const Duration(milliseconds: 500), () {
         nicknameField.invalid = false; update();
+      });
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        nicknameField.controller.text = text; update();
+        nicknameField.hintText = null;
       });
     }
   }
@@ -180,16 +201,30 @@ class RegisterPresenter extends GetxController {
     String text = dateOfBirthField.controller.text;
     DateTime? date = stringToDate(text);
 
-    bool condition = text.length != 8;
-    condition |= int.tryParse(text) == null;
-    condition |= date == null;
-    condition |= (today.year - (date?.year ?? 0)) > 99;
+    Map<String, bool> conditions = {
+      '잘못 입력하셨습니다': (today.year - (date?.year ?? 0)) > 99,
+      '미래는 입력할 수 없습니다': today.isBefore(date ?? today),
+      '오늘은 입력할 수 없습니다': isSameDay(today, date ?? today),
+      '없는 날짜 입니다': date == null,
+      '여덟 글자가 아닙니다': text.length != 8,
+      '숫자만 입력해주세요': int.tryParse(text) == null,
+      '생년월일을 입력해주세요': text == '',
+    };
 
-    if (condition) {
+    conditions.forEach((message, condition) {
+      if (condition) dateOfBirthField.hintText = message;
+    });
+
+    if (conditions.values.any((condition) => condition)) {
       invalid = true;
+      dateOfBirthField.controller.clear();
       dateOfBirthField.invalid = true; update();
-      await Future.delayed(const Duration(milliseconds: 1000), () {
+      await Future.delayed(const Duration(milliseconds: 500), () {
         dateOfBirthField.invalid = false; update();
+      });
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        dateOfBirthField.controller.text = text; update();
+        dateOfBirthField.hintText = null;
       });
     }
   }
@@ -200,7 +235,7 @@ class RegisterPresenter extends GetxController {
     if (newcomer.sex == null) {
       invalid = true;
       sexField.invalid = true; update();
-      await Future.delayed(const Duration(milliseconds: 1000), () {
+      await Future.delayed(const Duration(milliseconds: 500), () {
         sexField.invalid = false; update();
       });
     }

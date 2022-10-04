@@ -130,31 +130,35 @@ class PInputField extends StatelessWidget {
     Key? key,
     required this.controller,
     this.hintText,
-    this.invalid,
+    this.hintColor = PTheme.grey,
+    this.invalid = false,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String? hintText;
-  final bool? invalid;
+  final Color hintColor;
+  final bool invalid;
 
   @override
   Widget build(BuildContext context) {
     return ShakeWidget(
-      autoPlay: invalid ?? false,
+      autoPlay: invalid,
       shakeConstant: ShakeHorizontalConstant2(),
       child: TextField(
+        style: textTheme.bodyLarge,
         controller: controller,
         cursorColor: PTheme.black,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(color: PTheme.grey),
+            borderSide: BorderSide(color: hintColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: const BorderSide(color: PTheme.black, width: 2.0),
           ),
           hintText: hintText,
+          hintStyle: textTheme.bodyLarge?.apply(color: hintColor),
           isDense: true,
         ),
       ),

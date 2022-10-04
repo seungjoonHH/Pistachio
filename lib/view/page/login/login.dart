@@ -14,13 +14,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late double opacity;
+  late double backgroundOpacity;
+  late double buttonsOpacity;
 
   @override
   void initState() {
-    opacity = .0;
+    backgroundOpacity = .0;
+    buttonsOpacity = .0;
     Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() => opacity = 1.0);
+      setState(() => backgroundOpacity = 1.0);
+    });
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() => buttonsOpacity = 1.0);
     });
     super.initState();
   }
@@ -38,24 +43,29 @@ class _LoginPageState extends State<LoginPage> {
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
-              opacity: opacity,
+              opacity: backgroundOpacity,
               child: SvgPicture.asset(backgroundAsset),
             ),
           ),
           const Positioned(top: 200.0, child: PLogo()),
           Positioned(
             bottom: 20.0,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SignInButton(type: LoginType.google),
-                const SizedBox(height: 15.0),
-                //SignInButton(type: LoginType.apple),
-                if (Platform.isIOS)
-                  const SignInButton(type: LoginType.apple),
-                const SizedBox(height: 77.0),
-              ],
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              opacity: buttonsOpacity,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SignInButton(type: LoginType.google),
+                  const SizedBox(height: 15.0),
+                  //SignInButton(type: LoginType.apple),
+                  if (Platform.isIOS)
+                    const SignInButton(type: LoginType.apple),
+                  const SizedBox(height: 77.0),
+                ],
+              ),
             ),
           ),
         ],

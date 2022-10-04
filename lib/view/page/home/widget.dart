@@ -11,6 +11,7 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
@@ -120,6 +121,7 @@ class QuestRecommendCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return PCard(
       color: PTheme.white,
+      onPressed: QuestMain.toQuestMain,
       rounded: true,
       child: Column(
         children: [
@@ -307,7 +309,7 @@ class MonthlyQuestWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        WidgetHeader(title: '월간 목표', seeMorePressed: () => Get.toNamed('/quest')),
+        const WidgetHeader(title: '월간 목표', seeMorePressed: QuestMain.toQuestMain),
         const SizedBox(height: 10.0),
         Container(
           decoration: const BoxDecoration(

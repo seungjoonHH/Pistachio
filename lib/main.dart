@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:pistachio/firebase_options.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/global.dart';
+import 'package:pistachio/presenter/loading.dart';
 import 'package:pistachio/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +25,7 @@ class Pistachio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalPresenter.initControllers();
-    GlobalPresenter.importData();
+    DataLoadingPresenter.importData();
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),

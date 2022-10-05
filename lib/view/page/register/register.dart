@@ -7,9 +7,12 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: PTheme.background,
-      body: CarouselView(),
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
+      child: const Scaffold(
+        backgroundColor: PTheme.background,
+        body: CarouselView(),
+      ),
     );
   }
 }

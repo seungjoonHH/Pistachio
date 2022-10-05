@@ -1,14 +1,17 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/number.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/view/widget/widget/badge.dart';
+import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class MonthlyQuestView extends StatelessWidget {
@@ -16,57 +19,28 @@ class MonthlyQuestView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int weightGoal = QuestPresenter.quests[ActivityType.weight] ?? 1;
-    weightGoal ~/= weight + 1;
-    int distanceGoal = QuestPresenter.quests[ActivityType.distance] ?? 1;
-    distanceGoal ~/= 10000;
-    int heightGoal = QuestPresenter.quests[ActivityType.height] ?? 1;
-
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: const Color(0xffE5953E),
-              border: Border.all(color: Colors.black),
-            ),
+          padding: const EdgeInsets.all(16.0),
+          child: PCard(
+            color: PTheme.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PText(
-                  '${DateTime.now().month}월의 목표',
+                  '${today.month}월의 목표',
                   style: textTheme.headlineSmall,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 32.0),
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Polygon(
-                        size: 80.0,
-                        widget: Align(
-                          alignment: Alignment.center,
-                          child: Text('$weightGoal${ActivityType.weight.unit}'),
-                        ),
-                      ),
-                      Polygon(
-                        size: 100.0,
-                        widget: Align(
-                          alignment: Alignment.center,
-                          child: Text('$distanceGoal'
-                              '만'
-                              '${ActivityType.distance.unit}'),
-                        ),
-                      ),
-                      Polygon(
-                        size: 80.0,
-                        widget: Align(
-                          alignment: Alignment.center,
-                          child: Text('$heightGoal${ActivityType.height.unit}'),
-                        ),
-                      ),
+                    children: const [
+                      BadgeWidget(size: 60.0),
+                      BadgeWidget(),
+                      BadgeWidget(size: 60.0),
                     ],
                   ),
                 ),
@@ -74,49 +48,42 @@ class MonthlyQuestView extends StatelessWidget {
             ),
           ),
         ),
-        const Divider(thickness: 2.0),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PText('이달의 목표',
-                style: textTheme.headlineSmall,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: PText(
-                  '월간 목표 달성으로 자신의 한계에 도전해 보세요.\n이번 8월의 목표를 달성하시면 특별 뱃지를 획득 하실 수 있습니다.',
-                  style: textTheme.bodySmall,
-                  color: PTheme.outline,
-                  maxLines: 3,
+        const Divider(thickness: 2.0, color: PTheme.black, height: 5.0),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PText('이달의 목표',
+                      style: textTheme.headlineSmall,
+                    ),
+                    PText(
+                      '월간 목표 달성으로 자신의 한계에 도전해 보세요.\n이번 ${DateTime.now().month}월의 목표를 달성하시면 특별 뱃지를 획득 하실 수 있습니다.',
+                      style: textTheme.bodySmall,
+                      color: PTheme.outline,
+                      maxLines: 3,
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Polygon(size: 80.0),
-                  MonthlyQuestGraph(type: ActivityType.distance),
-                ],
-              ),
-              const SizedBox(height: 16.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Polygon(size: 80.0),
-                  MonthlyQuestGraph(type: ActivityType.weight),
-                ],
-              ),
-              const SizedBox(height: 16.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Polygon(size: 80.0),
-                  MonthlyQuestGraph(type: ActivityType.height),
-                ],
-              ),
-            ],
+                const SizedBox(height: 16.0),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: ActivityType.activeValues.map((type) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const BadgeWidget(size: 60.0),
+                        QuestPercentView(type: type),
+                      ],
+                    )).toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -124,33 +91,10 @@ class MonthlyQuestView extends StatelessWidget {
   }
 }
 
-class Polygon extends StatelessWidget {
-  final double size;
-  final Widget? widget;
-
-  const Polygon({Key? key, required this.size, this.widget}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: const ShapeDecoration(
-        color: PTheme.grey,
-        shape: PolygonBorder(
-          sides: 6,
-          side: BorderSide(width: 1.5),
-        ),
-      ),
-      child: widget,
-    );
-  }
-}
-
-class MonthlyQuestGraph extends StatelessWidget {
+class QuestPercentView extends StatelessWidget {
   final ActivityType type;
 
-  const MonthlyQuestGraph({Key? key, required this.type}) : super(key: key);
+  const QuestPercentView({Key? key, required this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -168,31 +112,25 @@ class MonthlyQuestGraph extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    type == ActivityType.distance ? Text(
-                      '${goal ~/ 10000}만${type.unit} ${type.verb}',
-                      style: TextStyle(color: type.color),
-                    ) : Text('$goal${type.unit} ${type.verb}',
-                      style: TextStyle(color: type.color),
-                    ),
-                  ],
+                PTexts(['${toLocalString(goal)}${type.unit}', type.verb],
+                  colors: [type.color, PTheme.black],
+                  alignment: MainAxisAlignment.start,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: SizedBox(
-                    height: 30.0,
-                    child: LinearPercentIndicator(
-                      padding: const EdgeInsets.only(left: 1.0),
-                      progressColor: Colors.red,
-                      lineHeight: double.infinity,
-                      backgroundColor: colorScheme.background,
-                      center: PText(
-                        '$record/$goal ${type.unit}',
-                        style: textTheme.titleMedium,
-                      ),
-                      percent: percent,
+                const SizedBox(height: 5.0),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: PTheme.black, width: 1.5),
+                  ),
+                  child: LinearPercentIndicator(
+                    padding: EdgeInsets.zero,
+                    progressColor: type.color,
+                    lineHeight: 21.0,
+                    backgroundColor: PTheme.bar,
+                    center: PText(
+                      '${toLocalString(record)} / ${toLocalString(goal)} ${type.unit}',
+                      style: textTheme.labelSmall,
                     ),
+                    percent: percent,
                   ),
                 ),
               ],

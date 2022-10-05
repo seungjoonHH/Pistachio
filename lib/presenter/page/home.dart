@@ -19,10 +19,10 @@ class HomePresenter extends GetxController {
     await userPresenter.load();
 
     graphStates = {
+      ActivityType.calorie: false,
       ActivityType.distance: false,
       ActivityType.height: false,
       ActivityType.weight: false,
-      ActivityType.calorie: false,
     };
     loadGoals();
     loadRecords();
@@ -31,10 +31,10 @@ class HomePresenter extends GetxController {
   }
 
   late Map<ActivityType, bool> graphStates = {
+    ActivityType.calorie: false,
     ActivityType.distance: false,
     ActivityType.height: false,
     ActivityType.weight: false,
-    ActivityType.calorie: false,
   };
 
   void showLaterGraph(ActivityType type) { graphStates[type] = true; update(); }
@@ -47,7 +47,7 @@ class HomePresenter extends GetxController {
     final userPresenter = Get.find<UserPresenter>();
     PUser user = userPresenter.loggedUser;
 
-    for (var type in ActivityType.values) {
+    for (var type in ActivityType.activeValues) {
       myGoals[type] = (user.goals[type.name] ?? 0).toInt();
     }
     update();
@@ -56,7 +56,7 @@ class HomePresenter extends GetxController {
   void loadRecords() {
     final userPresenter = Get.find<UserPresenter>();
     PUser user = userPresenter.loggedUser;
-    for (var type in ActivityType.values) {
+    for (var type in ActivityType.activeValues) {
       todayRecords[type] = user.getTodayAmounts(type);
       thisMonthRecords[type] = user.getAmounts(type);
       if (type == ActivityType.weight) {

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:pistachio/global/number.dart';
 import 'package:pistachio/model/class/exercises.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -39,6 +40,11 @@ int convertDistance(int amount) {
   double velocity = Walking.velocity * .5
       + Jogging.velocity * .3 + Running.velocity * .2;
   return (amount * velocity).ceil();
+}
+
+String unitDistance(int amount) {
+  if (amount > 100000) return '${toLocalString(amount ~/ 10000)}만보';
+  return '${toLocalString(amount)}보';
 }
 
 // 무게 변환 (회 -> kg)

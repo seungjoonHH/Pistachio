@@ -6,8 +6,29 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/view/page/login/widget.dart';
 import 'package:pistachio/view/widget/widget/logo.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late double backgroundOpacity;
+  late double buttonsOpacity;
+
+  @override
+  void initState() {
+    backgroundOpacity = .0;
+    buttonsOpacity = .0;
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() => backgroundOpacity = 1.0);
+    });
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() => buttonsOpacity = 1.0);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +39,33 @@ class LoginPage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Positioned.fill(child: SvgPicture.asset(backgroundAsset)),
+          Positioned.fill(
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              opacity: backgroundOpacity,
+              child: SvgPicture.asset(backgroundAsset),
+            ),
+          ),
           const Positioned(top: 200.0, child: PLogo()),
           Positioned(
             bottom: 20.0,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SignInButton(type: LoginType.google),
-                const SizedBox(height: 15.0),
-                //SignInButton(type: LoginType.apple),
-                if (Platform.isIOS)
-                  const SignInButton(type: LoginType.apple),
-                const SizedBox(height: 77.0),
-              ],
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              opacity: buttonsOpacity,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SignInButton(type: LoginType.google),
+                  const SizedBox(height: 15.0),
+                  //SignInButton(type: LoginType.apple),
+                  if (Platform.isIOS)
+                    const SignInButton(type: LoginType.apple),
+                  const SizedBox(height: 77.0),
+                ],
+              ),
             ),
           ),
         ],

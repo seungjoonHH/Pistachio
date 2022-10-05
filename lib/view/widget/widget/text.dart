@@ -78,6 +78,7 @@ class PTexts extends StatelessWidget {
     this.borderWidth = 1.0,
     this.alignment = MainAxisAlignment.center,
     this.maxLines = 1,
+    this.space = true,
   }) : assert(texts.length == colors.length),
         style = style ?? textTheme.bodyMedium,
         super(key: key);
@@ -91,6 +92,7 @@ class PTexts extends StatelessWidget {
   final double borderWidth;
   final MainAxisAlignment alignment;
   final int maxLines;
+  final bool space;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,7 @@ class PTexts extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: List.generate(texts.length, (i) => Row(
         children: [
-          if (i > 0)
+          if (i > 0 && space)
           PText(' ',
             style: style,
             bold: bold,
@@ -128,31 +130,35 @@ class PInputField extends StatelessWidget {
     Key? key,
     required this.controller,
     this.hintText,
-    this.invalid,
+    this.hintColor = PTheme.grey,
+    this.invalid = false,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String? hintText;
-  final bool? invalid;
+  final Color hintColor;
+  final bool invalid;
 
   @override
   Widget build(BuildContext context) {
     return ShakeWidget(
-      autoPlay: invalid ?? false,
+      autoPlay: invalid,
       shakeConstant: ShakeHorizontalConstant2(),
       child: TextField(
+        style: textTheme.bodyLarge,
         controller: controller,
         cursorColor: PTheme.black,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(color: PTheme.grey),
+            borderSide: BorderSide(color: hintColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: const BorderSide(color: PTheme.black, width: 2.0),
           ),
           hintText: hintText,
+          hintStyle: textTheme.bodyLarge?.apply(color: hintColor),
           isDense: true,
         ),
       ),

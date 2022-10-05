@@ -9,8 +9,24 @@ import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
-class CarouselView extends StatelessWidget {
+class CarouselView extends StatefulWidget {
   const CarouselView({Key? key}) : super(key: key);
+
+  @override
+  State<CarouselView> createState() => _CarouselViewState();
+}
+
+class _CarouselViewState extends State<CarouselView> {
+  late double opacity;
+
+  @override
+  void initState() {
+    opacity = .0;
+    Future.delayed(Duration.zero, () {
+      setState(() => opacity = 1.0);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +47,29 @@ class CarouselView extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: CarouselSlider(
                   carouselController: OnboardingPresenter.carouselCont,
-                  items: List.generate(messages.length, (index) => Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Positioned(
-                        top: 50.0,
-                        child: PText(messages[index],
-                          maxLines: 3,
-                          style: textTheme.headlineSmall,
-                          align: TextAlign.center,
+                  items: List.generate(messages.length, (index) => AnimatedOpacity(
+                    duration: const Duration(milliseconds: 1000),
+                    opacity: opacity,
+                    curve: Curves.easeInOut,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Positioned(
+                          top: 50.0,
+                          child: PText(messages[index],
+                            maxLines: 3,
+                            style: textTheme.headlineSmall,
+                            align: TextAlign.center,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(30.0),
-                        child: SvgPicture.asset(
-                          OnboardingPresenter.getAsset(index),
+                        Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: SvgPicture.asset(
+                            OnboardingPresenter.getAsset(index),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )).toList(),
                   options: CarouselOptions(
                     height: double.infinity,
@@ -64,12 +85,18 @@ class CarouselView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               height: 50.0,
-              child: controller.visible
-                  ? const PButton(
-                onPressed: RegisterPresenter.toRegister,
-                text: '시작하기',
-                stretch: true,
-              ) : CarouselIndicator(count: messages.length),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CarouselIndicator(count: messages.length),
+                  if (controller.visible)
+                  const PButton(
+                    onPressed: RegisterPresenter.toRegister,
+                    text: '시작하기',
+                    stretch: true,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 50.0),
           ],

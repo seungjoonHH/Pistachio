@@ -53,10 +53,10 @@ class RecordCard extends StatelessWidget {
                           PText('오늘 ${type.prefix} ${type.kr}',
                             style: textTheme.labelSmall,
                           ),
-                          PText(controller.tiers[type]!['current'],
+                          PText(controller.tiers[type]!['currentTitle'],
                             style: textTheme.bodyLarge,
                           ),
-                          PText('다음 단계 : ${controller.tiers[type]!['next']} 까지',
+                          PText('다음 단계 : ${controller.tiers[type]!['nextTitle']} 까지',
                             style: textTheme.labelSmall,
                           ),
                           Expanded(
@@ -100,7 +100,7 @@ class MyRecordView extends StatelessWidget {
             children: [
               Text('오늘의 기록', style: textTheme.labelLarge),
               Column(
-                children: ActivityType.values.map((type) => RecordCard(type: type)).toList(),
+                children: ActivityType.activeValues.map((type) => RecordCard(type: type)).toList(),
               ),
               // Container(
               //   margin: const EdgeInsets.symmetric(horizontal: 15.0),

@@ -5,6 +5,7 @@ class Level {
   int? amount;
   String? description;
   String? imageUrl;
+  bool? activate;
 
   /// constructors
   Level();
@@ -20,6 +21,7 @@ class Level {
     amount = json['amount'];
     description = json['description'];
     imageUrl = idToImageUrl(id!);
+    activate = json['activate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class Level {
     json['title'] = title;
     json['amount'] = amount;
     json['description'] = description;
+    json['activate'] = activate;
     return json;
   }
 

@@ -42,8 +42,8 @@ class PUser {
   PUser() {
     weight = defaultWeight;
     height = defaultHeight;
-    for (var type in ActivityType.values) {
-      goals[type.name] = null;
+    for (var type in ActivityType.activeValues) {
+      goals[type.name] = 0;
       records[type.name] = [];
     }
   }

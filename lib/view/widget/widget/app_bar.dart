@@ -28,7 +28,14 @@ class PAppBar extends StatelessWidget implements PreferredSizeWidget {
             elevation: 0.0,
             iconTheme: const IconThemeData(color: PTheme.black),
             backgroundColor: color,
-            title: PText(title, style: textTheme.titleLarge),
+            title: PText(title, style: textTheme.headlineMedium),
+            // leading: IconButton(
+            //   icon: const Icon(Icons.arrow_back_ios),
+            //   onPressed: () {
+            //     FocusScope.of(context).unfocus();
+            //     Get.back();
+            //   },
+            // ),
             actions: actions,
           );
         }
@@ -65,10 +72,10 @@ class MyNavigationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BorderRadius radius = BorderRadius.zero;
+    BorderRadius radius = BorderRadius.circular(18.0);
 
     return Material(
-      color: Colors.transparent,
+      color: PTheme.colorB,
       borderRadius: radius,
       shadowColor: PTheme.grey,
       child: InkWell(
@@ -89,9 +96,9 @@ class MyNavigationButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.person_outline, color: PTheme.black),
+              const Icon(Icons.person_outline, color: PTheme.white),
               const SizedBox(width: 5.0),
-              PText('나의 기록', color: PTheme.black),
+              PText('나의 기록', color: PTheme.white),
             ],
           ),
         ),

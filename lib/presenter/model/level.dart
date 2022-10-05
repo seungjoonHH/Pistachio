@@ -15,7 +15,8 @@ class LevelPresenter extends GetxController {
   static Future importFile(ActivityType type) async {
     String string = await rootBundle.loadString('$asset${type.name}.json');
     List<dynamic> list = jsonDecode(string);
-    levels[type] = list.map((json) => Level.fromJson(json)).toList();
+    levels[type] = list.map((json) => Level.fromJson(json)).toList()
+        .where((json) => json.activate!).toList();
   }
 
   static Map<String, dynamic> getTier(ActivityType type, int amount) {
@@ -28,8 +29,10 @@ class LevelPresenter extends GetxController {
       int next = levelList[i + 1].amount!;
 
       if (amount >= current && amount < next) {
-        result['current'] = levelList[i].title;
-        result['next'] = levelList[i + 1].title;
+        result['currentTitle'] = levelList[i].title;
+        result['currentValue'] = current;
+        result['nextTitle'] = levelList[i + 1].title;
+        result['nextValue'] = next;
         result['percent'] = (amount - current) / (next - current);
       }
     }

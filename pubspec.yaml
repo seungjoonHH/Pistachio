@@ -46,6 +46,8 @@ dependencies:
   permission_handler: ^10.0.0
   rive: ^0.9.1
   parallax_animation: ^0.0.3
+  animated_text_kit: ^4.2.2
+  text_scroll: ^0.1.0
 
 dev_dependencies:
   flutter_test:

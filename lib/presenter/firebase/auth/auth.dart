@@ -34,9 +34,8 @@ class AuthPresenter {
     if (userCredential == null) return;
 
     // 파이어베이스 데이터
-    Map<String, dynamic>? json =
-        (await f.collection('users').doc(userCredential.user!.uid).get())
-            .data();
+    Map<String, dynamic>? json = (await f.collection('users')
+        .doc(userCredential.user!.uid).get()).data();
 
     // 파이어베이스에 문서가 없거나 json 데이터에 닉네임이 없을 경우 신규 회원
     isNewcomer = json == null || json['nickname'] == null;

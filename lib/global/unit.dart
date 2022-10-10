@@ -35,11 +35,31 @@ int getCalories(ActivityType type, int amount) {
   return (calories[type]! * velocity * amount).ceil();
 }
 
-// 거리 변환 (분 -> 보)
-int convertDistance(int amount) {
-  double velocity = Walking.velocity * .5
-      + Jogging.velocity * .3 + Running.velocity * .2;
-  return (amount * velocity).ceil();
+// 거리 변환
+int convertDistance(int amount, DistanceUnit src, DistanceUnit dst) {
+  double velocity = Walking.velocity * .8
+      + Jogging.velocity * .1 + Running.velocity * .1;
+  const double kilometerPerStep = 0.00074;
+
+  double value = amount.toDouble();
+  int direction = dst.index - src.index;
+
+  switch(direction) {
+    case -2:
+      value /= (velocity * kilometerPerStep); break;
+    case -1:
+      if (dst == DistanceUnit.step) value /= kilometerPerStep;
+      if (dst == DistanceUnit.minute) value /= velocity;
+      break;
+    case 1:
+      if (dst == DistanceUnit.kilometer) value *= kilometerPerStep;
+      if (dst == DistanceUnit.step) value *= velocity;
+      break;
+    case 2:
+      value *= (velocity * kilometerPerStep); break;
+  }
+
+  return value.ceil();
 }
 
 String unitDistance(int amount) {

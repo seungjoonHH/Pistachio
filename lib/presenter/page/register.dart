@@ -145,7 +145,7 @@ class RegisterPresenter extends GetxController {
     switch (type) {
       case ActivityType.distance:
         distanceMinute = amount;
-        amount = convertDistance(amount);
+        amount = convertDistance(amount, DistanceUnit.minute, DistanceUnit.step);
         break;
       case ActivityType.weight:
         weightPerDay = amount * newcomer.weight!;

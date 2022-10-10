@@ -21,7 +21,7 @@ class ExerciseInput extends GetxController {
     int converted = amount;
 
     if (type == ActivityType.distance) {
-      converted = convertDistance(amount);
+      converted = convertDistance(amount, DistanceUnit.minute, DistanceUnit.step);
       await HealthPresenter.addData(int.parse(inputCont.text), converted);
     }
     if (type == ActivityType.weight) converted = convertWeight(amount);

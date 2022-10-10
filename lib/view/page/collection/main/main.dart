@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
-import 'package:pistachio/presenter/page/colllection/main.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 

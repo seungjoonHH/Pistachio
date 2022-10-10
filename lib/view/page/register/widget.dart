@@ -567,8 +567,11 @@ class DistanceGoalView extends StatelessWidget {
                     Container(
                       constraints: BoxConstraints(maxWidth: 230.0.w),
                       child: TextScroll(LevelPresenter.getTier(
-                        ActivityType.distance, controller.distanceMinute,
-                      )['currentTitle'],
+                        ActivityType.distance, convertDistance(
+                        controller.distanceMinute,
+                        DistanceUnit.minute,
+                        DistanceUnit.kilometer,
+                      ))['currentTitle'],
                         style: textTheme.displaySmall?.merge(TextStyle(
                           color: ActivityType.distance.color,
                           fontWeight: FontWeight.normal,
@@ -579,8 +582,11 @@ class DistanceGoalView extends StatelessWidget {
                     ),
                     const SizedBox(width: 10.0),
                     PText('(${unitDistance(convertDistance(LevelPresenter.getTier(
-                      ActivityType.distance, controller.distanceMinute,
-                    )['currentValue']))})'),
+                      ActivityType.distance, convertDistance(
+                      controller.distanceMinute,
+                      DistanceUnit.minute,
+                      DistanceUnit.kilometer,
+                    ))['currentValue'], DistanceUnit.kilometer, DistanceUnit.step))})'),
                   ],
                 ),
                 PText('${eulReul(LevelPresenter.getTier(
@@ -588,8 +594,9 @@ class DistanceGoalView extends StatelessWidget {
                 )['currentTitle'])} 정복할 수 있어요',
                   style: textTheme.displaySmall,
                 ),
-                PText(
-                  '* 약 ${toLocalString(controller.newcomer.goals[ActivityType.distance.name] ?? 0)}보',
+                PText('* 약 ${toLocalString(
+                    controller.newcomer.goals[ActivityType.distance.name],
+                )}보',
                   color: PTheme.colorB,
                 ),
               ],
@@ -725,19 +732,46 @@ class CalorieCheckView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PText('하루에', style: textTheme.headlineMedium),
-                PTexts([LevelPresenter.getTier(
-                    ActivityType.distance, controller.distanceMinute)['currentTitle'],
-                  '만큼 걷고',
-                ], colors: [ActivityType.distance.color, PTheme.black],
-                  style: textTheme.headlineMedium,
-                  alignment: MainAxisAlignment.start,
+                Row(
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 200.0),
+                      child: TextScroll(LevelPresenter.getTier(
+                        ActivityType.distance, convertDistance(
+                          controller.distanceMinute,
+                          DistanceUnit.minute,
+                          DistanceUnit.kilometer,
+                        ))['currentTitle'],
+                        style: textTheme.headlineMedium?.merge(TextStyle(
+                          color: ActivityType.distance.color,
+                          fontWeight: FontWeight.normal,
+                        )),
+                        velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                        intervalSpaces: 5,
+                      ),
+                    ),
+                    const SizedBox(width: 7.0),
+                    PText('만큼 걷고',
+                      style: textTheme.headlineMedium,
+                    ),
+                  ],
                 ),
-                PTexts([LevelPresenter.getTier(
-                    ActivityType.height, controller.newcomer.goals[ActivityType.height.name])['currentTitle'],
-                  '만큼 오르면 ...',
-                ], colors: [ActivityType.height.color, PTheme.black],
-                  style: textTheme.headlineMedium,
-                  alignment: MainAxisAlignment.start,
+                Row(
+                  children: [
+                    TextScroll(LevelPresenter.getTier(
+                      ActivityType.height, controller.newcomer.goals[ActivityType.height.name])['currentTitle'],
+                      style: textTheme.headlineMedium?.merge(TextStyle(
+                        color: ActivityType.height.color,
+                        fontWeight: FontWeight.normal,
+                      )),
+                      velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                      intervalSpaces: 5,
+                    ),
+                    const SizedBox(width: 7.0),
+                    PText('만큼 오르면...',
+                      style: textTheme.headlineMedium,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -873,12 +907,7 @@ class CarouselButton extends StatelessWidget {
         return Row(
           children: [
             PButton(
-              onPressed: () async {
-                await Future.delayed(
-                  const Duration(milliseconds: 500),
-                  controller.backPressed,
-                );
-              },
+              onPressed: controller.backPressed,
               text: '이전',
               textColor: Colors.black,
               backgroundColor: Colors.white,
@@ -890,12 +919,9 @@ class CarouselButton extends StatelessWidget {
               onPressed: () async {
                 if (controller.keyboardVisible) {
                   FocusScope.of(context).unfocus();
-                  await Future.delayed(const Duration(milliseconds: 200));
+                  await Future.delayed(const Duration(milliseconds: 100));
                 }
-                await Future.delayed(
-                  const Duration(milliseconds: 500),
-                  controller.nextPressed,
-                );
+                controller.nextPressed();
               },
               text: lastPage ? '완료' : '다음',
               backgroundColor: Colors.black,

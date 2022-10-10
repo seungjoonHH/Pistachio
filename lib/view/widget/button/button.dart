@@ -45,6 +45,7 @@ class PButton extends StatelessWidget {
       color: fill ? backgroundColor : Colors.transparent,
       child: InkWell(
         onTap: onPressed,
+        onDoubleTap: onPressed,
         child: Container(
           padding: padding,
           constraints: multiple ? null : constraints ?? BoxConstraints(

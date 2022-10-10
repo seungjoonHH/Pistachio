@@ -52,7 +52,7 @@ class CollectionWidget extends StatelessWidget {
                 onTap: onPressed,
                 customBorder: side,
                 splashColor: PTheme.black.withOpacity(.1),
-                child: Container(
+                child: SizedBox(
                   width: size.w,
                   height: size.w,
                   // decoration: ShapeDecoration(

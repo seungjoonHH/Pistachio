@@ -74,6 +74,13 @@ class RegisterPresenter extends GetxController {
   int distanceMinute = 0;
   int weightPerDay = 0;
 
+  bool keyboardVisible = false;
+
+  void setKeyboardVisible(bool value) {
+    keyboardVisible = value;
+    update();
+  }
+
   // List<Map<String, String>> examples = [
   //   {
   //     'name': '감자튀김',

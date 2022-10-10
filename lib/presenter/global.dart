@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
-import 'package:pistachio/model/enum/enum.dart';
-import 'package:pistachio/presenter/loading.dart';
+import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -25,6 +27,9 @@ import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/presenter/page/my/main.dart';
+import 'package:pistachio/view/widget/function/dialog.dart';
+import 'package:pistachio/view/widget/widget/badge.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 class GlobalPresenter extends GetxController {
   int navIndex = 0;
@@ -43,8 +48,44 @@ class GlobalPresenter extends GetxController {
   static final barCont = BottomSheetBarController();
 
   static void openBottomBar() async => await barCont.expand();
-
   static void closeBottomBar() async => await barCont.collapse();
+
+  static void collectionPressed(Collection collection) {
+    showPDialog(
+      title: collection.badge!.title,
+      content: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CollectionWidget(collection: collection),
+              const SizedBox(width: 20.0),
+              Container(
+                constraints: const BoxConstraints(maxHeight: 80.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: collection.dateList.map((date) => PText(
+                      dateToString('yyyy-MM-dd 획득!', date.toDate())!,
+                      color: date == collection.dateList.last
+                          ? PTheme.colorB : PTheme.black,
+                      bold: date == collection.dateList.last,
+                    )).toList().reversed.toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10.0),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            alignment: Alignment.topLeft,
+            constraints: const BoxConstraints(minHeight: 100.0),
+            child: PText(collection.badge!.description!, maxLines: 5),
+          ),
+        ],
+      ),
+    );
+  }
 
   static void initControllers() {
     Get.put(GlobalPresenter());

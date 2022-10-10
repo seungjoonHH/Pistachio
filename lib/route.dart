@@ -4,6 +4,7 @@ import 'package:pistachio/view/page/challenge/main/main.dart';
 import 'package:pistachio/view/page/challenge/detail/detail.dart';
 import 'package:pistachio/view/page/challenge/complete/complete.dart';
 import 'package:pistachio/view/page/challenge/party/party.dart';
+import 'package:pistachio/view/page/collection/main/main.dart';
 import 'package:pistachio/view/page/exercise/complete/complete.dart';
 import 'package:pistachio/view/page/exercise/input/input.dart';
 import 'package:pistachio/view/page/exercise/main/main.dart';
@@ -48,6 +49,7 @@ class PRoute {
     '/challenge/create': const ChallengeCreatePage(),
     '/challenge/complete': const ChallengeCompletePage(),
     '/challenge/party/main': const ChallengePartyMainPage(),
+    '/collection/main': const CollectionMainPage(),
     '/my/main': const MyMainPage(),
     '/my/record': const MyRecordPage(),
     '/my/setting/main': const MySettingMainPage(),

@@ -20,6 +20,7 @@ class PButton extends StatelessWidget {
     Color? textColor,
     this.stretch = false,
     this.multiple = false,
+    this.border = true,
   }) : assert(
   text == null || child == null,
   ), backgroundColor = backgroundColor ?? PTheme.black,
@@ -36,6 +37,7 @@ class PButton extends StatelessWidget {
   final Color? textColor;
   final bool stretch;
   final bool multiple;
+  final bool border;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,9 @@ class PButton extends StatelessWidget {
             maxWidth: MediaQuery.of(context).size.width,
           ),
           decoration: BoxDecoration(
-            border: Border.all(color: PTheme.black, width: 1.5),
+            border: border
+                ? Border.all(color: PTheme.black, width: 1.5)
+                : const Border(),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

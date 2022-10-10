@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:pistachio/firebase_options.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/global.dart';
@@ -26,7 +27,7 @@ class Pistachio extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalPresenter.initControllers();
     DataLoadingPresenter.importData();
-
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,

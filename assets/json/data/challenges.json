@@ -10,19 +10,19 @@
         "word": "아기고래",
         "goal": 100.0,
         "maxMember": 2,
-        "collection": "1010000"
+        "collection": "1050000"
       },
       "normal": {
         "word": "엄마고래",
         "goal": 300.0,
         "maxMember": 3,
-        "collection": "1010001"
+        "collection": "1050001"
       },
       "hard": {
         "word": "아빠고래",
         "goal": 600.0,
         "maxMember": 4,
-        "collection": "1010002"
+        "collection": "1050002"
       }
     },
     "descriptions": {
@@ -42,19 +42,19 @@
         "word": "물",
         "goal": 100.0,
         "maxMember": 1,
-        "collection": "1010000"
+        "collection": "1050000"
       },
       "normal": {
         "word": "염산",
         "goal": 300.0,
         "maxMember": 3,
-        "collection": "1010001"
+        "collection": "1050001"
       },
       "hard": {
         "word": "용암",
         "goal": 600.0,
         "maxMember": 5,
-        "collection": "1010002"
+        "collection": "1050002"
       }
     },
     "descriptions": {

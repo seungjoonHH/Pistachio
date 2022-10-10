@@ -54,17 +54,18 @@ class CarouselView extends StatelessWidget {
         return Stack(
           children: [
             for (int i = 0; i < controller.imageExistence.length; i++)
-            AnimatedPositioned(
-              left: screenSize.width * (i - controller.pageIndex),
-              duration: const Duration(milliseconds: 350),
-              curve: Curves.easeInOut,
-              width: (screenSize.width * .97).w,
-              height: screenSize.height.h,
-              child: controller.imageExistence[i] ? SvgPicture.asset(
-                '${asset}carousel_${i.toString().padLeft(2, '0')}.svg',
-                alignment: Alignment.center,
-              ) : Container(),
-            ),
+              AnimatedPositioned(
+                left: screenSize.width * (i - controller.pageIndex),
+                duration: const Duration(milliseconds: 350),
+                curve: Curves.easeInOut,
+                width: screenSize.width,
+                height: screenSize.height,
+                child: controller.imageExistence[i] ? SvgPicture.asset(
+                  '${asset}carousel_${i.toString().padLeft(2, '0')}.svg',
+                  alignment: Alignment.center,
+                  fit: BoxFit.fill,
+                ) : Container(),
+              ),
             Column(
               children: [
                 Expanded(
@@ -513,8 +514,8 @@ class DistanceRecommendView extends StatelessWidget {
               style: textTheme.displaySmall,
             ),
             PTexts(['매일', '${recommendTimes.length == 1
-                  ? recommendTimes[0]
-                  : recommendTimes.join('~')}', '분',
+                ? recommendTimes[0]
+                : recommendTimes.join('~')}', '분',
             ], colors: [PTheme.black, ActivityType.distance.color, PTheme.black],
               alignment: MainAxisAlignment.start,
               style: textTheme.displaySmall,
@@ -725,7 +726,7 @@ class CalorieCheckView extends StatelessWidget {
               children: [
                 PText('하루에', style: textTheme.headlineMedium),
                 PTexts([LevelPresenter.getTier(
-                  ActivityType.distance, controller.distanceMinute)['currentTitle'],
+                    ActivityType.distance, controller.distanceMinute)['currentTitle'],
                   '만큼 걷고',
                 ], colors: [ActivityType.distance.color, PTheme.black],
                   style: textTheme.headlineMedium,
@@ -872,7 +873,12 @@ class CarouselButton extends StatelessWidget {
         return Row(
           children: [
             PButton(
-              onPressed: controller.backPressed,
+              onPressed: () async {
+                await Future.delayed(
+                  const Duration(milliseconds: 500),
+                  controller.backPressed,
+                );
+              },
               text: '이전',
               textColor: Colors.black,
               backgroundColor: Colors.white,
@@ -881,7 +887,16 @@ class CarouselButton extends StatelessWidget {
               multiple: true,
             ),
             PButton(
-              onPressed: controller.nextPressed,
+              onPressed: () async {
+                if (controller.keyboardVisible) {
+                  FocusScope.of(context).unfocus();
+                  await Future.delayed(const Duration(milliseconds: 200));
+                }
+                await Future.delayed(
+                  const Duration(milliseconds: 500),
+                  controller.nextPressed,
+                );
+              },
               text: lastPage ? '완료' : '다음',
               backgroundColor: Colors.black,
               padding: const EdgeInsets.all(15.0),

@@ -7,9 +7,12 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
+import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/colllection/main.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/view/widget/button/button.dart';
@@ -421,27 +424,31 @@ class CollectionCardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userPresenter = Get.find<UserPresenter>();
 
+    List<Widget> collectionWidgets = List.generate(3, (_) => const CollectionWidget());
+    for (int i = 0; i < userPresenter.myCollections.length; i++) {
+      Collection collection = userPresenter.myCollections[i];
+      collectionWidgets[i] = CollectionWidget(
+        onPressed: () => GlobalPresenter.collectionPressed(collection),
+        collection: collection,
+        detail: true,
+      );
+    }
+
     return Column(
       children: [
-        WidgetHeader(title: '컬렉션', seeMorePressed: () {}),
+        const WidgetHeader(
+          title: '컬렉션',
+          seeMorePressed: CollectionMain.toCollectionMain,
+        ),
         const SizedBox(height: 10.0),
         PCard(
           borderType: BorderType.horizontal,
           borderWidth: 3.0,
           color: PTheme.surface,
-          child: userPresenter.myCollections.isEmpty ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              PText('컬렉션이 없어요'),
-            ],
-          ) : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: userPresenter.myCollections.map((collection) {
-              return CollectionWidget(
-                collection: collection,
-                detail: true,
-              );
-            }).toList(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: collectionWidgets,
           ),
         ),
       ],

@@ -28,17 +28,19 @@ class ChallengeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ChallengePresenter>(builder: (controller) {
-      return AppBar(
-        elevation: 0.0,
-        iconTheme: const IconThemeData(color: PTheme.white),
-        backgroundColor: PTheme.background,
-        title: PText('챌린지',
-          border: true,
-          style: textTheme.headlineMedium,
-        ),
-      );
-    });
+    return GetBuilder<ChallengePresenter>(
+      builder: (controller) {
+        return AppBar(
+          elevation: 0.0,
+          iconTheme: const IconThemeData(color: PTheme.white),
+          backgroundColor: PTheme.background,
+          title: PText('챌린지',
+            border: true,
+            style: textTheme.headlineMedium,
+          ),
+        );
+      },
+    );
   }
 }
 

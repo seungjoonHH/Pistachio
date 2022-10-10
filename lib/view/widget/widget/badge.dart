@@ -14,6 +14,7 @@ class CollectionWidget extends StatelessWidget {
     this.selected = false,
     this.onPressed,
     this.size = 80.0,
+    this.color = PTheme.lightGrey,
   }) : super(key: key);
 
   final Collection? collection;
@@ -21,6 +22,7 @@ class CollectionWidget extends StatelessWidget {
   final bool selected;
   final VoidCallback? onPressed;
   final double size;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,8 @@ class CollectionWidget extends StatelessWidget {
       sides: 6,
       side: BorderSide(
         width: 1.5,
-        color: onPressed != null && selected
-            ? PTheme.colorB : PTheme.black,
+        color: collection == null
+            ? PTheme.black : Colors.transparent,
       ),
     );
 
@@ -37,14 +39,14 @@ class CollectionWidget extends StatelessWidget {
       children: [
         if (collection != null)
         Image.asset(collection!.badge!.imageUrl!,
-          width: size.w,
-          height: size.w,
+          width: size.r,
+          height: size.r,
         ),
         Column(
           children: [
             Material(
               color: collection == null
-                  ? PTheme.grey : Colors.transparent,
+                  ? color : Colors.transparent,
               shape: side,
               child: InkWell(
                 onTap: onPressed,
@@ -53,11 +55,11 @@ class CollectionWidget extends StatelessWidget {
                 child: Container(
                   width: size.w,
                   height: size.w,
-                  decoration: ShapeDecoration(
-                    color: onPressed != null && !selected
-                        ? PTheme.black.withOpacity(.5) : null,
-                    shape: side,
-                  ),
+                  // decoration: ShapeDecoration(
+                  //   color: onPressed != null && !selected
+                  //       ? color : null,
+                  //   shape: side,
+                  // ),
                 ),
               ),
             ),
@@ -140,8 +142,8 @@ class BadgeWidget extends StatelessWidget {
                 customBorder: side,
                 splashColor: PTheme.black.withOpacity(.1),
                 child: Container(
-                  width: size.w,
-                  height: size.w,
+                  width: size.r,
+                  height: size.r,
                   decoration: ShapeDecoration(
                     color: onPressed != null && !selected
                         ? Colors.transparent : null,

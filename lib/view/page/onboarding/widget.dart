@@ -42,43 +42,33 @@ class _CarouselViewState extends State<CarouselView> {
         return Column(
           children: [
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(top: 50.0),
-                alignment: Alignment.topCenter,
-                child: CarouselSlider(
-                  carouselController: OnboardingPresenter.carouselCont,
-                  items: List.generate(messages.length, (index) => AnimatedOpacity(
-                    duration: const Duration(milliseconds: 1000),
-                    opacity: opacity,
-                    curve: Curves.easeInOut,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Positioned(
-                          top: 50.0,
-                          child: PText(messages[index],
-                            maxLines: 3,
-                            style: textTheme.headlineSmall,
-                            align: TextAlign.center,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: SvgPicture.asset(
-                            OnboardingPresenter.getAsset(index),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )).toList(),
-                  options: CarouselOptions(
-                    height: double.infinity,
-                    initialPage: 0,
-                    reverse: false,
-                    enableInfiniteScroll: false,
-                    viewportFraction: 1.0,
-                    onPageChanged: (index, _) => controller.pageChanged(index),
+              child: CarouselSlider(
+                carouselController: OnboardingPresenter.carouselCont,
+                items: List.generate(messages.length, (index) => AnimatedOpacity(
+                  duration: const Duration(milliseconds: 1000),
+                  opacity: opacity,
+                  curve: Curves.easeInOut,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      PText(messages[index],
+                        maxLines: 3,
+                        style: textTheme.headlineSmall,
+                        align: TextAlign.center,
+                      ),
+                      SvgPicture.asset(
+                        OnboardingPresenter.getAsset(index),
+                      ),
+                    ],
                   ),
+                )).toList(),
+                options: CarouselOptions(
+                  height: double.infinity,
+                  initialPage: 0,
+                  reverse: false,
+                  enableInfiniteScroll: false,
+                  viewportFraction: 1.0,
+                  onPageChanged: (index, _) => controller.pageChanged(index),
                 ),
               ),
             ),

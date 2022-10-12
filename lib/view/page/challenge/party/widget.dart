@@ -22,7 +22,7 @@ class PartyMainView extends StatelessWidget {
           slivers: [
             SliverAppBar(
               iconTheme: const IconThemeData(color: PTheme.black),
-              expandedHeight: 250.0,
+              expandedHeight: 270.0,
               stretch: true,
               floating: true,
               flexibleSpace: FlexibleSpaceBar(

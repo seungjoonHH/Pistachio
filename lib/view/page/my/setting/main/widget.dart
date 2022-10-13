@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
 import 'package:pistachio/view/widget/button/button.dart';
@@ -19,7 +21,7 @@ class MySettingMainView extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: const [
-            MyProfileImageButton(),
+            MyProfileUpdateButtonWidget(),
             SizedBox(height: 50.0),
             EditFieldView(),
             SizedBox(height: 120.0),
@@ -31,18 +33,28 @@ class MySettingMainView extends StatelessWidget {
   }
 }
 
-class MyProfileImageButton extends StatelessWidget {
-  const MyProfileImageButton({Key? key}) : super(key: key);
+class MyProfileUpdateButtonWidget extends StatefulWidget {
+  const MyProfileUpdateButtonWidget({Key? key}) : super(key: key);
 
   @override
+  State<MyProfileUpdateButtonWidget> createState() => _MyProfileUpdateButtonWidgetState();
+}
+
+class _MyProfileUpdateButtonWidgetState extends State<MyProfileUpdateButtonWidget> {
+  @override
   Widget build(BuildContext context) {
+    final userPresenter = Get.find<UserPresenter>();
+    String? badgeId = userPresenter.loggedUser.badgeId;
+
     return Column(
       children: [
-        const BadgeWidget(size: 100.0),
+        BadgeWidget(badge: BadgePresenter.getBadge(badgeId), size: 100.0),
         const SizedBox(height: 10.0),
         PTextButton(
           text: '뱃지 변경',
-          onPressed: () {},
+          onPressed: () async {
+            if (await CollectionMain.toCollectionMain()) setState(() {});
+          },
           action: const Icon(Icons.add_photo_alternate_outlined),
         ),
       ],

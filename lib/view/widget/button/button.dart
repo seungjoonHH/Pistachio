@@ -152,14 +152,18 @@ class PTextButton extends StatelessWidget {
     required this.text,
     this.style,
     Color? color,
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 5.0, vertical: 2.0,
+    ),
     this.leading,
     this.action,
-  }) : color = color ?? PTheme.black, super(key: key);
+  }) : color = color ?? PTheme.black,  super(key: key);
 
   final VoidCallback onPressed;
   final String text;
   final TextStyle? style;
   final Color? color;
+  final EdgeInsets padding;
   final Icon? leading;
   final Icon? action;
 
@@ -171,9 +175,7 @@ class PTextButton extends StatelessWidget {
         onTap: onPressed,
         borderRadius: BorderRadius.circular(5.0),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 5.0, vertical: 2.0,
-          ),
+          padding: padding,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

@@ -29,7 +29,7 @@ class Pistachio extends StatelessWidget {
     DataLoadingPresenter.importData();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(360, 800),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {

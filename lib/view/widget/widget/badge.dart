@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/class/database/collection.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class CollectionWidget extends StatelessWidget {
@@ -12,7 +13,9 @@ class CollectionWidget extends StatelessWidget {
     this.collection,
     this.detail = false,
     this.selected = false,
+    this.pressed = false,
     this.onPressed,
+    this.onLongPressed,
     this.size = 80.0,
     this.color = PTheme.lightGrey,
   }) : super(key: key);
@@ -20,7 +23,9 @@ class CollectionWidget extends StatelessWidget {
   final Collection? collection;
   final bool detail;
   final bool selected;
+  final bool pressed;
   final VoidCallback? onPressed;
+  final VoidCallback? onLongPressed;
   final double size;
   final Color color;
 
@@ -29,7 +34,7 @@ class CollectionWidget extends StatelessWidget {
     PolygonBorder side = PolygonBorder(
       sides: 6,
       side: BorderSide(
-        width: 1.5,
+        width: selected ? 4.5 : 1.5,
         color: collection == null
             ? PTheme.black : Colors.transparent,
       ),
@@ -44,24 +49,46 @@ class CollectionWidget extends StatelessWidget {
         ),
         Column(
           children: [
-            Material(
-              color: collection == null
-                  ? color : Colors.transparent,
-              shape: side,
-              child: InkWell(
-                onTap: onPressed,
-                customBorder: side,
-                splashColor: PTheme.black.withOpacity(.1),
-                child: SizedBox(
-                  width: size.w,
-                  height: size.w,
-                  // decoration: ShapeDecoration(
-                  //   color: onPressed != null && !selected
-                  //       ? color : null,
-                  //   shape: side,
-                  // ),
+            Stack(
+              children: [
+                Material(
+                  color: collection == null
+                      ? color : Colors.transparent,
+                  shape: side,
+                  child: InkWell(
+                    onTap: onPressed,
+                    onLongPress: onLongPressed,
+                    customBorder: side,
+                    splashColor: PTheme.black.withOpacity(.1),
+                    child: SizedBox(
+                      width: size.r,
+                      height: size.r,
+                    ),
+                  ),
                 ),
-              ),
+                if (selected)
+                Container(
+                  decoration: const BoxDecoration(
+                    color: PTheme.colorB,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.check_circle_outline_rounded,
+                    size: 40.0,
+                    color: PTheme.background,
+                  ),
+                ),
+                if (pressed)
+                Container(
+                  decoration: const BoxDecoration(
+                    color: PTheme.grey,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.check_circle_outline_rounded,
+                    size: 40.0,
+                    color: PTheme.white,
+                  ),
+                ),
+              ],
             ),
             if (detail)
             Column(
@@ -72,8 +99,8 @@ class CollectionWidget extends StatelessWidget {
                   align: TextAlign.center,
                 ),
                 Container(
-                  width: 24.0,
-                  height: 24.0,
+                  width: 30.0.r,
+                  height: 30.0.r,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -99,7 +126,6 @@ class BadgeWidget extends StatelessWidget {
     this.selected = false,
     this.onPressed,
     this.size = 80.0,
-    this.border = true,
     this.color = PTheme.lightGrey,
   }) : super(key: key);
 
@@ -108,7 +134,6 @@ class BadgeWidget extends StatelessWidget {
   final bool selected;
   final VoidCallback? onPressed;
   final double size;
-  final bool border;
   final Color color;
 
   @override
@@ -118,7 +143,7 @@ class BadgeWidget extends StatelessWidget {
       side: BorderSide(
         width: 1.5,
         color: onPressed != null && selected
-            ? PTheme.colorB : border
+            ? PTheme.colorB : badge == null
             ? PTheme.black : Colors.transparent,
       ),
     );
@@ -127,8 +152,8 @@ class BadgeWidget extends StatelessWidget {
       children: [
         if (badge != null)
         Image.asset(badge!.imageUrl!,
-          width: size.w,
-          height: size.w,
+          width: size.r,
+          height: size.r,
         ),
         Column(
           mainAxisSize: MainAxisSize.min,

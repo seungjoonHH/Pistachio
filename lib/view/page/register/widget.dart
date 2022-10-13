@@ -31,13 +31,13 @@ class CarouselView extends StatelessWidget {
   static List<Widget> carouselWidgets() => const [
     UserInfoView(),
     WeightHeightView(),
+    SettingIntroView(),
     DistanceRecommendView(),
     DistanceGoalView(),
     HeightRecommendView(),
     HeightGoalView(),
     CalorieCheckView(),
     RecommendView(),
-    CalorieExplanationView(),
     // WeightGoalView(),
   ];
 
@@ -60,8 +60,8 @@ class CarouselView extends StatelessWidget {
                 curve: Curves.easeInOut,
                 width: screenSize.width,
                 height: screenSize.height,
-                child: controller.imageExistence[i] ? SvgPicture.asset(
-                  '${asset}carousel_${i.toString().padLeft(2, '0')}.svg',
+                child: controller.imageExistence[i] ? Image.asset(
+                  '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
                   alignment: Alignment.center,
                   fit: BoxFit.fill,
                 ) : Container(),
@@ -178,6 +178,7 @@ class UserInfoView extends StatelessWidget {
                       ],
                     ),
                   ),
+                  SizedBox(height: 20.0.h),
                 ],
               ),
             ],
@@ -486,6 +487,37 @@ class WeightGoalView extends StatelessWidget {
   }
 }
 
+class SettingIntroView extends StatelessWidget {
+  const SettingIntroView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PText('자,',
+            style: textTheme.displaySmall,
+            align: TextAlign.start,
+          ),
+          PTexts(const ['이제 ', '일일 목표', '를'],
+            colors: const [PTheme.black, PTheme.colorB, PTheme.black],
+            alignment: MainAxisAlignment.start,
+            style: textTheme.displaySmall,
+            space: false,
+          ),
+          PText('설정하러 가볼까요?',
+            style: textTheme.displaySmall,
+            align: TextAlign.start,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class DistanceRecommendView extends StatelessWidget {
   const DistanceRecommendView({Key? key}) : super(key: key);
 
@@ -596,9 +628,11 @@ class DistanceGoalView extends StatelessWidget {
                 ),
                 PText('* 약 ${toLocalString(
                     controller.newcomer.goals[ActivityType.distance.name],
-                )}보',
-                  color: PTheme.colorB,
-                ),
+                )}보 (${convertDistance(
+                  controller.newcomer.goals[ActivityType.distance.name],
+                  DistanceUnit.step,
+                  DistanceUnit.kilometer
+                )}km)', color: PTheme.colorB),
               ],
             ),
             const SizedBox(height: 100.0),
@@ -735,7 +769,7 @@ class CalorieCheckView extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      constraints: BoxConstraints(maxWidth: 200.0),
+                      constraints: const BoxConstraints(maxWidth: 200.0),
                       child: TextScroll(LevelPresenter.getTier(
                         ActivityType.distance, convertDistance(
                           controller.distanceMinute,
@@ -823,73 +857,6 @@ class RecommendView extends StatelessWidget {
           SizedBox(height: 120.0),
         ],
       ),
-    );
-  }
-}
-
-class CalorieExplanationView extends StatelessWidget {
-  const CalorieExplanationView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<RegisterPresenter>(
-      builder: (controller) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Text(
-                  '오늘 ',
-                  style: TextStyle(fontSize: 36),
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 2000),
-                  child: Text(
-                    controller.example['name']!,
-                    style: const TextStyle(fontSize: 36),
-                  ),
-                ),
-              ],
-            ),
-            const Text(
-              '먹는 걸 참으면',
-              style: TextStyle(fontSize: 36),
-            ),
-            Row(
-              children: [
-                const Text(
-                  '추가로 ',
-                  style: TextStyle(fontSize: 36),
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  child: Text(
-                    controller.example['kcal']!,
-                    style: const TextStyle(fontSize: 36),
-                  ),
-                ),
-              ],
-            ),
-            const Text(
-              '감량할 수 있어요',
-              style: TextStyle(fontSize: 36),
-            ),
-            const SizedBox(height: 30.0),
-            Center(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: Image.network(
-                  controller.example['image']!,
-                  width: 300.0,
-                  height: 300.0,
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

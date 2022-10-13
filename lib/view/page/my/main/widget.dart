@@ -5,16 +5,26 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
+import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/global.dart';
+import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/my/setting/main.dart';
+import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
-class MyMainView extends StatelessWidget {
+class MyMainView extends StatefulWidget {
   const MyMainView({Key? key}) : super(key: key);
 
+  @override
+  State<MyMainView> createState() => _MyMainViewState();
+}
+
+class _MyMainViewState extends State<MyMainView> {
   @override
   Widget build(BuildContext context) {
     PUser loggedUser = Get.find<UserPresenter>().loggedUser;
@@ -24,7 +34,7 @@ class MyMainView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const MyProfileImage(),
+          const MyProfileWidget(),
           const SizedBox(height: 30.0),
           Expanded(
             child: Column(
@@ -36,7 +46,9 @@ class MyMainView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: ActivityType.activeValues.map((type) {
-                      Map<String, dynamic> tier = LevelPresenter.getTier(type, loggedUser.getAmounts(type));
+                      Map<String, dynamic> tier = LevelPresenter
+                          .getTier(type, loggedUser.getAmounts(type));
+
                       return Expanded(
                         child: Material(
                           color: Colors.transparent,
@@ -107,8 +119,8 @@ class MyMainView extends StatelessWidget {
   }
 }
 
-class MyProfileImage extends StatelessWidget {
-  const MyProfileImage({Key? key}) : super(key: key);
+class MyProfileWidget extends StatelessWidget {
+  const MyProfileWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -119,8 +131,13 @@ class MyProfileImage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             BadgeWidget(
+              badge: BadgePresenter.getBadge(controller.loggedUser.badgeId),
               size: 100.0,
-              onPressed: () {},
+              onPressed: () {
+                Collection? collection = controller.loggedUser.collection;
+                if (collection == null) return;
+                GlobalPresenter.showCollectionDialog(collection);
+              },
             ),
             const SizedBox(width: 20.0),
             Column(

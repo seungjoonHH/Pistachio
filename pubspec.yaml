@@ -66,6 +66,7 @@ flutter:
     - assets/image/level/distance/
     - assets/image/level/height/
     - assets/image/widget/bottom_bar/
+    - assets/image/widget/dialog/
     - assets/image/challenge/default/
     - assets/image/challenge/complete/
     - assets/image/challenge/focus/

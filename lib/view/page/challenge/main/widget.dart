@@ -285,7 +285,7 @@ class ChallengeCardLoading extends StatelessWidget {
                         Container(width: 200.0.w, height: 15.0.h, color: color),
                       ],
                     ),
-                    BadgeWidget(size: 80.0, border: false, color: color),
+                    BadgeWidget(size: 80.0, color: color),
                   ],
                 ),
                 SizedBox(height: 20.0.h),

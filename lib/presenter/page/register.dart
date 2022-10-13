@@ -23,7 +23,7 @@ class Field {
 class RegisterPresenter extends GetxController {
   int pageIndex = 0;
   bool invalid = false;
-  List<bool> imageExistence = [false, false, true, true, true, true, true];
+  List<bool> imageExistence = [false, false, false, true, true, true, true, true];
   bool imageVisualize = false;
 
   Map<String, Field> fields = {
@@ -80,34 +80,6 @@ class RegisterPresenter extends GetxController {
     keyboardVisible = value;
     update();
   }
-
-  // List<Map<String, String>> examples = [
-  //   {
-  //     'name': '감자튀김',
-  //     'kcal': '331kal',
-  //     'image':
-  //         'https://previews.123rf.com/images/rainart123/rainart1231610/rainart123161000053/67577359-%EA%B0%90%EC%9E%90-%ED%8A%80%EA%B9%80-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%B2%A1%ED%84%B0.jpg'
-  //   },
-  //   {
-  //     'name': '탄산음료',
-  //     'kcal': '108kal',
-  //     'image':
-  //         'https://w7.pngwing.com/pngs/69/20/png-transparent-three-coca-cola-fanta-and-sprite-disposable-cups-fizzy-drinks-coca-cola-sprite-fanta-shawarma-fanta-food-chicken-meat-cola.png'
-  //   },
-  //   {
-  //     'name': '공깃밥',
-  //     'kcal': '313kal',
-  //     'image':
-  //         'https://e7.pngegg.com/pngimages/973/964/png-clipart-jasmine-rice-cooked-rice-white-rice-basmati-translucent-food-cereal.png'
-  //   },
-  // ];
-  //
-  Map<String, String> example = {
-    'name': '공깃밥',
-    'kcal': '313kal',
-    'image':
-    'https://e7.pngegg.com/pngimages/973/964/png-clipart-jasmine-rice-cooked-rice-white-rice-basmati-translucent-food-cereal.png'
-  };
 
   /// methods
   // 성별 설정
@@ -277,14 +249,15 @@ class RegisterPresenter extends GetxController {
         newcomer.dateOfBirth = stringToDate(fields['dateOfBirth']!.controller.text);
         break;
       case 1: break;
-      case 2:
+      case 2: break;
+      case 3:
         initGoal(ActivityType.distance, 15);
         break;
-      case 3: break;
-      case 4:
+      case 4: break;
+      case 5:
         initGoal(ActivityType.height, 15);
         break;
-      case 5:
+      case 6:
         int goal = 0;
         for (var type in ActivityType.activeValues.sublist(1)) {
           int amount = newcomer.goals[type.name].toInt();
@@ -294,7 +267,7 @@ class RegisterPresenter extends GetxController {
         newcomer.goals[ActivityType.calorie.name] = goal;
         update();
         break;
-      case 6:
+      case 7:
         submitted(); return;
     }
     carouselCont.nextPage(

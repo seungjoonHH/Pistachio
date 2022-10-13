@@ -24,14 +24,14 @@ class PBottomSheetBar extends StatelessWidget {
 
     return BottomSheetBar(
       locked: false,
-      height: 80.0,
+      height: 80.0.h,
       controller: GlobalPresenter.barCont,
       borderRadiusExpanded: radius,
       isDismissable: false,
       color: PTheme.white,
-      expandedBuilder: (scrollCont) => Container(
+      expandedBuilder: (_) => Container(
         width: double.infinity,
-        height: 460.0.h,
+        height: 350.0.h,
         decoration: BoxDecoration(
           color: PTheme.white,
           border: Border.all(color: PTheme.black, width: 1.5),
@@ -53,25 +53,19 @@ class PBottomSheetBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   PText('일일 기록 입력하기', style: textTheme.headlineSmall),
+                  SizedBox(height: 10.0.h),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: PTheme.black, width: 1.5 * .5),
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: const [
-                            RecordNavigateButton(type: ActivityType.distance),
-                            RecordNavigateButton(type: ActivityType.height),
-                          ],
-                        ),
-                        Row(
-                          children: const [
-                            RecordNavigateButton(type: ActivityType.weight),
-                            RecordNavigateButton(type: ActivityType.calorie),
-                          ],
-                        ),
-                      ],
+                    child: GridView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, childAspectRatio: 1.0,
+                      ),
+                      children: ActivityType.values.sublist(1, 3)
+                          .map((type) => RecordNavigateButton(type: type)).toList(),
                     ),
                   ),
                 ],
@@ -105,7 +99,9 @@ class CollapsedBottomBar extends StatelessWidget {
               width: double.infinity,
               child: GetBuilder<GlobalPresenter>(
                 builder: (controller) {
-                  List<IconData> selectedIcons = [Icons.home, Icons.edit_outlined, Icons.star];
+                  List<IconData> selectedIcons = [
+                    Icons.home, Icons.edit_outlined, Icons.star,
+                  ];
                   List<IconData> unselectedIcons = [
                     Icons.home_outlined, Icons.edit_outlined, Icons.star_outline,
                   ];
@@ -144,26 +140,24 @@ class RecordNavigateButton extends StatelessWidget {
   Widget build(BuildContext context) {
     const asset = 'assets/image/widget/bottom_bar/';
 
-    return Expanded(
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => ExerciseInput.toExerciseInput(type),
-          child: AspectRatio(
-            aspectRatio: 1.0,
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: Border.all(color: PTheme.black, width: 1.5 * .5),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset('$asset${type.name}.svg'),
-                  const SizedBox(height: 20.0),
-                  PText(type.kr, style: textTheme.labelSmall),
-                ],
-              ),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => ExerciseInput.toExerciseInput(type),
+        child: AspectRatio(
+          aspectRatio: 1.0,
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(color: PTheme.black, width: 1.5 * .5),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset('$asset${type.name}.svg'),
+                SizedBox(height: 20.0.h),
+                PText(type.kr, style: textTheme.labelSmall),
+              ],
             ),
           ),
         ),

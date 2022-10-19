@@ -6,8 +6,6 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
-import 'package:pistachio/view/widget/button/button.dart';
-import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 
 class CollectionMainView extends StatelessWidget {

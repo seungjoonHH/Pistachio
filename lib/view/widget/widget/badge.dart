@@ -57,7 +57,7 @@ class CollectionWidget extends StatelessWidget {
                   shape: side,
                   child: InkWell(
                     onTap: onPressed,
-                    onLongPress: onLongPressed,
+                    onLongPress: onPressed,
                     customBorder: side,
                     splashColor: PTheme.black.withOpacity(.1),
                     child: SizedBox(

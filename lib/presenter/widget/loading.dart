@@ -16,7 +16,7 @@ class LoadingPresenter extends GetxController {
     double opacity = .2;
     timer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       opacity = ((opacity * 1000 + 3) % 200) / 1000;
-      color = mainColor.withOpacity(.2 + opacity);
+      color = mainColor.withOpacity(.1 + opacity);
       update();
     });
   }

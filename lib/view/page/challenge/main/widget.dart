@@ -158,13 +158,10 @@ class ChallengeCard extends StatelessWidget {
               //   ),
               //   child: Container(height: 200.0),
               // ),
-              AspectRatio(
-                aspectRatio: 5 / 3,
-                child: Image.asset(
-                  challenge.imageUrls['default'],
-                  height: 200.0.h,
-                  fit: BoxFit.fill,
-                ),
+              Image.asset(
+                challenge.imageUrls['default'],
+                height: 230.0.h,
+                fit: BoxFit.fitHeight,
               ),
               const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
               Padding(
@@ -268,7 +265,7 @@ class ChallengeCardLoading extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Column(
         children: [
-          Container(height: 200.0.h, color: color),
+          Container(height: 230.0.h, color: color), ////
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 20.0, 20.0, 20.0),
             child: Column(
@@ -427,7 +424,7 @@ class MyPartyListViewLoading extends StatelessWidget {
               height: 80.0,
               child: Row(
                 children: [
-                  Container(width: 80.0, height: 80.0, color: controller.color),
+                  Container(width: 80.0, height: 80.0.h, color: controller.color),
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(15.0, 15.0, 0.0, 15.0),

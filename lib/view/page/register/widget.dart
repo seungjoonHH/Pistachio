@@ -818,7 +818,7 @@ class CalorieCheckView extends StatelessWidget {
                   style: textTheme.displaySmall,
                   alignment: MainAxisAlignment.end,
                 ),
-                PText('소모 할 수 있어요',
+                PText('소모할 수 있어요',
                   color: PTheme.black,
                   style: textTheme.displaySmall,
                 ),

@@ -3,7 +3,6 @@
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/page/my/setting/main/widget.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
-import 'package:pistachio/view/widget/widget/bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // 세팅 페이지

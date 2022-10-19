@@ -8,6 +8,7 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
 import 'package:pistachio/view/widget/button/button.dart';
+import 'package:pistachio/view/widget/widget/icon.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 /* 커스텀 하단 바 위젯 */
@@ -99,22 +100,18 @@ class CollapsedBottomBar extends StatelessWidget {
               width: double.infinity,
               child: GetBuilder<GlobalPresenter>(
                 builder: (controller) {
-                  List<IconData> selectedIcons = [
-                    Icons.home, Icons.edit_outlined, Icons.star,
-                  ];
-                  List<IconData> unselectedIcons = [
-                    Icons.home_outlined, Icons.edit_outlined, Icons.star_outline,
+                  List<PIcons> icons = [
+                    PIcons.homeHouse, PIcons.pencil, PIcons.trophyAward,
                   ];
 
                   return Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(3, (index) => PIconButton(
-                      index == controller.navIndex
-                          ? selectedIcons[index]
-                          : unselectedIcons[index],
+                      icon: PIcon(icons[index],
+                        selected: index == controller.navIndex,
+                      ),
                       onPressed: () => controller.navigate(index),
-                      size: 50.0,
                       backgroundColor: Colors.transparent,
                     )),
                   );

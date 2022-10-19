@@ -1,6 +1,8 @@
 /* 커스텀 버튼 위젯 */
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/view/widget/widget/icon.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:flutter/material.dart';
 
@@ -108,37 +110,30 @@ class PDirectButton extends StatelessWidget {
 }
 
 class PIconButton extends StatelessWidget {
-  const PIconButton(this.iconData, {
+  const PIconButton({
     Key? key,
+    required this.icon,
     required this.onPressed,
-    this.size = 66.0,
     Color? backgroundColor,
     Color? iconColor,
   }) : backgroundColor = backgroundColor ?? const Color(0xFFD6BDAC),
-        iconColor = iconColor ?? PTheme.black,
         super(key: key);
 
-  final IconData iconData;
+  final PIcon icon;
   final VoidCallback onPressed;
-  final double size;
   final Color? backgroundColor;
-  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: backgroundColor,
-      borderRadius: BorderRadius.circular(size * .5),
+      borderRadius: BorderRadius.circular(icon.size.r),
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(size * .5),
-        child: SizedBox(
-          width: size,
-          height: size,
-          child: Icon(iconData,
-            size: size * .7,
-            color: iconColor,
-          ),
+        borderRadius: BorderRadius.circular(icon.size.r),
+        child: Padding(
+          padding: EdgeInsets.all(10.0.r),
+          child: icon,
         ),
       ),
     );

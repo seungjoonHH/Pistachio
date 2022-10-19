@@ -1,5 +1,6 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/party.dart';
@@ -18,53 +19,59 @@ class PartyMainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ChallengePartyMain>(
       builder: (controller) {
+        BorderRadius imageRadius = const BorderRadius.all(Radius.circular(20.0));
+
         return SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                height: 200,
-                width: 330,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: imageRadius,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: imageRadius,
+                        child: Image.asset(
+                          party.challenge?.imageUrls['default'],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    PText('난이도: ${party.difficulty.kr}',
+                      style: textTheme.labelLarge,
+                      color: PTheme.grey,
+                    ),
+                    const SizedBox(height: 20.0),
+                    PText(party.challenge?.title ?? '',
+                      style: textTheme.headlineSmall,
+                      maxLines: 2,
+                    ),
+                    const SizedBox(height: 20.0),
+                    PText(
+                      party.challenge?.descriptions['detail']!,
+                      style: textTheme.labelLarge,
+                      color: PTheme.grey,
+                      maxLines: 7,
+                    ),
+                  ],
                 ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-                  child: Image.asset(
-                    party.challenge?.imageUrls['default'],
-                  ),
-                ),
               ),
-              const SizedBox(height:20),
-              PText('난이도: 쉬움',
-                style: textTheme.labelLarge,
-                color: PTheme.grey,
-              ),
-              const SizedBox(height:20),
-              PText(party.challenge?.title ?? '',
-                style: textTheme.headlineSmall,
-                maxLines: 2,
-              ),
-              const SizedBox(height:20),
-              PText(
-                party.challenge?.descriptions['detail']!,
-                style: textTheme.labelLarge,
-                color: PTheme.grey,
-                maxLines: 7,
-              ),
-              const SizedBox(height:40),
               const Divider(
-                color: PTheme.grey,
+                color: PTheme.lightGrey,
                 thickness: 8,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 40, top: 30),
+                padding: const EdgeInsets.all(20.0),
                 child: Row(
                   children: [
                     PText('내 점수',
                       style: textTheme.headlineSmall,
                       color: PTheme.black,
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 10.0),
                     PText('*현재 챌린지 기준',
                       style: textTheme.bodySmall,
                       color: PTheme.grey,
@@ -72,46 +79,47 @@ class PartyMainView extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height:50),
+              const SizedBox(height: 50.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(width: 10),
                   AnimatedFlipCounter(
                     value: controller.value,
                     textStyle: textTheme.displayLarge?.apply(color: PTheme.colorC),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 10.0),
                   PText(party.challenge!.type!.unitAlt,
                     style: textTheme.bodySmall,
                     color: PTheme.grey,
                   ),
                 ],
               ),
-              const SizedBox(height:50),
+              const SizedBox(height: 50.0),
               const Divider(
-                color: PTheme.grey,
+                color: PTheme.lightGrey,
                 thickness: 8,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 40, top: 30, bottom: 30),
-                child: Row(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
                   children: [
-                    PText('순위',
-                      style: textTheme.headlineSmall,
-                      color: PTheme.black,
+                    Row(
+                      children: [
+                        PText('순위',
+                          style: textTheme.headlineSmall,
+                          color: PTheme.black,
+                        ),
+                      ],
+                    ),
+                    Image.asset(
+                      'assets/image/page/challenge/trophy.png',
+                      width: 100.0,
+                      height: 100.0,
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                width: 100,
-                height: 100,
-                child: Image.asset(
-                  'assets/image/page/challenge/Trophy.png',
-                ),
-              ),
-              const SizedBox(height:20),
+              const SizedBox(height: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

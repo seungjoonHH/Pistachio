@@ -8,6 +8,7 @@ class Badge {
   String? title;
   String? imageUrl;
   String? description;
+  bool? activate;
 
   /// constructors
   Badge();
@@ -18,10 +19,11 @@ class Badge {
 
   /// methods
   void fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = '${json['id']}';
     title = json['title'];
     imageUrl = '$asset$id.png';
     description = json['description'];
+    activate = json['activate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -29,6 +31,7 @@ class Badge {
     json['id'] = id;
     json['title'] = title;
     json['description'] = description;
+    json['activate'] = activate;
     return json;
   }
 }

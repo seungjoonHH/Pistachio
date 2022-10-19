@@ -1,7 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
+import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/model/class/database/collection.dart';
+import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
-import 'package:pistachio/presenter/loading.dart';
+import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -25,6 +31,10 @@ import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/presenter/page/my/main.dart';
+import 'package:pistachio/view/widget/effect/effect.dart';
+import 'package:pistachio/view/widget/function/dialog.dart';
+import 'package:pistachio/view/widget/widget/badge.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 class GlobalPresenter extends GetxController {
   int navIndex = 0;
@@ -42,9 +52,123 @@ class GlobalPresenter extends GetxController {
 
   static final barCont = BottomSheetBarController();
 
-  static void openBottomBar() async => await barCont.expand();
+  static Future openBottomBar() async => await barCont.expand();
+  static Future closeBottomBar() async => await barCont.collapse();
 
-  static void closeBottomBar() async => await barCont.collapse();
+  static void goBack() => Get.back(result: true);
+
+  static void showCollectionDialog(Collection collection) {
+    showPDialog(
+      title: collection.badge!.title,
+      content: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 95.0.h,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    CollectionWidget(collection: collection),
+                    Container(
+                      width: 30.0.r,
+                      height: 30.0.r,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: PTheme.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: PTheme.black, width: 1.5),
+                      ),
+                      child: PText('${collection.dates.length}', border: true),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 20.0),
+              Container(
+                constraints: const BoxConstraints(maxHeight: 70.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: collection.dateList.map((date) => PText(
+                      dateToString('yyyy-MM-dd 획득!', date.toDate())!,
+                      color: date == collection.dateList.last
+                          ? PTheme.colorB : PTheme.black,
+                      bold: date == collection.dateList.last,
+                    )).toList().reversed.toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10.0),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            alignment: Alignment.topLeft,
+            constraints: const BoxConstraints(minHeight: 100.0),
+            child: PText(collection.badge!.description!, maxLines: 5),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static void badgeAwarded(Badge badge, [bool firstAward = false]) {
+    const String effectAsset = 'assets/image/widget/dialog/badge_effect.png';
+
+    showPDialog(
+      titlePadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.zero,
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: 300.0.w,
+                height: 300.0.h,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (firstAward)
+                    EternalRotation(
+                      rps: .3,
+                      child: Image.asset(effectAsset),
+                    ),
+                    BadgeWidget(badge: badge, size: 120.0.r),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: .0,
+                child: PText('${firstAward ? '신규' : ''} 뱃지 획득!',
+                  style: textTheme.headlineSmall,
+                ),
+              ),
+              Positioned(
+                top: 40.0, right: 20.0,
+                child: PText(dateToString('yyyy-MM-dd', now)!,
+                  color: PTheme.colorB, align: TextAlign.end,
+                ),
+              ),
+              Positioned(
+                bottom: 20.0,
+                child: Column(
+                  children: [
+                    PText(badge.title!, style: textTheme.titleLarge, bold: true),
+                    const SizedBox(height: 5.0),
+                    PText(badge.description!, style: textTheme.bodyLarge),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
+  }
 
   static void initControllers() {
     Get.put(GlobalPresenter());
@@ -75,5 +199,6 @@ class GlobalPresenter extends GetxController {
     Get.put(ChallengeMain());
     Get.put(ChallengeCreate());
     Get.put(ChallengePartyMain());
+    Get.put(CollectionMain());
   }
 }

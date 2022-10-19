@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
 class PCard extends StatelessWidget {
-  const PCard({
+  PCard({
     Key? key,
     required this.child,
-    this.padding = const EdgeInsets.all(20.0),
+    EdgeInsets? padding,
     this.onPressed,
     this.color = PTheme.white,
     this.rounded = false,
     this.borderType = BorderType.all,
     this.borderColor = PTheme.black,
     this.borderWidth = 1.5,
-  }) : super(key: key);
+  }) : padding = padding ?? EdgeInsets.all(20.0.r), super(key: key);
 
   final Widget child;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final VoidCallback? onPressed;
   final Color color;
   final bool rounded;

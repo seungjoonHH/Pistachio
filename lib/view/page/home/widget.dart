@@ -1,15 +1,20 @@
 import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
+import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/global.dart';
+import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/view/widget/button/button.dart';
@@ -97,7 +102,7 @@ class HomeRandomCardView extends StatelessWidget {
       const QuestRecommendCard(),
       const LifeExtensionCard(),
     ].map((widget) => Padding(
-      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+      padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0.r),
       child: widget,
     )).toList();
 
@@ -106,7 +111,7 @@ class HomeRandomCardView extends StatelessWidget {
     return CarouselSlider(
       items: items,
       options: CarouselOptions(
-        height: 240.0,
+        height: 230.0.h,
         viewportFraction: 1.0,
         autoPlay: true,
       ),
@@ -132,22 +137,37 @@ class QuestRecommendCard extends StatelessWidget {
                 style: textTheme.titleLarge,
                 color: PTheme.black,
               ),
-              const SizedBox(height: 10.0),
+              SizedBox(height: 10.0.h),
               PText('를 달성하고 컬렉션을 모아보세요.',
                 style: textTheme.labelMedium,
                 color: PTheme.grey,
               ),
             ],
           ),
-          const SizedBox(height: 20.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              BadgeWidget(size: 60.0),
-              BadgeWidget(),
-              BadgeWidget(size: 60.0),
-            ],
-          )
+          SizedBox(height: 20.0.h),
+          SizedBox(
+            height: 80.0.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                BadgeWidget(
+                  badge: BadgePresenter.getBadge('10401${
+                    (today.month - 1).toString().padLeft(2, '0')}'
+                  ), size: 60.0,
+                ),
+                BadgeWidget(
+                  badge: BadgePresenter.getBadge('10400${
+                    (today.month - 1).toString().padLeft(2, '0')}'
+                  ),
+                ),
+                BadgeWidget(
+                  badge: BadgePresenter.getBadge('10402${
+                    (today.month - 1).toString().padLeft(2, '0')}'
+                  ), size: 60.0,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -172,19 +192,20 @@ class LifeExtensionCard extends StatelessWidget {
                 style: textTheme.titleLarge,
                 color: PTheme.black,
               ),
-              const SizedBox(height: 10.0),
+              SizedBox(height: 10.0.h),
               PText('1층 당 3초의 수명이 연장되어요.',
                 style: textTheme.labelMedium,
                 color: PTheme.grey,
               ),
             ],
           ),
-          const SizedBox(height: 20.0),
+          SizedBox(height: 20.0.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SvgPicture.asset(
                 'assets/image/page/home/heartbeat.svg',
+                height: 80.0.h,
               ),
             ],
           )
@@ -203,30 +224,21 @@ class DailyActivityCardView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         WidgetHeader(title: '오늘 활동량', seeMorePressed: () {}),
-        const SizedBox(height: 10.0),
+        SizedBox(height: 10.0.h),
         PCard(
+          padding: EdgeInsets.zero,
           borderType: BorderType.horizontal,
           borderWidth: 3.0,
           color: PTheme.surface,
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  DailyActivityCircularGraph(type: ActivityType.distance),
-                  DailyActivityCircularGraph(type: ActivityType.height),
-                ],
-              ),
-              const SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  DailyActivityCircularGraph(type: ActivityType.weight),
-                  DailyActivityCircularGraph(type: ActivityType.calorie),
-                ],
-              ),
-            ],
+          child: GridView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+            ),
+            children: ActivityType.values
+                .map((type) => DailyActivityCircularGraph(type: type)).toList(),
           ),
         ),
       ],
@@ -258,42 +270,56 @@ class DailyActivityCircularGraph extends StatelessWidget {
         if (laterPercent == 0) earlierDuration = totalDuration;
         int laterDuration = totalDuration * laterPercent ~/ totalPercent;
 
-        return Column(
+        return Stack(
+          alignment: Alignment.center,
           children: [
-            Stack(
-              alignment: Alignment.center,
+            Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                PCircularPercentIndicator(
-                  percent: earlierPercent,
-                  backgroundColor: PTheme.bar,
-                  centerText: type.kr,
-                  color: type.color,
-                  duration: earlierDuration,
-                  onAnimationEnd: () => controller.showLaterGraph(type),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    PCircularPercentIndicator(
+                      percent: earlierPercent,
+                      backgroundColor: PTheme.bar,
+                      centerText: type.kr,
+                      color: type.color,
+                      duration: earlierDuration,
+                      onAnimationEnd: () => controller.showLaterGraph(type),
+                    ),
+                    PCircularPercentIndicator(
+                      visible: controller.graphStates[type]!,
+                      percent: laterPercent,
+                      centerText: type.kr,
+                      duration: laterDuration,
+                      color: PTheme.white.withOpacity(.3),
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ],
                 ),
-                PCircularPercentIndicator(
-                  visible: controller.graphStates[type]!,
-                  percent: laterPercent,
-                  centerText: type.kr,
-                  duration: laterDuration,
-                  color: PTheme.white.withOpacity(.3),
-                  backgroundColor: Colors.transparent,
+                const SizedBox(height: 10.0),
+                PTexts(
+                  ['$todayRecord', '/$goal ${type.unit}'],
+                  colors: [type.color, PTheme.black],
+                  style: textTheme.labelLarge,
+                  space: false,
                 ),
               ],
             ),
-            const SizedBox(height: 10.0),
-            Row(
-              children: [
-                PText(
-                  '$todayRecord',
-                  color: PTheme.colorB,
-                  style: textTheme.labelLarge,
-                ),
-                PText(
-                  '/$goal ${type.unit}',
-                  style: textTheme.labelLarge,
-                ),
-              ],
+            if (!type.active)
+            Positioned.fill(
+              child: Stack(
+                children: [
+                  Container(
+                    color: PTheme.surface,
+                    alignment: Alignment.center,
+                    child: Icon(Icons.lock, size: 30.0.r),
+                  ),
+                  Container(
+                    color: PTheme.black.withOpacity(.3),
+                  ),
+                ],
+              ),
             ),
           ],
         );
@@ -313,14 +339,14 @@ class MonthlyQuestWidget extends StatelessWidget {
         const SizedBox(height: 10.0),
         Container(
           decoration: const BoxDecoration(
-              border: Border.symmetric(
-                horizontal: BorderSide(
-                  color: PTheme.black, width: 2.5,
-                ),
-              )
+            border: Border.symmetric(
+              horizontal: BorderSide(
+                color: PTheme.black, width: 2.5,
+              ),
+            ),
           ),
           child: Column(
-            children: ActivityType.activeValues.map((type) => MonthlyQuestProgressWidget(
+            children: ActivityType.values.map((type) => MonthlyQuestProgressWidget(
               type: type,
             )).toList(),
           ),
@@ -342,74 +368,93 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const String directory = 'assets/image/page/home/';
 
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(
-            color: PTheme.black, width: .5,
+    return Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            border: Border.symmetric(
+              horizontal: BorderSide(
+                color: PTheme.black, width: .5,
+              ),
+            ),
+          ),
+          height: 80.0,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  padding: const EdgeInsets.all(20.0),
+                  color: PTheme.surface,
+                  child: SvgPicture.asset('$directory${type.asset}'),
+                ),
+              ),
+              const VerticalDivider(
+                color: PTheme.black,
+                width: 0.0,
+                thickness: 1.0,
+              ),
+              Expanded(
+                flex: 3,
+                child: GetBuilder<HomePresenter>(
+                  builder: (controller) {
+                    int record = controller.thisMonthRecords[type] ?? 0;
+                    int goal = QuestPresenter.quests[type] ?? 1;
+                    if (type == ActivityType.weight) goal ~/= weight + 1;
+                    double percent = min(record / goal, 1);
+
+                    return Stack(
+                      children: [
+                        LinearPercentIndicator(
+                          padding: const EdgeInsets.only(left: 1.0),
+                          progressColor: type.color,
+                          lineHeight: double.infinity,
+                          backgroundColor: PTheme.surface,
+                          percent: percent < .01 ? .01 : percent,
+                        ),
+                        Center(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                PText(
+                                  type.kr,
+                                  style: textTheme.titleMedium,
+                                ),
+                                PText(
+                                  '${(percent * 100).ceil()} %',
+                                  style: textTheme.titleMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-      height: 80.0,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-              color: PTheme.surface,
-              child: SvgPicture.asset('$directory${type.asset}'),
-            ),
+        if (!type.active)
+        Positioned.fill(
+          child: Stack(
+            children: [
+              Container(
+                color: PTheme.surface,
+                alignment: Alignment.center,
+                child: Icon(Icons.lock, size: 30.0.r),
+              ),
+              Container(
+                color: PTheme.black.withOpacity(.3),
+              ),
+            ],
           ),
-          const VerticalDivider(
-            color: PTheme.black,
-            width: 0.0,
-            thickness: 1.0,
-          ),
-          Expanded(
-            flex: 3,
-            child: GetBuilder<HomePresenter>(
-              builder: (controller) {
-                int record = controller.thisMonthRecords[type] ?? 0;
-                int goal = QuestPresenter.quests[type] ?? 1;
-                if (type == ActivityType.weight) goal ~/= weight + 1;
-                double percent = min(record / goal, 1);
-
-                return Stack(
-                  children: [
-                    LinearPercentIndicator(
-                      padding: const EdgeInsets.only(left: 1.0),
-                      progressColor: type.color,
-                      lineHeight: double.infinity,
-                      backgroundColor: PTheme.surface,
-                      percent: percent < .01 ? .01 : percent,
-                    ),
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            PText(
-                              type.kr,
-                              style: textTheme.titleMedium,
-                            ),
-                            PText(
-                              '${(percent * 100).ceil()} %',
-                              style: textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -421,27 +466,31 @@ class CollectionCardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userPresenter = Get.find<UserPresenter>();
 
+    List<Widget> collectionWidgets = List.generate(3, (_) => const CollectionWidget());
+    for (int i = 0; i < userPresenter.myCollections.length; i++) {
+      Collection collection = userPresenter.myCollections[i];
+      collectionWidgets[i] = CollectionWidget(
+        onPressed: () => GlobalPresenter.showCollectionDialog(collection),
+        collection: collection,
+        detail: true,
+      );
+    }
+
     return Column(
       children: [
-        WidgetHeader(title: '컬렉션', seeMorePressed: () {}),
+        const WidgetHeader(
+          title: '컬렉션',
+          seeMorePressed: CollectionMain.toCollectionMain,
+        ),
         const SizedBox(height: 10.0),
         PCard(
           borderType: BorderType.horizontal,
           borderWidth: 3.0,
           color: PTheme.surface,
-          child: userPresenter.myCollections.isEmpty ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              PText('컬렉션이 없어요'),
-            ],
-          ) : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: userPresenter.myCollections.map((collection) {
-              return CollectionWidget(
-                collection: collection,
-                detail: true,
-              );
-            }).toList(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: collectionWidgets,
           ),
         ),
       ],

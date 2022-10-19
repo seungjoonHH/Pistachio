@@ -15,6 +15,8 @@ class Collection {
   set dates(List<DateTime?> dates) => dates.map((date) => toTimestamp(date)).toList();
   List<DateTime?> get dates => dateList.map((date) => date.toDate()).toList();
 
+  void addDate(DateTime date) => dateList.add(toTimestamp(date)!);
+
   Collection();
 
   Collection.fromJson(Map<String, dynamic> json) {

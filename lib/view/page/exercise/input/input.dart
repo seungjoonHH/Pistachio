@@ -16,11 +16,11 @@ class ExerciseInputPage extends StatelessWidget {
     if (Get.arguments == null) return const Scaffold();
     ActivityType type = Get.arguments;
 
-    Map<ActivityType, String> messages = {
-      ActivityType.calorie: '참은 음식을 선택해주세요.',
-      ActivityType.distance: '유산소 운동을 한 시간을 입력해요.',
-      ActivityType.height: '오른 층 수를 입력해요.',
-      ActivityType.weight: '운동한 횟수를 입력해요.',
+    Map<ActivityType, List<String>> messages = {
+      ActivityType.calorie: ['오늘 ', '참은 음식', '을 선택해주세요.'],
+      ActivityType.distance: ['오늘 ', '유산소 운동을 한 시간', '을 입력해주세요.'],
+      ActivityType.height: ['오늘 ', '오른 층 수', '를 입력해주세요.'],
+      ActivityType.weight: ['오늘 ', '운동한 횟수', '를 입력해주세요.'],
     };
 
     Map<ActivityType, String> hints = {
@@ -55,7 +55,8 @@ class ExerciseInputPage extends StatelessWidget {
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
-        appBar: const PAppBar(),
+        backgroundColor: PTheme.background,
+        appBar: PAppBar(title: '${type.kr} 입력'),
         body: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Column(
@@ -64,9 +65,14 @@ class ExerciseInputPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  PText('오늘 ${messages[type]!}\n피스타치오가 알아서 계산해 줄게요.',
+                  PTexts(messages[type]!,
+                    alignment: MainAxisAlignment.start,
+                    colors: [PTheme.black, type.color, PTheme.black],
                     style: textTheme.bodyLarge,
-                    maxLines: 2,
+                    space: false,
+                  ),
+                  PText('피스타치오가 알아서 계산해 줄게요.',
+                    style: textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 20.0),
                   PInputField(
@@ -91,7 +97,7 @@ class ExerciseInputPage extends StatelessWidget {
                     onPressed: () => controller.completeButtonPressed(type),
                     text: '입력 완료',
                     stretch: true,
-                    backgroundColor: PTheme.colorD,
+                    backgroundColor: type.color,
                     textColor: PTheme.black,
                   );
                 },

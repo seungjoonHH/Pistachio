@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     const backgroundAsset = 'assets/image/page/login/background.svg';
 
     return Scaffold(
@@ -39,12 +40,13 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Positioned.fill(
+          AspectRatio(
+            aspectRatio: screenSize.aspectRatio,
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
               opacity: backgroundOpacity,
-              child: SvgPicture.asset(backgroundAsset),
+              child: SvgPicture.asset(backgroundAsset, fit: BoxFit.fill),
             ),
           ),
           const Positioned(top: 200.0, child: PLogo()),

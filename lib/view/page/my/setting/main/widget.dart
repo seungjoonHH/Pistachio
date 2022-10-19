@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
 import 'package:pistachio/view/widget/button/button.dart';
@@ -14,32 +16,45 @@ class MySettingMainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          MyProfileImageButton(),
-          EditFieldView(),
-          AccountButtonView(),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: const [
+            MyProfileUpdateButtonWidget(),
+            SizedBox(height: 50.0),
+            EditFieldView(),
+            SizedBox(height: 120.0),
+            AccountButtonView(),
+          ],
+        ),
       ),
     );
   }
 }
 
-class MyProfileImageButton extends StatelessWidget {
-  const MyProfileImageButton({Key? key}) : super(key: key);
+class MyProfileUpdateButtonWidget extends StatefulWidget {
+  const MyProfileUpdateButtonWidget({Key? key}) : super(key: key);
 
   @override
+  State<MyProfileUpdateButtonWidget> createState() => _MyProfileUpdateButtonWidgetState();
+}
+
+class _MyProfileUpdateButtonWidgetState extends State<MyProfileUpdateButtonWidget> {
+  @override
   Widget build(BuildContext context) {
+    final userPresenter = Get.find<UserPresenter>();
+    String? badgeId = userPresenter.loggedUser.badgeId;
+
     return Column(
       children: [
-        const BadgeWidget(size: 120.0),
+        BadgeWidget(badge: BadgePresenter.getBadge(badgeId), size: 100.0),
         const SizedBox(height: 10.0),
         PTextButton(
           text: '뱃지 변경',
-          onPressed: () {},
+          onPressed: () async {
+            if (await CollectionMain.toCollectionMain()) setState(() {});
+          },
           action: const Icon(Icons.add_photo_alternate_outlined),
         ),
       ],
@@ -55,9 +70,9 @@ class EditFieldView extends StatelessWidget {
     return Column(
       children: const [
         EditTextField(editType: 'nickname'),
-        SizedBox(height: 10.0),
+        SizedBox(height: 30.0),
         EditTextField(editType: 'height'),
-        SizedBox(height: 10.0),
+        SizedBox(height: 30.0),
         EditTextField(editType: 'weight'),
       ],
     );
@@ -120,7 +135,6 @@ class AccountButtonView extends StatelessWidget {
     return Column(
       children: const [
         LogoutButton(),
-        SizedBox(height: 10.0),
         AccountDeleteButton(),
       ],
     );
@@ -133,11 +147,10 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const PButton(
-      text: '로그아웃',
+    return PButton(
       onPressed: MySettingMain.logoutButtonPressed,
-      fill: false,
-      stretch: true,
+      fill: false, border: false,
+      child: PText('로그아웃', style: textTheme.titleLarge),
     );
   }
 }
@@ -147,11 +160,24 @@ class AccountDeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const PButton(
-      text: '계정 삭제하기',
-      onPressed: MySettingMain.accountDeleteButtonPressed,
-      stretch: true,
-      backgroundColor: Colors.red,
+    // return const PButton(
+    //   text: '계정 삭제하기',
+    //   onPressed: MySettingMain.accountDeleteButtonPressed,
+    //   stretch: true,
+    //   backgroundColor: Colors.red,
+    // );
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: MySettingMain.accountDeleteButtonPressed,
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: PText('계정 탈퇴',
+            style: const TextStyle(fontFamily: 'Noto Sans KR'),
+            color: PTheme.grey,
+          ),
+        ),
+      ),
     );
   }
 }

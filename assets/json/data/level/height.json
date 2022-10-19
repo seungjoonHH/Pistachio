@@ -3,7 +3,7 @@
     "id": 3010000,
     "title": "길바닥",
     "amount": 0,
-    "description": "지구의 지표면에 위치하고 있습니다. 더 높은 곳으로 올라보세요!",
+    "description": "길바닥에서 벗어나 더 높은 곳으로 올라보세요!",
     "activate": true
   },
   {
@@ -127,8 +127,8 @@
   },
   {
     "id": 3010018,
-    "title": "",
-    "amount": 232,
+    "title": "베르동 협곡",
+    "amount": 233,
     "description": "",
     "activate": true
   },

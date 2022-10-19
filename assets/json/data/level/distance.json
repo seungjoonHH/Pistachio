@@ -15,7 +15,7 @@
   },
   {
     "id": 3000002,
-    "title": "",
+    "title": "독도",
     "amount": 5,
     "description": "",
     "activate": true
@@ -43,7 +43,7 @@
   },
   {
     "id": 3000006,
-    "title": "",
+    "title": "지구가 1초에 움직이는 거리",
     "amount": 30,
     "description": "",
     "activate": true

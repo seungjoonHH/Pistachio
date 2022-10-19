@@ -20,6 +20,7 @@ class PButton extends StatelessWidget {
     Color? textColor,
     this.stretch = false,
     this.multiple = false,
+    this.border = true,
   }) : assert(
   text == null || child == null,
   ), backgroundColor = backgroundColor ?? PTheme.black,
@@ -36,6 +37,7 @@ class PButton extends StatelessWidget {
   final Color? textColor;
   final bool stretch;
   final bool multiple;
+  final bool border;
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +45,16 @@ class PButton extends StatelessWidget {
       color: fill ? backgroundColor : Colors.transparent,
       child: InkWell(
         onTap: onPressed,
+        onDoubleTap: onPressed,
         child: Container(
           padding: padding,
           constraints: multiple ? null : constraints ?? BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width,
           ),
           decoration: BoxDecoration(
-            border: Border.all(color: PTheme.black, width: 1.5),
+            border: border
+                ? Border.all(color: PTheme.black, width: 1.5)
+                : const Border(),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -147,14 +152,18 @@ class PTextButton extends StatelessWidget {
     required this.text,
     this.style,
     Color? color,
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 5.0, vertical: 2.0,
+    ),
     this.leading,
     this.action,
-  }) : color = color ?? PTheme.black, super(key: key);
+  }) : color = color ?? PTheme.black,  super(key: key);
 
   final VoidCallback onPressed;
   final String text;
   final TextStyle? style;
   final Color? color;
+  final EdgeInsets padding;
   final Icon? leading;
   final Icon? action;
 
@@ -166,9 +175,7 @@ class PTextButton extends StatelessWidget {
         onTap: onPressed,
         borderRadius: BorderRadius.circular(5.0),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 5.0, vertical: 2.0,
-          ),
+          padding: padding,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

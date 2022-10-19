@@ -9,6 +9,7 @@ class DataLoadingPresenter extends GetxController {
   static void importData() {
     BadgePresenter.importFile();
     ChallengePresenter.importFile();
+    LevelPresenter.importFile(ActivityType.calorie);
     LevelPresenter.importFile(ActivityType.distance);
     LevelPresenter.importFile(ActivityType.height);
     QuestPresenter.importFile();

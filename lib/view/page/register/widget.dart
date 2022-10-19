@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:pistachio/global/date.dart';
@@ -29,13 +28,13 @@ class CarouselView extends StatelessWidget {
   static List<Widget> carouselWidgets() => const [
         UserInfoView(),
         WeightHeightView(),
+        SettingIntroView(),
         DistanceRecommendView(),
         DistanceGoalView(),
         HeightRecommendView(),
         HeightGoalView(),
         CalorieCheckView(),
         RecommendView(),
-        CalorieExplanationView(),
         // WeightGoalView(),
       ];
 
@@ -55,12 +54,13 @@ class CarouselView extends StatelessWidget {
                 left: screenSize.width * (i - controller.pageIndex),
                 duration: const Duration(milliseconds: 350),
                 curve: Curves.easeInOut,
-                width: (screenSize.width * .97).w,
-                height: screenSize.height.h,
+                width: screenSize.width,
+                height: screenSize.height,
                 child: controller.imageExistence[i]
-                    ? SvgPicture.asset(
-                        '${asset}carousel_${i.toString().padLeft(2, '0')}.svg',
+                    ? Image.asset(
+                        '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
                         alignment: Alignment.center,
+                        fit: BoxFit.fill,
                       )
                     : Container(),
               ),
@@ -189,6 +189,7 @@ class UserInfoView extends StatelessWidget {
                       ],
                     ),
                   ),
+                  SizedBox(height: 20.0.h),
                 ],
               ),
             ],
@@ -509,6 +510,39 @@ class WeightGoalView extends StatelessWidget {
   }
 }
 
+class SettingIntroView extends StatelessWidget {
+  const SettingIntroView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PText(
+            '자,',
+            style: textTheme.displaySmall,
+            align: TextAlign.start,
+          ),
+          PTexts(
+            const ['이제 ', '일일 목표', '를'],
+            colors: const [PTheme.black, PTheme.colorB, PTheme.black],
+            alignment: MainAxisAlignment.start,
+            style: textTheme.displaySmall,
+            space: false,
+          ),
+          PText(
+            '설정하러 가볼까요?',
+            style: textTheme.displaySmall,
+            align: TextAlign.start,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class DistanceRecommendView extends StatelessWidget {
   const DistanceRecommendView({Key? key}) : super(key: key);
 
@@ -606,9 +640,12 @@ class DistanceGoalView extends StatelessWidget {
                       constraints: BoxConstraints(maxWidth: 230.0.w),
                       child: TextScroll(
                         LevelPresenter.getTier(
-                          ActivityType.distance,
-                          controller.distanceMinute,
-                        )['currentTitle'],
+                            ActivityType.distance,
+                            convertDistance(
+                              controller.distanceMinute,
+                              DistanceUnit.minute,
+                              DistanceUnit.kilometer,
+                            ))['currentTitle'],
                         style: textTheme.displaySmall?.merge(TextStyle(
                           color: ActivityType.distance.color,
                           fontWeight: FontWeight.normal,
@@ -619,11 +656,11 @@ class DistanceGoalView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10.0),
-                    PText(
-                        '(${unitDistance(convertDistance(LevelPresenter.getTier(
-                      ActivityType.distance,
-                      controller.distanceMinute,
-                    )['currentValue']))})'),
+                    PText('(${unitDistance(convertDistance(LevelPresenter.getTier(ActivityType.distance, convertDistance(
+                          controller.distanceMinute,
+                          DistanceUnit.minute,
+                          DistanceUnit.kilometer,
+                        ))['currentValue'], DistanceUnit.kilometer, DistanceUnit.step))})'),
                   ],
                 ),
                 PText(
@@ -634,9 +671,10 @@ class DistanceGoalView extends StatelessWidget {
                   style: textTheme.displaySmall,
                 ),
                 PText(
-                  '* 약 ${toLocalString(controller.newcomer.goals[ActivityType.distance.name] ?? 0)}보',
-                  color: PTheme.colorB,
-                ),
+                    '* 약 ${toLocalString(
+                      controller.newcomer.goals[ActivityType.distance.name],
+                    )}보 (${convertDistance(controller.newcomer.goals[ActivityType.distance.name], DistanceUnit.step, DistanceUnit.kilometer)}km)',
+                    color: PTheme.colorB),
               ],
             ),
             const SizedBox(height: 100.0),
@@ -747,27 +785,54 @@ class CalorieCheckView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PText('하루에', style: textTheme.headlineMedium),
-                PTexts(
-                  [
-                    LevelPresenter.getTier(ActivityType.distance,
-                        controller.distanceMinute)['currentTitle'],
-                    '만큼 걷고',
+                Row(
+                  children: [
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 200.0),
+                      child: TextScroll(
+                        LevelPresenter.getTier(
+                            ActivityType.distance,
+                            convertDistance(
+                              controller.distanceMinute,
+                              DistanceUnit.minute,
+                              DistanceUnit.kilometer,
+                            ))['currentTitle'],
+                        style: textTheme.headlineMedium?.merge(TextStyle(
+                          color: ActivityType.distance.color,
+                          fontWeight: FontWeight.normal,
+                        )),
+                        velocity:
+                            const Velocity(pixelsPerSecond: Offset(50, 0)),
+                        intervalSpaces: 5,
+                      ),
+                    ),
+                    const SizedBox(width: 7.0),
+                    PText(
+                      '만큼 걷고',
+                      style: textTheme.headlineMedium,
+                    ),
                   ],
-                  colors: [ActivityType.distance.color, PTheme.black],
-                  style: textTheme.headlineMedium,
-                  alignment: MainAxisAlignment.start,
                 ),
-                PTexts(
-                  [
-                    LevelPresenter.getTier(
-                        ActivityType.height,
-                        controller.newcomer
-                            .goals[ActivityType.height.name])['currentTitle'],
-                    '만큼 오르면 ...',
+                Row(
+                  children: [
+                    TextScroll(
+                      LevelPresenter.getTier(
+                          ActivityType.height,
+                          controller.newcomer
+                              .goals[ActivityType.height.name])['currentTitle'],
+                      style: textTheme.headlineMedium?.merge(TextStyle(
+                        color: ActivityType.height.color,
+                        fontWeight: FontWeight.normal,
+                      )),
+                      velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                      intervalSpaces: 5,
+                    ),
+                    const SizedBox(width: 7.0),
+                    PText(
+                      '만큼 오르면...',
+                      style: textTheme.headlineMedium,
+                    ),
                   ],
-                  colors: [ActivityType.height.color, PTheme.black],
-                  style: textTheme.headlineMedium,
-                  alignment: MainAxisAlignment.start,
                 ),
               ],
             ),
@@ -833,73 +898,6 @@ class RecommendView extends StatelessWidget {
   }
 }
 
-class CalorieExplanationView extends StatelessWidget {
-  const CalorieExplanationView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<RegisterPresenter>(
-      builder: (controller) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Text(
-                  '오늘 ',
-                  style: TextStyle(fontSize: 36),
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 2000),
-                  child: Text(
-                    controller.example['name']!,
-                    style: const TextStyle(fontSize: 36),
-                  ),
-                ),
-              ],
-            ),
-            const Text(
-              '먹는 걸 참으면',
-              style: TextStyle(fontSize: 36),
-            ),
-            Row(
-              children: [
-                const Text(
-                  '추가로 ',
-                  style: TextStyle(fontSize: 36),
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  child: Text(
-                    controller.example['kcal']!,
-                    style: const TextStyle(fontSize: 36),
-                  ),
-                ),
-              ],
-            ),
-            const Text(
-              '감량할 수 있어요',
-              style: TextStyle(fontSize: 36),
-            ),
-            const SizedBox(height: 30.0),
-            Center(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: Image.network(
-                  controller.example['image']!,
-                  width: 300.0,
-                  height: 300.0,
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
 // Carousel 버튼
 class CarouselButton extends StatelessWidget {
   const CarouselButton({Key? key}) : super(key: key);
@@ -922,7 +920,13 @@ class CarouselButton extends StatelessWidget {
               multiple: true,
             ),
             PButton(
-              onPressed: controller.nextPressed,
+              onPressed: () async {
+                if (controller.keyboardVisible) {
+                  FocusScope.of(context).unfocus();
+                  await Future.delayed(const Duration(milliseconds: 100));
+                }
+                controller.nextPressed();
+              },
               text: lastPage ? '완료' : '다음',
               backgroundColor: Colors.black,
               padding: const EdgeInsets.all(15.0),

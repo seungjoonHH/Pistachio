@@ -1,6 +1,7 @@
 /* 사용자 모델 구조 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/party.dart';
@@ -18,7 +19,7 @@ class PUser {
   Sex? sex;
   Timestamp? _regDate;
   Timestamp? _dateOfBirth;
-  String? collectionId;
+  String? badgeId;
   List<String> partyIds = [];
 
   // 복합 변수
@@ -37,6 +38,9 @@ class PUser {
 
   set regDate(DateTime? date) => _regDate = toTimestamp(date);
   set dateOfBirth(DateTime? date) => _dateOfBirth = toTimestamp(date);
+
+  Collection? get collection => collections
+      .firstWhereOrNull((collection) => collection.badgeId == badgeId);
 
   /// constructors
   PUser() {
@@ -63,7 +67,7 @@ class PUser {
     sex = Sex.toEnum(json['sex']);
     _regDate = json['regDate'];
     _dateOfBirth = json['dateOfBirth'];
-    collectionId = json['collectionId'];
+    badgeId = json['badgeId'];
     partyIds = (json['partyIds'] ?? []).cast<String>();
     collections = toCollections((json['collections'] ?? []).cast<Map<String, dynamic>>());
     goals = json['goals'];
@@ -81,7 +85,7 @@ class PUser {
     json['sex'] = sex?.name;
     json['regDate'] = _regDate;
     json['dateOfBirth'] = _dateOfBirth;
-    json['collectionId'] = collectionId;
+    json['badgeId'] = badgeId;
     json['partyIds'] = partyIds;
     json['collections'] = collectionsToJsonList(collections);
     json['goals'] = goals;

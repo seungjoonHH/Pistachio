@@ -12,10 +12,10 @@ class MySettingMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      appBar: const PAppBar(title: '프로필'),
-      bottomSheet: const PBottomSheetBar(body: MySettingMainView()),
+    return const Scaffold(
+      backgroundColor: PTheme.background,
+      appBar: MySettingMainAppBar(),
+      body: MySettingMainView(),
     );
   }
 }

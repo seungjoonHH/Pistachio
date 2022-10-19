@@ -41,12 +41,14 @@ enum ActivityType {
   String get verb => ['감량하세요', '걸으세요', '오르세요', '들으세요'][index];
   Color get color => [PTheme.colorA, PTheme.colorB, PTheme.colorD, PTheme.colorC][index];
   String get asset => ['lightning.svg', 'running.svg', 'stairs.svg', 'dumbbell.svg'][index];
+  bool get active => activeValues.contains(this);
 
   // 문자열을 enum 으로 전환
   static ActivityType? toEnum(String? string) =>
       ActivityType.values.firstWhereOrNull((type) => type.name == string);
 
   static List<ActivityType> get activeValues => [calorie, distance, height];
+
 }
 
 // 팝업창 형식 { 버튼 없음, 버튼 1개, 버튼 2개 }
@@ -57,3 +59,7 @@ enum LoginType { google, apple }
 
 // 외곽선 형식
 enum BorderType { all, horizontal, vertical, left, top, right, bottom, none }
+
+enum DistanceUnit { minute, step, kilometer }
+
+enum PageMode { view, edit }

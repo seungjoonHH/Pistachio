@@ -17,6 +17,6 @@ class BadgePresenter extends GetxController {
     badges = list.map((json) => Badge.fromJson(json)).toList();
   }
 
-  static Badge? getBadge(String id) => badges
+  static Badge? getBadge(String? id) => badges
       .firstWhereOrNull((collection) => collection.id == id);
 }

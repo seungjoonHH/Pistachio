@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/view/page/challenge/party/widget.dart';
+import 'package:pistachio/view/widget/widget/bottom_bar.dart';
 
 class ChallengePartyMainPage extends StatelessWidget {
   const ChallengePartyMainPage({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class ChallengePartyMainPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       backgroundColor: PTheme.background,
       // appBar: const PAppBar(color: Colors.transparent),
-      body: PartyMainView(party: party),
+      bottomSheet: PBottomSheetBar(body: PartyMainView(party: party)),
     );
   }
 }

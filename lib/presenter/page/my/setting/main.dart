@@ -6,7 +6,9 @@ import 'package:pistachio/view/widget/function/dialog.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class MySettingMain extends GetxController {
-  static void toMySettingMain() => Get.toNamed('my/setting/main');
+  static Future<bool> toMySettingMain() async {
+    return await Get.toNamed('my/setting/main');
+  }
   static void logoutButtonPressed() => AuthPresenter.pLogout();
   static void accountDeleteButtonPressed() {
     showPDialog(

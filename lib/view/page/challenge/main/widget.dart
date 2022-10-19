@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:parallax_animation/parallax_animation.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/party.dart';
@@ -19,30 +18,6 @@ import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
-
-class ChallengeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChallengeAppBar({Key? key}) : super(key: key);
-
-  @override
-  Size get preferredSize => const Size.fromHeight(60.0);
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<ChallengePresenter>(
-      builder: (controller) {
-        return AppBar(
-          elevation: 0.0,
-          iconTheme: const IconThemeData(color: PTheme.white),
-          backgroundColor: PTheme.background,
-          title: PText('챌린지',
-            border: true,
-            style: textTheme.headlineMedium,
-          ),
-        );
-      },
-    );
-  }
-}
 
 class ChallengeMainView extends StatelessWidget {
   const ChallengeMainView({Key? key}) : super(key: key);

@@ -1,11 +1,8 @@
 import 'dart:math';
-
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:pistachio/global/date.dart';
@@ -17,9 +14,9 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/view/widget/button/button.dart';
-import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:text_scroll/text_scroll.dart';
+import '../../widget/widget/card.dart';
 
 // 회원가입 페이지 위젯 모음
 
@@ -29,24 +26,23 @@ class CarouselView extends StatelessWidget {
 
   // 회원가입 페이지 carousel 리스트
   static List<Widget> carouselWidgets() => const [
-    UserInfoView(),
-    WeightHeightView(),
-    SettingIntroView(),
-    DistanceRecommendView(),
-    DistanceGoalView(),
-    HeightRecommendView(),
-    HeightGoalView(),
-    CalorieCheckView(),
-    RecommendView(),
-    // WeightGoalView(),
-  ];
+        UserInfoView(),
+        WeightHeightView(),
+        SettingIntroView(),
+        DistanceRecommendView(),
+        DistanceGoalView(),
+        HeightRecommendView(),
+        HeightGoalView(),
+        CalorieCheckView(),
+        RecommendView(),
+        // WeightGoalView(),
+      ];
 
   static int widgetCount = carouselWidgets().length;
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-
     String asset = 'assets/image/page/register/';
 
     return GetBuilder<RegisterPresenter>(
@@ -60,11 +56,13 @@ class CarouselView extends StatelessWidget {
                 curve: Curves.easeInOut,
                 width: screenSize.width,
                 height: screenSize.height,
-                child: controller.imageExistence[i] ? Image.asset(
-                  '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
-                  alignment: Alignment.center,
-                  fit: BoxFit.fill,
-                ) : Container(),
+                child: controller.imageExistence[i]
+                    ? Image.asset(
+                        '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
+                        alignment: Alignment.center,
+                        fit: BoxFit.fill,
+                      )
+                    : Container(),
               ),
             Column(
               children: [
@@ -76,10 +74,13 @@ class CarouselView extends StatelessWidget {
                       constraints: BoxConstraints(minWidth: screenSize.width),
                       child: CarouselSlider(
                         carouselController: RegisterPresenter.carouselCont,
-                        items: carouselWidgets().map((widget) => Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                          child: widget,
-                        )).toList(),
+                        items: carouselWidgets()
+                            .map((widget) => Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30.0),
+                                  child: widget,
+                                ))
+                            .toList(),
                         options: CarouselOptions(
                           height: double.infinity,
                           initialPage: 0,
@@ -127,7 +128,8 @@ class UserInfoView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PText('별명',
+                  PText(
+                    '별명',
                     style: textTheme.headlineSmall,
                     color: PTheme.black,
                   ),
@@ -135,8 +137,11 @@ class UserInfoView extends StatelessWidget {
                   PInputField(
                     invalid: controller.fields['nickname']!.invalid,
                     controller: controller.fields['nickname']!.controller,
-                    hintText: controller.fields['nickname']?.hintText ?? '별명을 입력해주세요',
-                    hintColor: controller.fields['nickname']?.hintText == null ? PTheme.grey : PTheme.colorB,
+                    hintText:
+                        controller.fields['nickname']?.hintText ?? '별명을 입력해주세요',
+                    hintColor: controller.fields['nickname']?.hintText == null
+                        ? PTheme.grey
+                        : PTheme.colorB,
                   ),
                   const SizedBox(height: 40.0),
                 ],
@@ -144,7 +149,8 @@ class UserInfoView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PText('생년월일',
+                  PText(
+                    '생년월일',
                     style: textTheme.headlineSmall,
                     color: PTheme.black,
                   ),
@@ -152,8 +158,12 @@ class UserInfoView extends StatelessWidget {
                   PInputField(
                     invalid: controller.fields['dateOfBirth']!.invalid,
                     controller: controller.fields['dateOfBirth']!.controller,
-                    hintText: controller.fields['dateOfBirth']?.hintText ?? 'YYYYMMDD',
-                    hintColor: controller.fields['dateOfBirth']?.hintText == null ? PTheme.grey : PTheme.colorB,
+                    hintText: controller.fields['dateOfBirth']?.hintText ??
+                        'YYYYMMDD',
+                    hintColor:
+                        controller.fields['dateOfBirth']?.hintText == null
+                            ? PTheme.grey
+                            : PTheme.colorB,
                   ),
                   const SizedBox(height: 40.0),
                 ],
@@ -161,7 +171,8 @@ class UserInfoView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PText('성별',
+                  PText(
+                    '성별',
                     style: textTheme.headlineSmall,
                     color: PTheme.black,
                   ),
@@ -209,8 +220,10 @@ class SexSelectionButton extends StatelessWidget {
           multiple: true,
           text: texts[sex],
           onPressed: () => controller.setSex(sex),
-          backgroundColor: sex == controller.newcomer.sex ? PTheme.black: PTheme.white,
-          textColor: sex == controller.newcomer.sex ? PTheme.white: PTheme.black,
+          backgroundColor:
+              sex == controller.newcomer.sex ? PTheme.black : PTheme.white,
+          textColor:
+              sex == controller.newcomer.sex ? PTheme.white : PTheme.black,
         );
       },
     );
@@ -277,25 +290,28 @@ class WeightHeightView extends StatelessWidget {
           flex: 3,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: contents.entries.map((content) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PText(content.key,
-                  style: textTheme.headlineSmall,
-                ),
-                const SizedBox(height: 10.0),
-                PCard(
-                  rounded: true,
-                  color: Colors.transparent,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      content.value,
-                    ],
-                  ),
-                ),
-              ],
-            )).toList(),
+            children: contents.entries
+                .map((content) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PText(
+                          content.key,
+                          style: textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 10.0),
+                        PCard(
+                          rounded: true,
+                          color: Colors.transparent,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              content.value,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ))
+                .toList(),
           ),
         ),
         Expanded(
@@ -353,14 +369,15 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconButton(
-              icon: Icon(Icons.arrow_drop_up,
+              icon: Icon(
+                Icons.arrow_drop_up,
                 size: 40.0,
-                color: value > widget.minValue
-                    ? PTheme.black
-                    : Colors.transparent,
+                color:
+                    value > widget.minValue ? PTheme.black : Colors.transparent,
               ),
               onPressed: () {
-                controller.setGoal(widget.type, max(value - 1, widget.minValue));
+                controller.setGoal(
+                    widget.type, max(value - 1, widget.minValue));
                 setState(() {});
               },
             ),
@@ -379,14 +396,15 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
               selectedTextStyle: widget.style?.apply(color: widget.color),
             ),
             IconButton(
-              icon: Icon(Icons.arrow_drop_down,
+              icon: Icon(
+                Icons.arrow_drop_down,
                 size: 40.0,
-                color: value < widget.maxValue
-                    ? PTheme.black
-                    : Colors.transparent,
+                color:
+                    value < widget.maxValue ? PTheme.black : Colors.transparent,
               ),
               onPressed: () {
-                controller.setGoal(widget.type, min(value + 1, widget.maxValue));
+                controller.setGoal(
+                    widget.type, min(value + 1, widget.maxValue));
                 setState(() {});
               },
             ),
@@ -396,7 +414,6 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
     );
   }
 }
-
 
 class WeightGoalView extends StatelessWidget {
   const WeightGoalView({Key? key}) : super(key: key);
@@ -454,9 +471,11 @@ class WeightGoalView extends StatelessWidget {
                             ),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              child: PText('${LevelPresenter.getTier(
-                                ActivityType.weight, controller.weightPerDay,
-                              )['currentTitle']}',
+                              child: PText(
+                                '${LevelPresenter.getTier(
+                                  ActivityType.weight,
+                                  controller.weightPerDay,
+                                )['currentTitle']}',
                                 style: textTheme.displaySmall,
                                 color: PTheme.colorC,
                               ),
@@ -465,16 +484,20 @@ class WeightGoalView extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(width: 10.0),
-                      PText('(${LevelPresenter.getTier(
-                        ActivityType.weight, controller.weightPerDay,
-                      )['currentValue']}${ActivityType.weight.unitAlt})',
+                      PText(
+                        '(${LevelPresenter.getTier(
+                          ActivityType.weight,
+                          controller.weightPerDay,
+                        )['currentValue']}${ActivityType.weight.unitAlt})',
                         style: textTheme.headlineSmall,
                       ),
                     ],
                   ),
-                  PText('${eulReul(LevelPresenter.getTier(
-                    ActivityType.weight, controller.weightPerDay,
-                  )['currentTitle'])} 들 수 있어요!',
+                  PText(
+                    '${eulReul(LevelPresenter.getTier(
+                      ActivityType.weight,
+                      controller.weightPerDay,
+                    )['currentTitle'])} 들 수 있어요!',
                     style: textTheme.headlineSmall,
                   ),
                 ],
@@ -497,17 +520,20 @@ class SettingIntroView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PText('자,',
+          PText(
+            '자,',
             style: textTheme.displaySmall,
             align: TextAlign.start,
           ),
-          PTexts(const ['이제 ', '일일 목표', '를'],
+          PTexts(
+            const ['이제 ', '일일 목표', '를'],
             colors: const [PTheme.black, PTheme.colorB, PTheme.black],
             alignment: MainAxisAlignment.start,
             style: textTheme.displaySmall,
             space: false,
           ),
-          PText('설정하러 가볼까요?',
+          PText(
+            '설정하러 가볼까요?',
             style: textTheme.displaySmall,
             align: TextAlign.start,
           ),
@@ -517,7 +543,6 @@ class SettingIntroView extends StatelessWidget {
   }
 }
 
-
 class DistanceRecommendView extends StatelessWidget {
   const DistanceRecommendView({Key? key}) : super(key: key);
 
@@ -525,34 +550,48 @@ class DistanceRecommendView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
-        int ageGroup = today.difference(controller.newcomer.dateOfBirth!).inDays;
+        int ageGroup =
+            today.difference(controller.newcomer.dateOfBirth!).inDays;
         List<int> recommendTimes = [];
         ageGroup = (ageGroup / 3650).floor() * 10;
 
         ageGroup < 60 && controller.newcomer.sex == Sex.male;
 
-        if (ageGroup < 20) { recommendTimes = [60]; }
-        else if (ageGroup < 60) { recommendTimes = [20, 40]; }
-        else { recommendTimes = [30, 50]; }
+        if (ageGroup < 20) {
+          recommendTimes = [60];
+        } else if (ageGroup < 60) {
+          recommendTimes = [20, 40];
+        } else {
+          recommendTimes = [30, 50];
+        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PTexts(
               ['$ageGroup', '대 ', controller.newcomer.sex!.kr, ' 평균'],
-              colors: const [PTheme.colorA, PTheme.black, PTheme.colorA, PTheme.black],
+              colors: const [
+                PTheme.colorA,
+                PTheme.black,
+                PTheme.colorA,
+                PTheme.black
+              ],
               alignment: MainAxisAlignment.start,
               space: false,
               style: textTheme.displaySmall,
             ),
-            PTexts(['매일', '${recommendTimes.length == 1
-                ? recommendTimes[0]
-                : recommendTimes.join('~')}', '분',
-            ], colors: [PTheme.black, ActivityType.distance.color, PTheme.black],
+            PTexts(
+              [
+                '매일',
+                '${recommendTimes.length == 1 ? recommendTimes[0] : recommendTimes.join('~')}',
+                '분',
+              ],
+              colors: [PTheme.black, ActivityType.distance.color, PTheme.black],
               alignment: MainAxisAlignment.start,
               style: textTheme.displaySmall,
             ),
-            PText('유산소 운동이\n적당해요',
+            PText(
+              '유산소 운동이\n적당해요',
               style: textTheme.displaySmall,
               maxLines: 2,
             ),
@@ -586,7 +625,8 @@ class DistanceGoalView extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                PTexts(['하루 ', controller.distanceMinute.toString(), '분이면'],
+                PTexts(
+                  ['하루 ', controller.distanceMinute.toString(), '분이면'],
                   colors: const [PTheme.black, PTheme.colorA, PTheme.black],
                   style: textTheme.displaySmall,
                   alignment: MainAxisAlignment.end,
@@ -598,41 +638,43 @@ class DistanceGoalView extends StatelessWidget {
                   children: [
                     Container(
                       constraints: BoxConstraints(maxWidth: 230.0.w),
-                      child: TextScroll(LevelPresenter.getTier(
-                        ActivityType.distance, convertDistance(
-                        controller.distanceMinute,
-                        DistanceUnit.minute,
-                        DistanceUnit.kilometer,
-                      ))['currentTitle'],
+                      child: TextScroll(
+                        LevelPresenter.getTier(
+                            ActivityType.distance,
+                            convertDistance(
+                              controller.distanceMinute,
+                              DistanceUnit.minute,
+                              DistanceUnit.kilometer,
+                            ))['currentTitle'],
                         style: textTheme.displaySmall?.merge(TextStyle(
                           color: ActivityType.distance.color,
                           fontWeight: FontWeight.normal,
                         )),
-                        velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                        velocity:
+                            const Velocity(pixelsPerSecond: Offset(50, 0)),
                         intervalSpaces: 5,
                       ),
                     ),
                     const SizedBox(width: 10.0),
-                    PText('(${unitDistance(convertDistance(LevelPresenter.getTier(
-                      ActivityType.distance, convertDistance(
-                      controller.distanceMinute,
-                      DistanceUnit.minute,
-                      DistanceUnit.kilometer,
-                    ))['currentValue'], DistanceUnit.kilometer, DistanceUnit.step))})'),
+                    PText('(${unitDistance(convertDistance(LevelPresenter.getTier(ActivityType.distance, convertDistance(
+                          controller.distanceMinute,
+                          DistanceUnit.minute,
+                          DistanceUnit.kilometer,
+                        ))['currentValue'], DistanceUnit.kilometer, DistanceUnit.step))})'),
                   ],
                 ),
-                PText('${eulReul(LevelPresenter.getTier(
-                  ActivityType.distance, controller.weightPerDay,
-                )['currentTitle'])} 정복할 수 있어요',
+                PText(
+                  '${eulReul(LevelPresenter.getTier(
+                    ActivityType.distance,
+                    controller.weightPerDay,
+                  )['currentTitle'])} 정복할 수 있어요',
                   style: textTheme.displaySmall,
                 ),
-                PText('* 약 ${toLocalString(
-                    controller.newcomer.goals[ActivityType.distance.name],
-                )}보 (${convertDistance(
-                  controller.newcomer.goals[ActivityType.distance.name],
-                  DistanceUnit.step,
-                  DistanceUnit.kilometer
-                )}km)', color: PTheme.colorB),
+                PText(
+                    '* 약 ${toLocalString(
+                      controller.newcomer.goals[ActivityType.distance.name],
+                    )}보 (${convertDistance(controller.newcomer.goals[ActivityType.distance.name], DistanceUnit.step, DistanceUnit.kilometer)}km)',
+                    color: PTheme.colorB),
               ],
             ),
             const SizedBox(height: 100.0),
@@ -680,17 +722,22 @@ class HeightGoalView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PText('하루', style: textTheme.displaySmall),
-                PTexts(['${controller.newcomer.goals[ActivityType.height.name]}', '층이면'],
+                PTexts(
+                  [
+                    '${controller.newcomer.goals[ActivityType.height.name]}',
+                    '층이면'
+                  ],
                   colors: [ActivityType.calorie.color, PTheme.black],
                   alignment: MainAxisAlignment.start,
                   style: textTheme.displaySmall,
                 ),
                 Container(
                   constraints: BoxConstraints(maxWidth: 210.0.w),
-                  child: TextScroll(LevelPresenter.getTier(
-                    ActivityType.height,
-                    controller.newcomer.goals[ActivityType.height.name],
-                  )['currentTitle'],
+                  child: TextScroll(
+                    LevelPresenter.getTier(
+                      ActivityType.height,
+                      controller.newcomer.goals[ActivityType.height.name],
+                    )['currentTitle'],
                     style: textTheme.displaySmall?.merge(const TextStyle(
                       color: PTheme.colorD,
                       fontWeight: FontWeight.normal,
@@ -700,7 +747,8 @@ class HeightGoalView extends StatelessWidget {
                   ),
                 ),
                 PText('(${LevelPresenter.getTier(
-                  ActivityType.height, controller.newcomer.goals[ActivityType.height.name],
+                  ActivityType.height,
+                  controller.newcomer.goals[ActivityType.height.name],
                 )['currentValue']}층)'),
                 PText('정복', style: textTheme.displaySmall),
               ],
@@ -717,35 +765,6 @@ class HeightGoalView extends StatelessWidget {
             ),
             const SizedBox(height: 100.0),
           ],
-        );
-      },
-    );
-  }
-}
-
-// Carousel 인디케이터 위젯
-class CarouselIndicator extends StatelessWidget {
-  const CarouselIndicator({
-    Key? key,
-    required this.count,
-  }) : super(key: key);
-
-  final int count;
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<RegisterPresenter>(
-      builder: (controller) {
-        return SizedBox(
-          height: 45.0,
-          child: DotsIndicator(
-            dotsCount: count,
-            position: controller.pageIndex.toDouble(),
-            decorator: DotsDecorator(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              activeColor: Theme.of(context).colorScheme.primary,
-            ),
-          ),
         );
       },
     );
@@ -770,30 +789,37 @@ class CalorieCheckView extends StatelessWidget {
                   children: [
                     Container(
                       constraints: const BoxConstraints(maxWidth: 200.0),
-                      child: TextScroll(LevelPresenter.getTier(
-                        ActivityType.distance, convertDistance(
-                          controller.distanceMinute,
-                          DistanceUnit.minute,
-                          DistanceUnit.kilometer,
-                        ))['currentTitle'],
+                      child: TextScroll(
+                        LevelPresenter.getTier(
+                            ActivityType.distance,
+                            convertDistance(
+                              controller.distanceMinute,
+                              DistanceUnit.minute,
+                              DistanceUnit.kilometer,
+                            ))['currentTitle'],
                         style: textTheme.headlineMedium?.merge(TextStyle(
                           color: ActivityType.distance.color,
                           fontWeight: FontWeight.normal,
                         )),
-                        velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                        velocity:
+                            const Velocity(pixelsPerSecond: Offset(50, 0)),
                         intervalSpaces: 5,
                       ),
                     ),
                     const SizedBox(width: 7.0),
-                    PText('만큼 걷고',
+                    PText(
+                      '만큼 걷고',
                       style: textTheme.headlineMedium,
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    TextScroll(LevelPresenter.getTier(
-                      ActivityType.height, controller.newcomer.goals[ActivityType.height.name])['currentTitle'],
+                    TextScroll(
+                      LevelPresenter.getTier(
+                          ActivityType.height,
+                          controller.newcomer
+                              .goals[ActivityType.height.name])['currentTitle'],
                       style: textTheme.headlineMedium?.merge(TextStyle(
                         color: ActivityType.height.color,
                         fontWeight: FontWeight.normal,
@@ -802,7 +828,8 @@ class CalorieCheckView extends StatelessWidget {
                       intervalSpaces: 5,
                     ),
                     const SizedBox(width: 7.0),
-                    PText('만큼 오르면...',
+                    PText(
+                      '만큼 오르면...',
                       style: textTheme.headlineMedium,
                     ),
                   ],
@@ -813,12 +840,22 @@ class CalorieCheckView extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                PTexts(['총', '${controller.newcomer.goals[ActivityType.calorie.name]} kcal', '를'],
-                  colors: [PTheme.black, ActivityType.calorie.color, PTheme.black],
+                PTexts(
+                  [
+                    '총',
+                    '${controller.newcomer.goals[ActivityType.calorie.name]} kcal',
+                    '를'
+                  ],
+                  colors: [
+                    PTheme.black,
+                    ActivityType.calorie.color,
+                    PTheme.black
+                  ],
                   style: textTheme.displaySmall,
                   alignment: MainAxisAlignment.end,
                 ),
-                PText('소모 할 수 있어요',
+                PText(
+                  '소모 할 수 있어요',
                   color: PTheme.black,
                   style: textTheme.displaySmall,
                 ),

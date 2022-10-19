@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/model/class/database/collection.dart';
@@ -33,10 +34,14 @@ class UserPresenter extends GetxController {
   // 로그인
   // 매개변수로 받은 사용자 정보와 User Credential 정보를 병합하여 현재 로그인된 사용자자 최신화
   Future login(PUser user) async {
+    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
     Map<String, dynamic> json = user.toJson();
     data.forEach((key, value) => json[key] = value);
     loggedUser = PUser.fromJson(json);
     await HealthPresenter.fetchStepData();
+    if (isIOS) {
+      await HealthPresenter.fetchFlightsData();
+    }
   }
 
   // 로그아웃
@@ -61,15 +66,18 @@ class UserPresenter extends GetxController {
   void delete() => f.collection('users').doc(loggedUser.uid).delete();
 
   Map<String, Party> get myParties => loggedUser.parties;
+
   set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
 
   String get randomCode {
     int length = 7;
     const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     return String.fromCharCodes(
-      Iterable.generate(length, (_) => chars.codeUnitAt(
-        Random().nextInt(chars.length),
-      )),
+      Iterable.generate(
+          length,
+          (_) => chars.codeUnitAt(
+                Random().nextInt(chars.length),
+              )),
     );
   }
 
@@ -83,7 +91,6 @@ class UserPresenter extends GetxController {
     }
   }
 
-
   void addMyParties(Challenge challenge, Difficulty diff) async {
     String code = randomCode;
 
@@ -91,7 +98,7 @@ class UserPresenter extends GetxController {
       'id': code,
       'challengeId': challenge.id,
       'difficulty': diff.name,
-      'records': <String, dynamic>{ loggedUser.uid!: 0 },
+      'records': <String, dynamic>{loggedUser.uid!: 0},
       'leaderUid': loggedUser.uid,
     });
 
@@ -122,14 +129,20 @@ class UserPresenter extends GetxController {
     await f.collection('parties').doc(party.id).set(party.toJson());
   }
 
-  set myCollections(List<Collection> collections) => loggedUser.collections = collections;
+  set myCollections(List<Collection> collections) =>
+      loggedUser.collections = collections;
+
   List<Collection> get myCollections => loggedUser.collections;
 
   bool joining(Challenge challenge) {
-    return myParties.values.map((party) => party.challengeId).contains(challenge.id);
+    return myParties.values
+        .map((party) => party.challengeId)
+        .contains(challenge.id);
   }
 
   Party? joiningParty(Challenge challenge) {
-    return myParties.values.toList().firstWhereOrNull((party) => party.challengeId == challenge.id);
+    return myParties.values
+        .toList()
+        .firstWhereOrNull((party) => party.challengeId == challenge.id);
   }
 }

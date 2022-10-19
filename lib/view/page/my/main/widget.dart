@@ -36,12 +36,15 @@ class MyMainView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: ActivityType.activeValues.map((type) {
-                      Map<String, dynamic> tier = LevelPresenter.getTier(type, loggedUser.getAmounts(type));
+                      Map<String, dynamic> tier = LevelPresenter.getTier(
+                          type, loggedUser.getAmounts(type));
                       return Expanded(
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Get.toNamed('/my/record', arguments: type);
+                            },
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -50,7 +53,8 @@ class MyMainView extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      PText(tier['current'] ?? '',
+                                      PText(
+                                        tier['currentTitle'] ?? '',
                                         maxLines: 2,
                                         style: textTheme.bodySmall,
                                       ),
@@ -62,11 +66,14 @@ class MyMainView extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 20.0),
                                         decoration: BoxDecoration(
-                                          border: Border.all(color: PTheme.black, width: 1.5),
-                                          borderRadius: BorderRadius.circular(9.0)
-                                        ),
+                                            border: Border.all(
+                                                color: PTheme.black,
+                                                width: 1.5),
+                                            borderRadius:
+                                                BorderRadius.circular(9.0)),
                                         child: LinearPercentIndicator(
                                           padding: EdgeInsets.zero,
                                           progressColor: type.color,
@@ -79,7 +86,7 @@ class MyMainView extends StatelessWidget {
                                           curve: Curves.easeInOut,
                                         ),
                                       ),
-                                      PText(tier['next'] ?? ''),
+                                      PText(tier['nextTitle'] ?? ''),
                                     ],
                                   ),
                                 ),
@@ -115,29 +122,30 @@ class MyProfileImage extends StatelessWidget {
     return GetBuilder<UserPresenter>(
       builder: (controller) {
         return Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BadgeWidget(
-              size: 100.0,
-              onPressed: () {},
-            ),
-            const SizedBox(width: 20.0),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PText(controller.loggedUser.nickname!,
-                  style: textTheme.displaySmall,
-                ),
-                PText('${height}cm | ${weight}kg',
-                  style: textTheme.titleLarge,
-                  color: PTheme.grey,
-                ),
-              ],
-            ),
-          ]
-        );
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BadgeWidget(
+                size: 100.0,
+                onPressed: () {},
+              ),
+              const SizedBox(width: 20.0),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PText(
+                    controller.loggedUser.nickname!,
+                    style: textTheme.displaySmall,
+                  ),
+                  PText(
+                    '${height}cm | ${weight}kg',
+                    style: textTheme.titleLarge,
+                    color: PTheme.grey,
+                  ),
+                ],
+              ),
+            ]);
       },
     );
   }

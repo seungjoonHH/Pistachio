@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
@@ -17,17 +18,24 @@ class ExerciseInput extends GetxController {
 
   Future completeButtonPressed(ActivityType type) async {
     final userPresenter = Get.find<UserPresenter>();
+    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
     int amount = int.parse(inputCont.text);
     int converted = amount;
 
     if (type == ActivityType.distance) {
       converted = convertDistance(amount);
-      await HealthPresenter.addData(int.parse(inputCont.text), converted);
+      await HealthPresenter.addStepsData(int.parse(inputCont.text), converted);
+    }
+    if (type == ActivityType.height) {
+      if (isIOS) {
+        await HealthPresenter.addFlightsData(int.parse(inputCont.text));
+      }
     }
     if (type == ActivityType.weight) converted = convertWeight(amount);
 
     userPresenter.loggedUser.addRecord(type, today, converted);
-    userPresenter.loggedUser.addRecord(ActivityType.calorie, today, getCalories(type, amount));
+    userPresenter.loggedUser
+        .addRecord(ActivityType.calorie, today, getCalories(type, amount));
     userPresenter.save();
     inputCont.clear();
     HomePresenter.toHome();

@@ -38,6 +38,7 @@ enum ActivityType {
   String get unit => ['kcal', '보', '층', '회'][index];
   String get unitAlt => ['kcal', '보', '층', 'kg'][index];
   String get prefix => ['감량한', '이동한', '오른', '들은'][index];
+  String get suffix => ['감량하면', '이동하면', '오르면', '들으면'][index];
   String get verb => ['감량하세요', '걸으세요', '오르세요', '들으세요'][index];
   Color get color => [PTheme.colorA, PTheme.colorB, PTheme.colorD, PTheme.colorC][index];
   String get asset => ['lightning.svg', 'running.svg', 'stairs.svg', 'dumbbell.svg'][index];

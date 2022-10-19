@@ -62,7 +62,6 @@ flutter:
   assets:
     - assets/image/logo/
     - assets/image/object/
-    - assets/image/exercise/
     - assets/image/level/distance/
     - assets/image/level/height/
     - assets/image/widget/bottom_bar/

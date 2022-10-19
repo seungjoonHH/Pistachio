@@ -115,13 +115,13 @@ class _MyMainViewState extends State<MyMainView> {
                                                 curve: Curves.easeInOut,
                                               ),
                                             ),
-                                            PTexts(
-                                              [tier['nextTitle'] ?? '', '까지'],
-                                              colors: [
-                                                type.color,
-                                                PTheme.black
-                                              ],
-                                            ),
+                                            // PTexts(
+                                            //   [tier['nextTitle'] ?? '', '까지'],
+                                            //   colors: [
+                                            //     type.color,
+                                            //     PTheme.black
+                                            //   ],
+                                            // ),
                                           ],
                                         ),
                                       ),

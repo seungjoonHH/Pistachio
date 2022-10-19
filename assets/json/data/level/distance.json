@@ -285,5 +285,12 @@
     "amount": 40075,
     "description": "",
     "activate": false
+  },
+  {
+    "id": 3000041,
+    "title": "우주의 끝",
+    "amount": 999999999,
+    "description": "",
+    "activate": true
   }
 ]

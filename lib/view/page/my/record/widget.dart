@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/string.dart';
+import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:text_scroll/text_scroll.dart';
 import '../../../../global/theme.dart';
 import '../../../../model/class/database/user.dart';
 import '../../../../presenter/model/level.dart';
@@ -15,8 +18,22 @@ class MyRecordDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PUser loggedUser = Get.find<UserPresenter>().loggedUser;
-    Map<String, dynamic> tier =
-        LevelPresenter.getTier(type, loggedUser.getAmounts(type));
+    int amounts = loggedUser.getAmounts(type);
+
+    if (type == ActivityType.distance) {
+      amounts = convertDistance(
+        amounts, DistanceUnit.step, DistanceUnit.kilometer,
+      );
+    }
+
+    Map<String, dynamic> tier = LevelPresenter.getTier(type, amounts);
+    int remainValue = tier['nextValue'] - amounts;
+
+    if (type == ActivityType.distance) {
+      remainValue = convertDistance(
+        remainValue, DistanceUnit.kilometer, DistanceUnit.step,
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -24,10 +41,12 @@ class MyRecordDetailView extends StatelessWidget {
         children: [
           PText('현재 내 위치', style: textTheme.headlineSmall),
           const SizedBox(height: 10),
-          PText(
-            '에펠탑',
-            style: textTheme.displayLarge,
-            color: type.color,
+          TextScroll(
+            tier['currentTitle'] ?? '',
+            style: textTheme.displayLarge?.merge(TextStyle(
+              color: type.color,
+              fontWeight: FontWeight.normal,
+            )),
           ),
           const SizedBox(height: 20),
           Image.network(
@@ -36,9 +55,9 @@ class MyRecordDetailView extends StatelessWidget {
             'https://t1.daumcdn.net/cfile/tistory/990975445B3AD34237',
           ),
           const SizedBox(height: 20),
-          PTexts(
-            ['20', type.unit, '을 오르면'],
-            colors: [type.color, type.color, PTheme.black],
+          PTexts([
+            '$remainValue', type.unit, ' 더 ${type.suffix}'
+          ], colors: [type.color, type.color, PTheme.black],
             style: textTheme.headlineSmall,
             space: false,
           ),

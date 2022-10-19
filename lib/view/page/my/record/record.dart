@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/page/my/record/widget.dart';
+import 'package:pistachio/view/widget/widget/app_bar.dart';
 import '../../../../model/enum/enum.dart';
 
 class MyRecordPage extends StatelessWidget {
@@ -12,7 +14,8 @@ class MyRecordPage extends StatelessWidget {
     ActivityType type = Get.arguments;
 
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: PTheme.background,
+      appBar: const PAppBar(),
       body: MyRecordDetailView(type: type),
     );
   }

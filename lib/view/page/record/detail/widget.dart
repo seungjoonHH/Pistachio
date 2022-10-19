@@ -41,7 +41,7 @@ class ExerciseDetailView extends StatelessWidget{
             style: textTheme.headlineMedium,
           ),
           Container(
-            padding: const EdgeInsets.only(top:18),
+            padding: const EdgeInsets.only(top: 18),
             child: Text("다음 단계: $nextLevel 까지"),
           ),
           Container(

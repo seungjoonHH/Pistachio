@@ -110,6 +110,8 @@ class GlobalPresenter extends GetxController {
           ),
         ],
       ),
+      type: DialogType.mono,
+      onPressed: Get.back,
     );
   }
 

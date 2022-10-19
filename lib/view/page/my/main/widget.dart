@@ -48,11 +48,14 @@ class _MyMainViewState extends State<MyMainView> {
                       int amounts = loggedUser.getAmounts(type);
                       if (type == ActivityType.distance) {
                         amounts = convertDistance(
-                          amounts, DistanceUnit.step, DistanceUnit.kilometer,
+                          amounts,
+                          DistanceUnit.step,
+                          DistanceUnit.kilometer,
                         );
                       }
 
-                      Map<String, dynamic> tier = LevelPresenter.getTier(type, amounts);
+                      Map<String, dynamic> tier =
+                          LevelPresenter.getTier(type, amounts);
 
                       return Expanded(
                         child: Stack(
@@ -62,16 +65,20 @@ class _MyMainViewState extends State<MyMainView> {
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Get.toNamed('/my/record', arguments: type);
+                                  },
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       SizedBox(
                                         width: 70.0.w,
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            PText(tier['currentTitle'] ?? '',
+                                            PText(
+                                              tier['currentTitle'] ?? '',
                                               maxLines: 2,
                                               style: textTheme.bodySmall,
                                               align: TextAlign.center,
@@ -84,25 +91,36 @@ class _MyMainViewState extends State<MyMainView> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Container(
-                                              margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20.0),
                                               decoration: BoxDecoration(
-                                                border: Border.all(color: PTheme.black, width: 1.5),
-                                                borderRadius: BorderRadius.circular(9.0)
-                                              ),
+                                                  border: Border.all(
+                                                      color: PTheme.black,
+                                                      width: 1.5),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          9.0)),
                                               child: LinearPercentIndicator(
                                                 padding: EdgeInsets.zero,
                                                 progressColor: type.color,
-                                                backgroundColor: Colors.transparent,
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 percent: tier['percent'] ?? .0,
                                                 lineHeight: 18.0,
-                                                barRadius: const Radius.circular(8.0),
+                                                barRadius:
+                                                    const Radius.circular(8.0),
                                                 animation: true,
                                                 animationDuration: 1000,
                                                 curve: Curves.easeInOut,
                                               ),
                                             ),
-                                            PTexts([tier['nextTitle'] ?? '', '까지'],
-                                              colors: [type.color, PTheme.black],
+                                            PTexts(
+                                              [tier['nextTitle'] ?? '', '까지'],
+                                              colors: [
+                                                type.color,
+                                                PTheme.black
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -120,20 +138,20 @@ class _MyMainViewState extends State<MyMainView> {
                               ),
                             ),
                             if (!type.active)
-                            Positioned.fill(
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    color: PTheme.surface,
-                                    alignment: Alignment.center,
-                                    child: Icon(Icons.lock, size: 30.0.r),
-                                  ),
-                                  Container(
-                                    color: PTheme.black.withOpacity(.3),
-                                  ),
-                                ],
+                              Positioned.fill(
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      color: PTheme.surface,
+                                      alignment: Alignment.center,
+                                      child: Icon(Icons.lock, size: 30.0.r),
+                                    ),
+                                    Container(
+                                      color: PTheme.black.withOpacity(.3),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       );
@@ -157,34 +175,35 @@ class MyProfileWidget extends StatelessWidget {
     return GetBuilder<UserPresenter>(
       builder: (controller) {
         return Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BadgeWidget(
-              badge: BadgePresenter.getBadge(controller.loggedUser.badgeId),
-              size: 100.0,
-              onPressed: () {
-                Collection? collection = controller.loggedUser.collection;
-                if (collection == null) return;
-                GlobalPresenter.showCollectionDialog(collection);
-              },
-            ),
-            const SizedBox(width: 20.0),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PText(controller.loggedUser.nickname!,
-                  style: textTheme.displaySmall,
-                ),
-                PText('${height}cm | ${weight}kg',
-                  style: textTheme.titleLarge,
-                  color: PTheme.grey,
-                ),
-              ],
-            ),
-          ]
-        );
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BadgeWidget(
+                badge: BadgePresenter.getBadge(controller.loggedUser.badgeId),
+                size: 100.0,
+                onPressed: () {
+                  Collection? collection = controller.loggedUser.collection;
+                  if (collection == null) return;
+                  GlobalPresenter.showCollectionDialog(collection);
+                },
+              ),
+              const SizedBox(width: 20.0),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PText(
+                    controller.loggedUser.nickname!,
+                    style: textTheme.displaySmall,
+                  ),
+                  PText(
+                    '${height}cm | ${weight}kg',
+                    style: textTheme.titleLarge,
+                    color: PTheme.grey,
+                  ),
+                ],
+              ),
+            ]);
       },
     );
   }

@@ -105,7 +105,7 @@ class ChallengeListView extends StatelessWidget {
     return GetBuilder<LoadingPresenter>(
       builder: (controller) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+          padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0),
           child: controller.loading
               ? ChallengeCardViewLoading(color: controller.color)
               : const ChallengeCardView(),
@@ -120,16 +120,14 @@ class ChallengeCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ParallaxArea(
-      child: ListView.separated(
-        itemCount: ChallengePresenter.challenges.length,
-        itemBuilder: (_, index) {
-          return ChallengeCard(
-            challenge: ChallengePresenter.challenges[index],
-          );
-        },
-        separatorBuilder: (_, index) => const SizedBox(height: 50.0),
-      ),
+    return ListView.separated(
+      itemCount: ChallengePresenter.challenges.length,
+      itemBuilder: (_, index) {
+        return ChallengeCard(
+          challenge: ChallengePresenter.challenges[index],
+        );
+      },
+      separatorBuilder: (_, index) => SizedBox(height: 30.0.h),
     );
   }
 }
@@ -146,74 +144,77 @@ class ChallengeCard extends StatelessWidget {
 
     return Stack(
       children: [
-        PCard(
-          color: PTheme.background,
-          padding: EdgeInsets.zero,
-          child: Column(
-            children: [
-              // ParallaxWidget(
-              //   background: Image.asset(
-              //     challenge.imageUrls['default'],
-              //     fit: BoxFit.fitHeight,
-              //   ),
-              //   child: Container(height: 200.0),
-              // ),
-              Image.asset(
-                challenge.imageUrls['default'],
-                height: 230.0.h,
-                fit: BoxFit.fitHeight,
-              ),
-              const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            PText(challenge.title ?? '',
-                              style: textTheme.headlineMedium,
-                              maxLines: 2,
-                            ),
-                            SizedBox(height: 10.0.h),
-                            PText('${today.month}월의 챌린지',
-                              style: textTheme.labelLarge,
-                              color: PTheme.grey,
-                            ),
-                          ],
-                        ),
-                        BadgeWidget(
-                          size: 80.0,
-                          badge: challenge.badges[Difficulty.hard],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.0.h),
-                    PText(
-                      challenge.descriptions['sub']!,
-                      style: textTheme.titleSmall,
-                      color: PTheme.black,
-                      maxLines: 2,
-                    ),
-                  ],
+        Padding(
+          padding: EdgeInsets.only(bottom: 20.0.r),
+          child: PCard(
+            color: PTheme.background,
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                // ParallaxWidget(
+                //   background: Image.asset(
+                //     challenge.imageUrls['default'],
+                //     fit: BoxFit.fitHeight,
+                //   ),
+                //   child: Container(height: 200.0),
+                // ),
+                Image.asset(
+                  challenge.imageUrls['default'],
+                  height: 230.0.h,
+                  fit: BoxFit.fitHeight,
                 ),
-              ),
-              userPresenter.joining(challenge) ? PButton(
-                onPressed: () => ChallengePartyMain.toChallengePartyMain(
-                    userPresenter.joiningParty(challenge)!
+                const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              PText(challenge.title ?? '',
+                                style: textTheme.headlineMedium,
+                                maxLines: 2,
+                              ),
+                              SizedBox(height: 10.0.h),
+                              PText('${today.month}월의 챌린지',
+                                style: textTheme.labelLarge,
+                                color: PTheme.grey,
+                              ),
+                            ],
+                          ),
+                          BadgeWidget(
+                            size: 80.0,
+                            badge: challenge.badges[Difficulty.hard],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.0.h),
+                      PText(
+                        challenge.descriptions['sub']!,
+                        style: textTheme.titleSmall,
+                        color: PTheme.black,
+                        maxLines: 2,
+                      ),
+                    ],
+                  ),
                 ),
-                text: '챌린지 이동하기',
-                stretch: true,
-              ) : PButton(
-                onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
-                text: '알아보러 가기',
-                stretch: true,
-              ),
-            ],
+                userPresenter.joining(challenge) ? PButton(
+                  onPressed: () => ChallengePartyMain.toChallengePartyMain(
+                      userPresenter.joiningParty(challenge)!
+                  ),
+                  text: '챌린지 이동하기',
+                  stretch: true,
+                ) : PButton(
+                  onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
+                  text: '알아보러 가기',
+                  stretch: true,
+                ),
+              ],
+            ),
           ),
         ),
         if (challenge.locked)
@@ -282,7 +283,7 @@ class ChallengeCardLoading extends StatelessWidget {
                         Container(width: 200.0.w, height: 15.0.h, color: color),
                       ],
                     ),
-                    BadgeWidget(size: 80.0, color: color),
+                    BadgeWidget(size: 80.0, color: color, border: false),
                   ],
                 ),
                 SizedBox(height: 20.0.h),

@@ -16,12 +16,12 @@ class LoadingPresenter extends GetxController {
     double opacity = .2;
     timer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       opacity = ((opacity * 1000 + 3) % 200) / 1000;
-      color = mainColor.withOpacity(.1 + opacity);
+      color = mainColor.withOpacity(.2 + opacity);
       update();
     });
   }
   void loadEnd() async {
-    await Future.delayed(const Duration(milliseconds: 500), () {
+    await Future.delayed(const Duration(milliseconds: 1500), () {
       timer?.cancel();
       loading = false;
     });

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
@@ -19,13 +20,36 @@ class ExerciseInput extends GetxController {
     Get.toNamed('/exercise/input', arguments: type);
   }
 
+  // Future completeButtonPressed(ActivityType type) async {
+  //   final userPresenter = Get.find<UserPresenter>();
+  //   bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+  //   int amount = int.parse(inputCont.text);
+  //   int converted = amount;
+  //
+  //   if (type == ActivityType.distance) {
+  //     converted = convertDistance(amount);
+  //     await HealthPresenter.addStepsData(int.parse(inputCont.text), converted);
+  //   }
+  //   if (type == ActivityType.height) {
+  //     if (isIOS) {
+  //       await HealthPresenter.addFlightsData(int.parse(inputCont.text));
+  //     }
 
   Future<int> convertRecord(ActivityType type, int amount) async {
-    switch(type) {
+    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+
+    switch (type) {
       case ActivityType.distance:
-        int converted = convertDistance(amount, DistanceUnit.minute, DistanceUnit.step);
-        await HealthPresenter.addData(int.parse(inputCont.text), converted);
+        int converted =
+            convertDistance(amount, DistanceUnit.minute, DistanceUnit.step);
+        await HealthPresenter.addStepsData(
+            int.parse(inputCont.text), converted);
         return converted;
+      case ActivityType.height:
+        if (isIOS) {
+          await HealthPresenter.addFlightsData(int.parse(inputCont.text));
+        }
+        return amount;
       default:
         return amount;
     }
@@ -54,7 +78,8 @@ class ExerciseInput extends GetxController {
     before = completedActivities.length;
 
     userPresenter.loggedUser.addRecord(type, today, converted);
-    userPresenter.loggedUser.addRecord(ActivityType.calorie, today, getCalories(type, amount));
+    userPresenter.loggedUser
+        .addRecord(ActivityType.calorie, today, getCalories(type, amount));
 
     after = completedActivities.length;
 
@@ -88,12 +113,12 @@ class ExerciseInput extends GetxController {
     GlobalPresenter.badgeAwarded(newBadge, true);
 
     userPresenter.myCollections.add(Collection.fromJson({
-      'badgeId': newBadge.id, 'dates': [toTimestamp(now)],
+      'badgeId': newBadge.id,
+      'dates': [toTimestamp(now)],
     }));
     userPresenter.myCollections.add(Collection.fromJson({
-      'badgeId': badge.id, 'dates': [toTimestamp(now)],
+      'badgeId': badge.id,
+      'dates': [toTimestamp(now)],
     }));
-
   }
-
 }

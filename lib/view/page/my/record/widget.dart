@@ -1,14 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/global/string.dart';
+import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/level.dart';
+import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:text_scroll/text_scroll.dart';
-import '../../../../global/theme.dart';
-import '../../../../model/class/database/user.dart';
-import '../../../../presenter/model/level.dart';
-import '../../../../presenter/model/user.dart';
-import '../../../widget/widget/text.dart';
 
 class MyRecordDetailView extends StatelessWidget {
   final ActivityType type;

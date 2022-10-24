@@ -17,7 +17,7 @@ class ChallengePartyMainPage extends StatelessWidget {
       onTap: GlobalPresenter.closeBottomBar,
       child: Scaffold(
         backgroundColor: PTheme.background,
-        appBar: const PAppBar(title: '내 챌린지', color: Colors.transparent),
+        appBar: const PAppBar(title: '내 챌린지'),
         bottomSheet: PBottomSheetBar(body: PartyMainView(party: party)),
       ),
     );

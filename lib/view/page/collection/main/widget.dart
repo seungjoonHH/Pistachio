@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
-import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';

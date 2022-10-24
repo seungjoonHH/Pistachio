@@ -21,7 +21,7 @@ class LoadingPresenter extends GetxController {
     });
   }
   void loadEnd() async {
-    await Future.delayed(const Duration(milliseconds: 1500), () {
+    await Future.delayed(const Duration(milliseconds: 500), () {
       timer?.cancel();
       loading = false;
     });

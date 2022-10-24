@@ -9,7 +9,6 @@ import 'package:pistachio/global/number.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
-import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/page/home.dart';

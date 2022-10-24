@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "877102769091-4ia9lkngl3tn8rhbvc10qcnid0btag2m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pistachio",
+            "certificate_hash": "f98414de57c468a4993317a945cbccf3cf4f4180"
+          }
+        },
+        {
+          "client_id": "877102769091-63c1r5icsvptspor91hnql0qkph9gkvb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pistachio",
+            "certificate_hash": "8decef9d7860f5d4a0c14308399548bf92547ae6"
+          }
+        },
+        {
+          "client_id": "877102769091-k91aa6g5vkl33a0ikvdndr0eshk1ak5p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pistachio",
+            "certificate_hash": "72cb98d63c46ced12670477830c888ad36cd78b4"
+          }
+        },
+        {
           "client_id": "877102769091-uuok0oj78mj60munsda9tv85842srml9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +53,57 @@
             {
               "client_id": "877102769091-uuok0oj78mj60munsda9tv85842srml9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "877102769091-3n2rva28bo3f3allnp7dagoodltqkubn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pistachio"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877102769091:android:18c377441b3b5ea2d15376",
+        "android_client_info": {
+          "package_name": "com.fitween.pistachio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877102769091-89389s61rn42f86t99pv1opnes3a35pr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fitween.pistachio",
+            "certificate_hash": "72cb98d63c46ced12670477830c888ad36cd78b4"
+          }
+        },
+        {
+          "client_id": "877102769091-uuok0oj78mj60munsda9tv85842srml9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBla1qn4nw4LeZrBlqrVuMlm0dBOJcOXso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877102769091-uuok0oj78mj60munsda9tv85842srml9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "877102769091-3n2rva28bo3f3allnp7dagoodltqkubn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pistachio"
+              }
             }
           ]
         }

@@ -37,9 +37,11 @@ enum ActivityType {
   String get kr => ['칼로리', '거리', '높이', '무게'][index];
   String get unit => ['kcal', '보', '층', '회'][index];
   String get unitAlt => ['kcal', '보', '층', 'kg'][index];
-  String get prefix => ['감량한', '이동한', '오른', '들은'][index];
-  String get suffix => ['감량하면', '이동하면', '오르면', '들으면'][index];
-  String get verb => ['감량하세요', '걸으세요', '오르세요', '들으세요'][index];
+  String get done => ['감량한', '이동한', '오른', '들은'][index];
+  String get ifDo => ['감량하면', '이동하면', '오르면', '들으면'][index];
+  String get doIt => ['감량하세요', '걸으세요', '오르세요', '들으세요'][index];
+  String get did => ['감량했어요', '걸었어요', '올랐어요', '들었어요'][index];
+  String get and => ['감량했고', '걸었고', '올랐고', '들었고'][index];
   Color get color => [PTheme.colorA, PTheme.colorB, PTheme.colorD, PTheme.colorC][index];
   String get asset => ['lightning.svg', 'running.svg', 'stairs.svg', 'dumbbell.svg'][index];
   bool get active => activeValues.contains(this);

@@ -21,6 +21,8 @@ final yesterday = today.subtract(const Duration(days: 1));
 final tomorrow = today.add(const Duration(days: 1));
 
 /// global functions
+DateTime oneSecondBefore(DateTime date) => date.subtract(const Duration(seconds: 1));
+
 bool isSameDay(DateTime date1, DateTime date2) {
   return date1.year == date2.year
       && date1.month == date2.month

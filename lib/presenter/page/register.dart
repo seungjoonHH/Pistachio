@@ -262,7 +262,7 @@ class RegisterPresenter extends GetxController {
         for (var type in ActivityType.activeValues.sublist(1)) {
           int amount = newcomer.goals[type.name].toInt();
           if (type == ActivityType.distance) amount = distanceMinute;
-          goal += getCalories(type, amount);
+          goal += convertToCalories(type, amount);
         }
         newcomer.goals[ActivityType.calorie.name] = goal;
         update();

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/json/badge.dart';
@@ -37,6 +38,8 @@ import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class GlobalPresenter extends GetxController {
+  static const String effectAsset = 'assets/image/widget/dialog/badge_effect.png';
+
   int navIndex = 0;
 
   void navigate(int index) {
@@ -56,6 +59,40 @@ class GlobalPresenter extends GetxController {
   static Future closeBottomBar() async => await barCont.collapse();
 
   static void goBack() => Get.back(result: true);
+
+  static void showBadgeDialog(Badge? badge) {
+    if (badge == null) return;
+    showPDialog(
+      title: badge.title,
+      content: Column(
+        children: [
+          Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                EternalRotation(
+                  rps: .3,
+                  child: Image.asset(effectAsset,
+                    width: 180.0.r, height: 180.0.r,
+                  ),
+                ),
+                BadgeWidget(badge: badge, size: 80.0.r),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            alignment: Alignment.topLeft,
+            child: PText(badge.toAcquire, maxLines: 5),
+          ),
+        ],
+      ),
+      type: DialogType.mono,
+      onPressed: Get.back,
+    );
+  }
+
 
   static void showCollectionDialog(Collection collection) {
     showPDialog(
@@ -116,8 +153,6 @@ class GlobalPresenter extends GetxController {
   }
 
   static void badgeAwarded(Badge badge, [bool firstAward = false]) {
-    const String effectAsset = 'assets/image/widget/dialog/badge_effect.png';
-
     showPDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
@@ -136,9 +171,11 @@ class GlobalPresenter extends GetxController {
                     if (firstAward)
                     EternalRotation(
                       rps: .3,
-                      child: Image.asset(effectAsset),
+                      child: Image.asset(effectAsset,
+                        width: 180.0.r, height: 180.0.r,
+                      ),
                     ),
-                    BadgeWidget(badge: badge, size: 120.0.r),
+                    BadgeWidget(badge: badge, size: 80.0.r),
                   ],
                 ),
               ),

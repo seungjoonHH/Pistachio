@@ -38,11 +38,11 @@ class MyRecordDetailView extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          PText('현재 내 위치', style: textTheme.headlineSmall),
+          PText('현재 내 위치', style: textTheme.titleLarge),
           const SizedBox(height: 10),
           TextScroll(
             tier['currentTitle'] ?? '',
-            style: textTheme.displayLarge?.merge(TextStyle(
+            style: textTheme.displaySmall?.merge(TextStyle(
               color: type.color,
               fontWeight: FontWeight.normal,
             )),
@@ -55,7 +55,7 @@ class MyRecordDetailView extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           PTexts([
-            '$remainValue', type.unit, ' 더 ${type.suffix}'
+            '$remainValue', type.unit, ' 더 ${type.ifDo}'
           ], colors: [type.color, type.color, PTheme.black],
             style: textTheme.headlineSmall,
             space: false,

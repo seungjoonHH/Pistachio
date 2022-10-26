@@ -1,4 +1,6 @@
 /* 뱃지 모델 구조 */
+import 'package:pistachio/global/string.dart';
+
 class Badge {
   /// static variables
   static const asset = 'assets/image/badge/';
@@ -9,6 +11,9 @@ class Badge {
   String? imageUrl;
   String? description;
   bool? activate;
+
+  /// mutator & accessor
+  String get toAcquire => description!.replaceAll('했습니다', '해보세요!');
 
   /// constructors
   Badge();

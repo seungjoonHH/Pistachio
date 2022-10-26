@@ -33,3 +33,8 @@ bool hasSeparatedConsonantOrVowel(String input) {
     return isKoreanConsonant(e) || isKoreanVowel(e);
   }).contains(true);
 }
+
+
+bool hasKorean(String input) {
+  return input.split('').any((char) => isKorean(char));
+}

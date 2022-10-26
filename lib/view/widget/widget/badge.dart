@@ -43,8 +43,7 @@ class CollectionWidget extends StatelessWidget {
       children: [
         if (collection != null)
         Image.asset(collection!.badge!.imageUrl!,
-          width: size.r,
-          height: size.r,
+          width: size.r, height: size.r,
         ),
         Column(
           children: [
@@ -56,7 +55,7 @@ class CollectionWidget extends StatelessWidget {
                   shape: side,
                   child: InkWell(
                     onTap: onPressed,
-                    onLongPress: onPressed,
+                    onLongPress: onLongPressed,
                     customBorder: side,
                     splashColor: PTheme.black.withOpacity(.1),
                     child: SizedBox(
@@ -122,7 +121,6 @@ class BadgeWidget extends StatelessWidget {
     Key? key,
     this.badge,
     this.detail = false,
-    this.selected = false,
     this.onPressed,
     this.size = 80.0,
     this.color = PTheme.lightGrey,
@@ -131,7 +129,6 @@ class BadgeWidget extends StatelessWidget {
 
   final Badge? badge;
   final bool detail;
-  final bool selected;
   final VoidCallback? onPressed;
   final double size;
   final Color color;
@@ -171,7 +168,7 @@ class BadgeWidget extends StatelessWidget {
                   width: size.r,
                   height: size.r,
                   decoration: ShapeDecoration(
-                    color: onPressed != null && !selected
+                    color: onPressed != null
                         ? Colors.transparent : null,
                     shape: side,
                   ),

@@ -18,6 +18,7 @@ import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ChallengeMainView extends StatelessWidget {
   const ChallengeMainView({Key? key}) : super(key: key);
@@ -95,21 +96,43 @@ class ChallengeCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: ChallengePresenter.challenges.length,
-      itemBuilder: (_, index) {
-        return ChallengeCard(
-          challenge: ChallengePresenter.challenges[index],
+    return GetBuilder<LoadingPresenter>(
+      builder: (controller) {
+        return SmartRefresher(
+          controller: controller.refreshCont,
+          onRefresh: () async {
+            ChallengeMain.toChallengeMain();
+            controller.refreshCont.refreshCompleted();
+          },
+          onLoading: () async {
+            await Future.delayed(const Duration(milliseconds: 100));
+            controller.refreshCont.loadComplete();
+          },
+          header: const MaterialClassicHeader(
+            color: PTheme.black,
+            backgroundColor: PTheme.surface,
+          ),
+          child: ListView.separated(
+            itemCount: ChallengePresenter.challenges.length,
+            itemBuilder: (_, index) {
+              return ChallengeCard(
+                challenge: ChallengePresenter.challenges[index],
+              );
+            },
+            separatorBuilder: (_, index) => SizedBox(height: 30.0.h),
+          ),
         );
-      },
-      separatorBuilder: (_, index) => SizedBox(height: 30.0.h),
+      }
     );
   }
 }
 
 
 class ChallengeCard extends StatelessWidget {
-  const ChallengeCard({Key? key, required this.challenge}) : super(key: key);
+  const ChallengeCard({
+    Key? key,
+    required this.challenge,
+  }) : super(key: key);
 
   final Challenge challenge;
 
@@ -117,91 +140,93 @@ class ChallengeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final userPresenter = Get.find<UserPresenter>();
 
-    return Stack(
+    return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 20.0.r),
-          child: PCard(
-            color: PTheme.background,
-            padding: EdgeInsets.zero,
-            child: Column(
-              children: [
-                // ParallaxWidget(
-                //   background: Image.asset(
-                //     challenge.imageUrls['default'],
-                //     fit: BoxFit.fitHeight,
-                //   ),
-                //   child: Container(height: 200.0),
-                // ),
-                Image.asset(
-                  challenge.imageUrls['default'],
-                  height: 230.0.h,
-                  fit: BoxFit.fitHeight,
-                ),
-                const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              PText(challenge.title ?? '',
-                                style: textTheme.headlineMedium,
-                                maxLines: 2,
-                              ),
-                              SizedBox(height: 10.0.h),
-                              PText('${today.month}월의 챌린지',
-                                style: textTheme.labelLarge,
-                                color: PTheme.grey,
-                              ),
-                            ],
-                          ),
-                          BadgeWidget(
-                            size: 80.0,
-                            badge: challenge.badges[Difficulty.hard],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20.0.h),
-                      PText(
-                        challenge.descriptions['sub']!,
-                        style: textTheme.titleSmall,
-                        color: PTheme.black,
-                        maxLines: 2,
-                      ),
-                    ],
+        Stack(
+          children: [
+            PCard(
+              color: PTheme.background,
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  // ParallaxWidget(
+                  //   background: Image.asset(
+                  //     challenge.imageUrls['default'],
+                  //     fit: BoxFit.fitHeight,
+                  //   ),
+                  //   child: Container(height: 200.0),
+                  // ),
+                  Image.asset(
+                    challenge.imageUrls['default'],
+                    height: 230.0.h,
+                    fit: BoxFit.fitHeight,
                   ),
-                ),
-                userPresenter.joining(challenge) ? PButton(
-                  onPressed: () => ChallengePartyMain.toChallengePartyMain(
-                      userPresenter.joiningParty(challenge)!
+                  const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                PText(challenge.title ?? '',
+                                  style: textTheme.headlineMedium,
+                                  maxLines: 2,
+                                ),
+                                SizedBox(height: 10.0.h),
+                                PText('${today.month}월의 챌린지',
+                                  style: textTheme.labelLarge,
+                                  color: PTheme.grey,
+                                ),
+                              ],
+                            ),
+                            BadgeWidget(
+                              size: 80.0.r,
+                              badge: challenge.badges[Difficulty.hard],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20.0.h),
+                        PText(
+                          challenge.descriptions['sub']!,
+                          style: textTheme.titleSmall,
+                          color: PTheme.black,
+                          maxLines: 2,
+                        ),
+                      ],
+                    ),
                   ),
-                  text: '챌린지 이동하기',
-                  stretch: true,
-                ) : PButton(
-                  onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
-                  text: '알아보러 가기',
-                  stretch: true,
+                  userPresenter.alreadyJoinedChallenge(challenge.id!) ? PButton(
+                    onPressed: () => ChallengePartyMain.toChallengePartyMain(
+                      userPresenter.getPartyByChallengeId(challenge.id!)!
+                    ),
+                    text: '챌린지 이동하기',
+                    stretch: true,
+                  ) : PButton(
+                    onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
+                    text: '알아보러 가기',
+                    stretch: true,
+                  ),
+                ],
+              ),
+            ),
+            if (challenge.locked)
+            Positioned.fill(
+              child: Container(
+                color: PTheme.black.withOpacity(.5),
+                child: const Icon(Icons.lock,
+                  color: PTheme.black,
+                  size: 70.0,
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-        if (challenge.locked)
-        Positioned.fill(
-          child: Container(
-            color: PTheme.black.withOpacity(.5),
-            child: Icon(Icons.lock,
-              color: PTheme.black.withOpacity(.3),
-              size: 70.0,
-            ),
-          ),
-        ),
+        SizedBox(height: 20.0.h),
       ],
     );
   }
@@ -220,7 +245,7 @@ class ChallengeCardViewLoading extends StatelessWidget {
     return ListView.separated(
       itemCount: 2,
       itemBuilder: (_, index) => ChallengeCardLoading(color: color),
-      separatorBuilder: (_, index) => const SizedBox(height: 50.0),
+      separatorBuilder: (_, index) => SizedBox(height: 50.0.h),
     );
   }
 }
@@ -235,15 +260,22 @@ class ChallengeCardLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BoxDecoration decoration = BoxDecoration(
+      color: color, borderRadius: BorderRadius.circular(15.0),
+    );
+
     return PCard(
       borderType: BorderType.none,
       color: PTheme.background,
       padding: EdgeInsets.zero,
       child: Column(
         children: [
-          Container(height: 230.0.h, color: color), ////
+          Container(
+            height: 230.0.h,
+            decoration: decoration,
+          ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 20.0, 20.0, 20.0),
+            padding: EdgeInsets.fromLTRB(0.0, 20.0.r, 20.0.r, 20.0.r),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -253,20 +285,36 @@ class ChallengeCardLoading extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(width: 200.0.w, height: 70.0.h, color: color),
+                        Container(
+                          width: 200.0.w,
+                          height: 70.0.h,
+                          decoration: decoration,
+                        ),
                         SizedBox(height: 20.0.h),
-                        Container(width: 200.0.w, height: 15.0.h, color: color),
+                        Container(
+                          width: 200.0.w,
+                          height: 15.0.h,
+                          decoration: decoration,
+                        ),
                       ],
                     ),
-                    BadgeWidget(size: 80.0, color: color, border: false),
+                    BadgeWidget(size: 80.0.r, color: color, border: false),
                   ],
                 ),
                 SizedBox(height: 20.0.h),
-                Container(width: 200.0.w, height: 40.0.h, color: color),
+                Container(
+                  width: 200.0.w,
+                  height: 30.0.h,
+                  decoration: decoration,
+                ),
               ],
             ),
           ),
-          Container(width: double.infinity, height: 48.0.h, color: color),
+          Container(
+            width: double.infinity,
+            height: 48.0.h,
+            decoration: decoration,
+          ),
         ],
       ),
     );
@@ -278,24 +326,100 @@ class MyPartyListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<UserPresenter>(
-      builder: (controller) {
-        return Stack(
-          children: [
-            ListView.separated(
-              shrinkWrap: true,
-              itemCount: controller.myParties.length,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(20.0),
-              itemBuilder: (_, index) => MyPartyListTile(
-                party: controller.myParties.values.toList()[index],
+    final userPresenter = Get.find<UserPresenter>();
+    return Stack(
+      children: [
+        if (userPresenter.myParties.isEmpty)
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: PCard(
+              color: PTheme.surface,
+              padding: EdgeInsets.zero,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 30.0.w, vertical: 150.0.h,
+                    ),
+                    child: PText('챌린지가 없습니다',
+                      style: textTheme.displaySmall,
+                    ),
+                  ),
+                  const Divider(
+                    color: PTheme.black,
+                    thickness: 1.5,
+                    height: 0.0,
+                  ),
+                  GetBuilder<ChallengeMain>(
+                    builder: (controller) {
+                      return Row(
+                        children: [
+                          PButton(
+                            text: '챌린지 살펴보기',
+                            onPressed: () => controller.tabCont.index = 0,
+                            stretch: true,
+                            fill: false,
+                            multiple: true,
+                            border: false,
+                          ),
+                          PButton(
+                            text: '챌린지 참여하기',
+                            onPressed: controller.challengeJoinButtonPressed,
+                            stretch: true,
+                            multiple: true,
+                            border: false,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
               ),
-              separatorBuilder: (_, index) => const SizedBox(height: 20.0),
             ),
-            const MyPartyListViewLoading(),
-          ],
-        );
-      }
+          ),
+        ) else Padding(
+          padding: EdgeInsets.all(20.0.h),
+          child: Column(
+            children: [
+              ListView.separated(
+                shrinkWrap: true,
+                itemCount: userPresenter.myParties.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) => MyPartyListTile(
+                  party: userPresenter.myParties.values.toList()[index],
+                ),
+                separatorBuilder: (_, index) => SizedBox(height: 20.0.h),
+              ),
+              SizedBox(height: 20.0.h),
+              GetBuilder<ChallengeMain>(
+                builder: (controller) {
+                  return Row(
+                    children: [
+                      PButton(
+                        text: '챌린지 살펴보기',
+                        onPressed: () => controller.tabCont.index = 0,
+                        stretch: true,
+                        fill: false,
+                        multiple: true,
+                      ),
+                      SizedBox(width: 20.0.w),
+                      PButton(
+                        text: '챌린지 참여하기',
+                        onPressed: controller.challengeJoinButtonPressed,
+                        stretch: true,
+                        multiple: true,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        const MyPartyListViewLoading(),
+      ],
     );
   }
 }
@@ -315,7 +439,7 @@ class MyPartyListTile extends StatelessWidget {
       child: InkWell(
         onTap: () => ChallengePartyMain.toChallengePartyMain(party),
         child: Container(
-          height: 80.0,
+          height: 80.0.h,
           decoration: BoxDecoration(
             border: Border.all(color: PTheme.black, width: 1.5),
           ),
@@ -325,8 +449,8 @@ class MyPartyListTile extends StatelessWidget {
                 aspectRatio: 1.0,
                 child: Image.asset(
                   party.challenge!.imageUrls['focus'],
-                  width: 100.0,
-                  height: 100.0,
+                  width: 100.0.w,
+                  height: 100.0.h,
                 ),
               ),
               const VerticalDivider(
@@ -336,7 +460,7 @@ class MyPartyListTile extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(10.0.r),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,9 +489,9 @@ class MyPartyListTile extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 50.0,
-                child: Icon(Icons.arrow_forward_ios),
+              SizedBox(
+                width: 50.0.w,
+                child: const Icon(Icons.arrow_forward_ios),
               ),
             ],
           ),

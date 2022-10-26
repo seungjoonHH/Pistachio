@@ -137,11 +137,9 @@ class UserInfoView extends StatelessWidget {
                   PInputField(
                     invalid: controller.fields['nickname']!.invalid,
                     controller: controller.fields['nickname']!.controller,
-                    hintText:
-                        controller.fields['nickname']?.hintText ?? '별명을 입력해주세요',
+                    hintText: controller.fields['nickname']?.hintText ?? '별명을 입력해주세요',
                     hintColor: controller.fields['nickname']?.hintText == null
-                        ? PTheme.grey
-                        : PTheme.colorB,
+                        ? PTheme.grey : PTheme.colorB,
                   ),
                   const SizedBox(height: 40.0),
                 ],
@@ -372,12 +370,12 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
               icon: Icon(
                 Icons.arrow_drop_up,
                 size: 40.0,
-                color:
-                    value > widget.minValue ? PTheme.black : Colors.transparent,
+                color: value > widget.minValue
+                    ? PTheme.black
+                    : Colors.transparent,
               ),
               onPressed: () {
-                controller.setGoal(
-                    widget.type, max(value - 1, widget.minValue));
+                controller.setGoal(widget.type, min(value + 1, widget.maxValue));
                 setState(() {});
               },
             ),
@@ -399,12 +397,12 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
               icon: Icon(
                 Icons.arrow_drop_down,
                 size: 40.0,
-                color:
-                    value < widget.maxValue ? PTheme.black : Colors.transparent,
+                color: value < widget.maxValue
+                    ? PTheme.black
+                    : Colors.transparent,
               ),
               onPressed: () {
-                controller.setGoal(
-                    widget.type, min(value + 1, widget.maxValue));
+                controller.setGoal(widget.type, max(value - 1, widget.minValue));
                 setState(() {});
               },
             ),
@@ -571,20 +569,17 @@ class DistanceRecommendView extends StatelessWidget {
             PTexts(
               ['$ageGroup', '대 ', controller.newcomer.sex!.kr, ' 평균'],
               colors: const [
-                PTheme.colorA,
-                PTheme.black,
-                PTheme.colorA,
-                PTheme.black
+                PTheme.colorA, PTheme.black,
+                PTheme.colorA, PTheme.black,
               ],
               alignment: MainAxisAlignment.start,
               space: false,
               style: textTheme.displaySmall,
             ),
             PTexts(
-              [
-                '매일',
-                '${recommendTimes.length == 1 ? recommendTimes[0] : recommendTimes.join('~')}',
-                '분',
+              ['매일', '${recommendTimes.length == 1
+                  ? recommendTimes[0]
+                  : recommendTimes.join('~')}', '분',
               ],
               colors: [PTheme.black, ActivityType.distance.color, PTheme.black],
               alignment: MainAxisAlignment.start,

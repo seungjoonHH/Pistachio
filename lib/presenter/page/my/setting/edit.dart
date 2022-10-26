@@ -37,6 +37,7 @@ class MySettingEdit extends GetxController {
     userPresenter.loggedUser.weight = int.parse(editConts['weight']!.text);
 
     userPresenter.update();
+    userPresenter.save();
     Get.back();
   }
 

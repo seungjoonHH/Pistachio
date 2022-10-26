@@ -201,7 +201,7 @@ class ExerciseCompletePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20.0),
-                const PButton(
+                PButton(
                   onPressed: HomePresenter.toHome,
                   text: '확인',
                 ),

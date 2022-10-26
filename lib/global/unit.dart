@@ -30,7 +30,7 @@ Map<ActivityType, int> get velocities => {
 };
 
 // 활동별 소모 칼로리
-int getCalories(ActivityType type, int amount) {
+int convertToCalories(ActivityType type, int amount) {
   double velocity = velocities[type]!.toDouble();
   return (calories[type]! * velocity * amount).ceil();
 }

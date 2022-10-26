@@ -50,7 +50,7 @@ class RecordCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          PText('오늘 ${type.prefix} ${type.kr}',
+                          PText('오늘 ${type.done} ${type.kr}',
                             style: textTheme.labelSmall,
                           ),
                           PText(controller.tiers[type]!['currentTitle'],

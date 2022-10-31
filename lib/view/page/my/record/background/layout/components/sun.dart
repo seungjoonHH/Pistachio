@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'dart:math' as math;
 
-import '../layoutColors.dart';
+import '../layout_colors.dart';
 import '../responsive_layout_builder.dart';
 
 class SunAndMoon extends StatelessWidget {

@@ -110,10 +110,10 @@ class FloatingObject extends StatefulWidget {
   final double speed;
 
   @override
-  _FloatingObjectState createState() => _FloatingObjectState();
+  FloatingObjectState createState() => FloatingObjectState();
 }
 
-class _FloatingObjectState extends State<FloatingObject>
+class FloatingObjectState extends State<FloatingObject>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _horizontalAnimation;

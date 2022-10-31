@@ -52,8 +52,8 @@ dependencies:
   flutter_animate: ^2.0.0
   ntp: ^2.0.0
 
-#dependency_overrides:
-#  firebase_core_platform_interface: 4.5.2
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.2
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +71,8 @@ flutter:
 #    - assets/image/level/distance/
     - assets/image/level/height/
     - assets/image/record/
+#    - assets/image/record/height/
+    - assets/image/record/distance/
     - assets/image/widget/bottom_bar/
     - assets/image/widget/dialog/
     - assets/image/challenge/default/

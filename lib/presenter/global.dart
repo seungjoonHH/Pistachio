@@ -22,7 +22,6 @@ import 'package:pistachio/presenter/page/challenge/main.dart';
 import 'package:pistachio/presenter/page/challenge/party/main.dart';
 import 'package:pistachio/presenter/page/complete.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
-import 'package:pistachio/presenter/notification.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/quest.dart';

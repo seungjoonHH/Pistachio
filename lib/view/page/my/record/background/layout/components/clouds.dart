@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-
-import '../responsive_layout_builder.dart';
+import 'package:pistachio/view/page/my/record/background/layout/responsive_layout_builder.dart';
 
 class Clouds extends StatefulWidget {
   const Clouds({
@@ -17,10 +15,10 @@ class Clouds extends StatefulWidget {
   final double relativeDistance;
 
   @override
-  _CloudsState createState() => _CloudsState();
+  CloudsState createState() => CloudsState();
 }
 
-class _CloudsState extends State<Clouds> with SingleTickerProviderStateMixin {
+class CloudsState extends State<Clouds> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> positionAnimation;
   late Animation<double> opacityAnimation;

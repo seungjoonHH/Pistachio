@@ -65,6 +65,7 @@ flutter:
     - assets/image/object/
     - assets/image/level/distance/
     - assets/image/level/height/
+    - assets/image/record/
     - assets/image/widget/bottom_bar/
     - assets/image/widget/dialog/
     - assets/image/challenge/default/
@@ -83,7 +84,6 @@ flutter:
     - assets/json/data/level/
     - assets/image/page/register/
     - assets/rive/input/
-
 
   fonts:
     - family: BMJUA

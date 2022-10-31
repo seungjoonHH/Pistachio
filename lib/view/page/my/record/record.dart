@@ -4,6 +4,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/page/my/record/widget.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 import '../../../../model/enum/enum.dart';
+import 'background/layout/layoutColors.dart';
 
 class MyRecordPage extends StatelessWidget {
   const MyRecordPage({Key? key}) : super(key: key);
@@ -14,8 +15,9 @@ class MyRecordPage extends StatelessWidget {
     ActivityType type = Get.arguments;
 
     return Scaffold(
-      backgroundColor: PTheme.background,
-      appBar: const PAppBar(),
+      extendBodyBehindAppBar: true,
+      backgroundColor: PuzzleColors.water_light,
+      appBar: const PAppBar(color: Colors.transparent,),
       body: MyRecordDetailView(type: type),
     );
   }

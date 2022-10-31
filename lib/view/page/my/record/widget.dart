@@ -83,7 +83,7 @@ class MyRecordDetailView extends StatelessWidget {
                     )),
                   ),
                   const SizedBox(height: 20),
-                  SvgPicture.asset('assets/image/level/height/asset1.svg'),
+                  Image.asset('assets/image/record/room.png', height: 400,),
                   const SizedBox(height: 20),
                   PTexts(
                     ['$remainValue', type.unit, ' 더 ${type.ifDo}'],

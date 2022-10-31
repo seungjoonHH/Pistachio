@@ -11,35 +11,41 @@ import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+/// class
 class ChallengePartyMain extends GetxController {
+  /// static variables
+  static final refreshCont = RefreshController();
 
+  /// static methods
+  // 챌린지 파티 메인 페이지로 이동
   static void toChallengePartyMain(Party party) async {
     final challengePartyMain = Get.find<ChallengePartyMain>();
-    final loadingPresenter = Get.find<LoadingPresenter>();
+    final loadingP = Get.find<LoadingPresenter>();
 
     Get.toNamed('challenge/party/main');
 
-    loadingPresenter.loadStart();
+    loadingP.loadStart();
     await challengePartyMain.init(party.id!);
-    loadingPresenter.loadEnd();
+    loadingP.loadEnd();
   }
 
+  /// attributes
   double value = 0;
   double maxValue = 0;
   Timer? timer;
   Party? loadedParty;
   static const int millisecond = 500;
-
   bool copied = false;
 
+  // 초기화
   Future init(String id) async {
-    final userPresenter = Get.find<UserPresenter>();
+    final userP = Get.find<UserPresenter>();
+    PUser user = userP.loggedUser;
 
     loadedParty = await PartyPresenter.loadParty(id);
     await PartyPresenter.loadMembers(loadedParty!);
-    await userPresenter.loadMyParties();
+    await userP.loadMyParties();
 
-    PUser user = userPresenter.loggedUser;
     value = .0; update();
     maxValue = user.getAmounts(
       loadedParty!.challenge!.type!,
@@ -53,6 +59,7 @@ class ChallengePartyMain extends GetxController {
     update();
   }
 
+  // 로그인된 사용자의 파티 기록값 위젯을 애니메이트
   void animateValue() {
     const int intervalMilli = 10;
     double interval = maxValue / (millisecond / intervalMilli);
@@ -65,8 +72,9 @@ class ChallengePartyMain extends GetxController {
     update();
   }
 
-  void copyPartyId(String id) async {
-    Clipboard.setData(ClipboardData(text: id));
+  // 파티 코드를 복사
+  void copyPartyId(String code) async {
+    Clipboard.setData(ClipboardData(text: code));
     copied = true; update();
     await Future.delayed(const Duration(milliseconds: 1000), () {
       copied = false; update();

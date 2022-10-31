@@ -1,124 +1,89 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/global/date.dart';
-import 'package:pistachio/global/unit.dart';
-import 'package:pistachio/model/class/database/collection.dart';
-import 'package:pistachio/model/class/json/badge.dart';
+import 'package:pistachio/global/number.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
-import 'package:pistachio/presenter/health/health.dart';
-import 'package:pistachio/presenter/model/collection.dart';
+import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
 
 class ExerciseInput extends GetxController {
-  static final inputCont = TextEditingController();
+  /// static variables
 
+  /// static methods
+  // 운동값 입력 페이지로 이동
   static void toExerciseInput(ActivityType type) async {
+    final exerciseInput = Get.find<ExerciseInput>();
+
+    exerciseInput.inputCont.clear();
     await GlobalPresenter.closeBottomBar();
     Get.toNamed('/exercise/input', arguments: type);
   }
 
-  // Future completeButtonPressed(ActivityType type) async {
-  //   final userPresenter = Get.find<UserPresenter>();
-  //   bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
-  //   int amount = int.parse(inputCont.text);
-  //   int converted = amount;
-  //
-  //   if (type == ActivityType.distance) {
-  //     converted = convertDistance(amount);
-  //     await HealthPresenter.addStepsData(int.parse(inputCont.text), converted);
-  //   }
-  //   if (type == ActivityType.height) {
-  //     if (isIOS) {
-  //       await HealthPresenter.addFlightsData(int.parse(inputCont.text));
-  //     }
+  /// attributes
 
-  Future<int> convertRecord(ActivityType type, int amount) async {
-    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+  /// methods
+  final inputCont = TextEditingController();
+  String? hintText;
+  bool invalid = false;
 
-    switch (type) {
-      case ActivityType.distance:
-        int converted =
-            convertDistance(amount, DistanceUnit.minute, DistanceUnit.step);
-        await HealthPresenter.addStepsData(
-            int.parse(inputCont.text), converted);
-        return converted;
-      case ActivityType.height:
-        if (isIOS) {
-          await HealthPresenter.addFlightsData(int.parse(inputCont.text));
-        }
-        return amount;
-      default:
-        return amount;
+  // 텍스트 입력 필드 값 유효 여부 반환
+  Future<bool> validate(ActivityType type) async {
+    PUser user = Get.find<UserPresenter>().loggedUser;
+    String text = inputCont.text;
+
+    Map<ActivityType, int> limit = {
+      ActivityType.distance: 20000,
+      ActivityType.height: 100,
+    };
+
+    Map<ActivityType, String> messages = {
+      ActivityType.distance: '유산소 운동 시간',
+      ActivityType.height: '오른 층 수',
+    };
+
+    Map<String, bool> conditions = {
+      '하루 할당량을 초과하였습니다': (user.getTodayInputAmounts(type) + (stringToNum(text) ?? 0)) > limit[type]!,
+      '너무 많이 입력했습니다': (stringToNum(text) ?? 0) > limit[type]!,
+      '숫자만 입력할 수 있습니다': int.tryParse(text) == null,
+      '공백을 포함할 수 없습니다': text.contains(' '),
+      '${messages[type]}을 입력해주세요': text == '',
+    };
+
+    conditions.forEach((message, condition) {
+      if (condition) hintText = message;
+    });
+
+    if (conditions.values.any((condition) => condition)) {
+      inputCont.clear();
+      invalid = true; update();
+
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        invalid = false; update();
+      });
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        inputCont.text = text; update();
+        hintText = null;
+      });
+      return false;
     }
+    return true;
   }
 
-  bool completed(ActivityType type) {
-    final userPresenter = Get.find<UserPresenter>();
-
-    int goal = userPresenter.loggedUser.goals[type.name];
-    int value = userPresenter.loggedUser.getTodayAmounts(type);
-    return goal <= value;
-  }
-
-  List<ActivityType> get completedActivities {
-    List<ActivityType> types = [];
-    for (ActivityType type in ActivityType.values.sublist(0, 3)) {
-      if (completed(type)) types.add(type);
-    }
-    return types;
-  }
-
-  void addRecords(ActivityType type, int amount) async {
-    final userPresenter = Get.find<UserPresenter>();
-    late int converted, before, after;
-    converted = await convertRecord(type, amount);
-    before = completedActivities.length;
-
-    userPresenter.loggedUser.addRecord(type, today, converted);
-    userPresenter.loggedUser
-        .addRecord(ActivityType.calorie, today, convertToCalories(type, amount));
-
-    after = completedActivities.length;
-
-    if (before != 3 && after == 3) awardDailyActivityCompleteBadge();
-
-    userPresenter.save();
-  }
-
+  // 완료 버튼 클릭 시
   Future completeButtonPressed(ActivityType type) async {
-    addRecords(type, int.parse(inputCont.text));
+    final userP = Get.find<UserPresenter>();
+
+    if (!await validate(type)) return;
+
+    double amount = double.parse(inputCont.text);
+    Record record = Record.init(type, amount, DistanceUnit.minute);
+
+    userP.addRecord(type, record);
 
     inputCont.clear();
     HomePresenter.toHome();
     update();
-  }
-
-  void awardDailyActivityCompleteBadge() {
-    final userPresenter = Get.find<UserPresenter>();
-    Badge newBadge = BadgePresenter.getBadge('1000000')!;
-    Badge badge = BadgePresenter.getBadge('1000001')!;
-
-    for (Collection collection in userPresenter.myCollections) {
-      if (collection.badgeId == badge.id) {
-        GlobalPresenter.badgeAwarded(badge);
-        collection.addDate(now);
-        return;
-      }
-    }
-
-    GlobalPresenter.badgeAwarded(badge, true);
-    GlobalPresenter.badgeAwarded(newBadge, true);
-
-    userPresenter.myCollections.add(Collection.fromJson({
-      'badgeId': newBadge.id,
-      'dates': [toTimestamp(now)],
-    }));
-    userPresenter.myCollections.add(Collection.fromJson({
-      'badgeId': badge.id,
-      'dates': [toTimestamp(now)],
-    }));
-  }
+   }
 }

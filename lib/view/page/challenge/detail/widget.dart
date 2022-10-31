@@ -49,7 +49,7 @@ class ChallengeDetailView extends StatelessWidget {
                       color: PTheme.black,
                       maxLines: 2,
                     ),
-                    PText('8/1~8/31',
+                    PText('14일',
                       align: TextAlign.center,
                       style: textTheme.labelLarge,
                       color: PTheme.black,

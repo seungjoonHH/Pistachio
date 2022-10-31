@@ -75,10 +75,17 @@ class ExerciseInputPage extends StatelessWidget {
                     style: textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 20.0),
-                  PInputField(
-                    controller: ExerciseInput.inputCont,
-                    hintText: hints[type]!,
-                    keyboardType: TextInputType.number,
+                  GetBuilder<ExerciseInput>(
+                    builder: (controller) {
+                      return PInputField(
+                        controller: controller.inputCont,
+                        hintText: controller.hintText ?? hints[type]!,
+                        keyboardType: TextInputType.number,
+                        invalid: controller.invalid,
+                        hintColor: controller.hintText == null
+                            ? PTheme.grey : PTheme.colorB,
+                      );
+                    }
                   ),
                 ],
               ),

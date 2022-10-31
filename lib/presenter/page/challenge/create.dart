@@ -10,30 +10,39 @@ import 'package:pistachio/presenter/page/challenge/party/main.dart';
 import 'package:pistachio/view/widget/function/dialog.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
+/// class
 class ChallengeCreate extends GetxController {
+  /// static methods
+  // 챌린지 생성 페이지로 이동
   static void toChallengeCreate(Challenge challenge) {
     final challengeCreate = Get.find<ChallengeCreate>();
     challengeCreate.init();
     Get.toNamed('/challenge/create', arguments: challenge);
   }
 
+  /// attributes
   Difficulty difficulty = Difficulty.easy;
 
+  /// methods
+  // 초기화
   void init() {
     difficulty = Difficulty.easy;
     update();
   }
 
+  // 난이도 변경
   void changeDifficulty(Difficulty diff) {
     difficulty = diff; update();
   }
 
+  // 챌린지 생성 버튼 클릭 시
   void challengeCreateButtonPressed(Challenge challenge) async {
-    final userPresenter = Get.find<UserPresenter>();
-    String code = await userPresenter.createMyParties(challenge, difficulty);
+    final userP = Get.find<UserPresenter>();
+    String code = await userP.createMyParty(challenge, difficulty);
     showChallengeCreatedDialog(code);
   }
 
+  // 챌린지 생성 팝업
   void showChallengeCreatedDialog(String code) {
     showPDialog(
       title: '챌린지 생성',

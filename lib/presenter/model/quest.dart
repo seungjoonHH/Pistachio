@@ -4,11 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/enum/enum.dart';
 
-// quests.json 파일 관련
+/// class
+// 월간 도전과제 [quests.json] 파일 관련
 class QuestPresenter extends GetxController {
+  /// static variables
   static String asset = 'assets/json/data/quests.json';
   static Map<ActivityType, int> quests = {};
 
+  /// static methods
+  // 월간 도전과제 불러오기
   static Future importFile() async {
     String string = await rootBundle.loadString(asset);
     Map<String, dynamic> list = jsonDecode(string);

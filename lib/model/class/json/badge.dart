@@ -1,6 +1,4 @@
 /* 뱃지 모델 구조 */
-import 'package:pistachio/global/string.dart';
-
 class Badge {
   /// static variables
   static const asset = 'assets/image/badge/';

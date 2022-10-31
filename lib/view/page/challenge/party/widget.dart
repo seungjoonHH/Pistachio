@@ -1,6 +1,5 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
@@ -20,48 +19,48 @@ class PartyMainView extends StatelessWidget {
     required this.party,
   }) : super(key: key);
 
-  final Party party;
+  final Party? party;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ChallengePartyMain>(
       builder: (challengePartyMain) {
         return GetBuilder<LoadingPresenter>(
-          builder: (loadingPresenter) {
+          builder: (loadingP) {
             return SmartRefresher(
-              controller: loadingPresenter.refreshCont,
+              controller: ChallengePartyMain.refreshCont,
               onRefresh: () async {
-                loadingPresenter.loadStart();
-                await challengePartyMain.init(party.id!);
-                loadingPresenter.loadEnd();
-                loadingPresenter.refreshCont.refreshCompleted();
+                loadingP.loadStart();
+                await challengePartyMain.init(party!.id!);
+                loadingP.loadEnd();
+                ChallengePartyMain.refreshCont.refreshCompleted();
               },
               onLoading: () async {
                 await Future.delayed(const Duration(milliseconds: 100));
-                loadingPresenter.refreshCont.loadComplete();
+                ChallengePartyMain.refreshCont.loadComplete();
               },
               header: const MaterialClassicHeader(
                 color: PTheme.black,
                 backgroundColor: PTheme.surface,
               ),
-              child: !loadingPresenter.loading
+              child: !loadingP.loading || party == null
                   ? SingleChildScrollView(
                 child: Column(
                   children: [
-                    ChallengeInfoWidget(party: party),
+                    ChallengeInfoWidget(party: party!),
                     const Divider(
                       color: PTheme.lightGrey,
                       thickness: 8,
                     ),
-                    MyScoreWidget(party: party),
+                    MyScoreWidget(party: party!),
                     const Divider(
                       color: PTheme.lightGrey,
                       thickness: 8,
                     ),
-                    RankWidget(party: party),
+                    RankWidget(party: party!),
                   ],
                 ),
-              ) : ChallengePartyMainLoading(color: loadingPresenter.color),
+              ) : ChallengePartyMainLoading(color: loadingP.color),
             );
           },
         );
@@ -175,7 +174,7 @@ class ChallengeInfoWidget extends StatelessWidget {
             alignment: Alignment.center,
             height: 160.0.h,
             child: PText(
-              party.challenge?.descriptions['detail']!,
+              party.challenge?.descriptions['detail']!.replaceAll('##', party.challenge!.word),
               style: textTheme.labelLarge,
               color: PTheme.grey,
               align: TextAlign.center,

@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 
 class HealthPresenter {
@@ -14,7 +13,6 @@ class HealthPresenter {
     HealthFactory health = HealthFactory();
     int steps = 0;
 
-    // get steps for today (i.e., since midnight)
     bool requested = await health.requestAuthorization([HealthDataType.STEPS]);
 
     // If we are trying to read Step Count, Workout, Sleep or other data that requires
@@ -30,25 +28,14 @@ class HealthPresenter {
     await Permission.location.request();
 
     if (requested) {
-      try {
-        final userPresenter = Get.find<UserPresenter>();
-        PUser user = userPresenter.loggedUser;
-        steps = (await health.getTotalStepsInInterval(today, now))!;
-        user.setRecord(ActivityType.distance, today, steps);
-        userPresenter.save();
-      } catch (error) {
-        if (kDebugMode) {
-          print("Caught exception in getTotalStepsInInterval: $error");
-        }
-      }
+      final userP = Get.find<UserPresenter>();
+      steps = (await health.getTotalStepsInInterval(today, now)) ?? 0;
+      DistanceRecord distance = DistanceRecord(
+        amount: steps.toDouble(), state: DistanceUnit.step,
+      );
 
-      if (kDebugMode) {
-        print('Total number of steps: $steps');
-      }
-    } else {
-      if (kDebugMode) {
-        print("Authorization not granted - error in authorization");
-      }
+      userP.setRecord(ActivityType.distance, distance);
+      userP.save();
     }
   }
 
@@ -78,79 +65,62 @@ class HealthPresenter {
     await Permission.location.request();
 
     if (requested) {
-      try {
-        final userPresenter = Get.find<UserPresenter>();
-        PUser user = userPresenter.loggedUser;
-        flightsData =
-            (await health.getHealthDataFromTypes(today, now, types));
-        flightsData = HealthFactory.removeDuplicates(flightsData);
+      final userP = Get.find<UserPresenter>();
+      flightsData = (await health.getHealthDataFromTypes(today, now, types));
+      flightsData = HealthFactory.removeDuplicates(flightsData);
 
-        for (var f in flightsData) {
-          flights += double.parse(f.value.toString()).round();
-        }
-
-        user.setRecord(ActivityType.height, today, flights);
-        userPresenter.save();
-      } catch (error) {
-        if (kDebugMode) {
-          print("Caught exception in getTotalFlightsInInterval: $error");
-        }
+      for (var flight in flightsData) {
+        flights += double.parse(flight.value.toString()).round();
       }
 
-      if (kDebugMode) {
-        print('Total number of flights: $flights');
-      }
-    } else {
-      if (kDebugMode) {
-        print("Authorization not granted - error in authorization");
-      }
+      HeightRecord height = HeightRecord(amount: flights.toDouble());
+
+      userP.setRecord(ActivityType.height, height);
+      userP.save();
     }
   }
 
   /// Add some health data.
-  static Future addStepsData(int minutes, int steps) async {
+  static Future addStepsData(Record distance, [int minutes = 0]) async {
     HealthFactory health = HealthFactory();
-    final now = DateTime.now();
-    final earlier = now.subtract(Duration(minutes: minutes));
 
+    final startTime = now.subtract(Duration(minutes: minutes));
     final types = [HealthDataType.STEPS];
     final rights = [HealthDataAccess.WRITE];
     final permissions = [HealthDataAccess.READ_WRITE];
-    bool? hasPermissions =
-        await HealthFactory.hasPermissions(types, permissions: rights);
-    if (hasPermissions == false) {
+
+    bool? hasPermissions = await HealthFactory.hasPermissions(types, permissions: rights);
+    if (!hasPermissions!) {
       await health.requestAuthorization(types, permissions: permissions);
     }
 
+    distance.convert(DistanceUnit.step);
+
     // Store a count of steps taken
     await health.writeHealthData(
-      steps.toDouble(),
+      distance.amount.toDouble(),
       HealthDataType.STEPS,
-      earlier,
-      now,
+      startTime, now,
     );
   }
 
   /// Add some health data.
-  static Future addFlightsData(int flights) async {
+  static Future addFlightsData(Record height) async {
     HealthFactory health = HealthFactory();
-    final now = DateTime.now();
 
     final types = [HealthDataType.FLIGHTS_CLIMBED];
     final rights = [HealthDataAccess.WRITE];
     final permissions = [HealthDataAccess.READ_WRITE];
-    bool? hasPermissions =
-        await HealthFactory.hasPermissions(types, permissions: rights);
+    bool? hasPermissions = await HealthFactory.hasPermissions(types, permissions: rights);
     if (hasPermissions == false) {
       await health.requestAuthorization(types, permissions: permissions);
     }
 
     // Store a count of steps taken
     await health.writeHealthData(
-      flights.toDouble(),
+      height.amount.toDouble(),
       HealthDataType.FLIGHTS_CLIMBED,
-      now,
-      now,
+      now, now,
     );
   }
 }

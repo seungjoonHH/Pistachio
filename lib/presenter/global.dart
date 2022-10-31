@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/json/badge.dart';
@@ -12,7 +11,7 @@ import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
-import 'package:pistachio/presenter/model/collection.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/party.dart';
 import 'package:pistachio/presenter/model/quest.dart';
@@ -23,7 +22,6 @@ import 'package:pistachio/presenter/page/challenge/main.dart';
 import 'package:pistachio/presenter/page/challenge/party/main.dart';
 import 'package:pistachio/presenter/page/complete.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
-import 'package:pistachio/presenter/page/exercise/main.dart';
 import 'package:pistachio/presenter/notification.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
 import 'package:pistachio/presenter/page/home.dart';
@@ -39,6 +37,7 @@ import 'package:pistachio/view/widget/widget/text.dart';
 
 class GlobalPresenter extends GetxController {
   static const String effectAsset = 'assets/image/widget/dialog/badge_effect.png';
+  static const String effect2Asset = 'assets/image/widget/dialog/badge_effect2.png';
 
   int navIndex = 0;
 
@@ -72,7 +71,7 @@ class GlobalPresenter extends GetxController {
               children: [
                 EternalRotation(
                   rps: .3,
-                  child: Image.asset(effectAsset,
+                  child: Image.asset(effect2Asset,
                     width: 180.0.r, height: 180.0.r,
                   ),
                 ),
@@ -152,7 +151,7 @@ class GlobalPresenter extends GetxController {
     );
   }
 
-  static void badgeAwarded(Badge badge, [bool firstAward = false]) {
+  static void badgeAwarded(Badge badge, [bool firstAward = false]) async {
     showPDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
@@ -205,6 +204,8 @@ class GlobalPresenter extends GetxController {
           ),
         ],
       ),
+      type: DialogType.mono,
+      onPressed: Get.back,
     );
 
   }
@@ -226,8 +227,7 @@ class GlobalPresenter extends GetxController {
     Get.put(HomePresenter());
     Get.put(CompletePresenter());
     Get.put(RegisterPresenter());
-    Get.put(NotificationPresenter());
-    Get.put(ExerciseMain());
+    // Get.put(NotificationPresenter());
     Get.put(ExerciseDetailSetting());
     Get.put(ExerciseInput());
     Get.put(RecordMain());

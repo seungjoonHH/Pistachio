@@ -2,20 +2,32 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:ntp/ntp.dart';
 
 /// enums
 // 날짜 형식 { 시작일, 종료일 }
 enum DateType { start, end }
 
 /// global variables
+late Duration timeError;
+
+// 시간 오차 설정
+void setTimeError() async {
+  timeError = (await NTP.now()).difference(DateTime.now());
+  print(await NTP.now());
+  print(DateTime.now());
+  print(timeError);
+  print(now);
+}
+
 // 현재 시각
-final now = DateTime.now();
+DateTime get now => DateTime.now().add(timeError);
 
 // 오늘 날짜 (시간 미포함)
-final today = ignoreTime(now);
+DateTime get today => ignoreTime(now);
 
 // 어제 날짜
-final yesterday = today.subtract(const Duration(days: 1));
+DateTime get yesterday => today.subtract(const Duration(days: 1));
 
 // 내일 날짜
 final tomorrow = today.add(const Duration(days: 1));
@@ -50,4 +62,25 @@ DateTime? stringToDate(String string) {
   available &= date.day == int.parse(string.substring(6));
 
   return available ? DateTime.parse(string) : null;
+}
+
+String timeToString(int timeInSecs) {
+  late int days, hours, minutes, seconds;
+  seconds = timeInSecs;
+
+  days = seconds ~/ (60 * 60 * 24);
+  seconds -= days * (60 * 60 * 24);
+  hours = seconds ~/ (60 * 60);
+  seconds -= hours * (60 * 60);
+  minutes = seconds ~/ 60;
+  seconds -= minutes * 60;
+
+  List<String> output = [];
+
+  if (days > 0) output.add('$days일');
+  if (hours > 0) output.add('$hours시간');
+  if (minutes > 0) output.add('$minutes분');
+  if (seconds > 0 || (days + hours + minutes == 0)) output.add('$seconds초');
+
+  return output.join(' ');
 }

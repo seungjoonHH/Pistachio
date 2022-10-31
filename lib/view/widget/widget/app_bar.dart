@@ -161,8 +161,8 @@ class _MyMainAppBarState extends State<MyMainAppBar> {
         IconButton(
           icon: const Icon(Icons.settings),
           onPressed: () async {
-            final userPresenter = Get.find<UserPresenter>();
-            if (await MySettingMain.toMySettingMain()) userPresenter.update();
+            final userP = Get.find<UserPresenter>();
+            if (await MySettingMain.toMySettingMain()) userP.update();
           },
         ),
       ],

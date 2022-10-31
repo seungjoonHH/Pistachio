@@ -8,12 +8,13 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/number.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
-import 'package:pistachio/presenter/model/collection.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/quest.dart';
-import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
@@ -90,19 +91,13 @@ class MonthlyQuestView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: ActivityType.activeValues.map((type) {
-                      Badge? badge = BadgePresenter.getBadge('1040${type.index}${
+                      Badge? badge;
+                      () async {
+                        badge = BadgePresenter.getBadge('1040${type.index}${
                           (today.month - 1).toString().padLeft(2, '0')}'
-                      );
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BadgeWidget(
-                            badge: badge, size: 90.0.r,
-                            onPressed: () => GlobalPresenter.showBadgeDialog(badge),
-                          ),
-                          QuestPercentView(type: type),
-                        ],
-                      );
+                        );
+                      }();
+                      return QuestBadgePercentView(badge: badge!, type: type);
                     }).toList(),
                   ),
                 ),
@@ -115,22 +110,47 @@ class MonthlyQuestView extends StatelessWidget {
   }
 }
 
-class QuestPercentView extends StatelessWidget {
-  final ActivityType type;
+class QuestBadgePercentView extends StatelessWidget {
+  const QuestBadgePercentView({
+    Key? key,
+    required this.badge,
+    required this.type,
+  }) : super(key: key);
 
-  const QuestPercentView({Key? key, required this.type}) : super(key: key);
+  final Badge badge;
+  final ActivityType type;
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<QuestPresenter>(
-      builder: (controller) {
-        final homePresenter = Get.find<HomePresenter>();
-        int record = homePresenter.thisMonthRecords[type] ?? 0;
-        int goal = QuestPresenter.quests[type] ?? 1;
-        if (type == ActivityType.weight) goal ~/= weight + 1;
-        double percent = min(record / goal, 1);
+    final userP = Get.find<UserPresenter>();
 
-        return Expanded(
+    PUser user = Get.find<UserPresenter>().loggedUser;
+    double record = user.getThisMonthAmounts(type);
+    int goal = QuestPresenter.quests[type] ?? 1;
+    if (type == ActivityType.weight) goal ~/= weight + 1;
+    double percent = min(record / goal, 1);
+
+    bool completed = percent == 1;
+    bool received = user.collections.map((col) => col.badge!.id).contains(badge.id);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            BadgeWidget(
+              badge: badge, size: 80.0.r,
+              completed: completed,
+              received: received,
+              onPressed: received
+                  ? null : completed
+                  ? () => userP.awardBadge(badge)
+                  : () => GlobalPresenter.showBadgeDialog(badge),
+            ),
+          ],
+        ),
+        Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -160,8 +180,8 @@ class QuestPercentView extends StatelessWidget {
               ],
             ),
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 }

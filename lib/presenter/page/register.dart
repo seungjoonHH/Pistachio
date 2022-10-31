@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/string.dart';
-import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/badge.dart';
+import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/view/page/register/widget.dart';
 import 'home.dart';
@@ -41,8 +42,8 @@ class RegisterPresenter extends GetxController {
   static final carouselCont = CarouselController();
 
   static void toRegister() {
-    final registerPresenter = Get.find<RegisterPresenter>();
-    registerPresenter.init();
+    final registerP = Get.find<RegisterPresenter>();
+    registerP.init();
     Get.toNamed('/register');
   }
 
@@ -52,7 +53,6 @@ class RegisterPresenter extends GetxController {
     for (var field in fields.values) { field.controller?.clear(); }
     newcomer = PUser();
     pageIndex = 0;
-    distanceMinute = 0;
   }
 
   // 현재 페이지 인덱스 증가
@@ -70,10 +70,6 @@ class RegisterPresenter extends GetxController {
   /// attributes
   // 추가될 유저
   PUser newcomer = PUser();
-
-  int distanceMinute = 0;
-  int weightPerDay = 0;
-
   bool keyboardVisible = false;
 
   void setKeyboardVisible(bool value) {
@@ -101,44 +97,25 @@ class RegisterPresenter extends GetxController {
     update();
   }
 
-  void initGoal(ActivityType type, int value) async {
-    newcomer.goals[type.name] = 0;
-    if (type == ActivityType.distance) distanceMinute = 0;
+  void initGoal(Record record) async {
+    newcomer.goals[record.type!.name] = 0;
     update();
     await Future.delayed(const Duration(milliseconds: 500), () {
-      setGoal(type, value);
+      newcomer.setGoal(record.type!, record);
       update();
     });
   }
 
-  void setGoal(ActivityType type, int value) {
-    int amount = value;
-
-    switch (type) {
-      case ActivityType.distance:
-        distanceMinute = amount;
-        amount = convertDistance(amount, DistanceUnit.minute, DistanceUnit.step);
-        break;
-      case ActivityType.weight:
-        weightPerDay = amount * newcomer.weight!;
-        break;
-      default:
-    }
-    newcomer.goals[type.name] = amount;
-  }
-
-  // 새 크루 정보 제출 시
-  void submitted() {
-    final userPresenter = Get.find<UserPresenter>();
+  void submitted() async {
+    final userP = Get.find<UserPresenter>();
     newcomer.nickname = fields['nickname']!.controller.text;
     newcomer.dateOfBirth = stringToDate(fields['dateOfBirth']!.controller.text);
 
-    userPresenter.login(newcomer);
-    userPresenter.loggedUser.regDate = DateTime.now();
+    userP.login(newcomer);
+    userP.loggedUser.regDate = now;
 
-    // 파이어베이스에 저장
-    userPresenter.save();
-    HomePresenter.toHome();
+    await HomePresenter.toHome();
+    userP.awardBadge(BadgePresenter.getBadge('1000000')!);
 
     init();
   }
@@ -182,7 +159,7 @@ class RegisterPresenter extends GetxController {
 
     Map<String, bool> conditions = {
       '잘못 입력하셨습니다': (today.year - (date?.year ?? 0)) > 99,
-      '미래는 입력할 수 없습니다': today.isBefore(date ?? today),
+      '미래는 입력할 수 없습니다': today.isBefore(date ?? (today)),
       '오늘은 입력할 수 없습니다': isSameDay(today, date ?? today),
       '없는 날짜 입니다': date == null,
       '여덟 글자가 아닙니다': text.length != 8,
@@ -228,6 +205,7 @@ class RegisterPresenter extends GetxController {
       update();
     });
   }
+
   void slideNext() async {
     imageVisualize = false;
     update();
@@ -251,20 +229,23 @@ class RegisterPresenter extends GetxController {
       case 1: break;
       case 2: break;
       case 3:
-        initGoal(ActivityType.distance, 15);
+        initGoal(Record.init(
+          ActivityType.distance,
+          90, DistanceUnit.minute,
+        ));
         break;
       case 4: break;
       case 5:
-        initGoal(ActivityType.height, 15);
+        initGoal(Record.init(ActivityType.height, 20));
         break;
       case 6:
-        int goal = 0;
-        for (var type in ActivityType.activeValues.sublist(1)) {
-          int amount = newcomer.goals[type.name].toInt();
-          if (type == ActivityType.distance) amount = distanceMinute;
-          goal += convertToCalories(type, amount);
-        }
-        newcomer.goals[ActivityType.calorie.name] = goal;
+        Record calorie = CalorieRecord(amount: 0);
+        DistanceRecord distance = newcomer.getGoal(ActivityType.distance) as DistanceRecord;
+        HeightRecord height = newcomer.getGoal(ActivityType.height) as HeightRecord;
+        calorie.amount += CalorieRecord.from(ActivityType.distance, distance.minute);
+        calorie.amount += CalorieRecord.from(ActivityType.height, height.amount);
+
+        newcomer.setGoal(ActivityType.calorie, calorie);
         update();
         break;
       case 7:
@@ -281,8 +262,8 @@ class RegisterPresenter extends GetxController {
   // 뒤로가기 버튼 클릭 트리거
   void backPressed() {
     if (pageIndex == 0) {
-      final userPresenter = Get.find<UserPresenter>();
-      userPresenter.logout();
+      final userP = Get.find<UserPresenter>();
+      userP.logout();
       init();
       Get.offAllNamed('/login', arguments: true);
     }

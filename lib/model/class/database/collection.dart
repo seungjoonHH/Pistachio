@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/json/badge.dart';
-import 'package:pistachio/presenter/model/collection.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 
 class Collection {
   /// attributes

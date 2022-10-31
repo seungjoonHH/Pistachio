@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/view/page/my/record/widget.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
-import '../../../../model/enum/enum.dart';
 import 'background/layout/layoutColors.dart';
 
 class MyRecordPage extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
@@ -12,11 +13,11 @@ class CollectionMainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<CollectionMain>(
       builder: (controller) {
-        final userPresenter = Get.find<UserPresenter>();
+        final userP = Get.find<UserPresenter>();
+        PUser user = userP.loggedUser;
         const collectionCounts = 99;
 
-        List<Widget> collectionWidgets = userPresenter
-            .myCollections.map((collection) {
+        List<Widget> collectionWidgets = user.collections.map((collection) {
           return Center(
             child: CollectionWidget(
               collection: collection,
@@ -30,7 +31,7 @@ class CollectionMainView extends StatelessWidget {
               pressed: controller.mode == PageMode.edit
                   && controller.selectedBadgeId == collection.badgeId,
               selected: controller.mode == PageMode.view
-                  && userPresenter.loggedUser.badgeId == collection.badgeId,
+                  && user.badgeId == collection.badgeId,
             ),
           );
         }).toList();

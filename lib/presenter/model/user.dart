@@ -1,51 +1,48 @@
 /* 사용자 모델 프리젠터 */
-
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:pistachio/global/unit.dart';
+import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
+import 'package:pistachio/presenter/global.dart';
+import 'package:pistachio/presenter/health/health.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/party.dart';
-
-import '../health/health.dart';
+import 'package:pistachio/presenter/model/record.dart';
 
 /// class
+// 사용자 객체 관련
 class UserPresenter extends GetxController {
+  /// static variables
+
+  /// static methods
+
   /// attributes
   /* 로그인 관련 */
   // User Credential 정보
   Map<String, dynamic> data = {};
 
-  // 현재 로그인된 사용
+  // 현재 로그인된 사용자
   PUser loggedUser = PUser();
 
   // 로그인 여부
   bool get isLogged => loggedUser.uid != null;
-
-  final notifications = <Map<String, dynamic>>[].obs;
 
   /// methods
   /* 로그인 관련 */
   // 로그인
   // 매개변수로 받은 사용자 정보와 User Credential 정보를 병합하여 현재 로그인된 사용자자 최신화
   Future login(PUser user) async {
-    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
     Map<String, dynamic> json = user.toJson();
     data.forEach((key, value) => json[key] = value);
     loggedUser = PUser.fromJson(json);
-
-    await HealthPresenter.fetchStepData();
-    if (isIOS) await HealthPresenter.fetchFlightsData();
-
-    updateCalorie();
+    await fetchData();
   }
 
   // 로그아웃
@@ -74,32 +71,10 @@ class UserPresenter extends GetxController {
     f.collection('users').doc(loggedUser.uid).delete();
   }
 
-  Map<String, Party> get myParties => loggedUser.parties;
-
-  set myParties(Map<String, Party> parties) => loggedUser.parties = parties;
-
-  String get randomCode {
-    int length = 7;
-    const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-    return String.fromCharCodes(
-      Iterable.generate(length, (_) => chars.codeUnitAt(
-        Random().nextInt(chars.length),
-      )),
-    );
-  }
-
-  Future getMembers(Party party) async {
-    for (String uid in party.records.keys) {
-      var json = (await f.collection('users').doc(uid).get()).data();
-
-      if (json == null) return;
-      PUser member = PUser.fromJson(json);
-      party.members.add(member);
-    }
-  }
-
-  Future<String> createMyParties(Challenge challenge, Difficulty diff) async {
-    String code = randomCode;
+  // 챌린지와 난이도에 따른 새로운 파티 생성, 해당 파티 코드 반환
+  // 로그인된 사용자가 직접 파티를 생성하는 경우
+  Future<String> createMyParty(Challenge challenge, Difficulty diff) async {
+    String code = PUser.randomCode;
 
     Party newParty = Party.fromJson({
       'id': code,
@@ -110,8 +85,8 @@ class UserPresenter extends GetxController {
     });
 
     newParty.challenge = ChallengePresenter.getChallenge(newParty.challengeId!);
-    myParties[code] = newParty;
-    await getMembers(newParty);
+    loggedUser.parties[code] = newParty;
+    await PartyPresenter.loadMembers(newParty);
     PartyPresenter.save(newParty);
 
     loggedUser.partyIds.add(newParty.id!);
@@ -122,55 +97,163 @@ class UserPresenter extends GetxController {
     return code;
   }
 
+  // 파이어베이스에서 나의 파티 리스트 로드
   Future loadMyParties() async {
     for (String id in loggedUser.partyIds) {
       var json = (await f.collection('parties').doc(id).get()).data();
       if (json == null) return;
       Party party = Party.fromJson(json);
       party.challenge = ChallengePresenter.getChallenge(party.challengeId!);
-      await getMembers(party);
-      myParties[json['id']] = party;
+      await PartyPresenter.loadMembers(party);
+      loggedUser.parties[json['id']] = party;
     }
     update();
   }
 
-  set myCollections(List<Collection> collections) =>
-      loggedUser.collections = collections;
-
-  List<Collection> get myCollections => loggedUser.collections;
-
+  // 해당 아이디의 파티에 참가
+  // 로그인된 사용자가 직접 참가하는 경우
   void joinParty(String id) {
     if (loggedUser.partyIds.contains(id)) return;
     loggedUser.partyIds.add(id);
     save();
   }
 
+  // 로그인된 사용자가 해당 아이디의 챌린지에 이미 참여 중인지 여부 반환
   bool alreadyJoinedChallenge(String challengeId) {
-    return myParties.values
+    return loggedUser.parties.values
         .map((party) => party.challengeId).contains(challengeId);
   }
 
-  bool alreadyJoinedParty(String id) {
-    return myParties.values
-        .map((party) => party.id).contains(id);
+  // 로그인된 사용자가 해당 코드의 파티에 이미 참여 중인지 여부 반환
+  bool alreadyJoinedParty(String code) {
+    return loggedUser.parties.values
+        .map((party) => party.id).contains(code);
   }
 
+  // 로그인된 사용자가 해당 아이디의 파티가 있을 경우 파티 객체 반환
+  // 그렇지 않은 경우 null 반환
   Party? getPartyByChallengeId(String challengeId) {
-    return myParties.values.toList()
+    return loggedUser.parties.values.toList()
         .firstWhereOrNull((party) => party.challengeId == challengeId);
   }
 
-  void updateCalorie() {
-    int distance = loggedUser.getAmounts(ActivityType.distance, today, oneSecondBefore(tomorrow));
-    int height = loggedUser.getAmounts(ActivityType.height, today, oneSecondBefore(tomorrow));
-    int calorie = 0;
+  /* 기록 관련 */
+  // 건강 및 구글핏 데이터 불러오기
+  Future fetchData() async {
+    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+    await HealthPresenter.fetchStepData();
+    if (isIOS) await HealthPresenter.fetchFlightsData();
+    updateCalorie();
+  }
 
-    distance = convertDistance(distance, DistanceUnit.step, DistanceUnit.kilometer);
-    calorie += convertToCalories(ActivityType.distance, distance);
-    calorie += convertToCalories(ActivityType.height, height);
+  // 로그인된 사용자의 거리 및 높이 기록에 따른 칼로리 소모량을 계산하여 최신화
+  void updateCalorie() async {
+    DistanceRecord distance = DistanceRecord(
+      amount: loggedUser.getAmounts(
+        ActivityType.distance, today,
+        oneSecondBefore(tomorrow),
+      ),
+      state: DistanceUnit.step,
+    );
+
+    HeightRecord height = HeightRecord(
+      amount: loggedUser.getAmounts(
+        ActivityType.height, today,
+        oneSecondBefore(tomorrow),
+      ),
+    );
+
+    CalorieRecord calorie = CalorieRecord(amount: 0);
+
+    calorie.amount += CalorieRecord.from(
+      ActivityType.distance,
+      distance.minute,
+    );
+    calorie.amount += CalorieRecord.from(
+      ActivityType.height,
+      height.amount,
+    );
 
     loggedUser.setRecord(ActivityType.calorie, today, calorie);
     save(); update();
   }
 
+  // 해당 활동형식의 기록 추가 (구글핏/건강 연동, 칼로리 계산, 관련 뱃지 수여)
+  void addRecord(
+    ActivityType type,
+    Record record,
+    [DistanceUnit? dst]
+   ) async {
+    final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+
+    late int before, after;
+    if (dst != null) record.convert(dst);
+
+    CalorieRecord calorie = CalorieRecord(
+      amount: CalorieRecord.from(type, record.amount),
+    );
+
+    before = loggedUser.completedActivities.length;
+
+    loggedUser.addRecord(type, today, record, true);
+    loggedUser.addRecord(ActivityType.calorie, today, calorie, true);
+
+    switch (type) {
+      case ActivityType.distance:
+        await HealthPresenter.addStepsData(record);
+        break;
+      case ActivityType.height:
+        if (!isIOS) break;
+        await HealthPresenter.addFlightsData(record);
+        break;
+      default: break;
+    }
+
+    after = loggedUser.completedActivities.length;
+
+    if (before != 3 && after == 3) BadgePresenter.awardDailyActivityCompleteBadge();
+    save();
+  }
+
+  // 구글핏/건강 연동 데이터에서 파이어베이스로 기록 설정
+  void setRecordFromFetchedData() {
+
+  }
+
+  // 파이어베이스에서 구글핏/건강 연동 데이터로 기록 설정
+  void setRecordFromLoadedData() async {
+    // final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+    // await HealthPresenter.addStepsData(amount, );
+    // if (isIOS) await HealthPresenter.addFlightsData(amount);
+  }
+
+  // 해당 활동형식의 기록 설정
+  void setRecord(ActivityType type, Record record) async {
+    late int before, after;
+
+    CalorieRecord calorie = CalorieRecord(
+      amount: CalorieRecord.from(type, record.amount),
+    );
+    before = loggedUser.completedActivities.length;
+
+    loggedUser.setRecord(type, today, record);
+    loggedUser.setRecord(ActivityType.calorie, today, calorie);
+
+    after = loggedUser.completedActivities.length;
+
+    if (before != 3 && after == 3) BadgePresenter.awardDailyActivityCompleteBadge();
+    save();
+  }
+
+  // 로그인된 사용자에게 뱃지 수여
+  void awardBadge(Badge badge) async {
+    GlobalPresenter.badgeAwarded(badge);
+    loggedUser.collections.add(Collection.fromJson({
+      'badgeId': badge.id,
+      'dates': [toTimestamp(now)],
+    }));
+
+    save();
+    update();
+  }
 }

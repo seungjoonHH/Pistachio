@@ -13,33 +13,41 @@ import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/view/widget/function/dialog.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class ChallengeMain extends GetxController
-    with GetSingleTickerProviderStateMixin {
-  List<Widget> tabs = ['이달의 챌린지', '내 챌린지']
-      .map((title) => PText(title)).toList();
+class ChallengeMain extends GetxController with GetSingleTickerProviderStateMixin {
 
-  late TabController tabCont;
-  final codeCont = TextEditingController();
-  bool codeInvalid = false;
-  String? codeHintText = '';
+  /// static variables
+  static final refreshCont = RefreshController();
+  static final codeCont = TextEditingController();
 
+  /// static methods
+  // 챌린지 메인 페이지로 이동
   static void toChallengeMain() async {
-    final loadingPresenter = Get.find<LoadingPresenter>();
-    final userPresenter = Get.find<UserPresenter>();
+    final loadingP = Get.find<LoadingPresenter>();
+    final userP = Get.find<UserPresenter>();
     final challengeMain = Get.find<ChallengeMain>();
 
-    loadingPresenter.loadStart();
+    loadingP.loadStart();
 
     challengeMain.tabCont.index = 0;
     Get.offAllNamed('/challenge/main');
     await ChallengePresenter.importFile();
-    await userPresenter.load();
-    await userPresenter.loadMyParties();
+    await userP.load();
+    await userP.loadMyParties();
 
-    loadingPresenter.loadEnd();
+    loadingP.loadEnd();
   }
 
+  /// attributes
+  late TabController tabCont;
+  List<Widget> tabs = ['이달의 챌린지', '내 챌린지']
+      .map((title) => PText(title)).toList();
+  bool codeInvalid = false;
+  String? codeHintText = '';
+
+  /// methods
+  // 챌린지 참가 버튼 클릭 시
   void challengeJoinButtonPressed() async {
     codeCont.clear();
     codeHintText = null;
@@ -72,14 +80,15 @@ class ChallengeMain extends GetxController
         ),
         type: DialogType.bi,
         leftPressed: Get.back,
-        rightPressed: joinParty,
+        rightPressed: partyJoinButtonPressed,
       ),
     );
   }
 
-  void joinParty() async {
-    final userPresenter = Get.find<UserPresenter>();
-    PUser user = userPresenter.loggedUser;
+  // 파티 참가 버튼 클릭 시
+  void partyJoinButtonPressed() async {
+    final userP = Get.find<UserPresenter>();
+    PUser user = userP.loggedUser;
 
     if (!await validate()) return;
     Party? party = await PartyPresenter.loadParty(codeCont.text);
@@ -90,19 +99,20 @@ class ChallengeMain extends GetxController
     );
 
     PartyPresenter.save(party);
-    userPresenter.joinParty(codeCont.text);
+    userP.joinParty(codeCont.text);
 
     Get.back();
     ChallengeMain.toChallengeMain();
     ChallengePartyMain.toChallengePartyMain(party);
   }
 
+  // 파티 코드 입력 필드 유효성 검사
   Future<bool> validate() async {
-    final userPresenter = Get.find<UserPresenter>();
+    final userP = Get.find<UserPresenter>();
     String text = codeCont.text;
 
     Map<String, bool> conditions = {
-      '이미 참여중인 챌린지 입니다': ! !userPresenter.alreadyJoinedParty(text),
+      '이미 참여중인 챌린지 입니다': ! !userP.alreadyJoinedParty(text),
       '해당 코드의 챌린지가 없습니다': !await PartyPresenter.partyExists(text),
       '7글자로 입력해주세요': text.length != 7,
       '공백을 포함할 수 없습니다': text.contains(' '),

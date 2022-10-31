@@ -1,12 +1,10 @@
 /* 메인 페이지 프리젠터 */
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// class
 class MainPresenter extends GetxController {
   /// static variables
   // 리프레시 컨트롤러
-  static final refreshCont = RefreshController(initialRefresh: false);
 
 // // 리프레시 중 실행 함수
 // static void onRefresh() async {

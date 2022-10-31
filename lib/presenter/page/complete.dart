@@ -18,10 +18,10 @@ class CompletePresenter extends GetxController {
   List<String> titles = ['모아이 석상', '코끼리'];
 
   static void toComplete(double degree, [double? degree2]) {
-    final completePresenter = Get.find<CompletePresenter>();
+    final completeP = Get.find<CompletePresenter>();
     Get.toNamed('/exercise/complete');
-    completePresenter.initPercent();
-    completePresenter.increasePercent(degree, degree2);
+    completeP.initPercent();
+    completeP.increasePercent(degree, degree2);
   }
 
   void initPercent() {

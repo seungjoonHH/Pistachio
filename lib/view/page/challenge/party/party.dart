@@ -18,7 +18,7 @@ class ChallengePartyMainPage extends StatelessWidget {
         appBar: const PAppBar(title: '내 챌린지'),
         body: GetBuilder<ChallengePartyMain>(
           builder: (controller) {
-            return PartyMainView(party: controller.loadedParty!);
+            return PartyMainView(party: controller.loadedParty);
           }
         ),
       ),

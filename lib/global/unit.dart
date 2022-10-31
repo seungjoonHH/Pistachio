@@ -30,41 +30,29 @@ Map<ActivityType, int> get velocities => {
 };
 
 // 활동별 소모 칼로리
-int convertToCalories(ActivityType type, int amount) {
-  double velocity = velocities[type]!.toDouble();
-  return (calories[type]! * velocity * amount).ceil();
-}
+// int convertToCalories(ActivityType type, int amount) {
+//   double velocity = velocities[type]!.toDouble();
+//   return (calories[type]! * velocity * amount).ceil();
+// }
 
-// 거리 변환
-int convertDistance(int amount, DistanceUnit src, DistanceUnit dst) {
-  double velocity = Walking.velocity * .8
-      + Jogging.velocity * .1 + Running.velocity * .1;
-  const double kilometerPerStep = 0.00074;
+// 활동형식별 값 변환
+// 거리: 분 > 보
+// int convertRecord(ActivityType type, int amount) {
+//   switch (type) {
+//     case ActivityType.distance:
+//       int converted = convertDistance(
+//         amount, DistanceUnit.minute, DistanceUnit.step,
+//       );
+//       return converted;
+//     case ActivityType.height: return amount;
+//     default: return amount;
+//   }
+// }
 
-  double value = amount.toDouble();
-  int direction = dst.index - src.index;
-
-  switch(direction) {
-    case -2:
-      value /= (velocity * kilometerPerStep); break;
-    case -1:
-      if (dst == DistanceUnit.step) value /= kilometerPerStep;
-      if (dst == DistanceUnit.minute) value /= velocity;
-      break;
-    case 1:
-      if (dst == DistanceUnit.kilometer) value *= kilometerPerStep;
-      if (dst == DistanceUnit.step) value *= velocity;
-      break;
-    case 2:
-      value *= (velocity * kilometerPerStep); break;
-  }
-
-  return value.ceil();
-}
 
 String unitDistance(int amount) {
-  if (amount > 100000) return '${toLocalString(amount ~/ 10000)}만보';
-  return '${toLocalString(amount)}보';
+  if (amount > 100000) return '${toLocalString(amount ~/ 10000)}만';
+  return toLocalString(amount);
 }
 
 // 무게 변환 (회 -> kg)

@@ -10,8 +10,9 @@ import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
-import 'package:pistachio/presenter/model/collection.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/level.dart';
+import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
@@ -44,17 +45,12 @@ class _MyMainViewState extends State<MyMainView> {
                 const SizedBox(height: 20.0),
                 Column(
                   children: ActivityType.values.map((type) {
-                    int amounts = loggedUser.getAmounts(type);
-                    if (type == ActivityType.distance) {
-                      amounts = convertDistance(amounts,
-                        DistanceUnit.step,
-                        DistanceUnit.kilometer,
-                      );
-                    }
+                    double amount = loggedUser.getAmounts(type);
+                    Record record = Record.init(type, amount, DistanceUnit.step);
 
-                    Map<String, dynamic> tier = LevelPresenter.getTier(type, amounts);
+                    Map<String, dynamic> tier = LevelPresenter.getTier(type, record);
 
-                    return Container(
+                    return SizedBox(
                       height: 120.0.h,
                       child: Stack(
                         alignment: Alignment.center,

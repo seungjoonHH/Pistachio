@@ -2,48 +2,52 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/level.dart';
+import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'background/layout/components/background_top.dart';
 import 'background/layout/components/clouds.dart';
 import 'background/layout/components/sun.dart';
-import 'background/layout/components/floating_object.dart';
+
 
 class MyRecordDetailView extends StatelessWidget {
   final ActivityType type;
 
-  MyRecordDetailView({Key? key, required this.type}) : super(key: key);
+  const MyRecordDetailView({Key? key, required this.type}) : super(key: key);
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context,) {
+
     PUser loggedUser = Get.find<UserPresenter>().loggedUser;
-    int amounts = loggedUser.getAmounts(type);
+    double amount = loggedUser.getAmounts(type);
+    Record record = Record.init(type, amount, DistanceUnit.step);
 
-    if (type == ActivityType.distance) {
-      amounts = convertDistance(
-        amounts,
-        DistanceUnit.step,
-        DistanceUnit.kilometer,
-      );
-    }
+    Map<String, dynamic> tier = LevelPresenter.getTier(type, record);
+    // if (type == ActivityType.distance) {
+    //   amounts = convertDistance(
+    //     amounts,
+    //     DistanceUnit.step,
+    //     DistanceUnit.kilometer,
+    //   );
+    // }
 
-    Map<String, dynamic> tier = LevelPresenter.getTier(type, amounts);
-    int remainValue = tier['nextValue'] - amounts;
+    Record nextValue = Record.init(
+      type, tier['nextValue'].toDouble(), DistanceUnit.kilometer,
+    );
 
-    if (type == ActivityType.distance) {
-      remainValue = convertDistance(
-        remainValue,
-        DistanceUnit.kilometer,
-        DistanceUnit.step,
-      );
-    }
+    nextValue.convert(DistanceUnit.step);
+    int remainValue = (nextValue.amount - amount).round();
+    // if (type == ActivityType.distance) {
+    //   remainValue = convertDistance(
+    //     remainValue,
+    //     DistanceUnit.kilometer,
+    //     DistanceUnit.step,
+    //   );
+    // }
 
     return Column(
       children: [

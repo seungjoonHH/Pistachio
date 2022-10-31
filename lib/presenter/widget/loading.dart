@@ -3,16 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+/// class
 class LoadingPresenter extends GetxController {
-  final refreshCont = RefreshController(initialRefresh: false);
-
+  /// attributes
   bool loading = false;
   Color mainColor = PTheme.black;
   Color color = PTheme.black;
   Timer? timer;
 
+  /// methods
+  // 로딩 시작
   void loadStart() {
     if (loading) return;
     loading = true;
@@ -23,6 +24,8 @@ class LoadingPresenter extends GetxController {
       update();
     });
   }
+
+  // 로딩 종료
   void loadEnd() async {
     await Future.delayed(const Duration(milliseconds: 50), () {
       timer?.cancel();

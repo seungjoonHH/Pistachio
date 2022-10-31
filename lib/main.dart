@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:pistachio/firebase_options.dart';
+import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/global.dart';
-import 'package:pistachio/presenter/loading.dart';
+import 'package:pistachio/presenter/import.dart';
 import 'package:pistachio/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,8 +26,9 @@ class Pistachio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setTimeError();
     GlobalPresenter.initControllers();
-    DataLoadingPresenter.importData();
+    ImportPresenter.importData();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return ScreenUtilInit(
       designSize: const Size(360, 800),
@@ -39,25 +41,18 @@ class Pistachio extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.light,
           theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: PTheme.lightScheme,
             textTheme: PTheme.textTheme,
-            appBarTheme: AppBarTheme(
-              iconTheme: IconThemeData(
-                color: PTheme.lightScheme.primary,
-              ),
-            ),
           ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: PTheme.darkScheme,
-            textTheme: PTheme.textTheme,
-            appBarTheme: AppBarTheme(
-              iconTheme: IconThemeData(
-                color: PTheme.darkScheme.primary,
-              ),
-            ),
-          ),
+          // darkTheme: ThemeData(
+          //   useMaterial3: true,
+          //   colorScheme: PTheme.darkScheme,
+          //   textTheme: PTheme.textTheme,
+          //   appBarTheme: AppBarTheme(
+          //     iconTheme: IconThemeData(
+          //       color: PTheme.darkScheme.primary,
+          //     ),
+          //   ),
+          // ),
           // home: const DeveloperPage(),
           home: const LoginPage(),
           getPages: PRoute.getPages,

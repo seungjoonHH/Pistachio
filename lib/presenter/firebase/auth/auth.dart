@@ -15,7 +15,7 @@ class AuthPresenter {
   /// static methods
   // 로그인 형식에 따른 피트윈 로그인
   static Future pLogin(LoginType type) async {
-    final userPresenter = Get.find<UserPresenter>();
+    final userP = Get.find<UserPresenter>();
     UserCredential? userCredential;
 
     // 신규회원 여부
@@ -46,7 +46,7 @@ class AuthPresenter {
     data['name'] = userCredential.user!.displayName ?? appleName;
     data['email'] = userCredential.user!.email;
 
-    userPresenter.data = {...data};
+    userP.data = {...data};
 
     // 신규 회원일 경우
     if (isNewcomer) {
@@ -58,22 +58,22 @@ class AuthPresenter {
     else {
       // 파이어베이스 데이터로 로그인
       PUser stranger = PUser.fromJson(json);
-      await userPresenter.login(stranger);
+      await userP.login(stranger);
       HomePresenter.toHome();
     }
   }
 
   // 피트윈 로그아웃
   static void pLogout() {
-    final userPresenter = Get.find<UserPresenter>();
+    final userP = Get.find<UserPresenter>();
     Get.offAllNamed('/login');
-    userPresenter.logout();
+    userP.logout();
   }
 
   // 피트윈 계정삭제
   static void pDeleteAccount() {
-    final userPresenter = Get.find<UserPresenter>();
-    userPresenter.delete();
+    final userP = Get.find<UserPresenter>();
+    userP.delete();
     pLogout();
   }
 }

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/presenter/model/collection.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
@@ -43,8 +43,8 @@ class MyProfileUpdateButtonWidget extends StatefulWidget {
 class _MyProfileUpdateButtonWidgetState extends State<MyProfileUpdateButtonWidget> {
   @override
   Widget build(BuildContext context) {
-    final userPresenter = Get.find<UserPresenter>();
-    String? badgeId = userPresenter.loggedUser.badgeId;
+    final userP = Get.find<UserPresenter>();
+    String? badgeId = userP.loggedUser.badgeId;
 
     return Column(
       children: [

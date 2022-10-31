@@ -5,8 +5,8 @@ class OnboardingPresenter extends GetxController {
   static final carouselCont = CarouselController();
 
   static void toOnboarding() {
-    final onboardingPresenter = Get.find<OnboardingPresenter>();
-    onboardingPresenter.init();
+    final onboardingP = Get.find<OnboardingPresenter>();
+    onboardingP.init();
     Get.toNamed('/onboarding');
   }
   static String directory = 'assets/image/page/onboarding/';

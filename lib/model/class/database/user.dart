@@ -1,13 +1,28 @@
 /* 사용자 모델 구조 */
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/record.dart';
 
 class PUser {
+  /// static methods
+  // 무작위 코드 생성
+  static String get randomCode {
+    int length = 7;
+    const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    return String.fromCharCodes(
+      Iterable.generate(length, (_) => chars.codeUnitAt(
+        Random().nextInt(chars.length),
+      )),
+    );
+  }
+
   /// attributes
   // 일반 변수
   String? uid;
@@ -25,12 +40,14 @@ class PUser {
   // 복합 변수
   List<Collection> collections = [];
   Map<String, dynamic> goals = {};
+  Map<String, dynamic> inputRecords = {};
   Map<String, dynamic> records = {};
 
   // 의존 변수
   Map<String, Party> parties = {}; // partyIds 변수에 의존
 
   /// accessors & mutators
+
   DateTime? get regDate => _regDate?.toDate();
   DateTime? get dateOfBirth => _dateOfBirth?.toDate();
 
@@ -39,8 +56,36 @@ class PUser {
   set regDate(DateTime? date) => _regDate = toTimestamp(date);
   set dateOfBirth(DateTime? date) => _dateOfBirth = toTimestamp(date);
 
+  // 대표 컬렉션
   Collection? get collection => collections
       .firstWhereOrNull((collection) => collection.badgeId == badgeId);
+
+  Collection? getCollectionsById(String id) {
+    return collections.firstWhereOrNull((col) => col.badgeId == id);
+  }
+
+  List<ActivityType> get completedActivities {
+    List<ActivityType> types = [];
+    for (ActivityType type in ActivityType.values.sublist(0, 3)) {
+      if (completed(type)) types.add(type);
+    }
+    return types;
+  }
+
+  int get numOfConsecutiveBadge {
+    const String code = '1000001';
+    List<DateTime?>? dates = getCollectionsById(code)?.dates;
+    DateTime? before = dates?.last;
+    dates = dates?.reversed.toList().sublist(1);
+    int continuous = 0;
+
+    for (DateTime? date in dates ?? []) {
+      if (before!.difference(date!) != const Duration(days: 1)) break;
+      before = date; continuous++;
+    }
+
+    return continuous;
+  }
 
   /// constructors
   PUser() {
@@ -48,6 +93,7 @@ class PUser {
     height = defaultHeight;
     for (var type in ActivityType.activeValues) {
       goals[type.name] = 0;
+      inputRecords[type.name] = [];
       records[type.name] = [];
     }
   }
@@ -71,6 +117,7 @@ class PUser {
     partyIds = (json['partyIds'] ?? []).cast<String>();
     collections = toCollections((json['collections'] ?? []).cast<Map<String, dynamic>>());
     goals = json['goals'];
+    inputRecords = json['inputRecords'];
     records = json['records'];
   }
 
@@ -89,61 +136,140 @@ class PUser {
     json['partyIds'] = partyIds;
     json['collections'] = collectionsToJsonList(collections);
     json['goals'] = goals;
+    json['inputRecords'] = inputRecords;
     json['records'] = records;
     return json;
   }
 
   /// methods
-  void addRecord(ActivityType type, DateTime date, int amount) {
-    for (var record in records[type.name] ?? []) {
-      if (record['date'] == toTimestamp(date)) {
-        record['amount'] += amount;
+  // 기록 추가
+  void addRecord(
+    ActivityType type,
+    DateTime date,
+    Record record, [
+      bool input = false,
+    ]
+  ) {
+    double amount = type == ActivityType.distance
+        ? (record as DistanceRecord).step : record.amount;
+
+    if (input) {
+      for (var rec in inputRecords[type.name] ?? []) {
+        if (rec['date'] == toTimestamp(date)) {
+          rec['amount'] += amount;
+          return;
+        }
+      }
+      inputRecords[type.name].add({
+        'date': toTimestamp(date),
+        'amount': amount,
+      });
+    }
+
+    for (var rec in records[type.name] ?? []) {
+      if (rec['date'] == toTimestamp(date)) {
+        rec['amount'] += amount;
         return;
       }
     }
-    records[type.name].add({'date': toTimestamp(date), 'amount': amount});
+    records[type.name].add({
+      'date': toTimestamp(date),
+      'amount': amount,
+    });
   }
 
-  void setRecord(ActivityType type, DateTime date, int amount) {
-    for (var record in records[type.name] ?? []) {
-      if (record['date'] == toTimestamp(date)) {
-        record['amount'] = amount;
+  // 기록 설정
+  void setRecord(
+    ActivityType type,
+    DateTime date,
+    Record record,
+    [DistanceUnit? unit]
+  ) {
+    for (var rec in records[type.name] ?? []) {
+      if (rec['date'] == toTimestamp(date)) {
+        if (unit != null) record.convert(unit);
+        rec['amount'] = record.amount;
         return;
       }
     }
-    records[type.name].add({'date': toTimestamp(date), 'amount': amount});
+
+    records[type.name].add({
+    'date': toTimestamp(date),
+    'amount': record.amount,
+    });
   }
 
-  int getTodayAmounts(ActivityType type) {
+  // 금일 기록 반환
+  double getTodayAmounts(ActivityType type) {
     return getAmounts(type, today, oneSecondBefore(tomorrow));
   }
 
-  int getThisMonthAmounts(ActivityType type) {
-    DateTime firstDate = DateTime(today.year, today.month, 1);
-    DateTime lastDate = DateTime(today.year, today.month + 1, 1)
+  // 금월 기록 반환
+  double getThisMonthAmounts(ActivityType type) {
+    DateTime firstDate = DateTime((today).year, (today).month, 1);
+    DateTime lastDate = DateTime((today).year, (today).month + 1, 1)
         .subtract(const Duration(days: 1));
 
     return getAmounts(type, firstDate, lastDate);
   }
 
-  int getAmounts(
+  // 기록 반환
+  double getAmounts(
     ActivityType activityType, [
     DateTime? startDate,
     DateTime? endDate,
   ]) {
-    int result = 0;
+    double result = 0;
 
     records.forEach((type, recordList) {
       if (activityType.name == type) {
         for (var record in recordList) {
           if (startDate != null && record['date'].toDate().isBefore(startDate)) continue;
           if (endDate != null && record['date'].toDate().isAfter(endDate)) continue;
-          result += record['amount'] as int;
+          result += record['amount'] as double;
         }
       }
     });
     return result;
   }
+
+  // 입력된 금일 기록 반환
+  double getTodayInputAmounts(ActivityType activityType) {
+    double result = 0;
+    DateTime startDate = today;
+    DateTime endDate = oneSecondBefore(tomorrow);
+
+    inputRecords.forEach((type, recordList) {
+      if (activityType.name == type) {
+        for (var record in recordList) {
+          if (record['date'].toDate().isBefore(startDate)) continue;
+          if (record['date'].toDate().isAfter(endDate)) continue;
+          result += record['amount'].toDouble();
+        }
+      }
+    });
+    return result;
+  }
+
+  Record? getGoal(ActivityType type) {
+    return Record.init(
+      type, goals[type.name]?.toDouble() ?? .0,
+      DistanceUnit.step,
+    );
+  }
+
+  void setGoal(ActivityType type, Record record) {
+    record.convert(DistanceUnit.step);
+    goals[type.name] = record.amount;
+  }
+
+  // 해당 활동형식의 완료 여부 반환
+  bool completed(ActivityType type) {
+    double goal = goals[type.name];
+    double value = getTodayAmounts(type);
+    return goal <= value;
+  }
+
 
   /// static variables
   static int defaultWeight = 60;
@@ -161,4 +287,6 @@ class PUser {
     for (Collection collection in collections) { jsonList.add(collection.toJson()); }
     return jsonList;
   }
+
+
 }

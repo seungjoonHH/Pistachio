@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pistachio/global/theme.dart';
@@ -42,9 +43,9 @@ class CollectionWidget extends StatelessWidget {
     return Stack(
       children: [
         if (collection != null)
-        Image.asset(collection!.badge!.imageUrl!,
-          width: size.r, height: size.r,
-        ),
+          Image.asset(collection!.badge!.imageUrl!,
+            width: size.r, height: size.r,
+          ),
         Column(
           children: [
             Stack(
@@ -76,16 +77,16 @@ class CollectionWidget extends StatelessWidget {
                   ),
                 ),
                 if (pressed)
-                Container(
-                  decoration: const BoxDecoration(
-                    color: PTheme.grey,
-                    shape: BoxShape.circle,
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: PTheme.grey,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.check_circle_outline_rounded,
+                      size: 40.0,
+                      color: PTheme.white,
+                    ),
                   ),
-                  child: const Icon(Icons.check_circle_outline_rounded,
-                    size: 40.0,
-                    color: PTheme.white,
-                  ),
-                ),
               ],
             ),
             if (detail)
@@ -125,6 +126,8 @@ class BadgeWidget extends StatelessWidget {
     this.size = 80.0,
     this.color = PTheme.lightGrey,
     this.border,
+    this.completed = false,
+    this.received = false,
   }) : super(key: key);
 
   final Badge? badge;
@@ -133,6 +136,8 @@ class BadgeWidget extends StatelessWidget {
   final double size;
   final Color color;
   final bool? border;
+  final bool completed;
+  final bool received;
 
   @override
   Widget build(BuildContext context) {
@@ -147,11 +152,27 @@ class BadgeWidget extends StatelessWidget {
     );
 
     return Stack(
+      alignment: Alignment.center,
       children: [
         if (badge != null)
-        Image.asset(badge!.imageUrl!,
-          width: size.r,
-          height: size.r,
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            if (completed && !received)
+              Image.asset(badge!.imageUrl!,
+                width: size.r,
+                height: size.r,
+              ).animate(
+                onPlay: (cont) => cont.repeat(reverse: true),
+              ).fade(end: .8).scale(
+                duration: const Duration(milliseconds: 500),
+                end: const Offset(.95, .95),
+              )
+            else Image.asset(badge!.imageUrl!,
+              width: size.r,
+              height: size.r,
+            ),
+          ],
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
@@ -186,6 +207,53 @@ class BadgeWidget extends StatelessWidget {
               ],
             ),
           ],
+        ),
+        if (completed)
+        Material(
+          color: PTheme.white.withOpacity(received ? .7 : .0),
+          shape: side,
+          child: InkWell(
+            onTap: onPressed,
+            customBorder: side,
+            splashColor: PTheme.black.withOpacity(.1),
+            child: Container(
+              width: size.r,
+              height: size.r,
+              alignment: Alignment.center,
+              decoration: ShapeDecoration(shape: side),
+              child: Stack(
+                children: [
+                  if (received)
+                  RotationTransition(
+                    turns: const AlwaysStoppedAnimation(-.075),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 7.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: PTheme.colorB, width: 2.0),
+                      ),
+                      child: PText(' 완 료 ',
+                        style: textTheme.headlineMedium,
+                        color: PTheme.colorB,
+                      ),
+                    ),
+                  ) else Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 1.0),
+                    decoration: BoxDecoration(
+                      color: PTheme.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: const [BoxShadow(color: PTheme.grey, blurRadius: 20.0)],
+                    ),
+                    child: PText('수령하기', style: textTheme.titleMedium, color: PTheme.black),
+                  // ).animate(
+                  //   onPlay: (cont) => cont.repeat(reverse: true),
+                  //   ).scale(
+                  //   duration: const Duration(milliseconds: 500),
+                  //   end: const Offset(.95, .95),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );

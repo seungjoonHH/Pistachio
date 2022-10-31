@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/party.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -99,14 +100,14 @@ class ChallengeCardView extends StatelessWidget {
     return GetBuilder<LoadingPresenter>(
       builder: (controller) {
         return SmartRefresher(
-          controller: controller.refreshCont,
+          controller: ChallengeMain.refreshCont,
           onRefresh: () async {
             ChallengeMain.toChallengeMain();
-            controller.refreshCont.refreshCompleted();
+            ChallengeMain.refreshCont.refreshCompleted();
           },
           onLoading: () async {
             await Future.delayed(const Duration(milliseconds: 100));
-            controller.refreshCont.loadComplete();
+            ChallengeMain.refreshCont.loadComplete();
           },
           header: const MaterialClassicHeader(
             color: PTheme.black,
@@ -138,7 +139,7 @@ class ChallengeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userPresenter = Get.find<UserPresenter>();
+    final userP = Get.find<UserPresenter>();
 
     return Column(
       children: [
@@ -200,9 +201,9 @@ class ChallengeCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  userPresenter.alreadyJoinedChallenge(challenge.id!) ? PButton(
+                  userP.alreadyJoinedChallenge(challenge.id!) ? PButton(
                     onPressed: () => ChallengePartyMain.toChallengePartyMain(
-                      userPresenter.getPartyByChallengeId(challenge.id!)!
+                      userP.getPartyByChallengeId(challenge.id!)!
                     ),
                     text: '챌린지 이동하기',
                     stretch: true,
@@ -326,10 +327,12 @@ class MyPartyListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userPresenter = Get.find<UserPresenter>();
+    final userP = Get.find<UserPresenter>();
+    PUser user = userP.loggedUser;
+
     return Stack(
       children: [
-        if (userPresenter.myParties.isEmpty)
+        if (user.parties.isEmpty)
         Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -385,10 +388,10 @@ class MyPartyListView extends StatelessWidget {
             children: [
               ListView.separated(
                 shrinkWrap: true,
-                itemCount: userPresenter.myParties.length,
+                itemCount: user.parties.length,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (_, index) => MyPartyListTile(
-                  party: userPresenter.myParties.values.toList()[index],
+                  party: user.parties.values.toList()[index],
                 ),
                 separatorBuilder: (_, index) => SizedBox(height: 20.0.h),
               ),

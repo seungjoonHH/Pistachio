@@ -9,6 +9,7 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/collection.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/collection.dart';
@@ -53,11 +54,11 @@ class WidgetHeader extends StatelessWidget {
   const WidgetHeader({
     Key? key,
     required this.title,
-    required this.seeMorePressed,
+    this.seeMorePressed,
   }) : super(key: key);
 
   final String title;
-  final VoidCallback seeMorePressed;
+  final VoidCallback? seeMorePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,8 @@ class WidgetHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           PText(title, style: textTheme.headlineSmall),
-          SeeMoreButton(onPressed: seeMorePressed),
+          if (seeMorePressed != null)
+          SeeMoreButton(onPressed: seeMorePressed!),
         ],
       ),
     );
@@ -98,9 +100,13 @@ class HomeRandomCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PUser user = Get.find<UserPresenter>().loggedUser;
+
     List<Widget> items = [
       const QuestRecommendCard(),
       const LifeExtensionCard(),
+      if (ignoreTime(user.regDate!) != today)
+      const YesterdayComparisonCard(),
     ].map((widget) => Padding(
       padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0.r),
       child: widget,
@@ -133,9 +139,11 @@ class QuestRecommendCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PText('${today.month}월의 목표',
+              PTexts(['${today.month}월', '의 목표'],
+                colors: const [PTheme.colorA, PTheme.black],
                 style: textTheme.titleLarge,
-                color: PTheme.black,
+                alignment: MainAxisAlignment.start,
+                space: false,
               ),
               SizedBox(height: 10.0.h),
               PText('를 달성하고 컬렉션을 모아보세요.',
@@ -180,20 +188,42 @@ class LifeExtensionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPresenter = Get.find<UserPresenter>();
+    PUser user = userPresenter.loggedUser;
+    int allHeights = user.getAmounts(ActivityType.height);
+    int todayHeights = user.getTodayAmounts(ActivityType.height);
+
     return PCard(
       color: PTheme.white,
       rounded: true,
       child: Column(
         children: [
+          if (allHeights == 0)
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PText('수명이 99초 연장되었어요',
+              PText('계단을 올라 수명을 연장해보세요',
                 style: textTheme.titleLarge,
-                color: PTheme.black,
               ),
               SizedBox(height: 10.0.h),
-              PText('1층 당 3초의 수명이 연장되어요.',
+              PText('한 층을 오르면 수명이 2분 늘어나요!',
+                style: textTheme.labelMedium,
+                color: PTheme.grey,
+              ),
+            ],
+          ),
+          if (allHeights > 0)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PTexts(['수명이', '${2 * allHeights}분', '연장되었어요'],
+                colors: const [PTheme.black, PTheme.colorD, PTheme.black],
+                style: textTheme.titleLarge,
+                alignment: MainAxisAlignment.start,
+              ),
+              SizedBox(height: 10.0.h),
+              PText(allHeights - todayHeights < 4 ? '내일도 화이팅!'
+                  : '오늘은 ${2 * todayHeights}분 만큼 연장했어요.',
                 style: textTheme.labelMedium,
                 color: PTheme.grey,
               ),
@@ -215,6 +245,92 @@ class LifeExtensionCard extends StatelessWidget {
   }
 }
 
+class YesterdayComparisonCard extends StatelessWidget {
+  const YesterdayComparisonCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PCard(
+      color: PTheme.white,
+      rounded: true,
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                PText('어제와 비교해서', style: textTheme.titleLarge),
+                const SizedBox(height: 10.0),
+                Expanded(
+                  child: GetBuilder<UserPresenter>(
+                    builder: (controller) {
+                      Map<ActivityType, int> diffs = {};
+                      Map<ActivityType, List<String>> diffMessages = {};
+                      late String last;
+
+                      for (ActivityType type in ActivityType.activeValues) {
+                        int todays = controller.loggedUser.getTodayAmounts(type);
+                        int yesterdays = controller.loggedUser.getAmounts(type, yesterday, oneSecondBefore(today));
+
+                        int diff = todays - yesterdays;
+                        diffs[type] = diff;
+                        diffMessages[type] = [];
+
+                        last = type == ActivityType.calorie ? type.did : '${type.and},';
+
+                        if (diff == 0) {
+                          diffMessages[type]!.addAll(['비슷하게', last]);
+                          continue;
+                        }
+                        diffMessages[type]!.add('${diff.abs()}${type.unit}');
+                        diffMessages[type]!.add('${diff > 0 ? '더' : '덜'} $last');
+                      }
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Stack(
+                            children: [
+                              PTexts(diffMessages[ActivityType.distance]!,
+                                colors: const [PTheme.colorB, PTheme.black],
+                                style: textTheme.titleLarge,
+                                alignment: MainAxisAlignment.start,
+                              ),
+                            ],
+                          ),
+                          Stack(
+                            children: [
+                              PTexts(diffMessages[ActivityType.height]!,
+                                colors: const [PTheme.colorD, PTheme.black],
+                                style: textTheme.titleLarge,
+                                alignment: MainAxisAlignment.center,
+                              ),
+                            ],
+                          ),
+                          Stack(
+                            children: [
+                              PTexts(diffMessages[ActivityType.calorie]!,
+                                colors: const [PTheme.colorA, PTheme.black],
+                                style: textTheme.titleLarge,
+                                alignment: MainAxisAlignment.end,
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class DailyActivityCardView extends StatelessWidget {
   const DailyActivityCardView({Key? key}) : super(key: key);
 
@@ -223,7 +339,7 @@ class DailyActivityCardView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        WidgetHeader(title: '오늘 활동량', seeMorePressed: () {}),
+        const WidgetHeader(title: '오늘 활동량'),
         SizedBox(height: 10.0.h),
         PCard(
           padding: EdgeInsets.zero,
@@ -265,6 +381,8 @@ class DailyActivityCircularGraph extends StatelessWidget {
         double laterPercent = max(min(todayRecord - goal, goal) / goal, 0);
         double totalPercent = max(earlierPercent + laterPercent, .0001);
 
+        /// editing
+
         const int totalDuration = 1500;
         int earlierDuration = totalDuration * earlierPercent ~/ totalPercent;
         if (laterPercent == 0) earlierDuration = totalDuration;
@@ -281,18 +399,20 @@ class DailyActivityCircularGraph extends StatelessWidget {
                   children: [
                     PCircularPercentIndicator(
                       percent: earlierPercent,
-                      backgroundColor: PTheme.bar,
+                      duration: earlierDuration,
                       centerText: type.kr,
                       color: type.color,
-                      duration: earlierDuration,
+                      textColor: type.color,
+                      borderColor: PTheme.black,
+                      backgroundColor: PTheme.bar,
                       onAnimationEnd: () => controller.showLaterGraph(type),
                     ),
                     PCircularPercentIndicator(
                       visible: controller.graphStates[type]!,
                       percent: laterPercent,
-                      centerText: type.kr,
                       duration: laterDuration,
                       color: PTheme.white.withOpacity(.3),
+                      borderColor: PTheme.black,
                       backgroundColor: Colors.transparent,
                     ),
                   ],

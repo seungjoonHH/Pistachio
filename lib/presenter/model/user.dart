@@ -4,6 +4,8 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/party.dart';
@@ -11,6 +13,7 @@ import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
+import 'package:pistachio/presenter/model/party.dart';
 
 import '../health/health.dart';
 
@@ -38,10 +41,11 @@ class UserPresenter extends GetxController {
     Map<String, dynamic> json = user.toJson();
     data.forEach((key, value) => json[key] = value);
     loggedUser = PUser.fromJson(json);
+
     await HealthPresenter.fetchStepData();
-    if (isIOS) {
-      await HealthPresenter.fetchFlightsData();
-    }
+    if (isIOS) await HealthPresenter.fetchFlightsData();
+
+    updateCalorie();
   }
 
   // 로그아웃
@@ -59,11 +63,16 @@ class UserPresenter extends GetxController {
   }
 
   // 파이어베이스에 최신화
-  void save() =>
-      f.collection('users').doc(loggedUser.uid).set(loggedUser.toJson());
+  void save() => f.collection('users')
+      .doc(loggedUser.uid).set(loggedUser.toJson());
 
   // 파이어베이스에서 삭제
-  void delete() => f.collection('users').doc(loggedUser.uid).delete();
+  void delete() {
+    for (String id in loggedUser.partyIds) {
+      f.collection('parties').doc(id).delete();
+    }
+    f.collection('users').doc(loggedUser.uid).delete();
+  }
 
   Map<String, Party> get myParties => loggedUser.parties;
 
@@ -73,11 +82,9 @@ class UserPresenter extends GetxController {
     int length = 7;
     const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     return String.fromCharCodes(
-      Iterable.generate(
-          length,
-          (_) => chars.codeUnitAt(
-                Random().nextInt(chars.length),
-              )),
+      Iterable.generate(length, (_) => chars.codeUnitAt(
+        Random().nextInt(chars.length),
+      )),
     );
   }
 
@@ -91,7 +98,7 @@ class UserPresenter extends GetxController {
     }
   }
 
-  void addMyParties(Challenge challenge, Difficulty diff) async {
+  Future<String> createMyParties(Challenge challenge, Difficulty diff) async {
     String code = randomCode;
 
     Party newParty = Party.fromJson({
@@ -105,12 +112,14 @@ class UserPresenter extends GetxController {
     newParty.challenge = ChallengePresenter.getChallenge(newParty.challengeId!);
     myParties[code] = newParty;
     await getMembers(newParty);
-    saveMyParty(newParty);
+    PartyPresenter.save(newParty);
 
     loggedUser.partyIds.add(newParty.id!);
     save();
 
     update();
+
+    return code;
   }
 
   Future loadMyParties() async {
@@ -125,24 +134,43 @@ class UserPresenter extends GetxController {
     update();
   }
 
-  void saveMyParty(Party party) async {
-    await f.collection('parties').doc(party.id).set(party.toJson());
-  }
-
   set myCollections(List<Collection> collections) =>
       loggedUser.collections = collections;
 
   List<Collection> get myCollections => loggedUser.collections;
 
-  bool joining(Challenge challenge) {
-    return myParties.values
-        .map((party) => party.challengeId)
-        .contains(challenge.id);
+  void joinParty(String id) {
+    if (loggedUser.partyIds.contains(id)) return;
+    loggedUser.partyIds.add(id);
+    save();
   }
 
-  Party? joiningParty(Challenge challenge) {
+  bool alreadyJoinedChallenge(String challengeId) {
     return myParties.values
-        .toList()
-        .firstWhereOrNull((party) => party.challengeId == challenge.id);
+        .map((party) => party.challengeId).contains(challengeId);
   }
+
+  bool alreadyJoinedParty(String id) {
+    return myParties.values
+        .map((party) => party.id).contains(id);
+  }
+
+  Party? getPartyByChallengeId(String challengeId) {
+    return myParties.values.toList()
+        .firstWhereOrNull((party) => party.challengeId == challengeId);
+  }
+
+  void updateCalorie() {
+    int distance = loggedUser.getAmounts(ActivityType.distance, today, oneSecondBefore(tomorrow));
+    int height = loggedUser.getAmounts(ActivityType.height, today, oneSecondBefore(tomorrow));
+    int calorie = 0;
+
+    distance = convertDistance(distance, DistanceUnit.step, DistanceUnit.kilometer);
+    calorie += convertToCalories(ActivityType.distance, distance);
+    calorie += convertToCalories(ActivityType.height, height);
+
+    loggedUser.setRecord(ActivityType.calorie, today, calorie);
+    save(); update();
+  }
+
 }

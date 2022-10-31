@@ -9,6 +9,8 @@ class PCircularPercentIndicator extends StatelessWidget {
     Key? key,
     required this.percent,
     required this.color,
+    this.textColor = PTheme.black,
+    this.borderColor = PTheme.black,
     this.backgroundColor = PTheme.background,
     this.radius = 55.0,
     this.lineWidth = 16.0,
@@ -20,6 +22,8 @@ class PCircularPercentIndicator extends StatelessWidget {
 
   final double percent;
   final Color color;
+  final Color textColor;
+  final Color borderColor;
   final Color backgroundColor;
   final double radius;
   final double lineWidth;
@@ -31,7 +35,7 @@ class PCircularPercentIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final border = Border.all(
-      color: PTheme.black,
+      color: borderColor,
       width: 1.5,
     );
 
@@ -55,8 +59,7 @@ class PCircularPercentIndicator extends StatelessWidget {
             onAnimationEnd: onAnimationEnd,
             curve: Curves.easeInOut,
             center: PText(centerText,
-              color: PTheme.white,
-              border: true,
+              color: textColor,
               style: textTheme.titleLarge,
               borderWidth: 1.0,
               maxLines: 2,

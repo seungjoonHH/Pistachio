@@ -15,9 +15,6 @@ class HealthPresenter {
     int steps = 0;
 
     // get steps for today (i.e., since midnight)
-    final now = DateTime.now();
-    final midnight = DateTime(now.year, now.month, now.day);
-
     bool requested = await health.requestAuthorization([HealthDataType.STEPS]);
 
     // If we are trying to read Step Count, Workout, Sleep or other data that requires
@@ -36,7 +33,7 @@ class HealthPresenter {
       try {
         final userPresenter = Get.find<UserPresenter>();
         PUser user = userPresenter.loggedUser;
-        steps = (await health.getTotalStepsInInterval(midnight, now))!;
+        steps = (await health.getTotalStepsInInterval(today, now))!;
         user.setRecord(ActivityType.distance, today, steps);
         userPresenter.save();
       } catch (error) {
@@ -65,8 +62,6 @@ class HealthPresenter {
     int flights = 0;
 
     // get steps for today (i.e., since midnight)
-    final now = DateTime.now();
-    final midnight = DateTime(now.year, now.month, now.day);
 
     bool requested = await health.requestAuthorization(types);
 
@@ -87,7 +82,7 @@ class HealthPresenter {
         final userPresenter = Get.find<UserPresenter>();
         PUser user = userPresenter.loggedUser;
         flightsData =
-            (await health.getHealthDataFromTypes(midnight, now, types));
+            (await health.getHealthDataFromTypes(today, now, types));
         flightsData = HealthFactory.removeDuplicates(flightsData);
 
         for (var f in flightsData) {

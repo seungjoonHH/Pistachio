@@ -8,15 +8,13 @@ import 'package:flutter/material.dart';
 
 /// class
 class PButton extends StatelessWidget {
-  const PButton({
+  PButton({
     Key? key,
     this.text,
     this.child,
     required this.onPressed,
     this.fill = true,
-    this.padding = const EdgeInsets.symmetric(
-      horizontal: 30.0, vertical: 10.0,
-    ),
+    EdgeInsets? padding,
     this.constraints,
     Color? backgroundColor,
     Color? textColor,
@@ -25,6 +23,8 @@ class PButton extends StatelessWidget {
     this.border = true,
   }) : assert(
   text == null || child == null,
+  ), padding = padding ?? EdgeInsets.symmetric(
+    horizontal: 20.0.w, vertical: 10.0.h,
   ), backgroundColor = backgroundColor ?? PTheme.black,
     textColor = textColor ?? (fill ? PTheme.white : PTheme.black),
     super(key: key);

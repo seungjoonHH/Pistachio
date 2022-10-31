@@ -45,6 +45,7 @@ class MyRecordDetailView extends StatelessWidget {
         DistanceUnit.step,
       );
     }
+
     return Column(
       children: [
         Stack(
@@ -86,7 +87,7 @@ class MyRecordDetailView extends StatelessWidget {
                   SvgPicture.asset('assets/image/level/height/asset1.svg'),
                   const SizedBox(height: 20),
                   PTexts(
-                    ['$remainValue', type.unit, ' 더 ${type.suffix}'],
+                    ['$remainValue', type.unit, ' 더 ${type.ifDo}'],
                     colors: [type.color, type.color, PTheme.black],
                     style: textTheme.headlineSmall,
                     space: false,

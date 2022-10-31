@@ -156,7 +156,7 @@ class _MyMainAppBarState extends State<MyMainAppBar> {
   @override
   Widget build(BuildContext context) {
 
-    return PAppBar(title: '프로필',
+    return PAppBar(title: '나의 기록',
       actions: [
         IconButton(
           icon: const Icon(Icons.settings),
@@ -179,7 +179,7 @@ class MySettingMainAppBar extends StatelessWidget implements PreferredSizeWidget
 
   @override
   Widget build(BuildContext context) {
-    return const PAppBar(title: '프로필',
+    return const PAppBar(title: '설정',
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios),
         onPressed: GlobalPresenter.goBack,

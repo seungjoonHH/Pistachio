@@ -8,7 +8,9 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/number.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
+import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/collection.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/page/home.dart';
@@ -87,17 +89,21 @@ class MonthlyQuestView extends StatelessWidget {
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: ActivityType.activeValues.map((type) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        BadgeWidget(
-                          badge: BadgePresenter.getBadge('1040${type.index}${
-                            (today.month - 1).toString().padLeft(2, '0')}'
-                          ), size: 90.0.r,
-                        ),
-                        QuestPercentView(type: type),
-                      ],
-                    )).toList(),
+                    children: ActivityType.activeValues.map((type) {
+                      Badge? badge = BadgePresenter.getBadge('1040${type.index}${
+                          (today.month - 1).toString().padLeft(2, '0')}'
+                      );
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          BadgeWidget(
+                            badge: badge, size: 90.0.r,
+                            onPressed: () => GlobalPresenter.showBadgeDialog(badge),
+                          ),
+                          QuestPercentView(type: type),
+                        ],
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
@@ -130,7 +136,7 @@ class QuestPercentView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PTexts(['${toLocalString(goal)}${type.unit}', type.verb],
+                PTexts(['${toLocalString(goal)}${type.unit}', type.doIt],
                   colors: [type.color, PTheme.black],
                   alignment: MainAxisAlignment.start,
                 ),

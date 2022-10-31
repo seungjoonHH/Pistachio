@@ -18,7 +18,7 @@ class ExerciseInputPage extends StatelessWidget {
 
     Map<ActivityType, List<String>> messages = {
       ActivityType.calorie: ['오늘 ', '참은 음식', '을 선택해주세요.'],
-      ActivityType.distance: ['오늘 ', '유산소 운동을 한 시간', '을 입력해주세요.'],
+      ActivityType.distance: ['오늘 한 ', '유산소 운동 시간', '을 입력해주세요.'],
       ActivityType.height: ['오늘 ', '오른 층 수', '를 입력해주세요.'],
       ActivityType.weight: ['오늘 ', '운동한 횟수', '를 입력해주세요.'],
     };
@@ -78,6 +78,7 @@ class ExerciseInputPage extends StatelessWidget {
                   PInputField(
                     controller: ExerciseInput.inputCont,
                     hintText: hints[type]!,
+                    keyboardType: TextInputType.number,
                   ),
                 ],
               ),

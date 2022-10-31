@@ -15,6 +15,7 @@ class PText extends StatelessWidget {
     this.italic = false,
     this.border = false,
     this.borderWidth = .8,
+    this.borderColor = PTheme.black,
     this.align = TextAlign.left,
   }) : style = style ?? PTheme.textTheme.bodyMedium, super(key: key);
 
@@ -26,6 +27,7 @@ class PText extends StatelessWidget {
   final bool italic;
   final bool border;
   final double borderWidth;
+  final Color borderColor;
   final TextAlign align;
 
   @override
@@ -58,7 +60,7 @@ class PText extends StatelessWidget {
             foreground: border ? (Paint()
               ..style = PaintingStyle.stroke
               ..strokeWidth = borderWidth
-              ..color = PTheme.black
+              ..color = borderColor
             ) : null,
           )),
         ),
@@ -132,12 +134,14 @@ class PInputField extends StatelessWidget {
     this.hintText,
     this.hintColor = PTheme.grey,
     this.invalid = false,
+    this.keyboardType = TextInputType.number,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String? hintText;
   final Color hintColor;
   final bool invalid;
+  final TextInputType keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +152,7 @@ class PInputField extends StatelessWidget {
         style: textTheme.bodyLarge,
         controller: controller,
         cursorColor: PTheme.black,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),

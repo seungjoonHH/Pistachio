@@ -1,12 +1,13 @@
 /* 챌린지 난이도 위젯 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_polygon/flutter_polygon.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/model/enum/enum.dart';
-import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/challenge/create.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
@@ -25,8 +26,6 @@ class ChallengeCreateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ChallengeCreate>(
       builder: (controller) {
-        final userPresenter = Get.find<UserPresenter>();
-
         String word = challenge.levels[controller.difficulty.name]['word'];
         String description = challenge.descriptions['detail'].replaceAll('##', '#$word#');
         List<String> descriptions = description.split('#');
@@ -71,10 +70,31 @@ class ChallengeCreateView extends StatelessWidget {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: BadgeWidget(
-                                selected: diff == controller.difficulty,
-                                badge: challenge.badges[diff],
-                                onPressed: () => controller.changeDifficulty(diff),
+                              child: Stack(
+                                children: [
+                                  BadgeWidget(
+                                    badge: challenge.badges[diff],
+                                    onPressed: () => controller.changeDifficulty(diff),
+                                  ),
+                                  Container(
+                                    width: 80.0.r,
+                                    height: 80.0.r,
+                                    decoration: ShapeDecoration(
+                                      color: diff == controller.difficulty
+                                          ? Colors.transparent
+                                          : PTheme.black.withOpacity(.2),
+                                      shape: PolygonBorder(
+                                        sides: 6,
+                                        side: BorderSide(
+                                          width: 4.0,
+                                          color: diff == controller.difficulty
+                                              ? PTheme.colorB
+                                              : Colors.transparent,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 20.0),
@@ -97,9 +117,9 @@ class ChallengeCreateView extends StatelessWidget {
                     PText('권장 참여 인원 : $memberString명',
                       style: textTheme.headlineSmall,
                     ),
-                    const SizedBox(height: 20.0),
+                    SizedBox(height: 30.0.h),
                     SizedBox(
-                      height: 400.0,
+                      height: 350.0.h,
                       child: RichText(
                         text: TextSpan(
                           children: List.generate(descriptions.length, (index) => TextSpan(
@@ -116,7 +136,7 @@ class ChallengeCreateView extends StatelessWidget {
             Positioned(
               bottom: 50.0,
               child: PButton(
-                onPressed: () => userPresenter.addMyParties(challenge, controller.difficulty),
+                onPressed: () => controller.challengeCreateButtonPressed(challenge),
                 text: '챌린지 생성하기',
                 stretch: true,
                 constraints: const BoxConstraints(maxWidth: 340.0),

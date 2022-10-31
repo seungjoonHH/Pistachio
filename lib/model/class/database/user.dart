@@ -114,7 +114,9 @@ class PUser {
     records[type.name].add({'date': toTimestamp(date), 'amount': amount});
   }
 
-  int getTodayAmounts(ActivityType type) => getAmounts(type, today, tomorrow);
+  int getTodayAmounts(ActivityType type) {
+    return getAmounts(type, today, oneSecondBefore(tomorrow));
+  }
 
   int getThisMonthAmounts(ActivityType type) {
     DateTime firstDate = DateTime(today.year, today.month, 1);

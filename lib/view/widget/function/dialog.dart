@@ -32,13 +32,11 @@ void showPDialog({
   VoidCallback? rightPressed,
   Color? leftColor,
   Color? rightColor,
-}) {
-  List<DialogButtonData> data = [];
-
+}) async {
   switch (type) {
     case DialogType.bi:
       assert(onPressed == null && buttonText == null && (
-        leftPressed != null && rightPressed != null
+          leftPressed != null && rightPressed != null
       )); break;
     case DialogType.mono:
       assert(onPressed != null && (
@@ -47,54 +45,114 @@ void showPDialog({
       )); break;
     case DialogType.none:
       assert(onPressed == null && buttonText == null && (
-        leftText == null && leftPressed == null && leftColor == null
-          && rightText == null && rightPressed == null && rightColor == null
+          leftText == null && leftPressed == null && leftColor == null
+              && rightText == null && rightPressed == null && rightColor == null
       )); break;
   }
 
-  switch (type) {
-    case DialogType.none: break;
-    case DialogType.mono:
-      data = [
-        DialogButtonData(type,
-          text: buttonText ?? '확인',
-          color: color ?? PTheme.black,
-          onPressed: onPressed!,
-        ),
-      ]; break;
-    case DialogType.bi:
-      data = [
-        DialogButtonData(type,
-          text: leftText ?? '취소',
-          color: leftColor ?? PTheme.grey,
-          onPressed: leftPressed!,
-        ),
-        DialogButtonData(type,
-          text: rightText ?? '확인',
-          color: rightColor ?? PTheme.black,
-          onPressed: rightPressed!,
-        ),
-      ]; break;
-  }
+  Get.dialog(PAlertDialog(
+    title: title,
+    content: content,
+    titlePadding: titlePadding,
+    contentPadding: contentPadding,
+    type: type,
+    buttonText: buttonText,
+    onPressed: onPressed,
+    color: color,
+    leftText: leftText,
+    rightText: rightText,
+    leftPressed: leftPressed,
+    rightPressed: rightPressed,
+    leftColor: leftColor,
+    rightColor: rightColor,
+  ));
+}
 
-  assert(type.index == data.length);
+class PAlertDialog extends StatefulWidget {
+  const PAlertDialog({
+    Key? key,
+    this.title,
+    required this.content,
+    this.titlePadding = const EdgeInsets.only(top: 50.0),
+    this.contentPadding = const EdgeInsets.all(20.0),
+    this.type = DialogType.none,
+    this.buttonText,
+    this.onPressed,
+    this.color,
+    this.leftText,
+    this.rightText,
+    this.leftPressed,
+    this.rightPressed,
+    this.leftColor,
+    this.rightColor,
+  }) : super(key: key);
 
-  Get.dialog(
-    AlertDialog(
+  final String? title;
+  final Widget content;
+  final EdgeInsets? titlePadding;
+  final EdgeInsets? contentPadding;
+  final DialogType type;
+  final String? buttonText;
+  final VoidCallback? onPressed;
+  final Color? color;
+  final String? leftText;
+  final String? rightText;
+  final VoidCallback? leftPressed;
+  final VoidCallback? rightPressed;
+  final Color? leftColor;
+  final Color? rightColor;
+
+  @override
+  State<PAlertDialog> createState() => _PAlertDialogState();
+}
+
+class _PAlertDialogState extends State<PAlertDialog> {
+  @override
+  Widget build(BuildContext context) {
+    List<DialogButtonData> data = [];
+
+    switch (widget.type) {
+      case DialogType.none: break;
+      case DialogType.mono:
+        data = [
+          DialogButtonData(widget.type,
+            text: widget.buttonText ?? '확인',
+            color: widget.color ?? PTheme.black,
+            onPressed: widget.onPressed!,
+          ),
+        ]; break;
+      case DialogType.bi:
+        data = [
+          DialogButtonData(widget.type,
+            text: widget.leftText ?? '취소',
+            color: widget.leftColor ?? PTheme.grey,
+            onPressed: widget.leftPressed!,
+          ),
+          DialogButtonData(widget.type,
+            text: widget.rightText ?? '확인',
+            color: widget.rightColor ?? PTheme.black,
+            onPressed: widget.rightPressed!,
+          ),
+        ]; break;
+    }
+
+    assert(widget.type.index == data.length);
+
+    return AlertDialog(
       shape: const RoundedRectangleBorder(
         side: BorderSide(color: PTheme.black, width: 1.5),
         borderRadius: BorderRadius.zero,
       ),
       backgroundColor: PTheme.bar,
       title: Container(
-        padding: titlePadding,
+        padding: widget.titlePadding,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20.0),
           ),
         ),
         child: Center(
-          child: PText(title ?? '',
+          child: PText(widget.title ?? '',
             style: textTheme.headlineSmall,
             bold: true,
           ),
@@ -106,9 +164,9 @@ void showPDialog({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: contentPadding,
+            padding: widget.contentPadding,
             constraints: const BoxConstraints(minHeight: 80.0),
-            child: content,
+            child: widget.content,
           ),
           Row(
             children: data.map((datum) => Expanded(
@@ -135,6 +193,6 @@ void showPDialog({
         ],
       ),
       contentPadding: EdgeInsets.zero,
-    ),
-  );
+    );
+  }
 }

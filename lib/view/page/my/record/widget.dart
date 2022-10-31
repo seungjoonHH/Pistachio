@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
@@ -12,7 +11,6 @@ import 'package:text_scroll/text_scroll.dart';
 import 'background/layout/components/background_top.dart';
 import 'background/layout/components/clouds.dart';
 import 'background/layout/components/sun.dart';
-import 'background/layout/components/floating_object.dart';
 
 class MyRecordDetailView extends StatelessWidget {
   final ActivityType type;
@@ -83,7 +81,7 @@ class MyRecordDetailView extends StatelessWidget {
                     )),
                   ),
                   const SizedBox(height: 20),
-                  Image.asset('assets/image/record/room.png', height: 400,),
+                  Image.asset('assets/image/record/distance/normandi.png'),
                   const SizedBox(height: 20),
                   PTexts(
                     ['$remainValue', type.unit, ' 더 ${type.ifDo}'],

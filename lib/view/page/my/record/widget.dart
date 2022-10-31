@@ -14,7 +14,6 @@ import 'background/layout/components/clouds.dart';
 import 'background/layout/components/sun.dart';
 import 'background/layout/components/floating_object.dart';
 
-
 class MyRecordDetailView extends StatelessWidget {
   final ActivityType type;
 
@@ -22,8 +21,8 @@ class MyRecordDetailView extends StatelessWidget {
 
   @override
   Widget build(
-    BuildContext context,) {
-
+    BuildContext context,
+  ) {
     PUser loggedUser = Get.find<UserPresenter>().loggedUser;
     int amounts = loggedUser.getAmounts(type);
 

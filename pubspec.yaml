@@ -85,7 +85,6 @@ flutter:
     - assets/image/page/register/
     - assets/rive/input/
 
-
   fonts:
     - family: BMJUA
       fonts:

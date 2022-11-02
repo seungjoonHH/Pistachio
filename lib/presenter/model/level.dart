@@ -35,8 +35,10 @@ class LevelPresenter extends GetxController {
       int next = levelList[i + 1].amount!;
 
       if (record.amount >= current && record.amount < next) {
+        result['currentId'] = levelList[i].id;
         result['currentTitle'] = levelList[i].title;
         result['currentValue'] = current;
+        result['nextId'] = levelList[i + 1].id;
         result['nextTitle'] = levelList[i + 1].title;
         result['nextValue'] = next;
         result['percent'] = (record.amount - current) / (next - current);

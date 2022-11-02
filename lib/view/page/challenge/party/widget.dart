@@ -41,7 +41,7 @@ class PartyMainView extends StatelessWidget {
                 color: PTheme.black,
                 backgroundColor: PTheme.surface,
               ),
-              child: !loadingP.loading || party == null
+              child: (!loadingP.loading) || party == null
                   ? SingleChildScrollView(
                 child: Column(
                   children: [
@@ -89,8 +89,8 @@ class ChallengeInfoWidget extends StatelessWidget {
                 borderRadius: imageRadius,
                 child: Image.asset(
                   party.challenge?.imageUrls['default'],
-                  fit: BoxFit.fill,
-                  height: 200.0.h,
+                  fit: BoxFit.fitHeight,
+                  height: 230.0.h,
                 ),
               ),
               Positioned.fill(
@@ -123,11 +123,19 @@ class ChallengeInfoWidget extends StatelessWidget {
                             horizontal: 6.0, vertical: 3.0,
                           ),
                           width: 140.0.w,
-                          height: 30.0.h,
-                          child: controller.copied
-                              ? const Icon(
-                            Icons.check,
-                            color: PTheme.colorB,
+                          height: 40.0.h,
+                          child: controller.copied ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              PText('복사완료',
+                                style: textTheme.titleLarge,
+                                color: PTheme.black,
+                              ),
+                              const SizedBox(width: 5.0),
+                              const Icon(Icons.check,
+                                color: PTheme.black,
+                              ),
+                            ],
                           ) : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -136,8 +144,7 @@ class ChallengeInfoWidget extends StatelessWidget {
                                 color: PTheme.colorB,
                               ),
                               const SizedBox(width: 5.0),
-                              const Icon(
-                                Icons.copy,
+                              const Icon(Icons.copy,
                                 color: PTheme.colorB,
                                 size: 20.0,
                               ),
@@ -370,7 +377,7 @@ class ChallengePartyMainLoading extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  height: 200.0.h,
+                  height: 230.0.h,
                   decoration: BoxDecoration(
                     color: decoration.color,
                     borderRadius: BorderRadius.circular(20.0.r),

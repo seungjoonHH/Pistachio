@@ -183,7 +183,7 @@ class ChallengeCard extends StatelessWidget {
                                 ),
                                 SizedBox(height: 20.0.h),
                                 SizedBox(
-                                  height: 15.0.h,
+                                  height: 20.0.h,
                                   child: PText('${today.month}월의 챌린지',
                                     style: textTheme.labelLarge,
                                     color: PTheme.grey,
@@ -216,10 +216,12 @@ class ChallengeCard extends StatelessWidget {
                     ),
                     text: '챌린지 이동하기',
                     stretch: true,
+                    height: 50.0,
                   ) : PButton(
                     onPressed: () => ChallengeDetail.toChallengeDetail(challenge),
                     text: '알아보러 가기',
                     stretch: true,
+                    height: 50.0,
                   ),
                 ],
               ),
@@ -303,7 +305,7 @@ class ChallengeCardLoading extends StatelessWidget {
                         SizedBox(height: 20.0.h),
                         Container(
                           width: 200.0.w,
-                          height: 15.0.h,
+                          height: 20.0.h,
                           decoration: decoration,
                         ),
                       ],
@@ -322,7 +324,7 @@ class ChallengeCardLoading extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-            height: 48.0.h,
+            height: 50.0.h,
             decoration: decoration,
           ),
         ],
@@ -430,7 +432,6 @@ class MyPartyListView extends StatelessWidget {
             ],
           ),
         ),
-        const MyPartyListViewLoading(),
       ],
     );
   }
@@ -509,64 +510,6 @@ class MyPartyListTile extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class MyPartyListViewLoading extends StatelessWidget {
-  const MyPartyListViewLoading({
-    Key? key, this.color = PTheme.black,
-  }) : super(key: key);
-
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<LoadingPresenter>(
-      builder: (controller) {
-        controller.mainColor = color;
-        return controller.loading ? ListView.separated(
-          shrinkWrap: true,
-          itemCount: 3,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(20.0),
-          itemBuilder: (_, index) {
-            return Container(
-              color: PTheme.background,
-              height: 80.0.h,
-              child: Row(
-                children: [
-                  Container(width: 80.0, height: 80.0.h, color: controller.color),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 0.0, 15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(width: 200.0, height: 20.0, color: controller.color),
-                          Row(
-                            children: [
-                              Container(width: 80.0, height: 15.0, color: controller.color),
-                              const SizedBox(width: 20.0),
-                              Container(width: 100.0, height: 15.0, color: controller.color),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 50.0,
-                    child: Icon(Icons.arrow_forward_ios, color: controller.color),
-                  ),
-                ],
-              ),
-            );
-          },
-          separatorBuilder: (_, index) => const SizedBox(height: 20.0),
-        ) : Container();
-      },
     );
   }
 }

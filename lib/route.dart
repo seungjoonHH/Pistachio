@@ -47,7 +47,7 @@ class PRoute {
     '/challenge/party/main': const ChallengePartyMainPage(),
     '/collection/main': const CollectionMainPage(),
     '/my/main': const MyMainPage(),
-    '/my/record': const MyRecordPage(),
+    '/my/record/main': const MyRecordMainPage(),
     '/my/setting/main': const MySettingMainPage(),
     '/my/setting/edit': const MySettingEditPage(),
     '/quest': const QuestPage(),

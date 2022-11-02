@@ -47,19 +47,19 @@ class PCard extends StatelessWidget {
             border: Border(
               left: leftBorder ? BorderSide(
                 color: borderColor,
-                width: borderWidth,
+                width: borderWidth.h,
               ) : BorderSide.none,
               top: topBorder ? BorderSide(
                 color: borderColor,
-                width: borderWidth,
+                width: borderWidth.h,
               ) : BorderSide.none,
               right: rightBorder ? BorderSide(
                 color: borderColor,
-                width: borderWidth,
+                width: borderWidth.h,
               ) : BorderSide.none,
               bottom: bottomBorder ? BorderSide(
                 color: borderColor,
-                width: borderWidth,
+                width: borderWidth.h,
               ) : BorderSide.none,
 
             ),

@@ -14,6 +14,7 @@ import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/my/record/main.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -59,9 +60,7 @@ class _MyMainViewState extends State<MyMainView> {
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                onTap: () {
-                                  Get.toNamed('/my/record', arguments: type);
-                                },
+                                onTap: () => MyRecordMain.toMyRecordMain(type),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -70,6 +69,11 @@ class _MyMainViewState extends State<MyMainView> {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
+                                          if (tier['currentId'] != null)
+                                          Image.asset(
+                                            'assets/image/level/${type.name}/${tier['currentId']}.png',
+                                            width: 50.0.w,
+                                          ),
                                           PText(
                                             tier['currentTitle'] ?? '',
                                             maxLines: 2,

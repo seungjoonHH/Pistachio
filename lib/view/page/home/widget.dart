@@ -91,7 +91,7 @@ class WidgetHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      height: 30.0.h,
+      height: 40.0.h,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -375,20 +375,22 @@ class DailyActivityCardView extends StatelessWidget {
       children: [
         const WidgetHeader(title: '오늘 활동량'),
         SizedBox(height: 10.0.h),
-        PCard(
-          padding: EdgeInsets.zero,
-          borderType: BorderType.horizontal,
-          borderWidth: 3.0,
-          color: PTheme.surface,
-          child: GridView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.0,
+        SizedBox(
+          child: PCard(
+            padding: EdgeInsets.zero,
+            borderType: BorderType.horizontal,
+            borderWidth: 3.0,
+            color: PTheme.surface,
+            child: GridView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.w / 1.h,
+              ),
+              children: ActivityType.values
+                  .map((type) => DailyActivityCircularGraph(type: type)).toList(),
             ),
-            children: ActivityType.values
-                .map((type) => DailyActivityCircularGraph(type: type)).toList(),
           ),
         ),
       ],
@@ -455,11 +457,14 @@ class DailyActivityCircularGraph extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10.0.h),
-                PTexts(
-                  ['$todayRecord', '/$goal ${type.unit}'],
-                  colors: [type.color, PTheme.black],
-                  style: textTheme.labelLarge,
-                  space: false,
+                SizedBox(
+                  height: 20.0.h,
+                  child: PTexts(
+                    ['$todayRecord', '/$goal ${type.unit}'],
+                    colors: [type.color, PTheme.black],
+                    style: textTheme.labelLarge,
+                    space: false,
+                  ),
                 ),
               ],
             ),
@@ -493,7 +498,7 @@ class MonthlyQuestWidget extends StatelessWidget {
     return Column(
       children: [
         const WidgetHeader(title: '월간 목표', seeMorePressed: QuestMain.toQuestMain),
-        const SizedBox(height: 10.0),
+        SizedBox(height: 10.0.h),
         Container(
           decoration: const BoxDecoration(
             border: Border.symmetric(
@@ -542,7 +547,7 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
               ),
             ),
           ),
-          height: 80.0,
+          height: 80.0.h,
           child: Row(
             children: [
               Expanded(
@@ -638,7 +643,7 @@ class CollectionCardView extends StatelessWidget {
           title: '컬렉션',
           seeMorePressed: CollectionMain.toCollectionMain,
         ),
-        const SizedBox(height: 10.0),
+        SizedBox(height: 10.0.h),
         PCard(
           borderType: BorderType.horizontal,
           borderWidth: 3.0,
@@ -668,26 +673,26 @@ class HomeLoading extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0.r),
+            padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0),
             child: PCard(
               color: color,
               rounded: true,
               borderColor: Colors.transparent,
               child: Container(
-                height: 168.0.h,
+                height: 166.0.h,
               ),
             ),
           ),
-          Container(height: 72.0.h),
+          Container(height: 82.0.h),
           Container(
             color: color,
-            height: 372.0.h,
+            height: 366.0.h,
             child: GridView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 1.0,
+                childAspectRatio: 1.w / 1.h,
               ),
               children: List.generate(4, (_) => Padding(
                 padding: EdgeInsets.all(20.0.r),
@@ -727,13 +732,12 @@ class HomeLoading extends StatelessWidget {
               )),
             ),
           ),
-          SizedBox(height: 70.0.h),
+          SizedBox(height: 78.0.h),
           Container(
-            height: 278.0.h,
+            height: 326.0.h,
             color: color,
           ),
-          SizedBox(height: 68.0.h),
-          // 180
+          SizedBox(height: 78.0.h),
           PCard(
             borderType: BorderType.horizontal,
             borderWidth: 3.0,

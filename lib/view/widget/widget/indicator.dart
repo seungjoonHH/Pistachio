@@ -49,8 +49,8 @@ class PCircularPercentIndicator extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: CircularPercentIndicator(
-            radius: radius.w,
-            lineWidth: lineWidth.w,
+            radius: radius.r,
+            lineWidth: lineWidth.r,
             percent: percent,
             backgroundColor: backgroundColor,
             progressColor: color,
@@ -68,8 +68,8 @@ class PCircularPercentIndicator extends StatelessWidget {
           ),
         ),
         Container(
-          width: (radius.w - lineWidth.w) * 2,
-          height: (radius.w - lineWidth.w) * 2,
+          width: (radius.r - lineWidth.r) * 2,
+          height: (radius.r - lineWidth.r) * 2,
           decoration: BoxDecoration(
             border: border,
             shape: BoxShape.circle,

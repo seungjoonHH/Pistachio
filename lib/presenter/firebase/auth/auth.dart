@@ -59,7 +59,7 @@ class AuthPresenter {
       // 파이어베이스 데이터로 로그인
       PUser stranger = PUser.fromJson(json);
       await userP.login(stranger);
-      HomePresenter.toHome();
+      await HomePresenter.toHome();
     }
   }
 

@@ -40,14 +40,22 @@ class GlobalPresenter extends GetxController {
 
   int navIndex = 0;
 
-  void navigate(int index) {
-    navIndex = index == 1 ? navIndex : index;
+  void navigate(int index) async {
+    final homeP = Get.find<HomePresenter>();
+    final challengeMain = Get.find<ChallengeMain>();
 
     switch (index) {
-      case 0: HomePresenter.toHome(); break;
+      case 0:
+        if (navIndex == index) { homeP.init(); }
+        else { HomePresenter.toHome(); }
+        break;
       case 1: openBottomBar(); break;
-      case 2: ChallengeMain.toChallengeMain(); break;
+      case 2:
+      if (navIndex == index) { challengeMain.init(); }
+      else { ChallengeMain.toChallengeMain(); }
+      break;
     }
+    navIndex = index == 1 ? navIndex : index;
     update();
   }
 

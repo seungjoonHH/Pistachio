@@ -30,9 +30,7 @@ class PartyMainView extends StatelessWidget {
             return SmartRefresher(
               controller: ChallengePartyMain.refreshCont,
               onRefresh: () async {
-                loadingP.loadStart();
                 await challengePartyMain.init(party!.id!);
-                loadingP.loadEnd();
                 ChallengePartyMain.refreshCont.refreshCompleted();
               },
               onLoading: () async {
@@ -79,10 +77,10 @@ class ChallengeInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BorderRadius imageRadius = BorderRadius.all(Radius.circular(20.0.r));
+    BorderRadius imageRadius = BorderRadius.circular(20.0.r);
 
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(20.0.r),
       child: Column(
         children: [
           Stack(
@@ -368,10 +366,16 @@ class ChallengePartyMainLoading extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0.r),
             child: Column(
               children: [
-                Container(height: 200.0.h, decoration: decoration),
+                Container(
+                  height: 200.0.h,
+                  decoration: BoxDecoration(
+                    color: decoration.color,
+                    borderRadius: BorderRadius.circular(20.0.r),
+                  ),
+                ),
                 SizedBox(height: 30.0.h),
                 Container(width: 100.0.w, height: 20.0.h, decoration: decoration),
                 SizedBox(height: 20.0.h),
@@ -392,10 +396,11 @@ class ChallengePartyMainLoading extends StatelessWidget {
               children: [
                 Container(width: 200.0.w, height: 25.0.h, decoration: decoration),
                 SizedBox(height: 20.0.h),
-                Container(height: 100.0.h, decoration: decoration),
+                Container(height: 80.0.h, decoration: decoration),
               ],
             ),
           ),
+          const Divider(color: PTheme.lightGrey, thickness: 8),
         ],
       ),
     );

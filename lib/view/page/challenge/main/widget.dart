@@ -162,9 +162,9 @@ class ChallengeCard extends StatelessWidget {
                     height: 230.0.h,
                     fit: BoxFit.fitHeight,
                   ),
-                  const Divider(height: 1.0, color: PTheme.black, thickness: 1.5),
+                  Divider(height: 1.0.h, color: PTheme.black, thickness: 1.5),
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(20.0.r),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -174,14 +174,20 @@ class ChallengeCard extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                PText(challenge.title ?? '',
-                                  style: textTheme.headlineMedium,
-                                  maxLines: 2,
+                                SizedBox(
+                                  height: 80.0.h,
+                                  child: PText(challenge.title ?? '',
+                                    style: textTheme.headlineMedium,
+                                    maxLines: 2,
+                                  ),
                                 ),
-                                SizedBox(height: 10.0.h),
-                                PText('${today.month}월의 챌린지',
-                                  style: textTheme.labelLarge,
-                                  color: PTheme.grey,
+                                SizedBox(height: 20.0.h),
+                                SizedBox(
+                                  height: 15.0.h,
+                                  child: PText('${today.month}월의 챌린지',
+                                    style: textTheme.labelLarge,
+                                    color: PTheme.grey,
+                                  ),
                                 ),
                               ],
                             ),
@@ -192,11 +198,14 @@ class ChallengeCard extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 20.0.h),
-                        PText(
-                          challenge.descriptions['sub']!,
-                          style: textTheme.titleSmall,
-                          color: PTheme.black,
-                          maxLines: 2,
+                        SizedBox(
+                          height: 30.0.h,
+                          child: PText(
+                            challenge.descriptions['sub']!,
+                            style: textTheme.titleSmall,
+                            color: PTheme.black,
+                            maxLines: 2,
+                          ),
                         ),
                       ],
                     ),
@@ -272,7 +281,7 @@ class ChallengeCardLoading extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 230.0.h,
+            height: 232.0.h,
             decoration: decoration,
           ),
           Padding(
@@ -288,7 +297,7 @@ class ChallengeCardLoading extends StatelessWidget {
                       children: [
                         Container(
                           width: 200.0.w,
-                          height: 70.0.h,
+                          height: 80.0.h,
                           decoration: decoration,
                         ),
                         SizedBox(height: 20.0.h),
@@ -524,7 +533,7 @@ class MyPartyListViewLoading extends StatelessWidget {
           itemBuilder: (_, index) {
             return Container(
               color: PTheme.background,
-              height: 80.0,
+              height: 80.0.h,
               child: Row(
                 children: [
                   Container(width: 80.0, height: 80.0.h, color: controller.color),

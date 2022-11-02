@@ -18,34 +18,61 @@ import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/quest.dart';
+import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/indicator.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const HomeRandomCardView(),
-          Column(
-            children: const [
-              SizedBox(height: 30.0),
-              DailyActivityCardView(),
-              SizedBox(height: 30.0),
-              MonthlyQuestWidget(),
-              SizedBox(height: 30.0),
-              CollectionCardView(),
-              SizedBox(height: 30.0),
-            ],
-          ),
-        ],
-      ),
+    return GetBuilder<HomePresenter>(
+      builder: (homeP) {
+        return GetBuilder<LoadingPresenter>(
+          builder: (loadingP) {
+            return SmartRefresher(
+              controller: HomePresenter.refreshCont,
+              onRefresh: () async {
+                loadingP.loadStart();
+                await homeP.init();
+                loadingP.loadEnd();
+                HomePresenter.refreshCont.refreshCompleted();
+              },
+              onLoading: () async {
+                await Future.delayed(const Duration(milliseconds: 100));
+                HomePresenter.refreshCont.loadComplete();
+              },
+              header: const MaterialClassicHeader(
+                color: PTheme.black,
+                backgroundColor: PTheme.surface,
+              ),
+              child: SingleChildScrollView(
+                child: !loadingP.loading ? Column(
+                  children: [
+                    const HomeRandomCardView(),
+                    Column(
+                      children: [
+                        SizedBox(height: 30.0.h),
+                        const DailyActivityCardView(),
+                        SizedBox(height: 30.0.h),
+                        const MonthlyQuestWidget(),
+                        SizedBox(height: 30.0.h),
+                        const CollectionCardView(),
+                        SizedBox(height: 30.0.h),
+                      ],
+                    ),
+                  ],
+                ) : HomeLoading(color: loadingP.color),
+              ),
+            );
+          },
+        );
+      }
     );
   }
 }
@@ -62,8 +89,9 @@ class WidgetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      height: 30.0.h,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -426,7 +454,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10.0),
+                SizedBox(height: 10.0.h),
                 PTexts(
                   ['$todayRecord', '/$goal ${type.unit}'],
                   colors: [type.color, PTheme.black],
@@ -622,6 +650,112 @@ class CollectionCardView extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class HomeLoading extends StatelessWidget {
+  const HomeLoading({
+    Key? key,
+    this.color = PTheme.black,
+  }) : super(key: key);
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0.r),
+            child: PCard(
+              color: color,
+              rounded: true,
+              borderColor: Colors.transparent,
+              child: Container(
+                height: 168.0.h,
+              ),
+            ),
+          ),
+          Container(height: 72.0.h),
+          Container(
+            color: color,
+            height: 372.0.h,
+            child: GridView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.0,
+              ),
+              children: List.generate(4, (_) => Padding(
+                padding: EdgeInsets.all(20.0.r),
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 112.0.r,
+                          height: 112.0.r,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: PTheme.white,
+                          ),
+                        ),
+                        Container(
+                          width: 112.0.r,
+                          height: 112.0.r,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: PTheme.background,
+                          ),
+                        ),
+                        Container(
+                          width: 76.0.r,
+                          height: 76.0.r,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: color,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )),
+            ),
+          ),
+          SizedBox(height: 70.0.h),
+          Container(
+            height: 278.0.h,
+            color: color,
+          ),
+          SizedBox(height: 68.0.h),
+          // 180
+          PCard(
+            borderType: BorderType.horizontal,
+            borderWidth: 3.0,
+            color: color,
+            borderColor: Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(3, (_) => Stack(
+                children: const [
+                  CollectionWidget(
+                    color: PTheme.surface,
+                    border: false,
+                    detail: true,
+                  ),
+                ],
+              )),
+            ),
+          ),
+          SizedBox(height: 30.0.h),
+        ],
+      ),
     );
   }
 }

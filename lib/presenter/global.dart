@@ -49,6 +49,7 @@ class GlobalPresenter extends GetxController {
 
     switch (index) {
       case 0:
+<<<<<<< HEAD
         if (navIndex == index) {
           homeP.init();
         } else {
@@ -65,6 +66,16 @@ class GlobalPresenter extends GetxController {
           ChallengeMain.toChallengeMain();
         }
         break;
+=======
+        if (navIndex == index) { homeP.init(); }
+        else { HomePresenter.toHome(); }
+        break;
+      case 1: openBottomBar(); break;
+      case 2:
+      if (navIndex == index) { challengeMain.init(); }
+      else { ChallengeMain.toChallengeMain(); }
+      break;
+>>>>>>> c8b592dbe2cc5f4f96a4914fc859b662472b6ff9
     }
     navIndex = index == 1 ? navIndex : index;
     update();

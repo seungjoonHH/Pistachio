@@ -32,7 +32,8 @@ class PRoute {
 
   /// static methods
 // 라우트 문자열, 페이지 매핑
-  static Map<String, Widget> get pages => {
+  static Map<String, Widget> get pages =>
+      {
         '/home': const HomePage(),
         '/login': const LoginPage(),
         '/register': const RegisterPage(),
@@ -55,12 +56,14 @@ class PRoute {
       };
 
   // 겟페이지 리스트
-  static List<GetPage> get getPages => pages.entries
-      .map((page) => GetPage(
+  static List<GetPage> get getPages =>
+      pages.entries
+          .map((page) =>
+          GetPage(
             name: page.key,
             page: () => page.value,
             transition: transition,
             transitionDuration: duration,
           ))
-      .toList();
+          .toList();
 }

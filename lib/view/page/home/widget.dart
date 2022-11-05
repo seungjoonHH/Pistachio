@@ -25,7 +25,6 @@ import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/indicator.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../../../presenter/page/editGoal.dart';
 
 class HomeView extends StatelessWidget {

@@ -7,13 +7,13 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/quest.dart';
+import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/home.dart';
@@ -38,9 +38,7 @@ class HomeView extends StatelessWidget {
             return SmartRefresher(
               controller: HomePresenter.refreshCont,
               onRefresh: () async {
-                loadingP.loadStart();
                 await homeP.init();
-                loadingP.loadEnd();
                 HomePresenter.refreshCont.refreshCompleted();
               },
               onLoading: () async {
@@ -532,10 +530,13 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
     PUser user = userP.loggedUser;
     const String directory = 'assets/image/page/home/';
 
-    double record = user.getThisMonthAmounts(type);
+    Record record = Record.init(
+      type, user.getThisMonthAmounts(type),
+      DistanceUnit.step,
+    );
+
     int goal = QuestPresenter.quests[type] ?? 1;
-    if (type == ActivityType.weight) goal ~/= weight + 1;
-    double percent = min(record / goal, 1);
+    double percent = min(record.amount / goal, 1);
 
     return Stack(
       children: [
@@ -552,10 +553,9 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  color: PTheme.surface,
-                  child: SvgPicture.asset('$directory${type.asset}'),
+                child: SvgPicture.asset(
+                  '$directory${type.asset}',
+                  fit: BoxFit.fitHeight,
                 ),
               ),
               const VerticalDivider(

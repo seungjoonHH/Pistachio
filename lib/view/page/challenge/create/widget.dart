@@ -64,48 +64,62 @@ class ChallengeCreateView extends StatelessWidget {
                     const SizedBox(height: 40.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: Difficulty.values.map((diff) => GestureDetector(
-                        onTap: () => controller.changeDifficulty(diff),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Stack(
+                      children: Difficulty.values.map((diff) => Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () => controller.changeDifficulty(diff),
+                            child: Padding(
+                              padding: EdgeInsets.all(6.0.r),
+                              child: Column(
                                 children: [
-                                  BadgeWidget(
-                                    badge: challenge.badges[diff],
-                                    onPressed: () => controller.changeDifficulty(diff),
-                                  ),
-                                  Container(
-                                    width: 80.0.r,
-                                    height: 80.0.r,
-                                    decoration: ShapeDecoration(
-                                      color: diff == controller.difficulty
-                                          ? Colors.transparent
-                                          : PTheme.black.withOpacity(.2),
-                                      shape: PolygonBorder(
-                                        sides: 6,
-                                        side: BorderSide(
-                                          width: 4.0,
-                                          color: diff == controller.difficulty
-                                              ? PTheme.colorB
-                                              : Colors.transparent,
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Stack(
+                                      children: [
+                                        BadgeWidget(
+                                          badge: diff.active ? challenge.badges[diff] : null,
+                                          onPressed: () => controller.changeDifficulty(diff),
                                         ),
-                                      ),
+                                        Container(
+                                          width: 80.0.r,
+                                          height: 80.0.r,
+                                          decoration: ShapeDecoration(
+                                            color: diff == controller.difficulty
+                                                ? Colors.transparent
+                                                : PTheme.black.withOpacity(.2),
+                                            shape: PolygonBorder(
+                                              sides: 6,
+                                              side: BorderSide(
+                                                width: 4.0,
+                                                color: diff == controller.difficulty
+                                                    ? PTheme.colorB
+                                                    : Colors.transparent,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                  PText(diff.kr,
+                                    style: textTheme.titleLarge,
+                                    color: diff == controller.difficulty
+                                        ? PTheme.colorB
+                                        : PTheme.black,
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 20.0),
-                            PText(diff.kr,
-                              style: textTheme.titleLarge,
-                              color: diff == controller.difficulty
-                                  ? PTheme.colorB
-                                  : PTheme.black,
+                          ),
+                          if (!diff.active)
+                          Positioned.fill(
+                            child: Container(
+                              color: PTheme.black.withOpacity(.5),
+                              child: Icon(Icons.lock, size: 30.0.r),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       )).toList(),
                     ),
                   ],
@@ -117,9 +131,9 @@ class ChallengeCreateView extends StatelessWidget {
                     PText('권장 참여 인원 : $memberString명',
                       style: textTheme.headlineSmall,
                     ),
-                    SizedBox(height: 30.0.h),
+                    SizedBox(height: 20.0.h),
                     SizedBox(
-                      height: 350.0.h,
+                      height: 300.0.h,
                       child: RichText(
                         text: TextSpan(
                           children: List.generate(descriptions.length, (index) => TextSpan(

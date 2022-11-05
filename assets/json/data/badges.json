@@ -751,32 +751,38 @@
   },
   {
     "id": 1050020,
-    "title": "",
-    "description": "",
-    "activate": false
+    "title": "양반각의",
+    "description": "양반각의",
+    "activate": true
   },
   {
     "id": 1050021,
-    "title": "",
-    "description": "",
-    "activate": false
+    "title": "양반각의",
+    "description": "양반각의",
+    "activate": true
   },
   {
     "id": 1050022,
-    "title": "",
-    "description": "",
-    "activate": false
+    "title": "양반각의",
+    "description": "양반각의",
+    "activate": true
   },
   {
     "id": 1050030,
-    "title": "",
-    "description": "",
-    "activate": false
+    "title": "63빌딩 명예 소방관",
+    "description": "63빌딩",
+    "activate": true
   },
   {
     "id": 1050031,
-    "title": "",
-    "description": "",
-    "activate": false
+    "title": "롯데타워 명예 소방관",
+    "description": "롯데타워",
+    "activate": true
+  },
+  {
+    "id": 1050032,
+    "title": "부르즈 할리파 명예 소방관",
+    "description": "부르즈 할리파",
+    "activate": true
   }
 ]

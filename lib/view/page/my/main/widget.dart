@@ -8,6 +8,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
+import 'package:pistachio/model/class/json/level.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
@@ -45,11 +46,19 @@ class _MyMainViewState extends State<MyMainView> {
                 PText('개인 누적 기록치', style: textTheme.headlineSmall),
                 const SizedBox(height: 20.0),
                 Column(
-                  children: ActivityType.values.map((type) {
+                  children: ActivityType.values.sublist(1, 4).map((type) {
                     double amount = loggedUser.getAmounts(type);
                     Record record = Record.init(type, amount, DistanceUnit.step);
 
                     Map<String, dynamic> tier = LevelPresenter.getTier(type, record);
+                    Level next = tier['next'] ?? Level.fromJson({'amount': 0});
+
+                    Record nextValue = Record.init(
+                      type, next.amount!.toDouble(), DistanceUnit.kilometer,
+                    );
+
+                    nextValue.convert(DistanceUnit.step);
+                    int remainValue = (nextValue.amount - amount).round();
 
                     return SizedBox(
                       height: 120.0.h,
@@ -69,13 +78,13 @@ class _MyMainViewState extends State<MyMainView> {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          if (tier['currentId'] != null)
+                                          if (tier['current'] != null)
                                           Image.asset(
-                                            'assets/image/level/${type.name}/${tier['currentId']}.png',
+                                            'assets/image/level/${type.name}/${tier['current'].id}.png',
                                             width: 50.0.w,
                                           ),
                                           PText(
-                                            tier['currentTitle'] ?? '',
+                                            tier['current']?.title ?? '',
                                             maxLines: 2,
                                             style: textTheme.bodySmall,
                                             align: TextAlign.center,
@@ -105,13 +114,11 @@ class _MyMainViewState extends State<MyMainView> {
                                               curve: Curves.easeInOut,
                                             ),
                                           ),
-                                          // PTexts(
-                                          //   [tier['nextTitle'] ?? '', '까지'],
-                                          //   colors: [
-                                          //     type.color,
-                                          //     PTheme.black
-                                          //   ],
-                                          // ),
+                                          PTexts(
+                                            ['다음 단계까지', '$remainValue${type.unit}'],
+                                            colors: [PTheme.black, type.color],
+                                            style: textTheme.bodyLarge,
+                                          ),
                                         ],
                                       ),
                                     ),

@@ -36,7 +36,7 @@ class CollectionWidget extends StatelessWidget {
     PolygonBorder side = PolygonBorder(
       sides: 6,
       side: BorderSide(
-        width: selected ? 4.5 : 1.5,
+        width: (selected ? 4.5 : 1.5).r,
         color: collection == null && border
             ? PTheme.black : Colors.transparent,
       ),
@@ -45,9 +45,9 @@ class CollectionWidget extends StatelessWidget {
     return Stack(
       children: [
         if (collection != null)
-          Image.asset(collection!.badge!.imageUrl!,
-            width: size.r, height: size.r,
-          ),
+        Image.asset(collection!.badge!.imageUrl!,
+          width: (size + 3.0).r, height: (size + 3.0).r,
+        ),
         Column(
           children: [
             Stack(
@@ -62,8 +62,8 @@ class CollectionWidget extends StatelessWidget {
                     customBorder: side,
                     splashColor: PTheme.black.withOpacity(.1),
                     child: SizedBox(
-                      width: size.r,
-                      height: size.r,
+                      width: (size + 3.0).r,
+                      height: (size + 3.0).r,
                     ),
                   ),
                 ),
@@ -73,8 +73,8 @@ class CollectionWidget extends StatelessWidget {
                     color: PTheme.colorB,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.check_circle_outline_rounded,
-                    size: 40.0,
+                  child: Icon(Icons.check_circle_outline_rounded,
+                    size: 40.0.r,
                     color: PTheme.background,
                   ),
                 ),
@@ -84,8 +84,8 @@ class CollectionWidget extends StatelessWidget {
                       color: PTheme.grey,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.check_circle_outline_rounded,
-                      size: 40.0,
+                    child: Icon(Icons.check_circle_outline_rounded,
+                      size: 40.0.r,
                       color: PTheme.white,
                     ),
                   ),
@@ -153,7 +153,7 @@ class BadgeWidget extends StatelessWidget {
     PolygonBorder side = PolygonBorder(
       sides: 6,
       side: BorderSide(
-        width: 1.5,
+        width: 1.5.r,
         color: border == null
             ? (badge == null ? PTheme.black : Colors.transparent)
             : Colors.transparent,
@@ -168,18 +168,17 @@ class BadgeWidget extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             if (completed && !received)
-              Image.asset(badge!.imageUrl!,
-                width: size.r,
-                height: size.r,
-              ).animate(
-                onPlay: (cont) => cont.repeat(reverse: true),
-              ).fade(end: .8).scale(
-                duration: const Duration(milliseconds: 500),
-                end: const Offset(.95, .95),
-              )
-            else Image.asset(badge!.imageUrl!,
-              width: size.r,
-              height: size.r,
+            Image.asset(badge!.imageUrl!,
+              width: (size + 3.0).r,
+              height: (size + 3.0).r,
+            ).animate(
+              onPlay: (cont) => cont.repeat(reverse: true),
+            ).fade(end: .8).scale(
+              duration: const Duration(milliseconds: 500),
+              end: const Offset(.95, .95),
+            ) else Image.asset(badge!.imageUrl!,
+              width: (size + 3.0).r,
+              height: (size + 3.0).r,
             ),
           ],
         ),

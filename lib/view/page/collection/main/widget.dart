@@ -47,7 +47,7 @@ class CollectionMainView extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: .65,
+            childAspectRatio: .6,
             mainAxisSpacing: 10.0,
             crossAxisSpacing: 10.0,
           ),

@@ -25,65 +25,68 @@ import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/indicator.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../../../presenter/page/editGoal.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomePresenter>(
-      builder: (homeP) {
-        return GetBuilder<LoadingPresenter>(
-          builder: (loadingP) {
-            return SmartRefresher(
-              controller: HomePresenter.refreshCont,
-              onRefresh: () async {
-                loadingP.loadStart();
-                await homeP.init();
-                loadingP.loadEnd();
-                HomePresenter.refreshCont.refreshCompleted();
-              },
-              onLoading: () async {
-                await Future.delayed(const Duration(milliseconds: 100));
-                HomePresenter.refreshCont.loadComplete();
-              },
-              header: const MaterialClassicHeader(
-                color: PTheme.black,
-                backgroundColor: PTheme.surface,
-              ),
-              child: SingleChildScrollView(
-                child: !loadingP.loading ? Column(
-                  children: [
-                    const HomeRandomCardView(),
-                    Column(
+    return GetBuilder<HomePresenter>(builder: (homeP) {
+      return GetBuilder<LoadingPresenter>(
+        builder: (loadingP) {
+          return SmartRefresher(
+            controller: HomePresenter.refreshCont,
+            onRefresh: () async {
+              loadingP.loadStart();
+              await homeP.init();
+              loadingP.loadEnd();
+              HomePresenter.refreshCont.refreshCompleted();
+            },
+            onLoading: () async {
+              await Future.delayed(const Duration(milliseconds: 100));
+              HomePresenter.refreshCont.loadComplete();
+            },
+            header: const MaterialClassicHeader(
+              color: PTheme.black,
+              backgroundColor: PTheme.surface,
+            ),
+            child: SingleChildScrollView(
+              child: !loadingP.loading
+                  ? Column(
                       children: [
-                        SizedBox(height: 30.0.h),
-                        const DailyActivityCardView(),
-                        SizedBox(height: 30.0.h),
-                        const MonthlyQuestWidget(),
-                        SizedBox(height: 30.0.h),
-                        const CollectionCardView(),
-                        SizedBox(height: 30.0.h),
+                        const HomeRandomCardView(),
+                        Column(
+                          children: [
+                            SizedBox(height: 30.0.h),
+                            const DailyActivityCardView(),
+                            SizedBox(height: 30.0.h),
+                            const MonthlyQuestWidget(),
+                            SizedBox(height: 30.0.h),
+                            const CollectionCardView(),
+                            SizedBox(height: 30.0.h),
+                          ],
+                        ),
                       ],
-                    ),
-                  ],
-                ) : HomeLoading(color: loadingP.color),
-              ),
-            );
-          },
-        );
-      }
-    );
+                    )
+                  : HomeLoading(color: loadingP.color),
+            ),
+          );
+        },
+      );
+    });
   }
 }
 
 class WidgetHeader extends StatelessWidget {
   const WidgetHeader({
     Key? key,
+    this.isEditGoal = false,
     required this.title,
     this.seeMorePressed,
   }) : super(key: key);
 
+  final bool isEditGoal;
   final String title;
   final VoidCallback? seeMorePressed;
 
@@ -97,13 +100,32 @@ class WidgetHeader extends StatelessWidget {
         children: [
           PText(title, style: textTheme.headlineSmall),
           if (seeMorePressed != null)
-          SeeMoreButton(onPressed: seeMorePressed!),
+            isEditGoal
+                ? EditGoalButton(onPressed: seeMorePressed!)
+                : SeeMoreButton(onPressed: seeMorePressed!),
         ],
       ),
     );
   }
 }
 
+class EditGoalButton extends StatelessWidget {
+  const EditGoalButton({
+    Key? key,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.edit),
+      color: PTheme.colorC,
+      onPressed: onPressed,
+    );
+  }
+}
 
 class SeeMoreButton extends StatelessWidget {
   const SeeMoreButton({
@@ -133,12 +155,13 @@ class HomeRandomCardView extends StatelessWidget {
     List<Widget> items = [
       const QuestRecommendCard(),
       const LifeExtensionCard(),
-      if (ignoreTime(user.regDate!) != today)
-      const YesterdayComparisonCard(),
-    ].map((widget) => Padding(
-      padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0.r),
-      child: widget,
-    )).toList();
+      if (ignoreTime(user.regDate!) != today) const YesterdayComparisonCard(),
+    ]
+        .map((widget) => Padding(
+              padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0.r),
+              child: widget,
+            ))
+        .toList();
 
     items.shuffle();
 
@@ -167,14 +190,16 @@ class QuestRecommendCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PTexts(['${today.month}월', '의 목표'],
+              PTexts(
+                ['${today.month}월', '의 목표'],
                 colors: const [PTheme.colorA, PTheme.black],
                 style: textTheme.titleLarge,
                 alignment: MainAxisAlignment.start,
                 space: false,
               ),
               SizedBox(height: 10.0.h),
-              PText('를 달성하고 컬렉션을 모아보세요.',
+              PText(
+                '를 달성하고 컬렉션을 모아보세요.',
                 style: textTheme.labelMedium,
                 color: PTheme.grey,
               ),
@@ -187,19 +212,18 @@ class QuestRecommendCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 BadgeWidget(
-                  badge: BadgePresenter.getBadge('10401${
-                    (today.month - 1).toString().padLeft(2, '0')}'
-                  ), size: 60.0,
+                  badge: BadgePresenter.getBadge(
+                      '10401${(today.month - 1).toString().padLeft(2, '0')}'),
+                  size: 60.0,
                 ),
                 BadgeWidget(
-                  badge: BadgePresenter.getBadge('10400${
-                    (today.month - 1).toString().padLeft(2, '0')}'
-                  ),
+                  badge: BadgePresenter.getBadge(
+                      '10400${(today.month - 1).toString().padLeft(2, '0')}'),
                 ),
                 BadgeWidget(
-                  badge: BadgePresenter.getBadge('10402${
-                    (today.month - 1).toString().padLeft(2, '0')}'
-                  ), size: 60.0,
+                  badge: BadgePresenter.getBadge(
+                      '10402${(today.month - 1).toString().padLeft(2, '0')}'),
+                  size: 60.0,
                 ),
               ],
             ),
@@ -209,7 +233,6 @@ class QuestRecommendCard extends StatelessWidget {
     );
   }
 }
-
 
 class LifeExtensionCard extends StatelessWidget {
   const LifeExtensionCard({Key? key}) : super(key: key);
@@ -223,9 +246,8 @@ class LifeExtensionCard extends StatelessWidget {
     String string = timeToString(lifeExtension.ceil());
 
     if (lifeExtension >= 60 * 60 * 24) {
-    string = '약 ${timeToString((lifeExtension ~/ 3600) * 3600)}';
-    }
-    else if (lifeExtension >= 60 * 60) {
+      string = '약 ${timeToString((lifeExtension ~/ 3600) * 3600)}';
+    } else if (lifeExtension >= 60 * 60) {
       string = '약 ${timeToString((lifeExtension ~/ 60) * 60)}';
     }
     return PCard(
@@ -234,35 +256,39 @@ class LifeExtensionCard extends StatelessWidget {
       child: Column(
         children: [
           if (todayHeights == 0)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              PText('계단을 올라 수명을 연장해보세요',
-                style: textTheme.titleLarge,
-              ),
-              SizedBox(height: 10.0.h),
-              PText('한 층을 오르면 수명이 1분 40초 늘어나요!',
-                style: textTheme.labelMedium,
-                color: PTheme.grey,
-              ),
-            ],
-          ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                PText(
+                  '계단을 올라 수명을 연장해보세요',
+                  style: textTheme.titleLarge,
+                ),
+                SizedBox(height: 10.0.h),
+                PText(
+                  '한 층을 오르면 수명이 1분 40초 늘어나요!',
+                  style: textTheme.labelMedium,
+                  color: PTheme.grey,
+                ),
+              ],
+            ),
           if (todayHeights > 0)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              PTexts(['수명이', string, '연장되었어요'],
-                colors: const [PTheme.black, PTheme.colorD, PTheme.black],
-                style: textTheme.titleLarge,
-                alignment: MainAxisAlignment.start,
-              ),
-              SizedBox(height: 10.0.h),
-              PText('한 층을 오르면 수명이 1분 40초 늘어나요!',
-                style: textTheme.labelMedium,
-                color: PTheme.grey,
-              ),
-            ],
-          ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                PTexts(
+                  ['수명이', string, '연장되었어요'],
+                  colors: const [PTheme.black, PTheme.colorD, PTheme.black],
+                  style: textTheme.titleLarge,
+                  alignment: MainAxisAlignment.start,
+                ),
+                SizedBox(height: 10.0.h),
+                PText(
+                  '한 층을 오르면 수명이 1분 40초 늘어나요!',
+                  style: textTheme.labelMedium,
+                  color: PTheme.grey,
+                ),
+              ],
+            ),
           SizedBox(height: 20.0.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -303,21 +329,27 @@ class YesterdayComparisonCard extends StatelessWidget {
                       late String last;
 
                       for (ActivityType type in ActivityType.activeValues) {
-                        double todays = controller.loggedUser.getTodayAmounts(type);
-                        double yesterdays = controller.loggedUser.getAmounts(type, yesterday, oneSecondBefore(today));
+                        double todays =
+                            controller.loggedUser.getTodayAmounts(type);
+                        double yesterdays = controller.loggedUser.getAmounts(
+                            type, yesterday, oneSecondBefore(today));
 
                         double diff = todays - yesterdays;
                         diffs[type] = diff;
                         diffMessages[type] = [];
 
-                        last = type == ActivityType.calorie ? type.did : '${type.and},';
+                        last = type == ActivityType.calorie
+                            ? type.did
+                            : '${type.and},';
 
                         if (diff == 0) {
                           diffMessages[type]!.addAll(['비슷하게', last]);
                           continue;
                         }
-                        diffMessages[type]!.add('${diff.abs().round()}${type.unit}');
-                        diffMessages[type]!.add('${diff > 0 ? '더' : '덜'} $last');
+                        diffMessages[type]!
+                            .add('${diff.abs().round()}${type.unit}');
+                        diffMessages[type]!
+                            .add('${diff > 0 ? '더' : '덜'} $last');
                       }
 
                       return Column(
@@ -325,7 +357,8 @@ class YesterdayComparisonCard extends StatelessWidget {
                         children: [
                           Stack(
                             children: [
-                              PTexts(diffMessages[ActivityType.distance]!,
+                              PTexts(
+                                diffMessages[ActivityType.distance]!,
                                 colors: const [PTheme.colorB, PTheme.black],
                                 style: textTheme.titleLarge,
                                 alignment: MainAxisAlignment.start,
@@ -334,7 +367,8 @@ class YesterdayComparisonCard extends StatelessWidget {
                           ),
                           Stack(
                             children: [
-                              PTexts(diffMessages[ActivityType.height]!,
+                              PTexts(
+                                diffMessages[ActivityType.height]!,
                                 colors: const [PTheme.colorD, PTheme.black],
                                 style: textTheme.titleLarge,
                                 alignment: MainAxisAlignment.center,
@@ -343,7 +377,8 @@ class YesterdayComparisonCard extends StatelessWidget {
                           ),
                           Stack(
                             children: [
-                              PTexts(diffMessages[ActivityType.calorie]!,
+                              PTexts(
+                                diffMessages[ActivityType.calorie]!,
                                 colors: const [PTheme.colorA, PTheme.black],
                                 style: textTheme.titleLarge,
                                 alignment: MainAxisAlignment.end,
@@ -364,7 +399,6 @@ class YesterdayComparisonCard extends StatelessWidget {
   }
 }
 
-
 class DailyActivityCardView extends StatelessWidget {
   const DailyActivityCardView({Key? key}) : super(key: key);
 
@@ -373,7 +407,11 @@ class DailyActivityCardView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const WidgetHeader(title: '오늘 활동량'),
+        const WidgetHeader(
+          isEditGoal: true,
+          title: '오늘 활동량',
+          seeMorePressed: EditGoalPresenter.toEditGoal,
+        ),
         SizedBox(height: 10.0.h),
         SizedBox(
           child: PCard(
@@ -389,7 +427,8 @@ class DailyActivityCardView extends StatelessWidget {
                 childAspectRatio: 1.w / 1.h,
               ),
               children: ActivityType.values
-                  .map((type) => DailyActivityCircularGraph(type: type)).toList(),
+                  .map((type) => DailyActivityCircularGraph(type: type))
+                  .toList(),
             ),
           ),
         ),
@@ -469,20 +508,20 @@ class DailyActivityCircularGraph extends StatelessWidget {
               ],
             ),
             if (!type.active)
-            Positioned.fill(
-              child: Stack(
-                children: [
-                  Container(
-                    color: PTheme.surface,
-                    alignment: Alignment.center,
-                    child: Icon(Icons.lock, size: 30.0.r),
-                  ),
-                  Container(
-                    color: PTheme.black.withOpacity(.3),
-                  ),
-                ],
+              Positioned.fill(
+                child: Stack(
+                  children: [
+                    Container(
+                      color: PTheme.surface,
+                      alignment: Alignment.center,
+                      child: Icon(Icons.lock, size: 30.0.r),
+                    ),
+                    Container(
+                      color: PTheme.black.withOpacity(.3),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         );
       },
@@ -497,20 +536,24 @@ class MonthlyQuestWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const WidgetHeader(title: '월간 목표', seeMorePressed: QuestMain.toQuestMain),
+        const WidgetHeader(
+            title: '월간 목표', seeMorePressed: QuestMain.toQuestMain),
         SizedBox(height: 10.0.h),
         Container(
           decoration: const BoxDecoration(
             border: Border.symmetric(
               horizontal: BorderSide(
-                color: PTheme.black, width: 2.5,
+                color: PTheme.black,
+                width: 2.5,
               ),
             ),
           ),
           child: Column(
-            children: ActivityType.values.map((type) => MonthlyQuestProgressWidget(
-              type: type,
-            )).toList(),
+            children: ActivityType.values
+                .map((type) => MonthlyQuestProgressWidget(
+                      type: type,
+                    ))
+                .toList(),
           ),
         ),
       ],
@@ -543,7 +586,8 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
           decoration: const BoxDecoration(
             border: Border.symmetric(
               horizontal: BorderSide(
-                color: PTheme.black, width: .5,
+                color: PTheme.black,
+                width: .5,
               ),
             ),
           ),
@@ -600,20 +644,20 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
           ),
         ),
         if (!type.active)
-        Positioned.fill(
-          child: Stack(
-            children: [
-              Container(
-                color: PTheme.surface,
-                alignment: Alignment.center,
-                child: Icon(Icons.lock, size: 30.0.r),
-              ),
-              Container(
-                color: PTheme.black.withOpacity(.3),
-              ),
-            ],
+          Positioned.fill(
+            child: Stack(
+              children: [
+                Container(
+                  color: PTheme.surface,
+                  alignment: Alignment.center,
+                  child: Icon(Icons.lock, size: 30.0.r),
+                ),
+                Container(
+                  color: PTheme.black.withOpacity(.3),
+                ),
+              ],
+            ),
           ),
-        ),
       ],
     );
   }
@@ -627,7 +671,8 @@ class CollectionCardView extends StatelessWidget {
     final userP = Get.find<UserPresenter>();
     PUser user = userP.loggedUser;
 
-    List<Widget> collectionWidgets = List.generate(3, (_) => const CollectionWidget());
+    List<Widget> collectionWidgets =
+        List.generate(3, (_) => const CollectionWidget());
     for (int i = 0; i < min(user.collections.length, 3); i++) {
       Collection collection = user.collections[i];
       collectionWidgets[i] = CollectionWidget(
@@ -694,42 +739,44 @@ class HomeLoading extends StatelessWidget {
                 crossAxisCount: 2,
                 childAspectRatio: 1.w / 1.h,
               ),
-              children: List.generate(4, (_) => Padding(
-                padding: EdgeInsets.all(20.0.r),
-                child: Column(
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width: 112.0.r,
-                          height: 112.0.r,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: PTheme.white,
-                          ),
+              children: List.generate(
+                  4,
+                  (_) => Padding(
+                        padding: EdgeInsets.all(20.0.r),
+                        child: Column(
+                          children: [
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  width: 112.0.r,
+                                  height: 112.0.r,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: PTheme.white,
+                                  ),
+                                ),
+                                Container(
+                                  width: 112.0.r,
+                                  height: 112.0.r,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: PTheme.background,
+                                  ),
+                                ),
+                                Container(
+                                  width: 76.0.r,
+                                  height: 76.0.r,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: color,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        Container(
-                          width: 112.0.r,
-                          height: 112.0.r,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: PTheme.background,
-                          ),
-                        ),
-                        Container(
-                          width: 76.0.r,
-                          height: 76.0.r,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: color,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )),
+                      )),
             ),
           ),
           SizedBox(height: 78.0.h),
@@ -746,15 +793,17 @@ class HomeLoading extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: List.generate(3, (_) => Stack(
-                children: const [
-                  CollectionWidget(
-                    color: PTheme.surface,
-                    border: false,
-                    detail: true,
-                  ),
-                ],
-              )),
+              children: List.generate(
+                  3,
+                  (_) => Stack(
+                        children: const [
+                          CollectionWidget(
+                            color: PTheme.surface,
+                            border: false,
+                            detail: true,
+                          ),
+                        ],
+                      )),
             ),
           ),
           SizedBox(height: 30.0.h),

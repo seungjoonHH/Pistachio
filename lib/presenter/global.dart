@@ -8,6 +8,7 @@ import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
+import 'package:pistachio/presenter/page/editGoal.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -35,8 +36,10 @@ import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class GlobalPresenter extends GetxController {
-  static const String effectAsset = 'assets/image/widget/dialog/badge_effect.png';
-  static const String effect2Asset = 'assets/image/widget/dialog/badge_effect2.png';
+  static const String effectAsset =
+      'assets/image/widget/dialog/badge_effect.png';
+  static const String effect2Asset =
+      'assets/image/widget/dialog/badge_effect2.png';
 
   int navIndex = 0;
 
@@ -62,6 +65,7 @@ class GlobalPresenter extends GetxController {
   static final barCont = BottomSheetBarController();
 
   static Future openBottomBar() async => await barCont.expand();
+
   static Future closeBottomBar() async => await barCont.collapse();
 
   static void goBack() => Get.back(result: true);
@@ -78,8 +82,10 @@ class GlobalPresenter extends GetxController {
               children: [
                 EternalRotation(
                   rps: .3,
-                  child: Image.asset(effect2Asset,
-                    width: 180.0.r, height: 180.0.r,
+                  child: Image.asset(
+                    effect2Asset,
+                    width: 180.0.r,
+                    height: 180.0.r,
                   ),
                 ),
                 BadgeWidget(badge: badge, size: 80.0.r),
@@ -98,7 +104,6 @@ class GlobalPresenter extends GetxController {
       onPressed: Get.back,
     );
   }
-
 
   static void showCollectionDialog(Collection collection) {
     showPDialog(
@@ -133,12 +138,17 @@ class GlobalPresenter extends GetxController {
                 constraints: const BoxConstraints(maxHeight: 70.0),
                 child: SingleChildScrollView(
                   child: Column(
-                    children: collection.dateList.map((date) => PText(
-                      dateToString('yyyy-MM-dd 획득!', date.toDate())!,
-                      color: date == collection.dateList.last
-                          ? PTheme.colorB : PTheme.black,
-                      bold: date == collection.dateList.last,
-                    )).toList().reversed.toList(),
+                    children: collection.dateList
+                        .map((date) => PText(
+                              dateToString('yyyy-MM-dd 획득!', date.toDate())!,
+                              color: date == collection.dateList.last
+                                  ? PTheme.colorB
+                                  : PTheme.black,
+                              bold: date == collection.dateList.last,
+                            ))
+                        .toList()
+                        .reversed
+                        .toList(),
                   ),
                 ),
               ),
@@ -175,33 +185,40 @@ class GlobalPresenter extends GetxController {
                   alignment: Alignment.center,
                   children: [
                     if (firstAward)
-                    EternalRotation(
-                      rps: .3,
-                      child: Image.asset(effectAsset,
-                        width: 180.0.r, height: 180.0.r,
+                      EternalRotation(
+                        rps: .3,
+                        child: Image.asset(
+                          effectAsset,
+                          width: 180.0.r,
+                          height: 180.0.r,
+                        ),
                       ),
-                    ),
                     BadgeWidget(badge: badge, size: 80.0.r),
                   ],
                 ),
               ),
               Positioned(
                 top: .0,
-                child: PText('${firstAward ? '신규' : ''} 뱃지 획득!',
+                child: PText(
+                  '${firstAward ? '신규' : ''} 뱃지 획득!',
                   style: textTheme.headlineSmall,
                 ),
               ),
               Positioned(
-                top: 40.0, right: 20.0,
-                child: PText(dateToString('yyyy-MM-dd', now)!,
-                  color: PTheme.colorB, align: TextAlign.end,
+                top: 40.0,
+                right: 20.0,
+                child: PText(
+                  dateToString('yyyy-MM-dd', now)!,
+                  color: PTheme.colorB,
+                  align: TextAlign.end,
                 ),
               ),
               Positioned(
                 bottom: 20.0,
                 child: Column(
                   children: [
-                    PText(badge.title!, style: textTheme.titleLarge, bold: true),
+                    PText(badge.title!,
+                        style: textTheme.titleLarge, bold: true),
                     const SizedBox(height: 5.0),
                     PText(badge.description!, style: textTheme.bodyLarge),
                   ],
@@ -214,7 +231,6 @@ class GlobalPresenter extends GetxController {
       type: DialogType.mono,
       onPressed: Get.back,
     );
-
   }
 
   static void initControllers() {
@@ -246,5 +262,6 @@ class GlobalPresenter extends GetxController {
     Get.put(ChallengeCreate());
     Get.put(ChallengePartyMain());
     Get.put(CollectionMain());
+    Get.put(EditGoalPresenter());
   }
 }

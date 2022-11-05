@@ -27,7 +27,7 @@ class BadgePresenter extends GetxController {
 
   // 뱃지 아이디에 해당하는 뱃지 반환
   static Badge? getBadge(String? id) => badges
-      .firstWhereOrNull((col) => col.id == id);
+      .firstWhereOrNull((badge) => badge.id == id);
 
   // 일일 활동 완료 뱃지 획득
   static void awardDailyActivityCompleteBadge() async {

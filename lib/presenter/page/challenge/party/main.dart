@@ -20,13 +20,9 @@ class ChallengePartyMain extends GetxController {
   // 챌린지 파티 메인 페이지로 이동
   static void toChallengePartyMain(Party party) async {
     final challengePartyMain = Get.find<ChallengePartyMain>();
-    final loadingP = Get.find<LoadingPresenter>();
 
     Get.toNamed('challenge/party/main');
-
-    loadingP.loadStart();
     await challengePartyMain.init(party.id!);
-    loadingP.loadEnd();
   }
 
   /// attributes
@@ -40,8 +36,10 @@ class ChallengePartyMain extends GetxController {
   // 초기화
   Future init(String id) async {
     final userP = Get.find<UserPresenter>();
+    final loadingP = Get.find<LoadingPresenter>();
     PUser user = userP.loggedUser;
 
+    loadingP.loadStart();
     loadedParty = await PartyPresenter.loadParty(id);
     await PartyPresenter.loadMembers(loadedParty!);
     await userP.loadMyParties();
@@ -54,6 +52,8 @@ class ChallengePartyMain extends GetxController {
     ).toDouble();
     loadedParty!.records[user.uid!] = maxValue.toInt();
     animateValue();
+
+    loadingP.loadEnd();
 
     PartyPresenter.save(loadedParty!);
     update();

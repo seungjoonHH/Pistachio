@@ -5,8 +5,8 @@ import 'package:pistachio/view/page/my/record/widget.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'background/layout/layout_colors.dart';
 
-class MyRecordPage extends StatelessWidget {
-  const MyRecordPage({Key? key}) : super(key: key);
+class MyRecordMainPage extends StatelessWidget {
+  const MyRecordMainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

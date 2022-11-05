@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/user.dart';
@@ -18,7 +19,7 @@ class MyRecordDetailView extends StatelessWidget {
   const MyRecordDetailView({Key? key, required this.type}) : super(key: key);
 
   @override
-  Widget build(BuildContext context,) {
+  Widget build(BuildContext context) {
 
     PUser loggedUser = Get.find<UserPresenter>().loggedUser;
     double amount = loggedUser.getAmounts(type);
@@ -72,11 +73,9 @@ class MyRecordDetailView extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 60,
-                  ),
+                  const SizedBox(height: 60.0),
                   PText('현재 내 위치', style: textTheme.headlineSmall),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 10.0),
                   TextScroll(
                     tier['currentTitle'] ?? '',
                     style: textTheme.displayLarge?.merge(TextStyle(
@@ -84,9 +83,12 @@ class MyRecordDetailView extends StatelessWidget {
                       fontWeight: FontWeight.normal,
                     )),
                   ),
-                  const SizedBox(height: 20),
-                  Image.asset('assets/image/record/distance/normandi.png'),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 20.0),
+                  Image.asset(
+                    'assets/image/level/${type.name}/${tier['currentId']}.png',
+                    width: 300.0.w,
+                  ),
+                  const SizedBox(height: 20.0),
                   PTexts(
                     ['$remainValue', type.unit, ' 더 ${type.ifDo}'],
                     colors: [type.color, type.color, PTheme.black],

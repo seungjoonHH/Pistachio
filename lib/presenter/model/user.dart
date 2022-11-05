@@ -215,18 +215,6 @@ class UserPresenter extends GetxController {
     save();
   }
 
-  // 구글핏/건강 연동 데이터에서 파이어베이스로 기록 설정
-  void setRecordFromFetchedData() {
-
-  }
-
-  // 파이어베이스에서 구글핏/건강 연동 데이터로 기록 설정
-  void setRecordFromLoadedData() async {
-    // final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
-    // await HealthPresenter.addStepsData(amount, );
-    // if (isIOS) await HealthPresenter.addFlightsData(amount);
-  }
-
   // 해당 활동형식의 기록 설정
   void setRecord(ActivityType type, Record record) async {
     late int before, after;
@@ -247,7 +235,7 @@ class UserPresenter extends GetxController {
 
   // 로그인된 사용자에게 뱃지 수여
   void awardBadge(Badge badge) async {
-    GlobalPresenter.badgeAwarded(badge);
+    GlobalPresenter.badgeAwarded(badge, true);
     loggedUser.collections.add(Collection.fromJson({
       'badgeId': badge.id,
       'dates': [toTimestamp(now)],

@@ -68,10 +68,10 @@ flutter:
   assets:
     - assets/image/logo/
     - assets/image/object/
-#    - assets/image/level/distance/
+    - assets/image/level/distance/
     - assets/image/level/height/
     - assets/image/record/
-#    - assets/image/record/height/
+    - assets/image/record/height/
     - assets/image/record/distance/
     - assets/image/widget/bottom_bar/
     - assets/image/widget/dialog/

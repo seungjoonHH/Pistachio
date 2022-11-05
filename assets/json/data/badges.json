@@ -307,8 +307,8 @@
   },
   {
     "id": 1030000,
-    "title": "모아이 석상",
-    "description": "모아이 석상을 들었다",
+    "title": "",
+    "description": "",
     "activate": false
   },
   {
@@ -715,66 +715,66 @@
   },
   {
     "id": 1050000,
-    "title": "고래(쉬움)",
-    "description": "아기고래를 돌려보냈다",
-    "activate": false
+    "title": "최고찬 선수의 동메달",
+    "description": "마라톤 대회에서 최고찬 선수가 받은 동메달입니다.",
+    "activate": true
   },
   {
     "id": 1050001,
-    "title": "고래(보통)",
-    "description": "엄마고래를 돌려보냈다",
-    "activate": false
+    "title": "최고찬 선수의 은메달",
+    "description": "마라톤 대회에서 최고찬 선수가 받은 은메달입니다.",
+    "activate": true
   },
   {
     "id": 1050002,
-    "title": "고래(어려움)",
-    "description": "아빠고래를 돌려보냈다",
-    "activate": false
-  },
-  {
-    "id": 1050003,
-    "title": "",
-    "description": "",
-    "activate": false
-  },
-  {
-    "id": 1050004,
-    "title": "",
-    "description": "",
-    "activate": false
-  },
-  {
-    "id": 1050005,
-    "title": "",
-    "description": "",
-    "activate": false
-  },
-  {
-    "id": 1050006,
-    "title": "",
-    "description": "",
-    "activate": false
-  },
-  {
-    "id": 1050007,
-    "title": "",
-    "description": "",
-    "activate": false
-  },
-  {
-    "id": 1050008,
-    "title": "",
-    "description": "",
-    "activate": false
-  },
-  {
-    "id": 1050009,
-    "title": "",
-    "description": "",
-    "activate": false
+    "title": "최고찬 선수의 금메달",
+    "description": "마라톤 대회에서 최고찬 선수가 받은 금메달입니다.",
+    "activate": true
   },
   {
     "id": 1050010,
+    "title": "고양이의",
+    "description": "고양이의",
+    "activate": true
+  },
+  {
+    "id": 1050011,
+    "title": "고양이의",
+    "description": "고양이의",
+    "activate": true
+  },
+  {
+    "id": 1050012,
+    "title": "고양이의",
+    "description": "고양이의",
+    "activate": true
+  },
+  {
+    "id": 1050020,
+    "title": "",
+    "description": "",
+    "activate": false
+  },
+  {
+    "id": 1050021,
+    "title": "",
+    "description": "",
+    "activate": false
+  },
+  {
+    "id": 1050022,
+    "title": "",
+    "description": "",
+    "activate": false
+  },
+  {
+    "id": 1050030,
+    "title": "",
+    "description": "",
+    "activate": false
+  },
+  {
+    "id": 1050031,
     "title": "",
     "description": "",
     "activate": false

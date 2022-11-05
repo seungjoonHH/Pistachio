@@ -83,7 +83,7 @@ class ExerciseInput extends GetxController {
     userP.addRecord(type, record);
 
     inputCont.clear();
-    HomePresenter.toHome();
+    await HomePresenter.toHome();
     update();
    }
 }

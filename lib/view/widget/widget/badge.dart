@@ -18,6 +18,7 @@ class CollectionWidget extends StatelessWidget {
     this.onLongPressed,
     this.size = 80.0,
     this.color = PTheme.lightGrey,
+    this.border = true,
   }) : super(key: key);
 
   final Collection? collection;
@@ -28,6 +29,7 @@ class CollectionWidget extends StatelessWidget {
   final VoidCallback? onLongPressed;
   final double size;
   final Color color;
+  final bool border;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class CollectionWidget extends StatelessWidget {
       sides: 6,
       side: BorderSide(
         width: selected ? 4.5 : 1.5,
-        color: collection == null
+        color: collection == null && border
             ? PTheme.black : Colors.transparent,
       ),
     );
@@ -97,15 +99,22 @@ class CollectionWidget extends StatelessWidget {
                   maxLines: 2,
                   align: TextAlign.center,
                 ),
+                const SizedBox(height: 10.0),
                 Container(
                   width: 30.0.r,
                   height: 30.0.r,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
+                    color: PTheme.surface,
                     shape: BoxShape.circle,
-                    border: Border.all(color: PTheme.black, width: 1.5),
+                    border: Border.all(
+                      color: border
+                          ? PTheme.black
+                          : Colors.transparent,
+                      width: 1.5,
+                    ),
                   ),
-                  child: PText('${collection?.dates.length}', border: true),
+                  child: PText('${collection?.dates.length ?? ''}', border: true),
                 ),
               ],
             ),

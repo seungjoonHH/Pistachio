@@ -66,7 +66,7 @@ class PUser {
 
   List<ActivityType> get completedActivities {
     List<ActivityType> types = [];
-    for (ActivityType type in ActivityType.values.sublist(0, 3)) {
+    for (ActivityType type in ActivityType.activeValues) {
       if (completed(type)) types.add(type);
     }
     return types;

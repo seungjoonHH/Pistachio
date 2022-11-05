@@ -23,20 +23,11 @@ class ChallengeMain extends GetxController with GetSingleTickerProviderStateMixi
 
   /// static methods
   // 챌린지 메인 페이지로 이동
-  static void toChallengeMain() async {
-    final loadingP = Get.find<LoadingPresenter>();
-    final userP = Get.find<UserPresenter>();
+  static Future toChallengeMain() async {
     final challengeMain = Get.find<ChallengeMain>();
 
-    loadingP.loadStart();
-
-    challengeMain.tabCont.index = 0;
     Get.offAllNamed('/challenge/main');
-    await ChallengePresenter.importFile();
-    await userP.load();
-    await userP.loadMyParties();
-
-    loadingP.loadEnd();
+    await challengeMain.init();
   }
 
   /// attributes
@@ -47,6 +38,21 @@ class ChallengeMain extends GetxController with GetSingleTickerProviderStateMixi
   String? codeHintText = '';
 
   /// methods
+
+  Future init() async {
+    final userP = Get.find<UserPresenter>();
+    final loadingP = Get.find<LoadingPresenter>();
+
+    loadingP.loadStart();
+
+    tabCont.index = 0;
+    await ChallengePresenter.importFile();
+    await userP.load();
+    await userP.loadMyParties();
+
+    loadingP.loadEnd();
+  }
+
   // 챌린지 참가 버튼 클릭 시
   void challengeJoinButtonPressed() async {
     codeCont.clear();

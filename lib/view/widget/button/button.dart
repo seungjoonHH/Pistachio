@@ -21,6 +21,7 @@ class PButton extends StatelessWidget {
     this.stretch = false,
     this.multiple = false,
     this.border = true,
+    this.height,
   }) : assert(
   text == null || child == null,
   ), padding = padding ?? EdgeInsets.symmetric(
@@ -40,6 +41,7 @@ class PButton extends StatelessWidget {
   final bool stretch;
   final bool multiple;
   final bool border;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class PButton extends StatelessWidget {
         onTap: onPressed,
         onDoubleTap: onPressed,
         child: Container(
+          height: height?.h,
           padding: padding,
           constraints: multiple ? null : constraints ?? BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width,

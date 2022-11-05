@@ -5,6 +5,7 @@ import 'package:pistachio/view/page/challenge/detail/detail.dart';
 import 'package:pistachio/view/page/challenge/complete/complete.dart';
 import 'package:pistachio/view/page/challenge/party/party.dart';
 import 'package:pistachio/view/page/collection/main/main.dart';
+import 'package:pistachio/view/page/editGoal/editGoal.dart';
 import 'package:pistachio/view/page/exercise/input/input.dart';
 import 'package:pistachio/view/page/home/home.dart';
 import 'package:pistachio/view/page/login/login.dart';
@@ -20,7 +21,6 @@ import 'package:pistachio/view/page/my/main/my.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 /// class
 class PRoute {
   /// static variables
@@ -33,31 +33,34 @@ class PRoute {
   /// static methods
 // 라우트 문자열, 페이지 매핑
   static Map<String, Widget> get pages => {
-    '/home': const HomePage(),
-    '/login': const LoginPage(),
-    '/register': const RegisterPage(),
-    '/onboarding': const OnboardingPage(),
-    '/exercise/input': const ExerciseInputPage(),
-    '/record/main': const RecordMainPage(),
-    '/record/detail': const RecordDetailPage(),
-    '/challenge/main': const ChallengeMainPage(),
-    '/challenge/detail': const ChallengeDetailPage(),
-    '/challenge/create': const ChallengeCreatePage(),
-    '/challenge/complete': const ChallengeCompletePage(),
-    '/challenge/party/main': const ChallengePartyMainPage(),
-    '/collection/main': const CollectionMainPage(),
-    '/my/main': const MyMainPage(),
-    '/my/record': const MyRecordPage(),
-    '/my/setting/main': const MySettingMainPage(),
-    '/my/setting/edit': const MySettingEditPage(),
-    '/quest': const QuestPage(),
-  };
+        '/home': const HomePage(),
+        '/login': const LoginPage(),
+        '/register': const RegisterPage(),
+        '/onboarding': const OnboardingPage(),
+        '/exercise/input': const ExerciseInputPage(),
+        '/record/main': const RecordMainPage(),
+        '/record/detail': const RecordDetailPage(),
+        '/challenge/main': const ChallengeMainPage(),
+        '/challenge/detail': const ChallengeDetailPage(),
+        '/challenge/create': const ChallengeCreatePage(),
+        '/challenge/complete': const ChallengeCompletePage(),
+        '/challenge/party/main': const ChallengePartyMainPage(),
+        '/collection/main': const CollectionMainPage(),
+        '/my/main': const MyMainPage(),
+        '/my/record/main': const MyRecordMainPage(),
+        '/my/setting/main': const MySettingMainPage(),
+        '/my/setting/edit': const MySettingEditPage(),
+        '/quest': const QuestPage(),
+        '/editGoal': const EditGoalPage(),
+      };
 
   // 겟페이지 리스트
-  static List<GetPage> get getPages => pages.entries.map((page) => GetPage(
-    name: page.key,
-    page: () => page.value,
-    transition: transition,
-    transitionDuration: duration,
-  )).toList();
+  static List<GetPage> get getPages => pages.entries
+      .map((page) => GetPage(
+            name: page.key,
+            page: () => page.value,
+            transition: transition,
+            transitionDuration: duration,
+          ))
+      .toList();
 }

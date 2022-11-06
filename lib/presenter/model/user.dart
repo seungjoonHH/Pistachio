@@ -60,8 +60,8 @@ class UserPresenter extends GetxController {
   }
 
   // 파이어베이스에 최신화
-  void save() => f.collection('users')
-      .doc(loggedUser.uid).set(loggedUser.toJson());
+  void save() =>
+      f.collection('users').doc(loggedUser.uid).set(loggedUser.toJson());
 
   // 파이어베이스에서 삭제
   void delete() {
@@ -121,19 +121,20 @@ class UserPresenter extends GetxController {
   // 로그인된 사용자가 해당 아이디의 챌린지에 이미 참여 중인지 여부 반환
   bool alreadyJoinedChallenge(String challengeId) {
     return loggedUser.parties.values
-        .map((party) => party.challengeId).contains(challengeId);
+        .map((party) => party.challengeId)
+        .contains(challengeId);
   }
 
   // 로그인된 사용자가 해당 코드의 파티에 이미 참여 중인지 여부 반환
   bool alreadyJoinedParty(String code) {
-    return loggedUser.parties.values
-        .map((party) => party.id).contains(code);
+    return loggedUser.parties.values.map((party) => party.id).contains(code);
   }
 
   // 로그인된 사용자가 해당 아이디의 파티가 있을 경우 파티 객체 반환
   // 그렇지 않은 경우 null 반환
   Party? getPartyByChallengeId(String challengeId) {
-    return loggedUser.parties.values.toList()
+    return loggedUser.parties.values
+        .toList()
         .firstWhereOrNull((party) => party.challengeId == challengeId);
   }
 
@@ -150,7 +151,8 @@ class UserPresenter extends GetxController {
   void updateCalorie() async {
     DistanceRecord distance = DistanceRecord(
       amount: loggedUser.getAmounts(
-        ActivityType.distance, today,
+        ActivityType.distance,
+        today,
         oneSecondBefore(tomorrow),
       ),
       state: DistanceUnit.step,
@@ -158,7 +160,8 @@ class UserPresenter extends GetxController {
 
     HeightRecord height = HeightRecord(
       amount: loggedUser.getAmounts(
-        ActivityType.height, today,
+        ActivityType.height,
+        today,
         oneSecondBefore(tomorrow),
       ),
     );
@@ -175,19 +178,18 @@ class UserPresenter extends GetxController {
     );
 
     loggedUser.setRecord(ActivityType.calorie, today, calorie);
-    save(); update();
+    save();
+    update();
   }
 
   // 해당 활동형식의 기록 추가 (구글핏/건강 연동, 칼로리 계산, 관련 뱃지 수여)
   void addRecord(
     ActivityType type,
     Record record,
-    [DistanceUnit? dst]
-   ) async {
+  ) async {
     final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
 
     late int before, after;
-    if (dst != null) record.convert(dst);
 
     CalorieRecord calorie = CalorieRecord(
       amount: CalorieRecord.from(type, record.amount),
@@ -200,18 +202,22 @@ class UserPresenter extends GetxController {
 
     switch (type) {
       case ActivityType.distance:
+        if (!isIOS) record.amount += loggedUser.getTodayAmounts(type);
+        print(record.amount);
         await HealthPresenter.addStepsData(record);
         break;
       case ActivityType.height:
         if (!isIOS) break;
         await HealthPresenter.addFlightsData(record);
         break;
-      default: break;
+      default:
+        break;
     }
 
     after = loggedUser.completedActivities.length;
 
-    if (before != 3 && after == 3) BadgePresenter.awardDailyActivityCompleteBadge();
+    if (before != 3 && after == 3)
+      BadgePresenter.awardDailyActivityCompleteBadge();
     save();
   }
 
@@ -229,7 +235,8 @@ class UserPresenter extends GetxController {
 
     after = loggedUser.completedActivities.length;
 
-    if (before != 3 && after == 3) BadgePresenter.awardDailyActivityCompleteBadge();
+    if (before != 3 && after == 3)
+      BadgePresenter.awardDailyActivityCompleteBadge();
     save();
   }
 

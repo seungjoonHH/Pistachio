@@ -6,7 +6,6 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
-import 'package:pistachio/presenter/page/home.dart';
 
 class ExerciseInput extends GetxController {
   /// static variables
@@ -83,7 +82,7 @@ class ExerciseInput extends GetxController {
     userP.addRecord(type, record);
 
     inputCont.clear();
-    await HomePresenter.toHome();
+    Get.back();
     update();
    }
 }

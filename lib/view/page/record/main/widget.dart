@@ -53,10 +53,10 @@ class RecordCard extends StatelessWidget {
                           PText('오늘 ${type.done} ${type.kr}',
                             style: textTheme.labelSmall,
                           ),
-                          PText(controller.tiers[type]!['currentTitle'],
+                          PText(controller.tiers[type]!['current'].title,
                             style: textTheme.bodyLarge,
                           ),
-                          PText('다음 단계 : ${controller.tiers[type]!['nextTitle']} 까지',
+                          PText('다음 단계 : ${controller.tiers[type]!['next'].title} 까지',
                             style: textTheme.labelSmall,
                           ),
                           Expanded(

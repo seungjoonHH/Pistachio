@@ -429,101 +429,6 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
   }
 }
 
-// class WeightGoalView extends StatelessWidget {
-//   const WeightGoalView({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetBuilder<RegisterPresenter>(
-//       builder: (controller) {
-//         return Padding(
-//           padding: const EdgeInsets.symmetric(vertical: 70.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   PTexts(
-//                     [controller.fields['nickname']!.controller.text, '님의'],
-//                     colors: [ActivityType.calorie.color, PTheme.black],
-//                     style: textTheme.displaySmall,
-//                     alignment: MainAxisAlignment.start,
-//                   ),
-//                   Row(
-//                     children: [
-//                       PTexts(
-//                         const ['몸무게', '로 하루'],
-//                         colors: [ActivityType.calorie.color, PTheme.black],
-//                         style: textTheme.displaySmall,
-//                         alignment: MainAxisAlignment.start,
-//                         space: false,
-//                       ),
-//                       GoalNumberPicker(
-//                         type: ActivityType.weight,
-//                         style: textTheme.displaySmall,
-//                         color: PTheme.colorB,
-//                       ),
-//                       PText('회', style: textTheme.displaySmall),
-//                     ],
-//                   ),
-//                   PText('스쿼트하면', style: textTheme.displaySmall),
-//                 ],
-//               ),
-//               Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Row(
-//                     crossAxisAlignment: CrossAxisAlignment.end,
-//                     children: [
-//                       Stack(
-//                         children: [
-//                           ConstrainedBox(
-//                             constraints: BoxConstraints(
-//                               maxWidth: 200.0.w,
-//                             ),
-//                             child: SingleChildScrollView(
-//                               scrollDirection: Axis.horizontal,
-//                               child: PText(
-//                                 '${LevelPresenter.getTier(
-//                                   ActivityType.weight,
-//                                   controller.weightPerDay,
-//                                 )['currentTitle']}',
-//                                 style: textTheme.displaySmall,
-//                                 color: PTheme.colorC,
-//                               ),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                       const SizedBox(width: 10.0),
-//                       PText(
-//                         '(${LevelPresenter.getTier(
-//                           ActivityType.weight,
-//                           controller.weightPerDay,
-//                         )['currentValue']}${ActivityType.weight.unitAlt})',
-//                         style: textTheme.headlineSmall,
-//                       ),
-//                     ],
-//                   ),
-//                   PText(
-//                     '${eulReul(LevelPresenter.getTier(
-//                       ActivityType.weight,
-//                       controller.weightPerDay,
-//                     )['currentTitle'])} 들 수 있어요!',
-//                     style: textTheme.headlineSmall,
-//                   ),
-//                 ],
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
 class SettingIntroView extends StatelessWidget {
   const SettingIntroView({Key? key}) : super(key: key);
 
@@ -632,9 +537,9 @@ class DistanceGoalView extends StatelessWidget {
           ActivityType.distance, distance,
         );
 
-        String distanceTitle = tier['currentTitle'];
+        String distanceTitle = tier['current'].title;
         DistanceRecord distanceValue = DistanceRecord(
-            amount: tier['currentValue'].toDouble(),
+            amount: tier['current'].amount.toDouble(),
             state: DistanceUnit.kilometer,
         );
 
@@ -742,9 +647,9 @@ class HeightGoalView extends StatelessWidget {
           ActivityType.height, goal,
         );
 
-        String heightTitle = tier['currentTitle'];
+        String heightTitle = tier['current'].title;
         HeightRecord heightValue = HeightRecord(
-          amount: tier['currentValue'].toDouble(),
+          amount: tier['current'].amount.toDouble(),
         );
 
         TextStyle? style(Color color) => textTheme.displaySmall?.merge(
@@ -826,12 +731,12 @@ class CalorieCheckView extends StatelessWidget {
         String distanceTitle = LevelPresenter.getTier(
           ActivityType.distance,
           controller.newcomer.getGoal(ActivityType.distance)!,
-        )['currentTitle'];
+        )['current'].title;
 
         String heightTitle = LevelPresenter.getTier(
           ActivityType.height,
           controller.newcomer.getGoal(ActivityType.height)!,
-        )['currentTitle'];
+        )['current'].title;
 
         TextStyle? style(Color color) => textTheme.headlineMedium?.merge(TextStyle(
           color: color,

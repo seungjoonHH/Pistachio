@@ -41,7 +41,7 @@ class PartyMainView extends StatelessWidget {
                 color: PTheme.black,
                 backgroundColor: PTheme.surface,
               ),
-              child: (!loadingP.loading) || party == null
+              child: (!loadingP.loading) && party != null
                   ? SingleChildScrollView(
                 child: Column(
                   children: [
@@ -175,6 +175,7 @@ class ChallengeInfoWidget extends StatelessWidget {
               maxLines: 2,
             ),
           ),
+          SizedBox(height: 20.0.h),
           Container(
             alignment: Alignment.center,
             height: 160.0.h,
@@ -256,7 +257,9 @@ class RankWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PUser user = Get.find<UserPresenter>().loggedUser;
+    PUser loggedUser = Get.find<UserPresenter>().loggedUser;
+    double goal = party.challenge!.levels[party.difficulty.name]['goal'].toDouble();
+    double totalRecords = party.records.values.reduce((a, b) => a + b).toDouble();
 
     return Column(
       children: [
@@ -288,11 +291,54 @@ class RankWidget extends StatelessWidget {
                     style: textTheme.labelLarge,
                     color: PTheme.black,
                   ),
-                  PText('나의 순위: ${party.getRank(user.uid!)}위',
+                  PText('나의 순위: ${party.getRank(loggedUser.uid!)}위',
                     style: textTheme.labelLarge,
                     color: PTheme.black,
                   ),
                 ],
+              ),
+              const SizedBox(height: 20.0),
+              Container(
+                height: 40.0,
+                decoration: BoxDecoration(
+                  border: Border.all(color: PTheme.black, width: .75),
+                ),
+                child: Row(
+                  children: party.members.map((user) {
+                    double record = party.records[user.uid].toDouble();
+                    double percent = 100 * record / goal;
+                    return Expanded(
+                      flex: party.records[user.uid!],
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: user.uid! == loggedUser.uid!
+                              ? party.challenge!.type!.color
+                              : PTheme.black.withOpacity(.3),
+                          border: Border.all(color: PTheme.black, width: .75),
+                        ),
+                        child: PText('${percent.round()} %'),
+                      ),
+                    );
+                  }).toList()..add(
+                    Expanded(
+                      flex: (goal - totalRecords).round(),
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: PTheme.background,
+                          border: Border.all(color: PTheme.black, width: .75),
+                        ),
+                        child: PText(
+                          '${(goal - totalRecords).round()
+                          }${party.challenge!.type!.unit
+                          }',
+                          color: PTheme.colorB,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -317,10 +363,14 @@ class RankWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  PText('${index + 1}'),
-                  BadgeWidget(
-                    badge: user.collection?.badge, size: 40.0,
-                    onPressed: () => GlobalPresenter.showBadgeDialog(user.collection?.badge),
+                  SizedBox(width: 10.0.w, child: PText('${index + 1}')),
+                  SizedBox(
+                    width: 50.0.w,
+                    height: 50.0.h,
+                    child: BadgeWidget(
+                      badge: user.collection?.badge, size: 40.0,
+                      onPressed: () => GlobalPresenter.showBadgeDialog(user.collection?.badge),
+                    ),
                   ),
                   SizedBox(
                     width: 130.0.w,
@@ -388,7 +438,7 @@ class ChallengePartyMainLoading extends StatelessWidget {
                 SizedBox(height: 20.0.h),
                 Container(height: 25.0.h, decoration: decoration),
                 SizedBox(height: 20.0.h),
-                Container(height: 140.0.h, decoration: decoration),
+                Container(height: 160.0.h, decoration: decoration),
                 SizedBox(height: 5.0.h),
               ],
             ),

@@ -309,9 +309,9 @@ class DistanceGoalView extends StatelessWidget {
           distance,
         );
 
-        String distanceTitle = tier['currentTitle'];
+        String distanceTitle = tier['current'].title;
         DistanceRecord distanceValue = DistanceRecord(
-          amount: tier['currentValue'].toDouble(),
+          amount: tier['current'].amount.toDouble(),
           state: DistanceUnit.kilometer,
         );
 
@@ -417,21 +417,20 @@ class HeightGoalView extends StatelessWidget {
         ) as HeightRecord;
 
         Map<String, dynamic> tier = LevelPresenter.getTier(
-          ActivityType.height,
-          goal,
+          ActivityType.height, goal,
         );
 
-        String heightTitle = tier['currentTitle'];
+        String heightTitle = tier['current'].title;
         HeightRecord heightValue = HeightRecord(
-          amount: tier['currentValue'].toDouble(),
+          amount: tier['current'].amount.toDouble(),
         );
 
         TextStyle? style(Color color) => textTheme.displaySmall?.merge(
-              TextStyle(
-                color: color,
-                fontWeight: FontWeight.normal,
-              ),
-            );
+          TextStyle(
+            color: color,
+            fontWeight: FontWeight.normal,
+          ),
+        );
 
         const velocity = Velocity(pixelsPerSecond: Offset(50, 0));
 
@@ -509,12 +508,12 @@ class CalorieCheckView extends StatelessWidget {
         String distanceTitle = LevelPresenter.getTier(
           ActivityType.distance,
           controller.user.getGoal(ActivityType.distance)!,
-        )['currentTitle'];
+        )['current'].title;
 
         String heightTitle = LevelPresenter.getTier(
           ActivityType.height,
           controller.user.getGoal(ActivityType.height)!,
-        )['currentTitle'];
+        )['current'].title;
 
         TextStyle? style(Color color) =>
             textTheme.headlineMedium?.merge(TextStyle(

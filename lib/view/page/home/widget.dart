@@ -7,15 +7,16 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/quest.dart';
+import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
+import 'package:pistachio/presenter/page/editGoal.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -25,56 +26,53 @@ import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/indicator.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../../presenter/page/editGoal.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomePresenter>(builder: (homeP) {
-      return GetBuilder<LoadingPresenter>(
-        builder: (loadingP) {
-          return SmartRefresher(
-            controller: HomePresenter.refreshCont,
-            onRefresh: () async {
-              loadingP.loadStart();
-              await homeP.init();
-              loadingP.loadEnd();
-              HomePresenter.refreshCont.refreshCompleted();
-            },
-            onLoading: () async {
-              await Future.delayed(const Duration(milliseconds: 100));
-              HomePresenter.refreshCont.loadComplete();
-            },
-            header: const MaterialClassicHeader(
-              color: PTheme.black,
-              backgroundColor: PTheme.surface,
-            ),
-            child: SingleChildScrollView(
-              child: !loadingP.loading
-                  ? Column(
+    return GetBuilder<HomePresenter>(
+      builder: (homeP) {
+        return GetBuilder<LoadingPresenter>(
+          builder: (loadingP) {
+            return SmartRefresher(
+              controller: HomePresenter.refreshCont,
+              onRefresh: () async {
+                await homeP.init();
+                HomePresenter.refreshCont.refreshCompleted();
+              },
+              onLoading: () async {
+                await Future.delayed(const Duration(milliseconds: 100));
+                HomePresenter.refreshCont.loadComplete();
+              },
+              header: const MaterialClassicHeader(
+                color: PTheme.black,
+                backgroundColor: PTheme.surface,
+              ),
+              child: SingleChildScrollView(
+                child: !loadingP.loading ? Column(
+                  children: [
+                    const HomeRandomCardView(),
+                    Column(
                       children: [
-                        const HomeRandomCardView(),
-                        Column(
-                          children: [
-                            SizedBox(height: 30.0.h),
-                            const DailyActivityCardView(),
-                            SizedBox(height: 30.0.h),
-                            const MonthlyQuestWidget(),
-                            SizedBox(height: 30.0.h),
-                            const CollectionCardView(),
-                            SizedBox(height: 30.0.h),
-                          ],
-                        ),
+                        SizedBox(height: 30.0.h),
+                        const DailyActivityCardView(),
+                        SizedBox(height: 30.0.h),
+                        const MonthlyQuestWidget(),
+                        SizedBox(height: 30.0.h),
+                        const CollectionCardView(),
+                        SizedBox(height: 30.0.h),
                       ],
-                    )
-                  : HomeLoading(color: loadingP.color),
-            ),
-          );
-        },
-      );
-    });
+                    ),
+                  ],
+                ) : HomeLoading(color: loadingP.color),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
 
@@ -575,10 +573,13 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
     PUser user = userP.loggedUser;
     const String directory = 'assets/image/page/home/';
 
-    double record = user.getThisMonthAmounts(type);
+    Record record = Record.init(
+      type, user.getThisMonthAmounts(type),
+      DistanceUnit.step,
+    );
+
     int goal = QuestPresenter.quests[type] ?? 1;
-    if (type == ActivityType.weight) goal ~/= weight + 1;
-    double percent = min(record / goal, 1);
+    double percent = min(record.amount / goal, 1);
 
     return Stack(
       children: [
@@ -596,10 +597,9 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  color: PTheme.surface,
-                  child: SvgPicture.asset('$directory${type.asset}'),
+                child: SvgPicture.asset(
+                  '$directory${type.asset}',
+                  fit: BoxFit.fitHeight,
                 ),
               ),
               const VerticalDivider(

@@ -31,7 +31,8 @@ class HealthPresenter {
       final userP = Get.find<UserPresenter>();
       steps = (await health.getTotalStepsInInterval(today, now)) ?? 0;
       DistanceRecord distance = DistanceRecord(
-        amount: steps.toDouble(), state: DistanceUnit.step,
+        amount: steps.toDouble(),
+        state: DistanceUnit.step,
       );
 
       userP.setRecord(ActivityType.distance, distance);
@@ -81,26 +82,31 @@ class HealthPresenter {
   }
 
   /// Add some health data.
-  static Future addStepsData(Record distance, [int minutes = 0]) async {
+  static Future addStepsData(Record distance) async {
     HealthFactory health = HealthFactory();
 
-    final startTime = now.subtract(Duration(minutes: minutes));
+    final startTime = today;
     final types = [HealthDataType.STEPS];
     final rights = [HealthDataAccess.WRITE];
     final permissions = [HealthDataAccess.READ_WRITE];
 
-    bool? hasPermissions = await HealthFactory.hasPermissions(types, permissions: rights);
+    bool? hasPermissions =
+    await HealthFactory.hasPermissions(types, permissions: rights);
     if (!hasPermissions!) {
       await health.requestAuthorization(types, permissions: permissions);
     }
 
     distance.convert(DistanceUnit.step);
 
+    print(startTime);
+    print(now);
+
     // Store a count of steps taken
     await health.writeHealthData(
       distance.amount.toDouble(),
       HealthDataType.STEPS,
-      startTime, now,
+      startTime,
+      now,
     );
   }
 
@@ -111,7 +117,8 @@ class HealthPresenter {
     final types = [HealthDataType.FLIGHTS_CLIMBED];
     final rights = [HealthDataAccess.WRITE];
     final permissions = [HealthDataAccess.READ_WRITE];
-    bool? hasPermissions = await HealthFactory.hasPermissions(types, permissions: rights);
+    bool? hasPermissions =
+    await HealthFactory.hasPermissions(types, permissions: rights);
     if (hasPermissions == false) {
       await health.requestAuthorization(types, permissions: permissions);
     }
@@ -120,7 +127,8 @@ class HealthPresenter {
     await health.writeHealthData(
       height.amount.toDouble(),
       HealthDataType.FLIGHTS_CLIMBED,
-      now, now,
+      now,
+      now,
     );
   }
 }

@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
-import '../../model/class/database/user.dart';
-import '../../model/enum/enum.dart';
-import '../../view/page/editGoal/widget.dart';
-import '../model/record.dart';
-import '../model/user.dart';
+import 'package:pistachio/model/class/database/user.dart';
+import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/record.dart';
+import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/view/page/edit_goal/widget.dart';
 import 'home.dart';
 
 class Field {
@@ -21,14 +21,7 @@ class EditGoalPresenter extends GetxController {
   int pageIndex = 0;
   bool keyboardVisible = false;
   List<bool> imageExistence = [
-    false,
-    false,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true
+    false, true, true, true, true, true,
   ];
   bool imageVisualize = false;
 
@@ -42,8 +35,8 @@ class EditGoalPresenter extends GetxController {
 
   static void toEditGoal() {
     final editGoalP = Get.find<EditGoalPresenter>();
-    Get.toNamed('/editGoal');
     editGoalP.init();
+    Get.toNamed('/editGoal');
   }
 
   /// static methods
@@ -150,9 +143,7 @@ class EditGoalPresenter extends GetxController {
 
   // 뒤로가기 버튼 클릭 트리거
   void backPressed() {
-    if (pageIndex == 0) {
-      HomePresenter.toHome();
-    }
+    if (pageIndex == 0) Get.back();
 
     carouselCont.previousPage(
       curve: transitionCurve,

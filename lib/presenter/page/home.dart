@@ -42,6 +42,8 @@ class HomePresenter extends GetxController {
     ActivityType.weight: false,
   };
 
-  void showLaterGraph(ActivityType type) { graphStates[type] = true; update(); }
+  void showLaterGraph(ActivityType type) {
+    graphStates[type] = true; update();
+  }
 
 }

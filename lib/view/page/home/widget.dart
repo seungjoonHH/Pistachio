@@ -16,7 +16,7 @@ import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
-import 'package:pistachio/presenter/page/editGoal.dart';
+import 'package:pistachio/presenter/page/edit_goal.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -79,14 +79,12 @@ class HomeView extends StatelessWidget {
 class WidgetHeader extends StatelessWidget {
   const WidgetHeader({
     Key? key,
-    this.isEditGoal = false,
     required this.title,
-    this.seeMorePressed,
+    required this.button,
   }) : super(key: key);
 
-  final bool isEditGoal;
   final String title;
-  final VoidCallback? seeMorePressed;
+  final Widget button;
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +95,7 @@ class WidgetHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           PText(title, style: textTheme.headlineSmall),
-          if (seeMorePressed != null)
-            isEditGoal
-                ? EditGoalButton(onPressed: seeMorePressed!)
-                : SeeMoreButton(onPressed: seeMorePressed!),
+          button,
         ],
       ),
     );
@@ -406,9 +401,12 @@ class DailyActivityCardView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const WidgetHeader(
-          isEditGoal: true,
           title: '오늘 활동량',
-          seeMorePressed: EditGoalPresenter.toEditGoal,
+          button: IconButton(
+            icon: Icon(Icons.edit),
+            color: PTheme.colorC,
+            onPressed: EditGoalPresenter.toEditGoal,
+          ),
         ),
         SizedBox(height: 10.0.h),
         SizedBox(
@@ -535,7 +533,13 @@ class MonthlyQuestWidget extends StatelessWidget {
     return Column(
       children: [
         const WidgetHeader(
-            title: '월간 목표', seeMorePressed: QuestMain.toQuestMain),
+          title: '월간 목표',
+          button: PTextButton(
+            text: '더 보기',
+            color: PTheme.colorC,
+            onPressed: QuestMain.toQuestMain,
+          ),
+        ),
         SizedBox(height: 10.0.h),
         Container(
           decoration: const BoxDecoration(
@@ -686,7 +690,11 @@ class CollectionCardView extends StatelessWidget {
       children: [
         const WidgetHeader(
           title: '컬렉션',
-          seeMorePressed: CollectionMain.toCollectionMain,
+          button: PTextButton(
+            text: '더 보기',
+            color: PTheme.colorC,
+            onPressed: CollectionMain.toCollectionMain,
+          ),
         ),
         SizedBox(height: 10.0.h),
         PCard(

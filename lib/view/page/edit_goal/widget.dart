@@ -12,7 +12,7 @@ import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
-import 'package:pistachio/presenter/page/editGoal.dart';
+import 'package:pistachio/presenter/page/edit_goal.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -35,7 +35,7 @@ class CarouselView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    String asset = 'assets/image/page/register/';
+    String asset = 'assets/image/page/edit_goal/';
 
     return GetBuilder<EditGoalPresenter>(
       builder: (controller) {
@@ -50,11 +50,10 @@ class CarouselView extends StatelessWidget {
                 height: screenSize.height,
                 child: controller.imageExistence[i]
                     ? Image.asset(
-                        '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
-                        alignment: Alignment.center,
-                        fit: BoxFit.fill,
-                      )
-                    : Container(),
+                  '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
+                  alignment: Alignment.center,
+                  fit: BoxFit.fill,
+                ) : Container(),
               ),
             Column(
               children: [

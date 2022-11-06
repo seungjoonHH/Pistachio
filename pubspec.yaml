@@ -84,6 +84,7 @@ flutter:
     - assets/image/page/timer/
     - assets/image/page/home/
     - assets/image/page/challenge/
+    - assets/image/page/edit_goal/
     - assets/image/icon/selected/
     - assets/image/icon/unselected/
     - assets/json/lottie/

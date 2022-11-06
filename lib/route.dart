@@ -5,7 +5,7 @@ import 'package:pistachio/view/page/challenge/detail/detail.dart';
 import 'package:pistachio/view/page/challenge/complete/complete.dart';
 import 'package:pistachio/view/page/challenge/party/party.dart';
 import 'package:pistachio/view/page/collection/main/main.dart';
-import 'package:pistachio/view/page/editGoal/editGoal.dart';
+import 'package:pistachio/view/page/edit_goal/edit_goal.dart';
 import 'package:pistachio/view/page/exercise/input/input.dart';
 import 'package:pistachio/view/page/home/home.dart';
 import 'package:pistachio/view/page/login/login.dart';

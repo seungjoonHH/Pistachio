@@ -1,10 +1,13 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/main.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/view/page/login/widget.dart';
 import 'package:pistachio/view/widget/widget/logo.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -64,29 +67,19 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 15.0),
                   //SignInButton(type: LoginType.apple),
                   if (Platform.isIOS)
-                    const SignInButton(type: LoginType.apple),
+                  const SignInButton(type: LoginType.apple),
                   const SizedBox(height: 77.0),
                 ],
               ),
             ),
+          ),
+          Positioned(
+            right: 25.0.w,
+            bottom: 15.0.h,
+            child: PText(version, color: PTheme.grey),
           ),
         ],
       ),
     );
   }
 }
-
-// child: PButton(
-//   onPressed: () => showPDialog(
-//     title: '참여가 완료되었어요!',
-//     content: PText('이제 메인 화면에서 달성률을 확인할 수 있어요.',
-//       style: textTheme.bodyMedium,
-//       maxLines: 2,
-//       align: TextAlign.center,
-//     ),
-//     type: DialogType.mono,
-//     onPressed: () {},
-//     contentPadding: const EdgeInsets.fromLTRB(70.0, 20.0, 70.0, 50.0),
-//   ),
-//   text: '구글 계정으로 로그인',
-// ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/main.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -179,11 +180,18 @@ class MySettingMainAppBar extends StatelessWidget implements PreferredSizeWidget
 
   @override
   Widget build(BuildContext context) {
-    return const PAppBar(title: '설정',
-      leading: IconButton(
+    return PAppBar(title: '설정',
+      leading: const IconButton(
         icon: Icon(Icons.arrow_back_ios),
         onPressed: GlobalPresenter.goBack,
       ),
+      actions: [
+        Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(right: 20.0),
+          child: PText(version, color: PTheme.grey),
+        ),
+      ],
     );
   }
 }

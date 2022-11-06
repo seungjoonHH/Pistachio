@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pistachio/firebase_options.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/import.dart';
 import 'package:pistachio/route.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/view/page/login/login.dart';
+
+const version = 'ver 0.0';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,8 +24,25 @@ void main() async {
   runApp(const Pistachio());
 }
 
-class Pistachio extends StatelessWidget {
+class Pistachio extends StatefulWidget {
   const Pistachio({Key? key}) : super(key: key);
+
+  @override
+  State<Pistachio> createState() => _PistachioState();
+}
+
+class _PistachioState extends State<Pistachio> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(
+        const Duration(milliseconds: 500),
+        AuthPresenter.loadLoginData,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

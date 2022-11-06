@@ -108,17 +108,17 @@ class PUser {
     name = json['name'];
     nickname = json['nickname'];
     email = json['email'];
-    weight = json['weight'].toInt();
-    height = json['height'].toInt();
+    weight = json['weight']?.toInt();
+    height = json['height']?.toInt();
     sex = Sex.toEnum(json['sex']);
     _regDate = json['regDate'];
     _dateOfBirth = json['dateOfBirth'];
     badgeId = json['badgeId'];
     partyIds = (json['partyIds'] ?? []).cast<String>();
     collections = toCollections((json['collections'] ?? []).cast<Map<String, dynamic>>());
-    goals = json['goals'];
-    inputRecords = json['inputRecords'];
-    records = json['records'];
+    goals = json['goals'] ?? {};
+    inputRecords = json['inputRecords'] ?? {};
+    records = json['records'] ?? {};
   }
 
   Map<String, dynamic> toJson() {
@@ -140,6 +140,10 @@ class PUser {
     json['records'] = records;
     return json;
   }
+
+  String encode() =>
+      '[{"uid":$uid,"name":$name,"nickname":$nickname,"email":$email,'
+      '"uid":$uid,"name":$name,"nickname":$nickname,"email":$email';
 
   /// methods
   // 기록 추가

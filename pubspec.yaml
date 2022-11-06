@@ -51,6 +51,7 @@ dependencies:
   basic_utils: ^5.4.0
   flutter_animate: ^2.0.0
   ntp: ^2.0.0
+  dio: ^4.0.6
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.2

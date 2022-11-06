@@ -9,6 +9,7 @@ import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/edit_goal.dart';
+import 'package:pistachio/presenter/page/my/record/main.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -256,6 +257,7 @@ class GlobalPresenter extends GetxController {
     Get.put(RecordMain());
     Get.put(QuestMain());
     Get.put(MyMain());
+    Get.put(MyRecordMain());
     Get.put(MySettingMain());
     Get.put(MySettingEdit());
     Get.put(ChallengeMain());

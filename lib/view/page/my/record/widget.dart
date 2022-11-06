@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
@@ -10,6 +9,7 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/my/record/main.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'background/layout/components/background_top.dart';
@@ -40,31 +40,56 @@ class MyRecordDetailView extends StatelessWidget {
 
     return Stack(
       children: [
-        Stack(
-          children: [
-            const BackgroundTop(),
-            const SunAndMoon(),
-            const Clouds(start: .7, relativeDistance: .25),
-            const Clouds(start: .6, relativeDistance: .5),
-            const Clouds(start: .3, relativeDistance: .0),
-            Positioned(
-              left: 0, top: 200.0, width: 100.0,
-              child: Image.asset('assets/image/record/rock.png'),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/image/level/${type.name}/${current.id}.png',
-                width: 300.0.w,
-                height: 300.0.h,
-              ).animate().fadeIn().move(
-                duration: const Duration(milliseconds: 3000),
-                begin: const Offset(0.0, -40.0),
-                end: const Offset(0.0, 0.0),
-                curve: Curves.elasticOut,
-              ),
-            ),
-          ],
+        GetBuilder<MyRecordMain>(
+          builder: (controller) {
+            return Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                const BackgroundTop(),
+                const SunAndMoon(),
+                const Clouds(start: .7, relativeDistance: .25),
+                const Clouds(start: .6, relativeDistance: .5),
+                const Clouds(start: .3, relativeDistance: .0),
+                Positioned(
+                  left: 0, top: 200.0, width: 100.0,
+                  child: Image.asset('assets/image/record/rock.png'),
+                ),
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 3000),
+                  top: controller.animating ? 250.0.h : 200.0.h,
+                  curve: Curves.elasticOut,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 1000),
+                    opacity: controller.fading ? 1.0 : .0,
+                    child: Center(
+                      child: Draggable(
+                        feedback: Container(
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            'assets/image/level/${type.name}/${current.id}.png',
+                            width: 300.0.w,
+                            height: 300.0.h,
+                          ),
+                        ),
+                        onDragStarted: controller.endAnimation,
+                        onDragEnd: (_) => controller.startAnimation(),
+                        child: controller.animating ? Container(
+                          width: 300.0.w,
+                          height: 300.0.h,
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            'assets/image/level/${type.name}/${current.id}.png',
+                            width: 300.0.w,
+                            height: 300.0.h,
+                          ),
+                        ) : Container(),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
         Container(
           alignment: Alignment.center,

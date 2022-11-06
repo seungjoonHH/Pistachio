@@ -95,13 +95,13 @@ class CollapsedBottomBar extends StatelessWidget {
         Column(
           children: [
             const Divider(height: 1.5, thickness: 1.5, color: PTheme.black),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 3.0),
             SizedBox(
               width: double.infinity,
               child: GetBuilder<GlobalPresenter>(
                 builder: (controller) {
                   List<PIcons> icons = [
-                    PIcons.homeHouse, PIcons.pencil, PIcons.trophyAward,
+                    PIcons.homeHouse, PIcons.pencil, PIcons.star,
                   ];
 
                   return Row(

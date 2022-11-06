@@ -51,51 +51,52 @@ class MyRecordDetailView extends StatelessWidget {
               left: 0, top: 200.0, width: 100.0,
               child: Image.asset('assets/image/record/rock.png'),
             ),
+            Container(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/image/level/${type.name}/${current.id}.png',
+                width: 300.0.w,
+                height: 300.0.h,
+              ).animate().fadeIn().move(
+                duration: const Duration(milliseconds: 3000),
+                begin: const Offset(0.0, -40.0),
+                end: const Offset(0.0, 0.0),
+                curve: Curves.elasticOut,
+              ),
+            ),
           ],
         ),
-        SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Container(
-            alignment: Alignment.center,
-            height: 800.0.h,
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                SizedBox(height: 50.0.h),
-                PText('현재 내 위치', style: textTheme.headlineSmall),
-                SizedBox(height: 10.0.h),
-                TextScroll(
-                  current.title ?? '',
-                  intervalSpaces: 5,
-                  style: textTheme.displayLarge?.merge(TextStyle(
-                    color: type.color,
-                    fontWeight: FontWeight.normal,
-                  )),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image.asset(
-                        'assets/image/level/${type.name}/${current.id}.png',
-                        width: 300.0.w,
-                        height: 300.0.h,
-                      ).animate().fadeIn().move(
-                        duration: const Duration(milliseconds: 3000),
-                        begin: const Offset(0.0, -40.0),
-                        end: const Offset(0.0, 0.0),
-                        curve: Curves.elasticOut,
-                      ),
-                      // const Expanded(child: SizedBox()),
-                      PText('${current.description}',
-                        style: textTheme.titleLarge,
-                        maxLines: 8,
-                      ),
-                    ],
+        Container(
+          alignment: Alignment.center,
+          height: 800.0.h,
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.0.w,
+            vertical: 70.0.h,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  PText('현재 내 위치', style: textTheme.headlineSmall),
+                  SizedBox(height: 10.0.h),
+                  TextScroll(
+                    current.title ?? '',
+                    intervalSpaces: 5,
+                    style: textTheme.displayLarge?.merge(TextStyle(
+                      color: type.color,
+                      fontWeight: FontWeight.normal,
+                    )),
                   ),
+                ],
+              ),
+              SingleChildScrollView(
+                child: PText('${current.description}',
+                  style: textTheme.titleLarge,
+                  maxLines: 8,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],

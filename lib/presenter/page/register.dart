@@ -6,6 +6,7 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/string.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -115,6 +116,7 @@ class RegisterPresenter extends GetxController {
     userP.loggedUser.regDate = now;
 
     await HomePresenter.toHome();
+    await AuthPresenter.storeLoginData(userP.data);
     userP.awardBadge(BadgePresenter.getBadge('1000000')!);
 
     init();

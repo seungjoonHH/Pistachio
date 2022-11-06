@@ -9,6 +9,7 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
+import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
@@ -98,42 +99,6 @@ class WidgetHeader extends StatelessWidget {
           button,
         ],
       ),
-    );
-  }
-}
-
-class EditGoalButton extends StatelessWidget {
-  const EditGoalButton({
-    Key? key,
-    required this.onPressed,
-  }) : super(key: key);
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.edit),
-      color: PTheme.colorC,
-      onPressed: onPressed,
-    );
-  }
-}
-
-class SeeMoreButton extends StatelessWidget {
-  const SeeMoreButton({
-    Key? key,
-    required this.onPressed,
-  }) : super(key: key);
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return PTextButton(
-      text: '더 보기',
-      color: PTheme.colorC,
-      onPressed: onPressed,
     );
   }
 }
@@ -403,8 +368,7 @@ class DailyActivityCardView extends StatelessWidget {
         const WidgetHeader(
           title: '오늘 활동량',
           button: IconButton(
-            icon: Icon(Icons.edit),
-            color: PTheme.colorC,
+            icon: Icon(Icons.edit, color: PTheme.grey),
             onPressed: EditGoalPresenter.toEditGoal,
           ),
         ),
@@ -449,8 +413,6 @@ class DailyActivityCircularGraph extends StatelessWidget {
         PUser user = userP.loggedUser;
 
         int todayRecord = user.getTodayAmounts(type).round();
-        todayRecord += user.getTodayInputAmounts(type).round();
-
         int goal = max((user.getGoal(type)!.amount).round(), 1);
 
         double earlierPercent = min(todayRecord / goal, 1);
@@ -536,7 +498,7 @@ class MonthlyQuestWidget extends StatelessWidget {
           title: '월간 목표',
           button: PTextButton(
             text: '더 보기',
-            color: PTheme.colorC,
+            color: PTheme.grey,
             onPressed: QuestMain.toQuestMain,
           ),
         ),
@@ -551,11 +513,9 @@ class MonthlyQuestWidget extends StatelessWidget {
             ),
           ),
           child: Column(
-            children: ActivityType.values
-                .map((type) => MonthlyQuestProgressWidget(
-                      type: type,
-                    ))
-                .toList(),
+            children: ActivityType.values.map((type) => MonthlyQuestProgressWidget(
+              type: type,
+            )).toList(),
           ),
         ),
       ],
@@ -575,7 +535,7 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final userP = Get.find<UserPresenter>();
     PUser user = userP.loggedUser;
-    const String directory = 'assets/image/page/home/';
+    // const String directory = 'assets/image/page/home/';
 
     Record record = Record.init(
       type, user.getThisMonthAmounts(type),
@@ -584,6 +544,8 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
 
     int goal = QuestPresenter.quests[type] ?? 1;
     double percent = min(record.amount / goal, 1);
+
+    Badge? questBadge = BadgePresenter.getThisMonthQuestBadge(type);
 
     return Stack(
       children: [
@@ -601,10 +563,7 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: SvgPicture.asset(
-                  '$directory${type.asset}',
-                  fit: BoxFit.fitHeight,
-                ),
+                child: BadgeWidget(badge: questBadge, size: 60.0),
               ),
               const VerticalDivider(
                 color: PTheme.black,
@@ -692,7 +651,7 @@ class CollectionCardView extends StatelessWidget {
           title: '컬렉션',
           button: PTextButton(
             text: '더 보기',
-            color: PTheme.colorC,
+            color: PTheme.grey,
             onPressed: CollectionMain.toCollectionMain,
           ),
         ),

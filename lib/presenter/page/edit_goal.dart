@@ -105,11 +105,7 @@ class EditGoalPresenter extends GetxController {
       case 0:
         break;
       case 1:
-        initGoal(Record.init(
-          ActivityType.distance,
-          90,
-          DistanceUnit.minute,
-        ));
+        initGoal(Record.init(ActivityType.distance, 60, DistanceUnit.minute));
         break;
       case 2:
         break;

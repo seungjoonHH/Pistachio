@@ -66,6 +66,7 @@ class MyRecordDetailView extends StatelessWidget {
                 SizedBox(height: 10.0.h),
                 TextScroll(
                   current.title ?? '',
+                  intervalSpaces: 5,
                   style: textTheme.displayLarge?.merge(TextStyle(
                     color: type.color,
                     fontWeight: FontWeight.normal,

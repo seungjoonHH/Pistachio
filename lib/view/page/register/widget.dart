@@ -129,8 +129,7 @@ class UserInfoView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PText(
-                    '별명',
+                  PText('별명',
                     style: textTheme.headlineSmall,
                     color: PTheme.black,
                   ),
@@ -157,12 +156,10 @@ class UserInfoView extends StatelessWidget {
                   PInputField(
                     invalid: controller.fields['dateOfBirth']!.invalid,
                     controller: controller.fields['dateOfBirth']!.controller,
-                    hintText: controller.fields['dateOfBirth']?.hintText ??
-                        'YYYYMMDD',
-                    hintColor:
-                        controller.fields['dateOfBirth']?.hintText == null
-                            ? PTheme.grey
-                            : PTheme.colorB,
+                    hintText: controller.fields['dateOfBirth']?.hintText ?? 'YYYYMMDD',
+                    hintColor: controller.fields['dateOfBirth']?.hintText == null
+                      ? PTheme.grey : PTheme.colorB,
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 40.0),
                 ],

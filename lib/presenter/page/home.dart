@@ -9,7 +9,6 @@ class HomePresenter extends GetxController {
 
   static Future toHome() async {
     final homeP = Get.find<HomePresenter>();
-
     Get.offAllNamed('/home');
     await homeP.init();
   }

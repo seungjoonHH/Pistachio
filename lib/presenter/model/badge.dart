@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/json/badge.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
 
@@ -28,6 +29,13 @@ class BadgePresenter extends GetxController {
   // 뱃지 아이디에 해당하는 뱃지 반환
   static Badge? getBadge(String? id) => badges
       .firstWhereOrNull((badge) => badge.id == id);
+
+  static Badge? getThisMonthQuestBadge(ActivityType type) {
+    if (!type.active) return null;
+    return getBadge('1040${type.index}${
+      (today.month - 1).toString().padLeft(2, '0')}'
+    );
+  }
 
   // 일일 활동 완료 뱃지 획득
   static void awardDailyActivityCompleteBadge() async {

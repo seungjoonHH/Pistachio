@@ -1,8 +1,8 @@
 [
   {
     "id":"2000000",
-    "locked":false,
-    "title":"절묘한 마라톤\n바톤터치",
+    "locked":true,
+    "title":"눈물 젖은\n마지막 마라톤",
     "type":"distance",
     "word":"경기 트랙",
     "levels":{
@@ -33,8 +33,8 @@
   },
   {
     "id":"2000001",
-    "locked":false,
-    "title":"절벽위의 고양이",
+    "locked":true,
+    "title":"벼랑 위의\n고양이",
     "type":"height",
     "word":"산",
     "levels":{
@@ -65,7 +65,7 @@
   },
   {
     "id":"2000002",
-    "locked":false,
+    "locked":true,
     "title":"험난한\n과거시험길",
     "type":"distance",
     "word":"",
@@ -97,7 +97,7 @@
   },
   {
     "id":"2000003",
-    "locked":false,
+    "locked":true,
     "title":"급박한 고층빌딩\n화재진압 현장",
     "type":"height",
     "word":"빌딩",

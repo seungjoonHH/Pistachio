@@ -6,6 +6,7 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/home.dart';
 
 class ExerciseInput extends GetxController {
   /// static variables
@@ -73,6 +74,7 @@ class ExerciseInput extends GetxController {
   // 완료 버튼 클릭 시
   Future completeButtonPressed(ActivityType type) async {
     final userP = Get.find<UserPresenter>();
+    final homeP = Get.find<HomePresenter>();
 
     if (!await validate(type)) return;
 
@@ -83,6 +85,6 @@ class ExerciseInput extends GetxController {
 
     inputCont.clear();
     Get.back();
-    update();
+    homeP.init();
    }
 }

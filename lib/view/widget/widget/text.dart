@@ -134,7 +134,7 @@ class PInputField extends StatelessWidget {
     this.hintText,
     this.hintColor = PTheme.grey,
     this.invalid = false,
-    this.keyboardType = TextInputType.number,
+    this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
   final TextEditingController controller;

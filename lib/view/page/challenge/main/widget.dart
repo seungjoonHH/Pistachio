@@ -157,7 +157,9 @@ class ChallengeCard extends StatelessWidget {
                   //   ),
                   //   child: Container(height: 200.0),
                   // ),
-                  Image.asset(
+                  if (challenge.locked)
+                  Container(height: 230.0.h, color: PTheme.lightGrey)
+                  else Image.asset(
                     challenge.imageUrls['default'],
                     height: 230.0.h,
                     fit: BoxFit.fitHeight,
@@ -193,7 +195,8 @@ class ChallengeCard extends StatelessWidget {
                             ),
                             BadgeWidget(
                               size: 80.0.r,
-                              badge: challenge.badges[Difficulty.hard],
+                              badge: challenge.locked
+                                  ? null : challenge.badges[Difficulty.hard],
                             ),
                           ],
                         ),

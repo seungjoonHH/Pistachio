@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 enum PIcons {
   homeHouse,
   pencil,
-  trophyAward;
+  star;
 
   static String filePath = 'assets/image/icon/';
   String get fileName =>
@@ -37,3 +37,4 @@ class PIcon extends StatelessWidget {
     );
   }
 }
+

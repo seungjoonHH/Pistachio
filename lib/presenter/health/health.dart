@@ -98,9 +98,6 @@ class HealthPresenter {
 
     distance.convert(DistanceUnit.step);
 
-    print(startTime);
-    print(now);
-
     // Store a count of steps taken
     await health.writeHealthData(
       distance.amount.toDouble(),

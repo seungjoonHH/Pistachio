@@ -44,6 +44,7 @@ class BadgePresenter extends GetxController {
 
     for (Collection collection in userP.loggedUser.collections) {
       if (collection.badgeId == badge.id) {
+        if (collection.dates.map((date) => ignoreTime(date!)).contains(today)) return;
         GlobalPresenter.badgeAwarded(badge);
         collection.addDate(now);
         return;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pistachio/global/theme.dart';
@@ -32,24 +33,27 @@ class SignInButton extends StatelessWidget {
     return PButton(
       onPressed: () => AuthPresenter.pLogin(type),
       backgroundColor: backgroundColors[type],
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            'assets/image/logo/${type.name}.svg',
-            width: 23.0,
-            height: 23.0,
-          ),
-          Container(
-            width: 170.0,
-            padding: const EdgeInsets.only(left: 20.0),
-            child: PText(
+      child: Container(
+        width: 220.0.w,
+        // height: 30.0.h,
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/image/logo/${type.name}.svg',
+              width: 23.0.r,
+              height: 23.0.r,
+            ),
+            SizedBox(width: 20.0.w),
+            PText(
               'Continue with ${toBeginningOfSentenceCase(type.name)}',
-              style: textTheme.bodyMedium,
+              style: textTheme.titleMedium,
               color: textColors[type],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

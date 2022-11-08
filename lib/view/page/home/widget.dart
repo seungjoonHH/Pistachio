@@ -9,7 +9,6 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
-import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
@@ -17,7 +16,6 @@ import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
-import 'package:pistachio/presenter/page/edit_goal.dart';
 import 'package:pistachio/presenter/page/home.dart';
 import 'package:pistachio/presenter/page/quest.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -268,91 +266,93 @@ class YesterdayComparisonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PCard(
-      color: PTheme.white,
-      rounded: true,
-      child: Column(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                PText('어제와 비교해서', style: textTheme.titleLarge),
-                const SizedBox(height: 10.0),
-                Expanded(
-                  child: GetBuilder<UserPresenter>(
-                    builder: (controller) {
-                      Map<ActivityType, double> diffs = {};
-                      Map<ActivityType, List<String>> diffMessages = {};
-                      late String last;
+    return GetBuilder<HomePresenter>(
+      builder: (controller) {
+        return PCard(
+          color: PTheme.white,
+          rounded: true,
+          onPressed: controller.slideToYesterdayActivityCard,
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PText('어제와 비교해서', style: textTheme.titleLarge),
+                    const SizedBox(height: 10.0),
+                    Expanded(
+                      child: GetBuilder<UserPresenter>(
+                        builder: (controller) {
+                          Map<ActivityType, double> diffs = {};
+                          Map<ActivityType, List<String>> diffMessages = {};
+                          late String last;
 
-                      for (ActivityType type in ActivityType.activeValues) {
-                        double todays =
-                            controller.loggedUser.getTodayAmounts(type);
-                        double yesterdays = controller.loggedUser.getAmounts(
-                            type, yesterday, oneSecondBefore(today));
+                          for (ActivityType type in ActivityType.activeValues) {
+                            double todays = controller.loggedUser.getTodayAmounts(type);
+                            double yesterdays = controller.loggedUser.getAmounts(
+                              type, yesterday, oneSecondBefore(today),
+                            );
 
-                        double diff = todays - yesterdays;
-                        diffs[type] = diff;
-                        diffMessages[type] = [];
+                            double diff = todays - yesterdays;
+                            diffs[type] = diff;
+                            diffMessages[type] = [];
 
-                        last = type == ActivityType.calorie
-                            ? type.did
-                            : '${type.and},';
+                            last = type == ActivityType.calorie
+                                ? type.did : '${type.and},';
 
-                        if (diff == 0) {
-                          diffMessages[type]!.addAll(['비슷하게', last]);
-                          continue;
-                        }
-                        diffMessages[type]!
-                            .add('${diff.abs().round()}${type.unit}');
-                        diffMessages[type]!
-                            .add('${diff > 0 ? '더' : '덜'} $last');
-                      }
+                            if (diff == 0) {
+                              diffMessages[type]!.addAll(['비슷하게', last]);
+                              continue;
+                            }
+                            diffMessages[type]!.add('${diff.abs().round()}${type.unit}');
+                            diffMessages[type]!.add('${diff > 0 ? '더' : '덜'} $last');
+                          }
 
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Stack(
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              PTexts(
-                                diffMessages[ActivityType.distance]!,
-                                colors: const [PTheme.colorB, PTheme.black],
-                                style: textTheme.titleLarge,
-                                alignment: MainAxisAlignment.start,
+                              Stack(
+                                children: [
+                                  PTexts(
+                                    diffMessages[ActivityType.distance]!,
+                                    colors: const [PTheme.colorB, PTheme.black],
+                                    style: textTheme.titleLarge,
+                                    alignment: MainAxisAlignment.start,
+                                  ),
+                                ],
+                              ),
+                              Stack(
+                                children: [
+                                  PTexts(
+                                    diffMessages[ActivityType.height]!,
+                                    colors: const [PTheme.colorD, PTheme.black],
+                                    style: textTheme.titleLarge,
+                                    alignment: MainAxisAlignment.center,
+                                  ),
+                                ],
+                              ),
+                              Stack(
+                                children: [
+                                  PTexts(
+                                    diffMessages[ActivityType.calorie]!,
+                                    colors: const [PTheme.colorA, PTheme.black],
+                                    style: textTheme.titleLarge,
+                                    alignment: MainAxisAlignment.end,
+                                  ),
+                                ],
                               ),
                             ],
-                          ),
-                          Stack(
-                            children: [
-                              PTexts(
-                                diffMessages[ActivityType.height]!,
-                                colors: const [PTheme.colorD, PTheme.black],
-                                style: textTheme.titleLarge,
-                                alignment: MainAxisAlignment.center,
-                              ),
-                            ],
-                          ),
-                          Stack(
-                            children: [
-                              PTexts(
-                                diffMessages[ActivityType.calorie]!,
-                                colors: const [PTheme.colorA, PTheme.black],
-                                style: textTheme.titleLarge,
-                                alignment: MainAxisAlignment.end,
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      }
     );
   }
 }
@@ -362,48 +362,78 @@ class DailyActivityCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const WidgetHeader(
-          title: '오늘 활동량',
-          button: IconButton(
-            icon: Icon(Icons.edit, color: PTheme.grey),
-            onPressed: EditGoalPresenter.toEditGoal,
-          ),
-        ),
-        SizedBox(height: 10.0.h),
-        SizedBox(
-          child: PCard(
-            padding: EdgeInsets.zero,
-            borderType: BorderType.horizontal,
-            borderWidth: 3.0,
-            color: PTheme.surface,
-            child: GridView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.w / 1.h,
+    return GetBuilder<HomePresenter>(
+      builder: (controller) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            WidgetHeader(
+              title: '${controller.isToday ? '오늘' : '어제'} 활동량',
+              button: const PTextButton(
+                text: '목표 수정',
+                color: PTheme.grey,
+                onPressed: HomePresenter.showRouteEditGoalCheckDialog,
               ),
-              children: ActivityType.values
-                  .map((type) => DailyActivityCircularGraph(type: type))
-                  .toList(),
             ),
-          ),
-        ),
-      ],
+            SizedBox(height: 10.0.h),
+            PCard(
+              padding: EdgeInsets.zero,
+              borderType: BorderType.horizontal,
+              borderWidth: 3.0,
+              color: PTheme.surface,
+              child: CarouselSlider(
+                carouselController: HomePresenter.carouselCont,
+                items: [
+                  GridView(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.w / 1.h,
+                    ),
+                    children: ActivityType.values.map((type) => DailyActivityCircularGraph(
+                      type: type, date: yesterday, animation: false,
+                    )).toList(),
+                  ),
+                  GridView(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.w / 1.h,
+                    ),
+                    children: ActivityType.values.map((type) => DailyActivityCircularGraph(
+                      type: type,
+                    )).toList(),
+                  )
+                ],
+                options: CarouselOptions(
+                  aspectRatio: 1.w / 1.h,
+                  viewportFraction: 1.0,
+                  enableInfiniteScroll: false,
+                  initialPage: 1,
+                  onPageChanged: (index, _) => controller.pageChanged(index),
+                ),
+              ),
+            ),
+          ],
+        );
+      }
     );
   }
 }
 
 class DailyActivityCircularGraph extends StatelessWidget {
-  const DailyActivityCircularGraph({
+  DailyActivityCircularGraph({
     Key? key,
     required this.type,
-  }) : super(key: key);
+    DateTime? date,
+    this.animation = true,
+  }) : date = date ?? today, super(key: key);
 
   final ActivityType type;
+  final DateTime date;
+  final bool animation;
 
   @override
   Widget build(BuildContext context) {
@@ -412,11 +442,15 @@ class DailyActivityCircularGraph extends StatelessWidget {
         final userP = Get.find<UserPresenter>();
         PUser user = userP.loggedUser;
 
-        int todayRecord = user.getTodayAmounts(type).round();
+        DateTime nextDate = date.add(const Duration(days: 1));
+        DateTime startTime = date;
+        DateTime endTime = oneSecondBefore(nextDate);
+
+        int dailyRecord = user.getAmounts(type, startTime, endTime).round();
         int goal = max((user.getGoal(type)!.amount).round(), 1);
 
-        double earlierPercent = min(todayRecord / goal, 1);
-        double laterPercent = max(min(todayRecord - goal, goal) / goal, 0);
+        double earlierPercent = min(dailyRecord / goal, 1);
+        double laterPercent = max(min(dailyRecord - goal, goal) / goal, 0);
         double totalPercent = max(earlierPercent + laterPercent, .0001);
 
         const int totalDuration = 1500;
@@ -442,6 +476,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
                       borderColor: PTheme.black,
                       backgroundColor: PTheme.bar,
                       onAnimationEnd: () => controller.showLaterGraph(type),
+                      animation: animation,
                     ),
                     PCircularPercentIndicator(
                       visible: controller.graphStates[type]!,
@@ -450,6 +485,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
                       color: PTheme.white.withOpacity(.3),
                       borderColor: PTheme.black,
                       backgroundColor: Colors.transparent,
+                      animation: animation,
                     ),
                   ],
                 ),
@@ -457,7 +493,7 @@ class DailyActivityCircularGraph extends StatelessWidget {
                 SizedBox(
                   height: 20.0.h,
                   child: PTexts(
-                    ['$todayRecord', '/$goal ${type.unit}'],
+                    ['$dailyRecord', '/$goal ${type.unit}'],
                     colors: [type.color, PTheme.black],
                     style: textTheme.labelLarge,
                     space: false,
@@ -466,20 +502,20 @@ class DailyActivityCircularGraph extends StatelessWidget {
               ],
             ),
             if (!type.active)
-              Positioned.fill(
-                child: Stack(
-                  children: [
-                    Container(
-                      color: PTheme.surface,
-                      alignment: Alignment.center,
-                      child: Icon(Icons.lock, size: 30.0.r),
-                    ),
-                    Container(
-                      color: PTheme.black.withOpacity(.3),
-                    ),
-                  ],
-                ),
+            Positioned.fill(
+              child: Stack(
+                children: [
+                  Container(
+                    color: PTheme.surface,
+                    alignment: Alignment.center,
+                    child: Icon(Icons.lock, size: 30.0.r),
+                  ),
+                  Container(
+                    color: PTheme.black.withOpacity(.3),
+                  ),
+                ],
               ),
+            ),
           ],
         );
       },
@@ -535,7 +571,7 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final userP = Get.find<UserPresenter>();
     PUser user = userP.loggedUser;
-    // const String directory = 'assets/image/page/home/';
+    const String directory = 'assets/image/page/home/';
 
     Record record = Record.init(
       type, user.getThisMonthAmounts(type),
@@ -545,7 +581,7 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
     int goal = QuestPresenter.quests[type] ?? 1;
     double percent = min(record.amount / goal, 1);
 
-    Badge? questBadge = BadgePresenter.getThisMonthQuestBadge(type);
+    // Badge? questBadge = BadgePresenter.getThisMonthQuestBadge(type);
 
     return Stack(
       children: [
@@ -563,7 +599,10 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: BadgeWidget(badge: questBadge, size: 60.0),
+                // child: BadgeWidget(badge: questBadge, size: 60.0),
+                child: type.active
+                    ? Image.asset('$directory${type.name}.png')
+                    : Container(),
               ),
               const VerticalDivider(
                 color: PTheme.black,
@@ -760,17 +799,15 @@ class HomeLoading extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: List.generate(
-                  3,
-                  (_) => Stack(
-                        children: const [
-                          CollectionWidget(
-                            color: PTheme.surface,
-                            border: false,
-                            detail: true,
-                          ),
-                        ],
-                      )),
+              children: List.generate(3, (_) => Stack(
+                children: const [
+                  CollectionWidget(
+                    color: PTheme.surface,
+                    border: false,
+                    detail: true,
+                  ),
+                ],
+              )),
             ),
           ),
           SizedBox(height: 30.0.h),

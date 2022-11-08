@@ -233,12 +233,12 @@ class RegisterPresenter extends GetxController {
       case 3:
         initGoal(Record.init(
           ActivityType.distance,
-          90, DistanceUnit.minute,
+          60, DistanceUnit.minute,
         ));
         break;
       case 4: break;
       case 5:
-        initGoal(Record.init(ActivityType.height, 20));
+        initGoal(Record.init(ActivityType.height, 10));
         break;
       case 6:
         Record calorie = CalorieRecord(amount: 0);

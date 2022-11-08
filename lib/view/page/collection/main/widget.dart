@@ -24,10 +24,7 @@ class CollectionMainView extends StatelessWidget {
               detail: true,
               size: 100.0,
               onPressed: () => controller.collectionPressed(collection),
-              onLongPressed: () {
-                controller.toggleMode();
-                controller.collectionPressed(collection);
-              },
+              onLongPressed: () => controller.setMainBadge(collection),
               pressed: controller.mode == PageMode.edit
                   && controller.selectedBadgeId == collection.badgeId,
               selected: controller.mode == PageMode.view

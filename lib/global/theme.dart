@@ -302,8 +302,8 @@ class PTheme {
     titleMedium: TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w500,
-      fontSize: 16.0,
-      height: (24 / 16),
+      fontSize: 18.0,
+      height: (24 / 18),
     ),
     titleSmall: TextStyle(
       fontFamily: fontFamily,

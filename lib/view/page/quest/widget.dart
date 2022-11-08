@@ -44,11 +44,11 @@ class MonthlyQuestView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         BadgeWidget(
-                          badge: BadgePresenter.getThisMonthQuestBadge(ActivityType.calorie),
+                          badge: BadgePresenter.getThisMonthQuestBadge(ActivityType.distance),
                           size: 60.0,
                         ),
                         BadgeWidget(
-                          badge: BadgePresenter.getThisMonthQuestBadge(ActivityType.distance),
+                          badge: BadgePresenter.getThisMonthQuestBadge(ActivityType.calorie),
                         ),
                         BadgeWidget(
                           badge: BadgePresenter.getThisMonthQuestBadge(ActivityType.height),
@@ -100,6 +100,7 @@ class MonthlyQuestView extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 100.0),
         ],
       ),
     );

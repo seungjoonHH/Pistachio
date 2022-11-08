@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/view/page/login/login.dart';
 
-const version = 'ver 0.0';
+const version = 'ver 0.0.1';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

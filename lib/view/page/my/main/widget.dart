@@ -100,7 +100,7 @@ class _MyMainViewState extends State<MyMainView> {
                                             margin: const EdgeInsets.symmetric(horizontal: 20.0),
                                             decoration: BoxDecoration(
                                               border: Border.all(color: PTheme.black, width: 1.5),
-                                              borderRadius: BorderRadius.circular(9.0),
+                                              borderRadius: BorderRadius.circular(20.0.r),
                                             ),
                                             child: LinearPercentIndicator(
                                               padding: EdgeInsets.zero,
@@ -108,7 +108,7 @@ class _MyMainViewState extends State<MyMainView> {
                                               backgroundColor: Colors.transparent,
                                               percent: tier['percent'] ?? .0,
                                               lineHeight: 18.0,
-                                              barRadius: const Radius.circular(8.0),
+                                              barRadius: Radius.circular(20.0.r),
                                               animation: true,
                                               animationDuration: 1000,
                                               curve: Curves.easeInOut,
@@ -154,6 +154,7 @@ class _MyMainViewState extends State<MyMainView> {
                     );
                   }).toList(),
                 ),
+                const SizedBox(height: 100.0),
               ],
             ),
           ],

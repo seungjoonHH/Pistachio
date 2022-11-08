@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -14,7 +15,7 @@ class PLogo extends StatelessWidget {
       color: PTheme.white,
       border: true,
       borderWidth: 1.5,
-      style: textTheme.displayLarge,
+      style: TextStyle(fontSize: 75.0.sp),
     );
   }
 }

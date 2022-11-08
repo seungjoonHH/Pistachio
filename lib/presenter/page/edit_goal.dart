@@ -16,13 +16,11 @@ class Field {
 }
 
 /// class
-class EditGoalPresenter extends GetxController {
+class EditGoal extends GetxController {
   PUser user = PUser();
   int pageIndex = 0;
   bool keyboardVisible = false;
-  List<bool> imageExistence = [
-    false, true, true, true, true, true,
-  ];
+  List<bool> imageExistence = List.generate(5, (_) => true);
   bool imageVisualize = false;
 
   static const Duration shakeDuration = Duration(milliseconds: 500);
@@ -34,7 +32,7 @@ class EditGoalPresenter extends GetxController {
   static final carouselCont = CarouselController();
 
   static void toEditGoal() {
-    final editGoalP = Get.find<EditGoalPresenter>();
+    final editGoalP = Get.find<EditGoal>();
     editGoalP.init();
     Get.toNamed('/editGoal');
   }
@@ -103,31 +101,41 @@ class EditGoalPresenter extends GetxController {
   void nextPressed() async {
     switch (pageIndex) {
       case 0:
+        Record record = user.getGoal(ActivityType.distance)!;
+        record.convert(DistanceUnit.minute);
+
+        initGoal(Record.init(
+          ActivityType.distance,
+          record.amount,
+          DistanceUnit.minute,
+        ));
         break;
-      case 1:
-        initGoal(Record.init(ActivityType.distance, 60, DistanceUnit.minute));
-        break;
+      case 1: break;
       case 2:
+        initGoal(Record.init(
+          ActivityType.height,
+          user.getGoal(ActivityType.height)!.amount
+        ));
         break;
       case 3:
-        initGoal(Record.init(ActivityType.height, 20));
-        break;
-      case 4:
         Record calorie = CalorieRecord(amount: 0);
         DistanceRecord distance =
             user.getGoal(ActivityType.distance) as DistanceRecord;
         HeightRecord height = user.getGoal(ActivityType.height) as HeightRecord;
-        calorie.amount +=
-            CalorieRecord.from(ActivityType.distance, distance.minute);
-        calorie.amount +=
-            CalorieRecord.from(ActivityType.height, height.amount);
+        calorie.amount += CalorieRecord.from(
+          ActivityType.distance,
+          distance.minute,
+        );
+        calorie.amount += CalorieRecord.from(
+          ActivityType.height,
+          height.amount,
+        );
 
         user.setGoal(ActivityType.calorie, calorie);
         update();
         break;
-      case 5:
-        submitted();
-        return;
+      case 4:
+        submitted(); return;
     }
     carouselCont.nextPage(
       curve: transitionCurve,

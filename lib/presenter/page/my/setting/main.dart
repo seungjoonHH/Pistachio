@@ -27,7 +27,7 @@ class MySettingMain extends GetxController {
       rightText: '삭제',
       leftPressed: Get.back,
       rightPressed: AuthPresenter.pDeleteAccount,
-      rightColor: Colors.red,
+      rightBackgroundColor: Colors.red,
     );
   }
 }

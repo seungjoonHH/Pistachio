@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/json/badge.dart';
@@ -164,8 +165,15 @@ class GlobalPresenter extends GetxController {
           ),
         ],
       ),
-      type: DialogType.mono,
-      onPressed: Get.back,
+      type: DialogType.bi,
+      leftText: '대표 컬렉션으로 설정',
+      leftPressed: () async {
+        Get.back();
+        await Future.delayed(const Duration(milliseconds: 200));
+        final collectionMain = Get.find<CollectionMain>();
+        collectionMain.setMainBadge(collection);
+      },
+      rightPressed: Get.back,
     );
   }
 
@@ -229,6 +237,40 @@ class GlobalPresenter extends GetxController {
           ),
         ],
       ),
+      type: DialogType.bi,
+      leftText: '대표 컬렉션으로 설정',
+      leftPressed: () {
+        final userP = Get.find<UserPresenter>();
+        userP.setMainBadge(badge.id!);
+      },
+      rightPressed: Get.back,
+    );
+  }
+
+
+  // 대표 컬렉션 설정 팝업
+  static void showCollectionSettingDialog(String badgeId) {
+    Badge? selectedBadge = BadgePresenter.getBadge(badgeId);
+
+    showPDialog(
+      title: '대표 컬렉션 변경',
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          selectedBadge == null ? PText('대표 컬렉션이 해제되었습니다.') : Column(
+            children: [
+              BadgeWidget(badge: selectedBadge, size: 100.0.r),
+              SizedBox(height: 20.0.h),
+              PText('대표 컬렉션이'),
+              PTexts(
+                [selectedBadge.title!, '${roeuro(selectedBadge.title!)} 설정되었습니다.'],
+                colors: const [PTheme.colorB, PTheme.black],
+                space: false,
+              )
+            ],
+          ),
+        ],
+      ),
       type: DialogType.mono,
       onPressed: Get.back,
     );
@@ -264,6 +306,6 @@ class GlobalPresenter extends GetxController {
     Get.put(ChallengeCreate());
     Get.put(ChallengePartyMain());
     Get.put(CollectionMain());
-    Get.put(EditGoalPresenter());
+    Get.put(EditGoal());
   }
 }

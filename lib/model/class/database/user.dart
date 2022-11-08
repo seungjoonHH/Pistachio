@@ -230,7 +230,7 @@ class PUser {
         for (var record in recordList) {
           if (startDate != null && record['date'].toDate().isBefore(startDate)) continue;
           if (endDate != null && record['date'].toDate().isAfter(endDate)) continue;
-          result += record['amount'] as double;
+          result += record['amount'].toDouble();
         }
       }
     });

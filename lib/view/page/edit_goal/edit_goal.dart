@@ -16,7 +16,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
-      child: GetBuilder<EditGoalPresenter>(
+      child: GetBuilder<EditGoal>(
         builder: (controller) {
           controller.setKeyboardVisible(MediaQuery.of(context).viewInsets.bottom != 0);
           return const Scaffold(

@@ -22,7 +22,6 @@ class CarouselView extends StatelessWidget {
 
   // 회원가입 페이지 carousel 리스트
   static List<Widget> carouselWidgets() => const [
-        SettingIntroView(),
         DistanceRecommendView(),
         DistanceGoalView(),
         HeightRecommendView(),
@@ -37,24 +36,23 @@ class CarouselView extends StatelessWidget {
     Size screenSize = MediaQuery.of(context).size;
     String asset = 'assets/image/page/edit_goal/';
 
-    return GetBuilder<EditGoalPresenter>(
+    return GetBuilder<EditGoal>(
       builder: (controller) {
         return Stack(
           children: [
             for (int i = 0; i < controller.imageExistence.length; i++)
-              AnimatedPositioned(
-                left: screenSize.width * (i - controller.pageIndex),
-                duration: const Duration(milliseconds: 350),
-                curve: Curves.easeInOut,
-                width: screenSize.width,
-                height: screenSize.height,
-                child: controller.imageExistence[i]
-                    ? Image.asset(
-                  '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
-                  alignment: Alignment.center,
-                  fit: BoxFit.fill,
-                ) : Container(),
-              ),
+            AnimatedPositioned(
+              left: screenSize.width * (i - controller.pageIndex),
+              duration: const Duration(milliseconds: 350),
+              curve: Curves.easeInOut,
+              width: screenSize.width,
+              height: screenSize.height,
+              child: controller.imageExistence[i] ? Image.asset(
+                '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
+                alignment: Alignment.center,
+                fit: BoxFit.fill,
+              ) : Container(),
+            ),
             Column(
               children: [
                 Expanded(
@@ -64,14 +62,13 @@ class CarouselView extends StatelessWidget {
                     child: Container(
                       constraints: BoxConstraints(minWidth: screenSize.width),
                       child: CarouselSlider(
-                        carouselController: EditGoalPresenter.carouselCont,
-                        items: carouselWidgets()
-                            .map((widget) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30.0),
-                                  child: widget,
-                                ))
-                            .toList(),
+                        carouselController: EditGoal.carouselCont,
+                        items: carouselWidgets().map((widget) => Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30.0,
+                          ),
+                          child: widget,
+                        )).toList(),
                         options: CarouselOptions(
                           height: double.infinity,
                           initialPage: 0,
@@ -124,7 +121,7 @@ class GoalNumberPicker extends StatefulWidget {
 class _GoalNumberPickerState extends State<GoalNumberPicker> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<EditGoalPresenter>(
+    return GetBuilder<EditGoal>(
       builder: (controller) {
         Record record = controller.user.getGoal(widget.type)!;
         record.convert(DistanceUnit.minute);
@@ -197,45 +194,12 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
   }
 }
 
-class SettingIntroView extends StatelessWidget {
-  const SettingIntroView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          PText(
-            '자,',
-            style: textTheme.displaySmall,
-            align: TextAlign.start,
-          ),
-          PTexts(
-            const ['이제 ', '일일 목표', '를'],
-            colors: const [PTheme.black, PTheme.colorB, PTheme.black],
-            alignment: MainAxisAlignment.start,
-            style: textTheme.displaySmall,
-            space: false,
-          ),
-          PText(
-            '설정하러 가볼까요?',
-            style: textTheme.displaySmall,
-            align: TextAlign.start,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class DistanceRecommendView extends StatelessWidget {
   const DistanceRecommendView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<EditGoalPresenter>(
+    return GetBuilder<EditGoal>(
       builder: (controller) {
         int ageGroup = today.difference(controller.user.dateOfBirth!).inDays;
         List<int> recommendTimes = [];
@@ -293,7 +257,7 @@ class DistanceGoalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<EditGoalPresenter>(
+    return GetBuilder<EditGoal>(
       builder: (controller) {
         DistanceRecord distance = controller.user.getGoal(
           ActivityType.distance,
@@ -409,7 +373,7 @@ class HeightGoalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<EditGoalPresenter>(
+    return GetBuilder<EditGoal>(
       builder: (controller) {
         HeightRecord goal = controller.user.getGoal(
           ActivityType.height,
@@ -498,7 +462,7 @@ class CalorieCheckView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<EditGoalPresenter>(
+    return GetBuilder<EditGoal>(
       builder: (controller) {
         CalorieRecord goal = controller.user.getGoal(
           ActivityType.calorie,
@@ -598,7 +562,7 @@ class CarouselButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<EditGoalPresenter>(
+    return GetBuilder<EditGoal>(
       builder: (controller) {
         bool lastPage = controller.pageIndex == CarouselView.widgetCount - 1;
 

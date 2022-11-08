@@ -177,7 +177,11 @@ class UserPresenter extends GetxController {
       height.amount,
     );
 
-    loggedUser.setRecord(ActivityType.calorie, today, calorie);
+    loggedUser.setRecord(
+      ActivityType.calorie,
+      today, calorie,
+    );
+
     save();
     update();
   }
@@ -191,33 +195,24 @@ class UserPresenter extends GetxController {
 
     late int before, after;
 
-    CalorieRecord calorie = CalorieRecord(
-      amount: CalorieRecord.from(type, record.amount),
-    );
-
     before = loggedUser.completedActivities.length;
 
     loggedUser.addRecord(type, today, record, true);
-    loggedUser.addRecord(ActivityType.calorie, today, calorie, true);
+    updateCalorie();
 
     switch (type) {
       case ActivityType.distance:
         if (!isIOS) record.amount += loggedUser.getTodayAmounts(type);
-        print(record.amount);
-        await HealthPresenter.addStepsData(record);
-        break;
+        await HealthPresenter.addStepsData(record); break;
       case ActivityType.height:
         if (!isIOS) break;
-        await HealthPresenter.addFlightsData(record);
-        break;
-      default:
-        break;
+        await HealthPresenter.addFlightsData(record); break;
+      default: break;
     }
 
     after = loggedUser.completedActivities.length;
 
-    if (before != 3 && after == 3)
-      BadgePresenter.awardDailyActivityCompleteBadge();
+    if (before != 3 && after == 3) BadgePresenter.awardDailyActivityCompleteBadge();
     save();
   }
 
@@ -225,24 +220,28 @@ class UserPresenter extends GetxController {
   void setRecord(ActivityType type, Record record) async {
     late int before, after;
 
-    CalorieRecord calorie = CalorieRecord(
-      amount: CalorieRecord.from(type, record.amount),
-    );
     before = loggedUser.completedActivities.length;
 
     loggedUser.setRecord(type, today, record);
-    loggedUser.setRecord(ActivityType.calorie, today, calorie);
+    updateCalorie();
 
     after = loggedUser.completedActivities.length;
 
-    if (before != 3 && after == 3)
-      BadgePresenter.awardDailyActivityCompleteBadge();
+    if (before != 3 && after == 3) BadgePresenter.awardDailyActivityCompleteBadge();
     save();
+  }
+
+  void setMainBadge(String badgeId) {
+    loggedUser.badgeId = badgeId;
+    GlobalPresenter.showCollectionSettingDialog(badgeId);
+    save();
+    update();
   }
 
   // 로그인된 사용자에게 뱃지 수여
   void awardBadge(Badge badge) async {
     GlobalPresenter.badgeAwarded(badge, true);
+    if (badge.id == '1000000') setMainBadge(badge.id!);
     loggedUser.collections.add(Collection.fromJson({
       'badgeId': badge.id,
       'dates': [toTimestamp(now)],

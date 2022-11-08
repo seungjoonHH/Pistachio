@@ -18,6 +18,7 @@ class PCircularPercentIndicator extends StatelessWidget {
     this.onAnimationEnd,
     this.visible = true,
     this.duration = 1000,
+    this.animation = true,
   }) : super(key: key);
 
   final double percent;
@@ -31,6 +32,7 @@ class PCircularPercentIndicator extends StatelessWidget {
   final VoidCallback? onAnimationEnd;
   final bool visible;
   final int duration;
+  final bool animation;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class PCircularPercentIndicator extends StatelessWidget {
             percent: percent,
             backgroundColor: backgroundColor,
             progressColor: color,
-            animation: true,
+            animation: animation,
             animationDuration: duration,
             onAnimationEnd: onAnimationEnd,
             curve: Curves.easeInOut,

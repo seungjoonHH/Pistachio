@@ -45,7 +45,7 @@ class MyRecordDetailView extends StatelessWidget {
             return Stack(
               alignment: Alignment.topCenter,
               children: [
-                const BackgroundTop(),
+                const Positioned(top: -1.0, child: BackgroundTop()),
                 const SunAndMoon(),
                 const Clouds(start: .7, relativeDistance: .25),
                 const Clouds(start: .6, relativeDistance: .5),
@@ -111,6 +111,10 @@ class MyRecordDetailView extends StatelessWidget {
                     style: textTheme.displayLarge?.merge(TextStyle(
                       color: type.color,
                       fontWeight: FontWeight.normal,
+                      shadows: const [Shadow(
+                        blurRadius: 20.0,
+                        color: PTheme.white,
+                      )],
                     )),
                   ),
                 ],

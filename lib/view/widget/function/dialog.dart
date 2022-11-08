@@ -6,15 +6,18 @@ import 'package:pistachio/view/widget/widget/text.dart';
 
 class DialogButtonData {
   late DialogType type;
-  Color color;
   String text;
+  Color textColor;
+  Color backgroundColor;
   VoidCallback onPressed;
 
   DialogButtonData(type, {
-    Color? color,
+    Color? textColor,
+    Color? backgroundColor,
     required this.text,
     required this.onPressed,
-  }) : color = color ?? PTheme.black;
+  }) : textColor = textColor ?? PTheme.white,
+        backgroundColor = backgroundColor ?? PTheme.black;
 }
 
 void showPDialog({
@@ -30,8 +33,10 @@ void showPDialog({
   String? rightText,
   VoidCallback? leftPressed,
   VoidCallback? rightPressed,
-  Color? leftColor,
-  Color? rightColor,
+  Color? leftTextColor,
+  Color? rightTextColor,
+  Color? leftBackgroundColor,
+  Color? rightBackgroundColor,
 }) async {
   switch (type) {
     case DialogType.bi:
@@ -45,8 +50,10 @@ void showPDialog({
       )); break;
     case DialogType.none:
       assert(onPressed == null && buttonText == null && (
-          leftText == null && leftPressed == null && leftColor == null
-              && rightText == null && rightPressed == null && rightColor == null
+          leftText == null && leftPressed == null
+              && leftTextColor == null && leftBackgroundColor == null
+              && rightText == null && rightPressed == null
+              && rightTextColor == null && rightBackgroundColor == null
       )); break;
   }
 
@@ -63,8 +70,10 @@ void showPDialog({
     rightText: rightText,
     leftPressed: leftPressed,
     rightPressed: rightPressed,
-    leftColor: leftColor,
-    rightColor: rightColor,
+    leftTextColor: leftTextColor,
+    rightTextColor: rightTextColor,
+    leftBackgroundColor: leftBackgroundColor,
+    rightBackgroundColor: rightBackgroundColor,
   ));
 }
 
@@ -83,8 +92,10 @@ class PAlertDialog extends StatefulWidget {
     this.rightText,
     this.leftPressed,
     this.rightPressed,
-    this.leftColor,
-    this.rightColor,
+    this.leftTextColor,
+    this.rightTextColor,
+    this.leftBackgroundColor,
+    this.rightBackgroundColor,
   }) : super(key: key);
 
   final String? title;
@@ -99,8 +110,10 @@ class PAlertDialog extends StatefulWidget {
   final String? rightText;
   final VoidCallback? leftPressed;
   final VoidCallback? rightPressed;
-  final Color? leftColor;
-  final Color? rightColor;
+  final Color? leftTextColor;
+  final Color? rightTextColor;
+  final Color? leftBackgroundColor;
+  final Color? rightBackgroundColor;
 
   @override
   State<PAlertDialog> createState() => _PAlertDialogState();
@@ -117,7 +130,7 @@ class _PAlertDialogState extends State<PAlertDialog> {
         data = [
           DialogButtonData(widget.type,
             text: widget.buttonText ?? '확인',
-            color: widget.color ?? PTheme.black,
+            backgroundColor: widget.color ?? PTheme.black,
             onPressed: widget.onPressed!,
           ),
         ]; break;
@@ -125,12 +138,14 @@ class _PAlertDialogState extends State<PAlertDialog> {
         data = [
           DialogButtonData(widget.type,
             text: widget.leftText ?? '취소',
-            color: widget.leftColor ?? PTheme.grey,
+            textColor: widget.leftTextColor ?? PTheme.black,
+            backgroundColor: widget.leftBackgroundColor ?? PTheme.white,
             onPressed: widget.leftPressed!,
           ),
           DialogButtonData(widget.type,
             text: widget.rightText ?? '확인',
-            color: widget.rightColor ?? PTheme.black,
+            textColor: widget.rightTextColor ?? PTheme.white,
+            backgroundColor: widget.rightBackgroundColor ?? PTheme.black,
             onPressed: widget.rightPressed!,
           ),
         ]; break;
@@ -171,7 +186,7 @@ class _PAlertDialogState extends State<PAlertDialog> {
           Row(
             children: data.map((datum) => Expanded(
               child: Material(
-                color: datum.color,
+                color: datum.backgroundColor,
                 child: InkWell(
                   onTap: datum.onPressed,
                   child: Container(
@@ -181,7 +196,7 @@ class _PAlertDialogState extends State<PAlertDialog> {
                     ),
                     child: Center(
                       child: PText(datum.text,
-                        color: PTheme.white,
+                        color: datum.textColor,
                         style: textTheme.labelLarge,
                       ),
                     ),

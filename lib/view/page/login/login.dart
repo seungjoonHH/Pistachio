@@ -52,23 +52,20 @@ class _LoginPageState extends State<LoginPage> {
               child: SvgPicture.asset(backgroundAsset, fit: BoxFit.fill),
             ),
           ),
-          const Positioned(top: 200.0, child: PLogo()),
+          Positioned(top: 150.0.h, child: const PLogo()),
           Positioned(
-            bottom: 20.0,
+            bottom: 130.0.h,
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
               opacity: buttonsOpacity,
               child: Column(
-                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SignInButton(type: LoginType.google),
-                  const SizedBox(height: 15.0),
-                  //SignInButton(type: LoginType.apple),
+                  const SizedBox(height: 20.0),
                   if (Platform.isIOS)
                   const SignInButton(type: LoginType.apple),
-                  const SizedBox(height: 77.0),
                 ],
               ),
             ),
@@ -76,7 +73,11 @@ class _LoginPageState extends State<LoginPage> {
           Positioned(
             right: 25.0.w,
             bottom: 15.0.h,
-            child: PText(version, color: PTheme.grey),
+            child: PText(
+              version,
+              color: PTheme.grey,
+              style: textTheme.titleMedium,
+            ),
           ),
         ],
       ),

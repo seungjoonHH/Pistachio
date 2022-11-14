@@ -75,22 +75,23 @@ class ChallengeCreateView extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Stack(
+                                      alignment: Alignment.center,
                                       children: [
                                         BadgeWidget(
                                           badge: diff.active ? challenge.badges[diff] : null,
                                           onPressed: () => controller.changeDifficulty(diff),
                                         ),
                                         Container(
-                                          width: 80.0.r,
-                                          height: 80.0.r,
+                                          width: 84.0.r,
+                                          height: 84.0.r,
                                           decoration: ShapeDecoration(
                                             color: diff == controller.difficulty
                                                 ? Colors.transparent
-                                                : PTheme.black.withOpacity(.2),
+                                                : PTheme.black.withOpacity(.5),
                                             shape: PolygonBorder(
                                               sides: 6,
                                               side: BorderSide(
-                                                width: 4.0,
+                                                width: 4.0.r,
                                                 color: diff == controller.difficulty
                                                     ? PTheme.colorB
                                                     : Colors.transparent,
@@ -148,7 +149,7 @@ class ChallengeCreateView extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 50.0,
+              bottom: 70.0.h,
               child: PButton(
                 onPressed: () => controller.challengeCreateButtonPressed(challenge),
                 text: '챌린지 생성하기',

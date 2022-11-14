@@ -421,217 +421,217 @@
   },
   {
     "id": 1040000,
-    "title": "1월의 칼로리",
+    "title": "1월의 다이어터",
     "description": "1월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040001,
-    "title": "2월의 칼로리",
+    "title": "2월의 다이어터",
     "description": "2월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040002,
-    "title": "3월의 칼로리",
+    "title": "3월의 다이어터",
     "description": "3월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040003,
-    "title": "4월의 칼로리",
+    "title": "4월의 다이어터",
     "description": "4월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040004,
-    "title": "5월의 칼로리",
+    "title": "5월의 다이어터",
     "description": "5월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040005,
-    "title": "6월의 칼로리",
+    "title": "6월의 다이어터",
     "description": "6월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040006,
-    "title": "7월의 칼로리",
+    "title": "7월의 다이어터",
     "description": "7월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040007,
-    "title": "8월의 칼로리",
+    "title": "8월의 다이어터",
     "description": "8월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040008,
-    "title": "9월의 칼로리",
+    "title": "9월의 다이어터",
     "description": "9월의 칼로리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040009,
-    "title": "10월의 칼로리",
+    "title": "10월의 다이어터",
     "description": "10월의 칼로리 목표를 완료했습니다",
-    "activate": true
+    "activate": false
   },
   {
     "id": 1040010,
-    "title": "11월의 칼로리",
+    "title": "11월의 다이어터",
     "description": "11월의 칼로리 목표를 완료했습니다",
     "activate": true
   },
   {
     "id": 1040011,
-    "title": "12월의 칼로리",
+    "title": "12월의 다이어터",
     "description": "12월의 칼로리 목표를 완료했습니다",
     "activate": true
   },
   {
     "id": 1040100,
-    "title": "1월의 거리 목표",
+    "title": "1월의 마라토너",
     "description": "1월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040101,
-    "title": "2월의 거리 목표",
+    "title": "2월의 마라토너",
     "description": "2월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040102,
-    "title": "3월의 거리 목표",
+    "title": "3월의 마라토너",
     "description": "3월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040103,
-    "title": "4월의 거리 목표",
+    "title": "4월의 마라토너",
     "description": "4월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040104,
-    "title": "5월의 거리 목표",
+    "title": "5월의 마라토너",
     "description": "5월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040105,
-    "title": "6월의 거리 목표",
+    "title": "6월의 마라토너",
     "description": "6월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040106,
-    "title": "7월의 거리 목표",
+    "title": "7월의 마라토너",
     "description": "7월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040107,
-    "title": "8월의 거리 목표",
+    "title": "8월의 마라토너",
     "description": "8월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040108,
-    "title": "9월의 거리 목표",
+    "title": "9월의 마라토너",
     "description": "9월의 거리 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040109,
-    "title": "10월의 거리 목표",
+    "title": "10월의 마라토너",
     "description": "10월의 거리 목표를 완료했습니다",
-    "activate": true
+    "activate": false
   },
   {
     "id": 1040110,
-    "title": "11월의 거리 목표",
+    "title": "11월의 마라토너",
     "description": "11월의 거리 목표를 완료했습니다",
     "activate": true
   },
   {
     "id": 1040111,
-    "title": "12월의 거리 목표",
+    "title": "12월의 마라토너",
     "description": "12월의 거리 목표를 완료했습니다",
     "activate": true
   },
   {
     "id": 1040200,
-    "title": "1월의 높이 목표",
+    "title": "1월의 클라이머",
     "description": "1월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040201,
-    "title": "2월의 높이 목표",
+    "title": "2월의 클라이머",
     "description": "2월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040202,
-    "title": "3월의 높이 목표",
+    "title": "3월의 클라이머",
     "description": "3월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040203,
-    "title": "4월의 높이 목표",
+    "title": "4월의 클라이머",
     "description": "4월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040204,
-    "title": "5월의 높이 목표",
+    "title": "5월의 클라이머",
     "description": "5월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040205,
-    "title": "6월의 높이 목표",
+    "title": "6월의 클라이머",
     "description": "6월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040206,
-    "title": "7월의 높이 목표",
+    "title": "7월의 클라이머",
     "description": "7월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040207,
-    "title": "8월의 높이 목표",
+    "title": "8월의 클라이머",
     "description": "8월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040208,
-    "title": "9월의 높이 목표",
+    "title": "9월의 클라이머",
     "description": "9월의 높이 목표를 완료했습니다",
     "activate": false
   },
   {
     "id": 1040209,
-    "title": "10월의 높이 목표",
+    "title": "10월의 클라이머",
     "description": "10월의 높이 목표를 완료했습니다",
-    "activate": true
+    "activate": false
   },
   {
     "id": 1040210,
-    "title": "11월의 높이 목표",
+    "title": "11월의 클라이머",
     "description": "11월의 높이 목표를 완료했습니다",
     "activate": true
   },
   {
     "id": 1040211,
-    "title": "12월의 높이 목표",
+    "title": "12월의 클라이머",
     "description": "12월의 높이 목표를 완료했습니다",
     "activate": true
   },
@@ -716,73 +716,79 @@
   {
     "id": 1050000,
     "title": "최고찬 선수의 동메달",
-    "description": "마라톤 대회에서 최고찬 선수가 받은 동메달입니다.",
-    "activate": true
+    "description": "마라톤 대회에서 최고찬 선수가 받은 동메달입니다",
+    "activate": false
   },
   {
     "id": 1050001,
     "title": "최고찬 선수의 은메달",
-    "description": "마라톤 대회에서 최고찬 선수가 받은 은메달입니다.",
-    "activate": true
+    "description": "마라톤 대회에서 최고찬 선수가 받은 은메달입니다",
+    "activate": false
   },
   {
     "id": 1050002,
     "title": "최고찬 선수의 금메달",
-    "description": "마라톤 대회에서 최고찬 선수가 받은 금메달입니다.",
-    "activate": true
+    "description": "마라톤 대회에서 최고찬 선수가 받은 금메달입니다",
+    "activate": false
   },
   {
     "id": 1050010,
-    "title": "고양이의",
-    "description": "고양이의",
+    "title": "설악산 나비의 보은",
+    "description": "설악산에서 구출된 나비가 가져다 준 보물입니다",
     "activate": true
   },
   {
     "id": 1050011,
-    "title": "고양이의",
-    "description": "고양이의",
+    "title": "한라산 나비의 보은",
+    "description": "한라산에서 구출된 나비가 가져다 준 보물입니다",
     "activate": true
   },
   {
     "id": 1050012,
-    "title": "고양이의",
-    "description": "고양이의",
+    "title": "백두산 나비의 보은",
+    "description": "백두산에서 구출된 나비가 가져다 준 보물입니다",
     "activate": true
   },
   {
     "id": 1050020,
     "title": "양반각의",
     "description": "양반각의",
-    "activate": true
+    "activate": false
   },
   {
     "id": 1050021,
     "title": "양반각의",
     "description": "양반각의",
-    "activate": true
+    "activate": false
   },
   {
     "id": 1050022,
     "title": "양반각의",
     "description": "양반각의",
-    "activate": true
+    "activate": false
   },
   {
     "id": 1050030,
     "title": "63빌딩 명예 소방관",
     "description": "63빌딩",
-    "activate": true
+    "activate": false
   },
   {
     "id": 1050031,
     "title": "롯데타워 명예 소방관",
     "description": "롯데타워",
-    "activate": true
+    "activate": false
   },
   {
     "id": 1050032,
     "title": "부르즈 할리파 명예 소방관",
     "description": "부르즈 할리파",
-    "activate": true
+    "activate": false
+  },
+  {
+    "id": 1999999,
+    "title": "운영자",
+    "description": "서비스 운영자의 뱃지 입니다",
+    "activate": false
   }
 ]

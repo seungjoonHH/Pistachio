@@ -41,6 +41,7 @@ class ChallengePartyMain extends GetxController {
 
     loadingP.loadStart();
     loadedParty = await PartyPresenter.loadParty(id);
+    if (loadedParty == null) return;
     await PartyPresenter.loadMembers(loadedParty!);
     await userP.loadMyParties();
 
@@ -79,5 +80,13 @@ class ChallengePartyMain extends GetxController {
     await Future.delayed(const Duration(milliseconds: 1000), () {
       copied = false; update();
     });
+  }
+
+  void complete() {
+    final userP = Get.find<UserPresenter>();
+
+    loadedParty!.complete = true; update();
+    PartyPresenter.save(loadedParty!);
+    userP.awardBadge(loadedParty!.badge);
   }
 }

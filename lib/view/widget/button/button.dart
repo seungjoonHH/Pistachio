@@ -12,7 +12,7 @@ class PButton extends StatelessWidget {
     Key? key,
     this.text,
     this.child,
-    required this.onPressed,
+    this.onPressed,
     this.fill = true,
     EdgeInsets? padding,
     this.constraints,
@@ -32,7 +32,7 @@ class PButton extends StatelessWidget {
 
   final String? text;
   final Widget? child;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool fill;
   final EdgeInsets padding;
   final BoxConstraints? constraints;

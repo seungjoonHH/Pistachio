@@ -38,7 +38,6 @@ class ChallengeMain extends GetxController with GetSingleTickerProviderStateMixi
   String? codeHintText = '';
 
   /// methods
-
   Future init() async {
     final userP = Get.find<UserPresenter>();
     final loadingP = Get.find<LoadingPresenter>();
@@ -118,7 +117,8 @@ class ChallengeMain extends GetxController with GetSingleTickerProviderStateMixi
     String text = codeCont.text;
 
     Map<String, bool> conditions = {
-      '이미 참여중인 챌린지 입니다': ! !userP.alreadyJoinedParty(text),
+      '정원이 차 참여할 수 없습니다': await PartyPresenter.partyFulled(text),
+      '이미 참여중인 챌린지 입니다': userP.alreadyJoinedParty(text),
       '해당 코드의 챌린지가 없습니다': !await PartyPresenter.partyExists(text),
       '7글자로 입력해주세요': text.length != 7,
       '공백을 포함할 수 없습니다': text.contains(' '),

@@ -21,7 +21,7 @@ enum Difficulty {
   static Difficulty? toEnum(String? string) =>
       Difficulty.values.firstWhereOrNull((diff) => diff.name == string);
 
-  static List<Difficulty> get activeValues => [easy];
+  static List<Difficulty> get activeValues => [easy, normal, hard];
 }
 
 enum ActivityType {
@@ -45,7 +45,8 @@ enum ActivityType {
   String get doIt => ['감량하세요', '걸으세요', '오르세요', '들으세요'][index];
   String get did => ['감량했어요', '걸었어요', '올랐어요', '들었어요'][index];
   String get and => ['감량했고', '걸었고', '올랐고', '들었고'][index];
-  Color get color => [PTheme.colorA, PTheme.colorB, PTheme.colorD, PTheme.colorC][index];
+  String get cause => ['감량해서', '걸어서', '올라서', '들어서'][index];
+  Color get color => [PTheme.colorA, PTheme.colorB, PTheme.colorC, PTheme.colorD][index];
   String get asset => ['lightning.svg', 'running.svg', 'stairs.svg', 'dumbbell.svg'][index];
   bool get active => activeValues.contains(this);
 

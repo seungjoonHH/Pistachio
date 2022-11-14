@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/view/page/my/record/widget.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
-import 'background/layout/layout_colors.dart';
 
 class MyRecordMainPage extends StatelessWidget {
   const MyRecordMainPage({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class MyRecordMainPage extends StatelessWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: PuzzleColors.waterLight,
+      backgroundColor: PTheme.waterLight,
       appBar: const PAppBar(color: Colors.transparent),
       body: MyRecordDetailView(type: type),
     );

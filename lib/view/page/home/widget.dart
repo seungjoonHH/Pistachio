@@ -1,23 +1,27 @@
 import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pistachio/global/date.dart';
+import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
+import 'package:pistachio/model/class/json/level.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
+import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/quest.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/home.dart';
-import 'package:pistachio/presenter/page/quest.dart';
+import 'package:pistachio/presenter/page/my/record/main.dart';
+import 'package:pistachio/presenter/page/quest/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
@@ -111,20 +115,20 @@ class HomeRandomCardView extends StatelessWidget {
     List<Widget> items = [
       const QuestRecommendCard(),
       const LifeExtensionCard(),
-      if (ignoreTime(user.regDate!) != today) const YesterdayComparisonCard(),
-    ]
-        .map((widget) => Padding(
-              padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0.r),
-              child: widget,
-            ))
-        .toList();
+      if (ignoreTime(user.regDate!) != today)
+      const YesterdayComparisonCard(),
+      const MyRecordCard(),
+    ].map((widget) => Padding(
+      padding: EdgeInsets.fromLTRB(20.0.r, 20.0.r, 20.0.r, 0.0.r),
+      child: widget,
+    )).toList();
 
     items.shuffle();
 
     return CarouselSlider(
       items: items,
       options: CarouselOptions(
-        height: 230.0.h,
+        height: 250.0.h,
         viewportFraction: 1.0,
         autoPlay: true,
       ),
@@ -142,6 +146,7 @@ class QuestRecommendCard extends StatelessWidget {
       onPressed: QuestMain.toQuestMain,
       rounded: true,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -162,28 +167,49 @@ class QuestRecommendCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 20.0.h),
-          SizedBox(
-            height: 80.0.h,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                BadgeWidget(
-                  badge: BadgePresenter.getBadge(
-                      '10401${(today.month - 1).toString().padLeft(2, '0')}'),
-                  size: 60.0,
-                ),
-                BadgeWidget(
-                  badge: BadgePresenter.getBadge(
-                      '10400${(today.month - 1).toString().padLeft(2, '0')}'),
-                ),
-                BadgeWidget(
-                  badge: BadgePresenter.getBadge(
-                      '10402${(today.month - 1).toString().padLeft(2, '0')}'),
-                  size: 60.0,
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              BadgeWidget(
+                badge: BadgePresenter.getBadge(
+                  '10401${(today.month - 1).toString().padLeft(2, '0')}'),
+                size: 54.0,
+              ).animate().fadeIn(
+                delay: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 500),
+              ).scale(
+                begin: const Offset(.7, .7),
+                duration: const Duration(milliseconds: 1000),
+                curve: Curves.elasticOut,
+              ),
+              BadgeWidget(
+                badge: BadgePresenter.getBadge(
+                  '10400${(today.month - 1).toString().padLeft(2, '0')}'),
+                size: 70.0,
+              ).animate().fadeIn(
+                delay: const Duration(milliseconds: 700),
+                duration: const Duration(milliseconds: 500),
+              ).scale(
+                begin: const Offset(.7, .7),
+                duration: const Duration(milliseconds: 1000),
+                curve: Curves.elasticOut,
+              ),
+              BadgeWidget(
+                badge: BadgePresenter.getBadge(
+                  '10402${(today.month - 1).toString().padLeft(2, '0')}'),
+                size: 54.0,
+              ).animate().fadeIn(
+                delay: const Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
+              ).scale(
+                begin: const Offset(.7, .7),
+                duration: const Duration(milliseconds: 1000),
+                curve: Curves.elasticOut,
+              ),
+            ],
           ),
+          SizedBox(height: 20.0.h),
         ],
       ),
     );
@@ -210,30 +236,31 @@ class LifeExtensionCard extends StatelessWidget {
       color: PTheme.white,
       rounded: true,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (todayHeights == 0)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                PText(
-                  '계단을 올라 수명을 연장해보세요',
-                  style: textTheme.titleLarge,
-                ),
-                SizedBox(height: 10.0.h),
-                PText(
-                  '한 층을 오르면 수명이 1분 40초 늘어나요!',
-                  style: textTheme.labelMedium,
-                  color: PTheme.grey,
-                ),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PText(
+                '계단을 올라 수명을 연장해보세요',
+                style: textTheme.titleLarge,
+              ),
+              SizedBox(height: 10.0.h),
+              PText(
+                '한 층을 오르면 수명이 1분 40초 늘어나요!',
+                style: textTheme.labelMedium,
+                color: PTheme.grey,
+              ),
+            ],
+          ),
           if (todayHeights > 0)
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 PTexts(
                   ['수명이', string, '연장되었어요'],
-                  colors: const [PTheme.black, PTheme.colorD, PTheme.black],
+                  colors: [PTheme.black, ActivityType.height.color, PTheme.black],
                   style: textTheme.titleLarge,
                   alignment: MainAxisAlignment.start,
                 ),
@@ -248,13 +275,22 @@ class LifeExtensionCard extends StatelessWidget {
           SizedBox(height: 20.0.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                'assets/image/page/home/heartbeat.svg',
+              Image.asset(
+                'assets/image/page/home/heart.png',
                 height: 80.0.h,
+              ).animate(
+                onPlay: (cont) => cont.repeat(),
+              ).scale(
+                duration: const Duration(milliseconds: 1000),
+                begin: const Offset(.9, .9),
+                end: const Offset(.7, .7),
               ),
+              SizedBox(width: 20.0.w),
             ],
-          )
+          ),
+          SizedBox(height: 20.0.h),
         ],
       ),
     );
@@ -271,91 +307,168 @@ class YesterdayComparisonCard extends StatelessWidget {
         return PCard(
           color: PTheme.white,
           rounded: true,
-          onPressed: controller.slideToYesterdayActivityCard,
+          onPressed: controller.slideLeftActivityCard,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              PText('어제와 비교해서', style: textTheme.titleLarge),
+              const SizedBox(height: 10.0),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    PText('어제와 비교해서', style: textTheme.titleLarge),
-                    const SizedBox(height: 10.0),
-                    Expanded(
-                      child: GetBuilder<UserPresenter>(
-                        builder: (controller) {
-                          Map<ActivityType, double> diffs = {};
-                          Map<ActivityType, List<String>> diffMessages = {};
-                          late String last;
+                child: GetBuilder<UserPresenter>(
+                  builder: (controller) {
+                    Map<ActivityType, double> diffs = {};
+                    Map<ActivityType, List<String>> diffMessages = {};
+                    late String last;
 
-                          for (ActivityType type in ActivityType.activeValues) {
-                            double todays = controller.loggedUser.getTodayAmounts(type);
-                            double yesterdays = controller.loggedUser.getAmounts(
-                              type, yesterday, oneSecondBefore(today),
-                            );
+                    for (ActivityType type in ActivityType.activeValues) {
+                      double todays = controller.loggedUser.getTodayAmounts(type);
+                      double yesterdays = controller.loggedUser.getAmounts(
+                        type, yesterday, oneSecondBefore(today),
+                      );
 
-                            double diff = todays - yesterdays;
-                            diffs[type] = diff;
-                            diffMessages[type] = [];
+                      double diff = todays - yesterdays;
+                      diffs[type] = diff;
+                      diffMessages[type] = [];
 
-                            last = type == ActivityType.calorie
-                                ? type.did : '${type.and},';
+                      last = type == ActivityType.calorie
+                          ? type.did : '${type.and},';
 
-                            if (diff == 0) {
-                              diffMessages[type]!.addAll(['비슷하게', last]);
-                              continue;
-                            }
-                            diffMessages[type]!.add('${diff.abs().round()}${type.unit}');
-                            diffMessages[type]!.add('${diff > 0 ? '더' : '덜'} $last');
-                          }
+                      if (diff == 0) {
+                        diffMessages[type]!.addAll(['비슷하게', last]);
+                        continue;
+                      }
+                      diffMessages[type]!.add('${diff.abs().round()}${type.unit}');
+                      diffMessages[type]!.add('${diff > 0 ? '더' : '덜'} $last');
+                    }
 
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Stack(
-                                children: [
-                                  PTexts(
-                                    diffMessages[ActivityType.distance]!,
-                                    colors: const [PTheme.colorB, PTheme.black],
-                                    style: textTheme.titleLarge,
-                                    alignment: MainAxisAlignment.start,
-                                  ),
-                                ],
-                              ),
-                              Stack(
-                                children: [
-                                  PTexts(
-                                    diffMessages[ActivityType.height]!,
-                                    colors: const [PTheme.colorD, PTheme.black],
-                                    style: textTheme.titleLarge,
-                                    alignment: MainAxisAlignment.center,
-                                  ),
-                                ],
-                              ),
-                              Stack(
-                                children: [
-                                  PTexts(
-                                    diffMessages[ActivityType.calorie]!,
-                                    colors: const [PTheme.colorA, PTheme.black],
-                                    style: textTheme.titleLarge,
-                                    alignment: MainAxisAlignment.end,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Stack(
+                          children: [
+                            PTexts(
+                              diffMessages[ActivityType.distance]!,
+                              colors: [ActivityType.distance.color, PTheme.black],
+                              style: textTheme.titleLarge,
+                              alignment: MainAxisAlignment.start,
+                            ).animate().fadeIn(
+                              duration: const Duration(milliseconds: 600),
+                              delay: const Duration(milliseconds: 300),
+                            ),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            PTexts(
+                              diffMessages[ActivityType.height]!,
+                              colors: [ActivityType.height.color, PTheme.black],
+                              style: textTheme.titleLarge,
+                              alignment: MainAxisAlignment.center,
+                            ).animate().fadeIn(
+                              duration: const Duration(milliseconds: 600),
+                              delay: const Duration(milliseconds: 600),
+                            ),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            PTexts(
+                              diffMessages[ActivityType.calorie]!,
+                              colors: [ActivityType.calorie.color, PTheme.black],
+                              style: textTheme.titleLarge,
+                              alignment: MainAxisAlignment.end,
+                            ).animate().fadeIn(
+                              duration: const Duration(milliseconds: 600),
+                              delay: const Duration(milliseconds: 900),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ],
           ),
         );
-      }
+      },
     );
   }
 }
+
+class MyRecordCard extends StatelessWidget {
+  const MyRecordCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    ActivityType randomType = (
+      ActivityType.activeValues.sublist(1, 3)..shuffle()
+    ).first;
+    PUser user = Get.find<UserPresenter>().loggedUser;
+    double amounts = user.getAmounts(randomType);
+    Record record = Record.init(randomType, amounts, DistanceUnit.step);
+
+    Map<String, dynamic> tier = LevelPresenter.getTier(randomType, record);
+    Level current = tier['current'];
+
+    return PCard(
+      color: PTheme.waterLight,
+      rounded: true,
+      padding: EdgeInsets.zero,
+      onPressed: () => MyRecordMain.toMyRecordMain(randomType),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            bottom: 20.0.h,
+            child: Image.asset(
+              'assets/image/level/${randomType.name}/${current.id}.png',
+              width: 100.0.w,
+              height: 100.0.h,
+            ),
+          ).animate(
+          ).fadeIn(
+            delay: const Duration(milliseconds: 300),
+          ).move(
+            begin: const Offset(0.0, -20.0),
+            curve: Curves.elasticOut,
+            duration: const Duration(milliseconds: 2500),
+          ),
+          Container(
+            padding: EdgeInsets.all(20.0.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                PTexts(['지금까지 ', '${amounts.round()}${randomType.unitAlt}',
+                  '를 ${randomType.cause}'
+                ], colors: [PTheme.black, randomType.color, PTheme.black],
+                  style: textTheme.titleLarge,
+                  alignment: MainAxisAlignment.start,
+                  space: false,
+                  shadows: const [Shadow(
+                    blurRadius: 20.0,
+                    color: PTheme.white,
+                  )],
+                ),
+                PTexts(['${current.title}', '${eulReul(current.title!)} 정복했어요!'],
+                  colors: [randomType.color, PTheme.black],
+                  style: textTheme.titleLarge,
+                  alignment: MainAxisAlignment.start,
+                  space: false,
+                  shadows: const [Shadow(
+                    blurRadius: 20.0,
+                    color: PTheme.white,
+                  )],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 class DailyActivityCardView extends StatelessWidget {
   const DailyActivityCardView({Key? key}) : super(key: key);
@@ -376,45 +489,66 @@ class DailyActivityCardView extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10.0.h),
-            PCard(
-              padding: EdgeInsets.zero,
-              borderType: BorderType.horizontal,
-              borderWidth: 3.0,
-              color: PTheme.surface,
-              child: CarouselSlider(
-                carouselController: HomePresenter.carouselCont,
-                items: [
-                  GridView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.w / 1.h,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                PCard(
+                  padding: EdgeInsets.zero,
+                  borderType: BorderType.horizontal,
+                  borderWidth: 3.0,
+                  color: PTheme.surface,
+                  child: CarouselSlider(
+                    carouselController: HomePresenter.carouselCont,
+                    items: [
+                      GridView(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.w / 1.h,
+                        ),
+                        children: ActivityType.values.map((type) => DailyActivityCircularGraph(
+                          type: type, date: yesterday, animation: false,
+                        )).toList(),
+                      ),
+                      GridView(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.w / 1.h,
+                        ),
+                        children: ActivityType.values.map((type) => DailyActivityCircularGraph(
+                          type: type,
+                        )).toList(),
+                      )
+                    ],
+                    options: CarouselOptions(
+                      aspectRatio: 1.w / 1.h,
+                      viewportFraction: 1.0,
+                      enableInfiniteScroll: false,
+                      initialPage: 1,
+                      onPageChanged: (index, _) => controller.pageChanged(index),
                     ),
-                    children: ActivityType.values.map((type) => DailyActivityCircularGraph(
-                      type: type, date: yesterday, animation: false,
-                    )).toList(),
                   ),
-                  GridView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.w / 1.h,
-                    ),
-                    children: ActivityType.values.map((type) => DailyActivityCircularGraph(
-                      type: type,
-                    )).toList(),
-                  )
-                ],
-                options: CarouselOptions(
-                  aspectRatio: 1.w / 1.h,
-                  viewportFraction: 1.0,
-                  enableInfiniteScroll: false,
-                  initialPage: 1,
-                  onPageChanged: (index, _) => controller.pageChanged(index),
                 ),
-              ),
+                if (controller.isToday)
+                Positioned(
+                  left: 5.0,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios),
+                    onPressed: controller.slideLeftActivityCard,
+                    color: PTheme.grey,
+                  ).animate().fadeIn(),
+                ) else Positioned(
+                  right: 5.0,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_forward_ios),
+                    onPressed: controller.slideRightActivityCard,
+                    color: PTheme.grey,
+                  ).animate().fadeIn(),
+                ),
+              ],
             ),
           ],
         );
@@ -540,11 +674,11 @@ class MonthlyQuestWidget extends StatelessWidget {
         ),
         SizedBox(height: 10.0.h),
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border.symmetric(
               horizontal: BorderSide(
                 color: PTheme.black,
-                width: 2.5,
+                width: 2.5.h,
               ),
             ),
           ),
@@ -674,9 +808,9 @@ class CollectionCardView extends StatelessWidget {
     PUser user = userP.loggedUser;
 
     List<Widget> collectionWidgets =
-        List.generate(3, (_) => const CollectionWidget());
-    for (int i = 0; i < min(user.collections.length, 3); i++) {
-      Collection collection = user.collections[i];
+        List.generate(3, (_) => CollectionWidget());
+    for (int i = 0; i < min(user.orderedCollections.length, 3); i++) {
+      Collection collection = user.orderedCollections[i];
       collectionWidgets[i] = CollectionWidget(
         onPressed: () => GlobalPresenter.showCollectionDialog(collection),
         collection: collection,
@@ -730,14 +864,14 @@ class HomeLoading extends StatelessWidget {
               rounded: true,
               borderColor: Colors.transparent,
               child: Container(
-                height: 166.0.h,
+                height: 187.0.h,
               ),
             ),
           ),
           Container(height: 82.0.h),
           Container(
             color: color,
-            height: 366.0.h,
+            height: 362.0.h,
             child: GridView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -785,7 +919,7 @@ class HomeLoading extends StatelessWidget {
                       )),
             ),
           ),
-          SizedBox(height: 78.0.h),
+          SizedBox(height: 82.0.h),
           Container(
             height: 326.0.h,
             color: color,
@@ -800,7 +934,7 @@ class HomeLoading extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: List.generate(3, (_) => Stack(
-                children: const [
+                children: [
                   CollectionWidget(
                     color: PTheme.surface,
                     border: false,

@@ -52,13 +52,13 @@ class ChallengeCompleteView extends StatelessWidget {
                     ),
                     const SizedBox(height: 30.0),
                     PText(
-                      challenge.descriptions['complete']!.replaceAll('#', ''),
+                      challenge.descriptions['complete']!.replaceAll('##', ''),
                       align: TextAlign.center,
                       style: textTheme.labelLarge,
                       color: PTheme.black,
                       maxLines: 10,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 80.0,
                       child: BadgeWidget(
                         // collection: CollectionPresenter.getCollection(

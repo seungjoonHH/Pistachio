@@ -6,11 +6,9 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
-import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/level.dart';
 import 'package:pistachio/model/enum/enum.dart';
-import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
@@ -154,7 +152,7 @@ class _MyMainViewState extends State<MyMainView> {
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 100.0),
+                SizedBox(height: 180.0.h),
               ],
             ),
           ],
@@ -178,11 +176,6 @@ class MyProfileWidget extends StatelessWidget {
             BadgeWidget(
               badge: BadgePresenter.getBadge(controller.loggedUser.badgeId),
               size: 80.0.r,
-              onPressed: () {
-                Collection? collection = controller.loggedUser.collection;
-                if (collection == null) return;
-                GlobalPresenter.showCollectionDialog(collection);
-              },
             ),
             SizedBox(width: 30.0.w),
             Column(

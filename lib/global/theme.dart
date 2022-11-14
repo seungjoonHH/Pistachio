@@ -22,10 +22,21 @@ class PTheme {
   static const Color surface = Color(0xFFFFF4F1);
   static const Color background = Color(0xFFF4E9E7);
   static const Color outline = Color(0xFF73796E);
+
+  static const Color waterLight = Color(0xFF21CBE4);
+  static const Color waterLightSecondary = Color(0xFFA1EBFF);
+  static const Color waterDark = Color(0xFF1A365F);
+  static const Color waterDarkSecondary = Color(0xFF4573B8);
+  static const Color sun = Color(0xFFFFD600);
+  static const Color moon = Color(0xFFF0F5E3);
+
   static const Color colorA = Color(0xFF59A86B);
   static const Color colorB = Color(0xFFE45B47);
-  static const Color colorC = Color(0xFFE5953E);
-  static const Color colorD = Color(0xFF71A3EE);
+  static const Color colorC = Color(0xFF71A3EE);
+  static const Color colorD = Color(0xFFE5953E);
+  static List<Color> get mainColors => [colorA, colorB, colorC, colorD];
+  static List<Color> get orderedColors => [colorB, colorD, colorA, colorC];
+
   static const gradient = LinearGradient(colors: [
     colorA, colorB, colorC, colorD,
   ]);

@@ -42,6 +42,7 @@ class MonthlyQuestView extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 10.0.r),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         BadgeWidget(
                           badge: BadgePresenter.getThisMonthQuestBadge(ActivityType.distance),

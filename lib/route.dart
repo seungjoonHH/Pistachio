@@ -20,6 +20,7 @@ import 'package:pistachio/view/page/register/register.dart';
 import 'package:pistachio/view/page/my/main/my.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/view/page/release_note/main.dart';
 
 /// class
 class PRoute {
@@ -53,6 +54,7 @@ class PRoute {
         '/my/setting/edit': const MySettingEditPage(),
         '/quest': const QuestPage(),
         '/editGoal': const EditGoalPage(),
+        '/releaseNote': const ReleaseNotePage(),
       };
 
   // 겟페이지 리스트

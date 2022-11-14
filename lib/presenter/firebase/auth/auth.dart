@@ -3,20 +3,35 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/main.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/auth/apple.dart';
 import 'package:pistachio/presenter/firebase/auth/google.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/home.dart';
+import 'package:pistachio/presenter/page/login.dart';
 import 'package:pistachio/presenter/page/onboarding.dart';
 
 class AuthPresenter {
+  static const List<String> developerUids = [
+    'F02JAQ4Cdbb2w7AaCf9VJz9fqs52', // 현승준
+    'e3Ei6k4c9TSZrNzzfUZCLXtbqRB3', // 정윤석
+    'AEROyVDTr2P04e2GD0x2Js6ejN42', // 이하준
+    'OelnDbcyH8dXR04DkWpbfaXtjVN2', // 최복원
+    '8VQFtwpLhqNThjhYNuizKWo7vlK2', // 한상윤
+  ];
   static const storage = FlutterSecureStorage();
   static String? appleName;
 
   /// static methods
+  static Future<bool> versionCheck() async {
+    var json = (await f.collection('versions').doc(versionNumber).get()).data();
+    return json != null && json['available'];
+  }
+
   // 로그인 형식에 따른 피트윈 로그인
   static Future pLogin(LoginType type) async {
     final userP = Get.find<UserPresenter>();
@@ -63,6 +78,8 @@ class AuthPresenter {
       await storeLoginData(userP.data);
       await HomePresenter.toHome();
     }
+
+    await BadgePresenter.synchronizeBadges();
   }
 
   // 피트윈 로그아웃
@@ -85,6 +102,11 @@ class AuthPresenter {
 
     String? userInfo = await storage.read(key: 'login');
     bool beenLogged = userInfo != null;
+
+    if (!await AuthPresenter.versionCheck()) {
+      LoginPresenter.showVersionInvalidDialog();
+      return;
+    }
 
     // 자동 로그인
     if (!beenLogged) return;

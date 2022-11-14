@@ -11,7 +11,6 @@ import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/health/health.dart';
-import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/party.dart';
 import 'package:pistachio/presenter/model/record.dart';
@@ -22,6 +21,15 @@ class UserPresenter extends GetxController {
   /// static variables
 
   /// static methods
+  static Future<PUser?> loadUser(String uid) async {
+    var json = (await f.collection('users').doc(uid).get()).data();
+    if (json == null) return null;
+    return PUser.fromJson(json);
+  }
+
+  static void saveUser(PUser user) async {
+    f.collection('users').doc(user.uid).set(user.toJson());
+  }
 
   /// attributes
   /* 로그인 관련 */
@@ -65,9 +73,7 @@ class UserPresenter extends GetxController {
 
   // 파이어베이스에서 삭제
   void delete() {
-    for (String id in loggedUser.partyIds) {
-      f.collection('parties').doc(id).delete();
-    }
+    PartyPresenter.deleteMember(loggedUser.uid!);
     f.collection('users').doc(loggedUser.uid).delete();
   }
 
@@ -84,7 +90,6 @@ class UserPresenter extends GetxController {
       'leaderUid': loggedUser.uid,
     });
 
-    newParty.challenge = ChallengePresenter.getChallenge(newParty.challengeId!);
     loggedUser.parties[code] = newParty;
     await PartyPresenter.loadMembers(newParty);
     PartyPresenter.save(newParty);
@@ -103,7 +108,6 @@ class UserPresenter extends GetxController {
       var json = (await f.collection('parties').doc(id).get()).data();
       if (json == null) return;
       Party party = Party.fromJson(json);
-      party.challenge = ChallengePresenter.getChallenge(party.challengeId!);
       await PartyPresenter.loadMembers(party);
       loggedUser.parties[json['id']] = party;
     }
@@ -142,6 +146,7 @@ class UserPresenter extends GetxController {
   // 건강 및 구글핏 데이터 불러오기
   Future fetchData() async {
     bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+    await HealthPresenter.requestAuth();
     await HealthPresenter.fetchStepData();
     if (isIOS) await HealthPresenter.fetchFlightsData();
     updateCalorie();
@@ -191,8 +196,7 @@ class UserPresenter extends GetxController {
     ActivityType type,
     Record record,
   ) async {
-    final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
-
+    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
     late int before, after;
 
     before = loggedUser.completedActivities.length;
@@ -212,7 +216,9 @@ class UserPresenter extends GetxController {
 
     after = loggedUser.completedActivities.length;
 
-    if (before != 3 && after == 3) BadgePresenter.awardDailyActivityCompleteBadge();
+    if (before != 3 && after == 3) {
+      BadgePresenter.awardDailyActivityCompleteBadge();
+    }
     save();
   }
 
@@ -227,21 +233,49 @@ class UserPresenter extends GetxController {
 
     after = loggedUser.completedActivities.length;
 
-    if (before != 3 && after == 3) BadgePresenter.awardDailyActivityCompleteBadge();
+    if (before != 3 && after == 3) {
+      BadgePresenter.awardDailyActivityCompleteBadge();
+    }
     save();
   }
 
-  void setMainBadge(String badgeId) {
+  void setMainBadge(String badgeId, [bool showDialog = true]) {
     loggedUser.badgeId = badgeId;
-    GlobalPresenter.showCollectionSettingDialog(badgeId);
+    if (showDialog) GlobalPresenter.showCollectionSettingDialog(badgeId);
     save();
     update();
   }
 
   // 로그인된 사용자에게 뱃지 수여
-  void awardBadge(Badge badge) async {
-    GlobalPresenter.badgeAwarded(badge, true);
-    if (badge.id == '1000000') setMainBadge(badge.id!);
+  void awardBadge(
+    Badge badge, [
+      bool once = false,
+      bool aDay = false,
+    ]
+  ) async {
+    assert(once || !aDay);
+
+    for (Collection collection in loggedUser.collections) {
+      if (collection.badgeId != badge.id) continue;
+
+      bool awarded = collection.dates.isNotEmpty;
+      bool awardedToday = collection.dates
+          .map((date) => ignoreTime(date!)).contains(today);
+
+      if (once) {
+        if (aDay && awardedToday) return;
+        if (!aDay && awarded) return;
+      }
+
+      GlobalPresenter.showAwardedBadgeDialog(badge);
+      collection.addDate(now);
+      return;
+    }
+
+    GlobalPresenter.showAwardedBadgeDialog(badge, true);
+    if (badge.id == '1000000') setMainBadge(badge.id!, false);
+    if (badge.id == '1999999') setMainBadge(badge.id!, false);
+
     loggedUser.collections.add(Collection.fromJson({
       'badgeId': badge.id,
       'dates': [toTimestamp(now)],

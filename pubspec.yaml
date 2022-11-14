@@ -52,6 +52,7 @@ dependencies:
   flutter_animate: ^2.0.0
   ntp: ^2.0.0
   dio: ^4.0.6
+  webview_flutter: ^3.0.4
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.2

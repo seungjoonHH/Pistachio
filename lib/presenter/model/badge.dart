@@ -5,10 +5,12 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
-import 'package:pistachio/model/class/database/collection.dart';
+import 'package:pistachio/model/class/database/party.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
-import 'package:pistachio/presenter/global.dart';
+import 'package:pistachio/presenter/firebase/auth/auth.dart';
+import 'package:pistachio/presenter/model/party.dart';
 import 'package:pistachio/presenter/model/user.dart';
 
 /// class
@@ -26,6 +28,19 @@ class BadgePresenter extends GetxController {
     badges = list.map((json) => Badge.fromJson(json)).toList();
   }
 
+  static List<Badge> get availableBadges {
+    List<Badge> badgeList = [...badges];
+    badgeList.removeWhere((badge) => !badge.activate!);
+    return badgeList;
+  }
+
+  static List<Badge> get notAcquiredBadges {
+    PUser user = Get.find<UserPresenter>().loggedUser;
+    List<Badge> badgeList = [...availableBadges];
+    badgeList.removeWhere((badge) => user.hasCollection(badge.id!));
+    return badgeList;
+  }
+
   // 뱃지 아이디에 해당하는 뱃지 반환
   static Badge? getBadge(String? id) => badges
       .firstWhereOrNull((badge) => badge.id == id);
@@ -40,17 +55,36 @@ class BadgePresenter extends GetxController {
   // 일일 활동 완료 뱃지 획득
   static void awardDailyActivityCompleteBadge() async {
     final userP = Get.find<UserPresenter>();
-    Badge badge = BadgePresenter.getBadge('1000001')!;
+    userP.awardBadge(BadgePresenter.getBadge('1000001')!, true, true);
+  }
 
-    for (Collection collection in userP.loggedUser.collections) {
-      if (collection.badgeId == badge.id) {
-        if (collection.dates.map((date) => ignoreTime(date!)).contains(today)) return;
-        GlobalPresenter.badgeAwarded(badge);
-        collection.addDate(now);
-        return;
-      }
+  static Future synchronizeBadges() async {
+    final userP = Get.find<UserPresenter>();
+    PUser user = userP.loggedUser;
+
+    // 운영자 뱃지 지급
+    if (AuthPresenter.developerUids.contains(user.uid)) {
+      userP.awardBadge(BadgePresenter.getBadge('1999999')!, true);
     }
-    GlobalPresenter.badgeAwarded(badge, true);
-    userP.awardBadge(badge);
+
+    // 작심삼일, 완벽한주 뱃지 지급
+    int consecutive3 = user.countCompletedDaysInARow(3);
+    int consecutive7 = user.countCompletedDaysInARow(7);
+    int count3 = user.getCollectionsById('1000003')?.dates.length ?? 0;
+    int count7 = user.getCollectionsById('1000004')?.dates.length ?? 0;
+
+    for (int i = 0; i < consecutive3 - count3; i++) {
+      userP.awardBadge(BadgePresenter.getBadge('1000003')!);
+    }
+    for (int i = 0; i < consecutive7 - count7; i++) {
+      userP.awardBadge(BadgePresenter.getBadge('1000004')!);
+    }
+
+    for (String id in user.partyIds) {
+      Party? party = await PartyPresenter.loadParty(id);
+      if (party == null) break;
+      if (!party.complete) continue;
+      userP.awardBadge(party.badge, true);
+    }
   }
 }

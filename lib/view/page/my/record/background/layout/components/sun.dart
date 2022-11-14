@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pistachio/global/theme.dart';
 import 'dart:math' as math;
 
-import '../layout_colors.dart';
 import '../responsive_layout_builder.dart';
 
 class SunAndMoon extends StatelessWidget {
@@ -106,7 +106,7 @@ class _SunAndMoonState extends State<_SunAndMoon>
           opacity: 1 - _controller.value,
           child: ColorFiltered(
             colorFilter: const ColorFilter.mode(
-              PuzzleColors.moon,
+              PTheme.moon,
               BlendMode.srcATop,
             ),
             child: Image.asset('assets/image/record/sun_ellipse.png'),
@@ -168,7 +168,7 @@ class SunAndMoonReflection extends StatelessWidget {
             ? Image.asset('assets/image/record/sun_ellipse.png')
             : ColorFiltered(
                 colorFilter: const ColorFilter.mode(
-                  PuzzleColors.moon,
+                  PTheme.moon,
                   BlendMode.srcATop,
                 ),
                 child: Image.asset('assets/image/record/sun_ellipse.png'),
@@ -186,7 +186,7 @@ class Sun extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: PuzzleColors.sun,
+        color: PTheme.sun,
       ),
     );
   }
@@ -219,7 +219,7 @@ class MoonShape extends CustomPainter {
   final painter = Paint();
 
   MoonShape(this.fraction) {
-    painter.color = PuzzleColors.moon;
+    painter.color = PTheme.moon;
   }
 
   final double fraction;

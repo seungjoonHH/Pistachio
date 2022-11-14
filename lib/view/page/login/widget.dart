@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/auth/auth.dart';
+import 'package:pistachio/presenter/page/login.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -31,7 +32,13 @@ class SignInButton extends StatelessWidget {
     };
 
     return PButton(
-      onPressed: () => AuthPresenter.pLogin(type),
+      onPressed: () async {
+        if (!await AuthPresenter.versionCheck()) {
+        LoginPresenter.showVersionInvalidDialog();
+        return;
+        }
+        AuthPresenter.pLogin(type);
+      },
       backgroundColor: backgroundColors[type],
       child: Container(
         width: 220.0.w,

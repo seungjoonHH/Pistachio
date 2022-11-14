@@ -17,6 +17,7 @@ class PText extends StatelessWidget {
     this.borderWidth = .8,
     this.borderColor = PTheme.black,
     this.align = TextAlign.left,
+    this.shadows,
   }) : style = style ?? PTheme.textTheme.bodyMedium, super(key: key);
 
   final String data;
@@ -29,6 +30,7 @@ class PText extends StatelessWidget {
   final double borderWidth;
   final Color borderColor;
   final TextAlign align;
+  final List<Shadow>? shadows;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class PText extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: style?.merge(mergeStyle).apply(
             color: color,
+            shadows: shadows,
           ),
         ),
         if (border)
@@ -57,6 +60,7 @@ class PText extends StatelessWidget {
           maxLines: maxLines,
           overflow: TextOverflow.ellipsis,
           style: style?.merge(mergeStyle).merge(TextStyle(
+            shadows: shadows,
             foreground: border ? (Paint()
               ..style = PaintingStyle.stroke
               ..strokeWidth = borderWidth
@@ -81,6 +85,7 @@ class PTexts extends StatelessWidget {
     this.alignment = MainAxisAlignment.center,
     this.maxLines = 1,
     this.space = true,
+    this.shadows,
   }) : assert(texts.length == colors.length),
         style = style ?? textTheme.bodyMedium,
         super(key: key);
@@ -95,6 +100,7 @@ class PTexts extends StatelessWidget {
   final MainAxisAlignment alignment;
   final int maxLines;
   final bool space;
+  final List<Shadow>? shadows;
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +117,7 @@ class PTexts extends StatelessWidget {
             border: border,
             borderWidth: borderWidth,
             maxLines: maxLines,
+            shadows: shadows,
           ),
           PText(texts[i],
             color: colors[i],
@@ -120,6 +127,7 @@ class PTexts extends StatelessWidget {
             border: border,
             borderWidth: borderWidth,
             maxLines: maxLines,
+            shadows: shadows,
           ),
         ],
       )),

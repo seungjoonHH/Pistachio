@@ -6,6 +6,7 @@ import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/my/main.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
+import 'package:pistachio/presenter/page/release_note.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -98,7 +99,7 @@ class MyNavigationButton extends StatelessWidget {
             children: [
               const Icon(Icons.person_outline, color: PTheme.white),
               const SizedBox(width: 5.0),
-              PText('나의 기록', color: PTheme.white),
+              PText('마이 페이지', color: PTheme.white),
             ],
           ),
         ),
@@ -158,7 +159,7 @@ class _MyMainAppBarState extends State<MyMainAppBar> {
   @override
   Widget build(BuildContext context) {
 
-    return PAppBar(title: '나의 기록',
+    return PAppBar(title: '마이 페이지',
       actions: [
         IconButton(
           icon: const Icon(Icons.settings),
@@ -172,7 +173,6 @@ class _MyMainAppBarState extends State<MyMainAppBar> {
   }
 }
 
-
 class MySettingMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MySettingMainAppBar({Key? key}) : super(key: key);
 
@@ -181,17 +181,17 @@ class MySettingMainAppBar extends StatelessWidget implements PreferredSizeWidget
 
   @override
   Widget build(BuildContext context) {
-    return PAppBar(title: '설정',
-      leading: const IconButton(
+    return const PAppBar(title: '설정',
+      leading: IconButton(
         icon: Icon(Icons.arrow_back_ios),
         onPressed: GlobalPresenter.goBack,
       ),
       actions: [
         PTextButton(
           text: version,
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
           color: PTheme.grey,
-          onPressed: () {},
+          onPressed: ReleaseNoteMain.toReleaseNoteMain,
         ),
       ],
     );

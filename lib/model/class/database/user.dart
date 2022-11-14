@@ -60,9 +60,22 @@ class PUser {
   Collection? get collection => collections
       .firstWhereOrNull((collection) => collection.badgeId == badgeId);
 
+  List<Collection> get orderedCollections {
+    List<Collection> cols = [...collections];
+    cols.sort((a, b) {
+      DateTime aDate = a.dates.last!;
+      DateTime bDate = b.dates.last!;
+      if (aDate.isAtSameMomentAs(bDate)) return 0;
+      return aDate.isBefore(bDate) ? 1 : -1;
+    });
+    return cols;
+  }
+
   Collection? getCollectionsById(String id) {
     return collections.firstWhereOrNull((col) => col.badgeId == id);
   }
+
+  bool hasCollection(String id) => getCollectionsById(id) != null;
 
   List<ActivityType> get completedActivities {
     List<ActivityType> types = [];
@@ -72,19 +85,23 @@ class PUser {
     return types;
   }
 
-  int get numOfConsecutiveBadge {
+  int countCompletedDaysInARow(int days) {
     const String code = '1000001';
     List<DateTime?>? dates = getCollectionsById(code)?.dates;
+    dates = dates?.map((date) => ignoreTime(date!)).toList();
+
     DateTime? before = dates?.last;
     dates = dates?.reversed.toList().sublist(1);
-    int continuous = 0;
+    int continuous = 1, count = 0;
 
     for (DateTime? date in dates ?? []) {
       if (before!.difference(date!) != const Duration(days: 1)) break;
       before = date; continuous++;
+      if (continuous < days) continue;
+      continuous = 0; count++;
     }
 
-    return continuous;
+    return count;
   }
 
   /// constructors

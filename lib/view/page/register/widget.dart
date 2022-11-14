@@ -59,11 +59,10 @@ class CarouselView extends StatelessWidget {
                 height: screenSize.height,
                 child: controller.imageExistence[i]
                     ? Image.asset(
-                        '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
-                        alignment: Alignment.center,
-                        fit: BoxFit.fill,
-                      )
-                    : Container(),
+                  '${asset}carousel_${i.toString().padLeft(2, '0')}.png',
+                  alignment: Alignment.center,
+                  fit: BoxFit.fill,
+                ) : Container(),
               ),
             Column(
               children: [
@@ -75,13 +74,10 @@ class CarouselView extends StatelessWidget {
                       constraints: BoxConstraints(minWidth: screenSize.width),
                       child: CarouselSlider(
                         carouselController: RegisterPresenter.carouselCont,
-                        items: carouselWidgets()
-                            .map((widget) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30.0),
-                                  child: widget,
-                                ))
-                            .toList(),
+                        items: carouselWidgets().map((widget) => Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                          child: widget,
+                        )).toList(),
                         options: CarouselOptions(
                           height: double.infinity,
                           initialPage: 0,
@@ -553,7 +549,7 @@ class DistanceGoalView extends StatelessWidget {
               child: GoalNumberPicker(
                 type: ActivityType.distance,
                 itemWidth: 200.0,
-                color: PTheme.colorB,
+                color: ActivityType.distance.color,
                 style: PTheme.largeText,
                 maxValue: 200,
               ),
@@ -702,7 +698,7 @@ class HeightGoalView extends StatelessWidget {
               child: GoalNumberPicker(
                 type: ActivityType.height,
                 itemWidth: 200.0,
-                color: PTheme.colorD,
+                color: ActivityType.height.color,
                 style: PTheme.largeText,
               ),
             ),

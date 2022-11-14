@@ -1,9 +1,12 @@
 /* 챌린지 디테일 위젯 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/presenter/page/challenge/create.dart';
+import 'package:pistachio/presenter/page/challenge/main.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
@@ -19,66 +22,94 @@ class ChallengeDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final challengeMain = Get.find<ChallengeMain>();
+
     return Stack(
-      alignment: Alignment.topCenter,
+      alignment: Alignment.center,
       children: [
         Column(
           children: [
             Image.asset(
               challenge.imageUrls['default'],
-              height: 250.0,
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.fitWidth,
             ),
             const Expanded(child: SizedBox()),
           ],
         ),
-        Positioned(
-          top: 200.0,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              PCard(
-                color: PTheme.background,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    PText(challenge.title!,
-                      align: TextAlign.center,
-                      style: textTheme.headlineLarge,
-                      color: PTheme.black,
-                      maxLines: 2,
+        Positioned.fill(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 230.0.h),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 36.0.w),
+                  child: PCard(
+                    color: PTheme.background,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PText(challenge.title!,
+                          align: TextAlign.center,
+                          style: textTheme.headlineLarge,
+                          color: PTheme.black,
+                          maxLines: 2,
+                        ),
+                        const SizedBox(height: 20.0),
+                        PText('14일',
+                          align: TextAlign.center,
+                          style: textTheme.labelLarge,
+                          color: PTheme.black,
+                          maxLines: 2,
+                        ),
+                        const SizedBox(height: 30.0),
+                        PText(
+                          challenge.descriptions['detail']!.replaceAll('##', challenge.word),
+                          align: TextAlign.center,
+                          style: textTheme.labelLarge,
+                          color: PTheme.black,
+                          maxLines: 10,
+                        ),
+                        const SizedBox(height: 30.0),
+                      ],
                     ),
-                    const SizedBox(height: 20.0),
-                    PText('14일',
-                      align: TextAlign.center,
-                      style: textTheme.labelLarge,
-                      color: PTheme.black,
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: 30.0),
-                    PText(
-                      challenge.descriptions['detail']!.replaceAll('##', challenge.word),
-                      align: TextAlign.center,
-                      style: textTheme.labelLarge,
-                      color: PTheme.black,
-                      maxLines: 10,
-                    ),
-                    const SizedBox(height: 30.0),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        Positioned(
-          bottom: 50.0,
-          child: PButton(
-            onPressed: () => ChallengeCreate.toChallengeCreate(challenge),
-            text: '챌린지 하러가기',
-            stretch: true,
-            constraints: const BoxConstraints(maxWidth: 340.0),
-          ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              alignment: Alignment.bottomCenter,
+              padding: EdgeInsets.symmetric(horizontal: 36.0.w),
+              child: Row(
+                children: [
+                  PButton(
+                    onPressed: challengeMain.challengeJoinButtonPressed,
+                    text: '챌린지 참여하기',
+                    stretch: true,
+                    backgroundColor: PTheme.background,
+                    textColor: PTheme.black,
+                    multiple: true,
+                  ),
+                  SizedBox(width: 20.0.w),
+                  PButton(
+                    onPressed: () => ChallengeCreate.toChallengeCreate(challenge),
+                    text: '챌린지 하러가기',
+                    stretch: true,
+                    multiple: true,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 70.0.h),
+          ],
         ),
       ],
     );

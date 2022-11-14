@@ -1,5 +1,7 @@
 /* 챌린지 메인 위젯 */
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -40,16 +42,23 @@ class ChallengeTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ChallengeMain>();
+    final challengeMain = Get.find<ChallengeMain>();
 
-    return TabBar(
-      controller: controller.tabCont,
-      tabs: controller.tabs,
-      indicatorColor: PTheme.black,
-      indicatorSize: TabBarIndicatorSize.label,
-      indicatorWeight: 1.5,
-      labelPadding: const EdgeInsets.all(5.0),
-      splashFactory: InkRipple.splashFactory,
+    return GetBuilder<LoadingPresenter>(
+      builder: (controller) {
+        return TabBar(
+          controller: challengeMain.tabCont,
+          tabs: challengeMain.tabs,
+          indicatorColor: PTheme.black,
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorWeight: 1.5,
+          labelPadding: const EdgeInsets.all(5.0),
+          splashFactory: InkRipple.splashFactory,
+          onTap: (index) {
+            if (controller.loading) challengeMain.tabCont.animateTo(0);
+          },
+        );
+      }
     );
   }
 }
@@ -114,10 +123,10 @@ class ChallengeCardView extends StatelessWidget {
             backgroundColor: PTheme.surface,
           ),
           child: ListView.separated(
-            itemCount: ChallengePresenter.challenges.length,
+            itemCount: ChallengePresenter.orderedChallenges.length,
             itemBuilder: (_, index) {
               return ChallengeCard(
-                challenge: ChallengePresenter.challenges[index],
+                challenge: ChallengePresenter.orderedChallenges[index],
               );
             },
             separatorBuilder: (_, index) => SizedBox(height: 30.0.h),
@@ -161,8 +170,8 @@ class ChallengeCard extends StatelessWidget {
                   Container(height: 230.0.h, color: PTheme.lightGrey)
                   else Image.asset(
                     challenge.imageUrls['default'],
-                    height: 230.0.h,
-                    fit: BoxFit.fitHeight,
+                    // height: 230.0.h,
+                    fit: BoxFit.fitWidth,
                   ),
                   Divider(height: 1.0.h, color: PTheme.black, thickness: 1.5),
                   Padding(
@@ -450,69 +459,118 @@ class MyPartyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () => ChallengePartyMain.toChallengePartyMain(party),
-        child: Container(
-          height: 80.0.h,
-          decoration: BoxDecoration(
-            border: Border.all(color: PTheme.black, width: 1.5),
-          ),
-          child: Row(
-            children: [
-              AspectRatio(
-                aspectRatio: 1.0,
-                child: Image.asset(
-                  party.challenge!.imageUrls['focus'],
-                  width: 100.0.w,
-                  height: 100.0.h,
-                ),
+    List<Color> orderedColors = [PTheme.grey, ...PTheme.orderedColors];
+    int index = min(max((party.remainDays ~/ 4) + 1, 0), 4);
+
+    return Stack(
+      children: [
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => ChallengePartyMain.toChallengePartyMain(party),
+            child: Container(
+              height: 80.0.h,
+              decoration: BoxDecoration(
+                border: Border.all(color: PTheme.black, width: 1.5),
               ),
-              const VerticalDivider(
-                width: 1.5,
-                thickness: 1.5,
-                color: PTheme.black,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(10.0.r),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PText(party.challenge!.title!.replaceAll('\n', ' '),
-                        style: textTheme.bodyLarge,
-                      ),
-                      Row(
+              child: Row(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 1.0,
+                    child: Image.asset(
+                      party.challenge!.imageUrls['focus'],
+                      width: 100.0.w,
+                      height: 100.0.h,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  const VerticalDivider(
+                    width: 1.5,
+                    thickness: 1.5,
+                    color: PTheme.black,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0.r),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                const Icon(Icons.people_alt, size: 14.0),
-                                const SizedBox(width: 10.0),
-                                PText('${party.members.length}/${
-                                  party.challenge!.levels[party.difficulty.name]['maxMember']
-                                }'),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              PText(party.challenge!.title!.replaceAll('\n', ' '),
+                                style: textTheme.bodyLarge,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: orderedColors[index].withOpacity(.6),
+                                  borderRadius: BorderRadius.circular(6.0.r),
+                                ),
+                                child: PText(party.dDay),
+                              ),
+                            ],
                           ),
-                          Expanded(child: PText('난이도 : ${party.difficulty.kr}')),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.people_alt, size: 14.0),
+                                    const SizedBox(width: 10.0),
+                                    PText('${party.members.length}/${
+                                      party.level['maxMember']
+                                    }'),
+                                  ],
+                                ),
+                              ),
+                              Expanded(child: PText('난이도 : ${party.difficulty.kr}')),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  SizedBox(
+                    width: 50.0.w,
+                    child: const Icon(Icons.arrow_forward_ios),
+                  ),
+                ],
               ),
-              SizedBox(
-                width: 50.0.w,
-                child: const Icon(Icons.arrow_forward_ios),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
+        if (party.complete || party.over)
+        Positioned.fill(
+          child: Container(
+            alignment: Alignment.center,
+            color: PTheme.black.withOpacity(.2),
+            child: RotationTransition(
+              turns: const AlwaysStoppedAnimation(-.075),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7.0),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: party.complete
+                        ? PTheme.colorB
+                        : PTheme.black,
+                    width: 2.0,
+                  ),
+                ),
+                child: PText(
+                  party.complete ? ' 완 료 ' : ' 실 패 ',
+                  color: party.complete ? PTheme.colorB : PTheme.black,
+                  style: textTheme.headlineLarge,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

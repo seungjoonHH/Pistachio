@@ -117,7 +117,10 @@ class RegisterPresenter extends GetxController {
 
     await HomePresenter.toHome();
     await AuthPresenter.storeLoginData(userP.data);
-    userP.awardBadge(BadgePresenter.getBadge('1000000')!);
+    if (AuthPresenter.developerUids.contains(userP.loggedUser.uid)) {
+      userP.awardBadge(BadgePresenter.getBadge('1999999')!, true);
+    }
+    userP.awardBadge(BadgePresenter.getBadge('1000000')!, true);
 
     init();
   }

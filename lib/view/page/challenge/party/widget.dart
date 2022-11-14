@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,10 +7,13 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/class/database/user.dart';
+import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/challenge/party/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
+import 'package:pistachio/view/widget/button/button.dart';
+import 'package:pistachio/view/widget/effect/effect.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -30,7 +35,7 @@ class PartyMainView extends StatelessWidget {
             return SmartRefresher(
               controller: ChallengePartyMain.refreshCont,
               onRefresh: () async {
-                await challengePartyMain.init(party!.id!);
+                if (party != null) await challengePartyMain.init(party!.id!);
                 ChallengePartyMain.refreshCont.refreshCompleted();
               },
               onLoading: () async {
@@ -56,9 +61,15 @@ class PartyMainView extends StatelessWidget {
                       thickness: 8,
                     ),
                     RankWidget(party: party!),
+                    const Divider(
+                      color: PTheme.lightGrey,
+                      thickness: 8,
+                    ),
+                    ChallengeBadgeWidget(party: party!),
+                    const SizedBox(height: 100.0),
                   ],
                 ),
-              ) : ChallengePartyMainLoading(color: loadingP.color),
+              ) : ChallengePartyMainLoading(color: loadingP.color, party: party),
             );
           },
         );
@@ -78,6 +89,8 @@ class ChallengeInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BorderRadius imageRadius = BorderRadius.circular(20.0.r);
+    List<Color> orderedColors = [PTheme.grey, ...PTheme.orderedColors];
+    int index = min(max((party.remainDays ~/ 4) + 1, 0), 4);
 
     return Padding(
       padding: EdgeInsets.all(20.0.r),
@@ -113,7 +126,7 @@ class ChallengeInfoWidget extends StatelessWidget {
                 child: GetBuilder<ChallengePartyMain>(
                   builder: (controller) {
                     return Material(
-                      color: PTheme.white.withOpacity(.4),
+                      color: PTheme.white.withOpacity(.5),
                       borderRadius: BorderRadius.circular(10.0.r),
                       child: InkWell(
                         onTap: () => controller.copyPartyId(party.id!),
@@ -159,28 +172,55 @@ class ChallengeInfoWidget extends StatelessWidget {
             ],
           ),
           SizedBox(height: 20.0.h),
-          Container(
+          Stack(
             alignment: Alignment.center,
-            height: 40.0.h,
-            child: PText('난이도: ${party.difficulty.kr}',
-              style: textTheme.labelLarge,
-              color: PTheme.grey,
-            ),
+            children: [
+              Container(
+                alignment: Alignment.center,
+                height: 40.0.h,
+                child: PText('난이도: ${party.difficulty.kr}',
+                  style: textTheme.labelLarge,
+                  color: PTheme.grey,
+                ),
+              ),
+              Positioned(
+                right: 60.0,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 3.0, horizontal: 10.0,
+                  ),
+                  decoration: BoxDecoration(
+                    color: orderedColors[index].withOpacity(.6),
+                    borderRadius: BorderRadius.circular(6.0.r),
+                  ),
+                  child: PText(party.dDay),
+                ),
+              )
+            ],
           ),
+          SizedBox(height: 10.0.h),
           Container(
             alignment: Alignment.center,
             height: 40.0.h,
             child: PText(party.challenge?.titleOneLine ?? '',
-              style: textTheme.headlineSmall,
+              style: textTheme.headlineMedium,
               maxLines: 2,
             ),
           ),
-          SizedBox(height: 20.0.h),
+          SizedBox(height: 10.0.h),
+          SizedBox(
+            height: 20.0.h,
+            child: PText(party.periodString,
+              color: PTheme.colorD,
+            ),
+          ),
+          SizedBox(height: 10.0.h),
           Container(
             alignment: Alignment.center,
-            height: 160.0.h,
-            child: PText(
-              party.challenge?.descriptions['detail']!.replaceAll('##', party.challenge!.word),
+            height: 120.0.h,
+            child: PText(party.challenge?.descriptions['detail']!.replaceAll(
+                '##', party.level['word'],
+              ),
               style: textTheme.labelLarge,
               color: PTheme.grey,
               align: TextAlign.center,
@@ -203,43 +243,62 @@ class MyScoreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ActivityType type = party.challenge!.type!;
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          Row(
-            children: [
-              PText('내 점수',
-                style: textTheme.headlineSmall,
-                color: PTheme.black,
-              ),
-              const SizedBox(width: 10.0),
-              PText('*현재 챌린지 기준',
-                style: textTheme.bodySmall,
-                color: PTheme.grey,
-              ),
-            ],
+          SizedBox(
+            height: 40.0.h,
+            child: Row(
+              children: [
+                PText('내 활동',
+                  style: textTheme.headlineSmall,
+                  color: PTheme.black,
+                ),
+                const SizedBox(width: 10.0),
+                PText('*현재 챌린지 기준',
+                  style: textTheme.bodySmall,
+                  color: PTheme.grey,
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 50.0),
-          GetBuilder<ChallengePartyMain>(
-            builder: (controller) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AnimatedFlipCounter(
-                    value: controller.value.toInt(),
-                    textStyle: textTheme.displayLarge?.apply(
-                      color: party.challenge!.type!.color,
+          SizedBox(height: 30.0.h),
+          SizedBox(
+            height: 70.0.h,
+            child: GetBuilder<ChallengePartyMain>(
+              builder: (controller) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedFlipCounter(
+                      value: controller.value.toInt(),
+                      textStyle: textTheme.displayLarge?.apply(
+                        color: type.color,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  PText(party.challenge!.type!.unitAlt,
-                    style: textTheme.bodySmall,
-                    color: PTheme.grey,
-                  ),
-                ],
-              );
-            }
+                    const SizedBox(width: 10.0),
+                    PText(type.unitAlt,
+                      style: textTheme.bodySmall,
+                      color: PTheme.grey,
+                    ),
+                  ],
+                );
+              }
+            ),
+          ),
+          SizedBox(height: 20.0.h),
+          SizedBox(
+            height: 40.0.h,
+            child: PTexts(['모두가 합심하여 ',
+              '${party.recordSum.round()}${type.unitAlt}',
+              '을 ${type.did}'
+            ], colors: [PTheme.grey, type.color, PTheme.grey],
+              space: false,
+              style: textTheme.headlineSmall,
+            ),
           ),
         ],
       ),
@@ -257,7 +316,10 @@ class RankWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const String trophyAsset = 'assets/image/page/challenge/';
+
     PUser loggedUser = Get.find<UserPresenter>().loggedUser;
+    int myRank = party.getRank(loggedUser.uid!);
     double goal = party.challenge!.levels[party.difficulty.name]['goal'].toDouble();
     double totalRecords = party.records.values.reduce((a, b) => a + b).toDouble();
 
@@ -269,37 +331,74 @@ class RankWidget extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Row(
-                    children: [
-                      PText('순위',
-                        style: textTheme.headlineSmall,
-                        color: PTheme.black,
-                      ),
-                    ],
+                  SizedBox(
+                    height: 40.0.h,
+                    child: Row(
+                      children: [
+                        PText('순위',
+                          style: textTheme.headlineSmall,
+                          color: PTheme.black,
+                        ),
+                      ],
+                    ),
                   ),
-                  Image.asset(
-                    'assets/image/page/challenge/trophy.png',
-                    width: 100.0, height: 100.0,
+                  SizedBox(height: 20.0.h),
+                  SizedBox(
+                    height: 150.0.h,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        EternalRotation(
+                          rps: .3,
+                          child: Image.asset(
+                            GlobalPresenter.effectAsset,
+                            width: 120.0.r,
+                            height: 120.0.r,
+                          ),
+                        ),
+                        Image.asset(
+                          '${trophyAsset}trophy${myRank > 3 ? '' : '_$myRank'}.png',
+                          width: 50.0.r, height: 50.0.r,
+                        ),
+                        Positioned(
+                          top: 45.0.r,
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 40.0.r,
+                            height: 40.0.r,
+                            child: PText(
+                              '$myRank',
+                              style: textTheme.headlineSmall,
+                              color: myRank > 3
+                                  ? PTheme.white : PTheme.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PText('현재 1위: ${party.winner.nickname}',
-                    style: textTheme.labelLarge,
-                    color: PTheme.black,
-                  ),
-                  PText('나의 순위: ${party.getRank(loggedUser.uid!)}위',
-                    style: textTheme.labelLarge,
-                    color: PTheme.black,
-                  ),
-                ],
+              SizedBox(height: 20.0.h),
+              SizedBox(
+                height: 50.0.h,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PText('현재 1위: ${party.winner.nickname} 님',
+                      style: textTheme.titleMedium,
+                      color: PTheme.black,
+                    ),
+                    PText('나의 순위: ${party.getRank(loggedUser.uid!)}위',
+                      style: textTheme.titleMedium,
+                      color: PTheme.black,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0.h),
               Container(
-                height: 40.0,
+                height: 50.0.h,
                 decoration: BoxDecoration(
                   border: Border.all(color: PTheme.black, width: .75),
                 ),
@@ -308,7 +407,7 @@ class RankWidget extends StatelessWidget {
                     double record = party.records[user.uid].toDouble();
                     double percent = 100 * record / goal;
                     return Expanded(
-                      flex: party.records[user.uid!],
+                      flex: max(party.records[user.uid!], 1),
                       child: Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
@@ -322,7 +421,7 @@ class RankWidget extends StatelessWidget {
                     );
                   }).toList()..add(
                     Expanded(
-                      flex: (goal - totalRecords).round(),
+                      flex: max((goal - totalRecords).round(), 1),
                       child: Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
@@ -358,6 +457,7 @@ class RankWidget extends StatelessWidget {
             PUser user = party.getMemberByRank(index + 1);
 
             return Container(
+              height: 80.0.h,
               color: user.uid == loggedUser.uid ? PTheme.bar : null,
               padding: const EdgeInsets.all(15.0),
               child: Row(
@@ -369,7 +469,6 @@ class RankWidget extends StatelessWidget {
                     height: 50.0.h,
                     child: BadgeWidget(
                       badge: user.collection?.badge, size: 40.0,
-                      onPressed: () => GlobalPresenter.showBadgeDialog(user.collection?.badge),
                     ),
                   ),
                   SizedBox(
@@ -398,19 +497,115 @@ class RankWidget extends StatelessWidget {
           thickness: 1,
           height: 1.0,
         ),
-        const SizedBox(height: 100.0),
+        SizedBox(height: 40.0.h),
       ],
     );
   }
 }
 
+class ChallengeBadgeWidget extends StatelessWidget {
+  const ChallengeBadgeWidget({
+    Key? key,
+    required this.party,
+  }) : super(key: key);
+
+  final Party party;
+
+  @override
+  Widget build(BuildContext context) {
+    PUser user = Get.find<UserPresenter>().loggedUser;
+
+    return GetBuilder<ChallengePartyMain>(
+      builder: (controller) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 40.0.h,
+                        child: Row(
+                          children: [
+                            PText('보상',
+                              style: textTheme.headlineSmall,
+                              color: PTheme.black,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.0.h),
+                      SizedBox(
+                        height: 150.0.h,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            if (!party.complete)
+                            EternalRotation(
+                              rps: .3,
+                              child: Image.asset(
+                                GlobalPresenter.effect2Asset,
+                              ),
+                            ),
+                            BadgeWidget(
+                              badge: party.badge,
+                              greyscale: party.complete,
+                            ),
+                            if (party.complete)
+                            RotationTransition(
+                              turns: const AlwaysStoppedAnimation(-.075),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 7.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: PTheme.colorB, width: 2.0),
+                                ),
+                                child: PText(' 완 료 ',
+                                  style: textTheme.displayMedium,
+                                  color: PTheme.colorB,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.0.h),
+                      if (party.satisfy &&
+                          party.leaderUid == user.uid)
+                      PButton(
+                        text: '보상 받기',
+                        stretch: true,
+                        onPressed: controller.complete,
+                      ) else PButton(
+                        text: party.complete ? '완료' : '보상 받기',
+                        stretch: true,
+                        backgroundColor: PTheme.lightGrey,
+                        textColor: PTheme.grey,
+                        border: false,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      }
+    );
+  }
+}
+
+
 class ChallengePartyMainLoading extends StatelessWidget {
   const ChallengePartyMainLoading({
     Key? key,
     this.color = PTheme.black,
+    this.party,
   }) : super(key: key);
 
   final Color color;
+  final Party? party;
 
   @override
   Widget build(BuildContext context) {
@@ -433,13 +628,18 @@ class ChallengePartyMainLoading extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20.0.r),
                   ),
                 ),
-                SizedBox(height: 30.0.h),
-                Container(width: 100.0.w, height: 20.0.h, decoration: decoration),
                 SizedBox(height: 20.0.h),
-                Container(height: 25.0.h, decoration: decoration),
+                Column(
+                  children: [
+                    SizedBox(height: 10.0.h),
+                    Container(width: 240.0.w, height: 20.0.h, decoration: decoration),
+                    SizedBox(height: 10.0.h),
+                  ],
+                ),
+                SizedBox(height: 10.0.h),
+                Container(height: 40.0.h, decoration: decoration),
                 SizedBox(height: 20.0.h),
-                Container(height: 160.0.h, decoration: decoration),
-                SizedBox(height: 5.0.h),
+                Container(height: 140.0.h, decoration: decoration),
               ],
             ),
           ),
@@ -451,13 +651,81 @@ class ChallengePartyMainLoading extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(width: 200.0.w, height: 25.0.h, decoration: decoration),
+                Column(
+                  children: [
+                    SizedBox(height: 5.0.h),
+                    Container(width: 200.0.w, height: 30.0.h, decoration: decoration),
+                    SizedBox(height: 5.0.h),
+                  ],
+                ),
+                SizedBox(height: 30.0.h),
+                Container(height: 70.0.h, decoration: decoration),
                 SizedBox(height: 20.0.h),
-                Container(height: 80.0.h, decoration: decoration),
+                Container(height: 40.0.h, decoration: decoration),
               ],
             ),
           ),
           const Divider(color: PTheme.lightGrey, thickness: 8),
+          Container(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: 5.0.h),
+                    Container(width: 200.0.w, height: 30.0.h, decoration: decoration),
+                    SizedBox(height: 5.0.h),
+                  ],
+                ),
+                SizedBox(height: 20.0.h),
+                Container(height: 150.0.h, decoration: decoration),
+                SizedBox(height: 20.0.h),
+                Container(height: 50.0.h, decoration: decoration),
+                SizedBox(height: 20.0.h),
+                Container(height: 50.0.h, decoration: decoration),
+              ],
+            ),
+          ),
+          const Divider(color: PTheme.grey, thickness: 1, height: 1.0),
+          Column(
+            children: [
+              Container(
+                height: ((party?.memberUids.length ?? 1.0) * 80.0).h,
+                color: color,
+              ),
+              SizedBox(height: 40.0.h),
+            ],
+          ),
+          const Divider(color: PTheme.lightGrey, thickness: 8),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(height: 5.0.h),
+                        Container(width: 200.0.w, height: 30.0.h, decoration: decoration),
+                        SizedBox(height: 5.0.h),
+                      ],
+                    ),
+                    SizedBox(height: 20.0.h),
+                    Container(height: 150.0.h, decoration: decoration),
+                    SizedBox(height: 20.0.h),
+                    Container(height: 40.0.h, decoration: decoration),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 100.0),
         ],
       ),
     );

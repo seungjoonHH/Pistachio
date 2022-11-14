@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/page/edit_goal.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -49,15 +50,26 @@ class HomePresenter extends GetxController {
 
     await userP.load();
     await userP.fetchData();
+    await BadgePresenter.synchronizeBadges();
 
     loadingP.loadEnd();
 
     update();
   }
 
-  void slideToYesterdayActivityCard() {
+  void toggleActivityCard() {
+    isToday ? slideLeftActivityCard() : slideRightActivityCard();
+  }
+
+  void slideLeftActivityCard() {
     isToday = false;
     carouselCont.animateToPage(0, curve: Curves.easeInOut);
+    update();
+  }
+
+  void slideRightActivityCard() {
+    isToday = true;
+    carouselCont.animateToPage(1, curve: Curves.easeInOut);
     update();
   }
 

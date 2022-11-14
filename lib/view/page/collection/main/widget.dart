@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
@@ -15,9 +16,9 @@ class CollectionMainView extends StatelessWidget {
       builder: (controller) {
         final userP = Get.find<UserPresenter>();
         PUser user = userP.loggedUser;
-        const collectionCounts = 99;
+        const collectionCounts = 200;
 
-        List<Widget> collectionWidgets = user.collections.map((collection) {
+        List<Widget> collectionWidgets = user.orderedCollections.map((collection) {
           return Center(
             child: CollectionWidget(
               collection: collection,
@@ -31,11 +32,21 @@ class CollectionMainView extends StatelessWidget {
                   && user.badgeId == collection.badgeId,
             ),
           );
-        }).toList();
+        }).toList()..addAll(
+          BadgePresenter.notAcquiredBadges.map((badge) => Center(
+            child: BadgeWidget(
+              badge: badge,
+              detail: true,
+              size: 100.0,
+              greyscale: true,
+              lock: true,
+            ),
+          ),
+        ));
 
         List<Widget> emptyWidgets = List.generate(
           (collectionCounts - collectionWidgets.length).toInt(),
-              (_) => const Center(child: CollectionWidget(size: 100.0)),
+              (_) => Center(child: CollectionWidget(size: 100.0)),
         ).toList();
 
         List<Widget> gridWidgets = collectionWidgets..addAll(emptyWidgets);

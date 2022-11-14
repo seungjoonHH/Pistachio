@@ -7,3 +7,12 @@ double? stringToNum(String string) {
   try { return double.parse(string); }
   catch(_) { return null; }
 }
+
+double sum(List<double> list) {
+  List<double> temp = [...list];
+  return temp.reduce((a, b) => a + b);
+}
+
+double average(List<double> list) {
+  return sum(list) / list.length;
+}

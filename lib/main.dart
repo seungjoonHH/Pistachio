@@ -12,7 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/view/page/login/login.dart';
 
-const version = 'ver 0.0.1';
+const version = 'ver 0.1';
+String get versionNumber => version.replaceAll('ver ', '');
+const releaseNoteUrl = 'https://trusted-robe-5cd.notion.site/ad4f1c130b7a45e5a86eac2cc71133d8';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +52,7 @@ class _PistachioState extends State<Pistachio> {
     GlobalPresenter.initControllers();
     ImportPresenter.importData();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return ScreenUtilInit(
       designSize: const Size(360, 800),
       minTextAdapt: true,

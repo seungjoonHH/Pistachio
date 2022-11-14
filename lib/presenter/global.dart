@@ -6,8 +6,10 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
+import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/presenter/notification.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/edit_goal.dart';
 import 'package:pistachio/presenter/page/my/record/main.dart';
@@ -23,11 +25,10 @@ import 'package:pistachio/presenter/model/challenge.dart';
 import 'package:pistachio/presenter/page/challenge/create.dart';
 import 'package:pistachio/presenter/page/challenge/main.dart';
 import 'package:pistachio/presenter/page/challenge/party/main.dart';
-import 'package:pistachio/presenter/page/complete.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
 import 'package:pistachio/presenter/page/exercise/setting/detail.dart';
 import 'package:pistachio/presenter/page/home.dart';
-import 'package:pistachio/presenter/page/quest.dart';
+import 'package:pistachio/presenter/page/quest/main.dart';
 import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
@@ -73,7 +74,19 @@ class GlobalPresenter extends GetxController {
   static void goBack() => Get.back(result: true);
 
   static void showBadgeDialog(Badge? badge) {
+    PUser user = Get.find<UserPresenter>().loggedUser;
+
     if (badge == null) return;
+
+    bool have = user.collections
+        .map((col) => col.badgeId!).contains(badge.id);
+
+    if (have) {
+      Collection collection = user.getCollectionsById(badge.id!)!;
+      showCollectionDialog(collection);
+      return;
+    }
+
     showPDialog(
       title: badge.title,
       content: Column(
@@ -90,7 +103,10 @@ class GlobalPresenter extends GetxController {
                     height: 180.0.r,
                   ),
                 ),
-                BadgeWidget(badge: badge, size: 80.0.r),
+                BadgeWidget(
+                  badge: badge, size: 80.0.r,
+                  onPressed: () {},
+                ),
               ],
             ),
           ),
@@ -107,7 +123,12 @@ class GlobalPresenter extends GetxController {
     );
   }
 
-  static void showCollectionDialog(Collection collection) {
+  static void showCollectionDialog(Collection? collection) {
+    if (collection == null) return;
+
+    PUser user = Get.find<UserPresenter>().loggedUser;
+    bool isMainBadge = user.badgeId! == collection.badgeId;
+
     showPDialog(
       title: collection.badge!.title,
       content: Column(
@@ -120,7 +141,13 @@ class GlobalPresenter extends GetxController {
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
-                    CollectionWidget(collection: collection),
+                    CollectionWidget(
+                      collection: collection,
+                      onPressed: () {
+                        Get.back();
+                        CollectionMain.toCollectionMain();
+                      },
+                    ),
                     Container(
                       width: 30.0.r,
                       height: 30.0.r,
@@ -140,17 +167,13 @@ class GlobalPresenter extends GetxController {
                 constraints: const BoxConstraints(maxHeight: 70.0),
                 child: SingleChildScrollView(
                   child: Column(
-                    children: collection.dateList
-                        .map((date) => PText(
-                              dateToString('yyyy-MM-dd 획득!', date.toDate())!,
-                              color: date == collection.dateList.last
-                                  ? PTheme.colorB
-                                  : PTheme.black,
-                              bold: date == collection.dateList.last,
-                            ))
-                        .toList()
-                        .reversed
-                        .toList(),
+                    children: collection.dateList.map((date) => PText(
+                        dateToString('yyyy-MM-dd 획득!', date.toDate())!,
+                        color: date == collection.dateList.last
+                            ? PTheme.colorB : PTheme.black,
+                        bold: date == collection.dateList.last,
+                      ),
+                    ).toList().reversed.toList(),
                   ),
                 ),
               ),
@@ -165,19 +188,23 @@ class GlobalPresenter extends GetxController {
           ),
         ],
       ),
-      type: DialogType.bi,
-      leftText: '대표 컬렉션으로 설정',
-      leftPressed: () async {
+      type: isMainBadge ? DialogType.mono : DialogType.bi,
+      leftText: isMainBadge ? null : '대표 컬렉션으로 설정',
+      leftPressed: isMainBadge ? null : (() async {
         Get.back();
         await Future.delayed(const Duration(milliseconds: 200));
         final collectionMain = Get.find<CollectionMain>();
         collectionMain.setMainBadge(collection);
-      },
-      rightPressed: Get.back,
+      }),
+      rightPressed: isMainBadge ? null : Get.back,
+      onPressed: isMainBadge ? Get.back : null,
     );
   }
 
-  static void badgeAwarded(Badge badge, [bool firstAward = false]) async {
+  static void showAwardedBadgeDialog(
+    Badge badge,
+    [bool firstAward = false]
+  ) async {
     showPDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
@@ -194,15 +221,22 @@ class GlobalPresenter extends GetxController {
                   alignment: Alignment.center,
                   children: [
                     if (firstAward)
-                      EternalRotation(
-                        rps: .3,
-                        child: Image.asset(
-                          effectAsset,
-                          width: 180.0.r,
-                          height: 180.0.r,
-                        ),
+                    EternalRotation(
+                      rps: .3,
+                      child: Image.asset(
+                        effectAsset,
+                        width: 180.0.r,
+                        height: 180.0.r,
                       ),
-                    BadgeWidget(badge: badge, size: 80.0.r),
+                    ),
+                    BadgeWidget(
+                      badge: badge,
+                      size: 80.0.r,
+                      onPressed: () {
+                        Get.back();
+                        CollectionMain.toCollectionMain();
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -227,9 +261,13 @@ class GlobalPresenter extends GetxController {
                 child: Column(
                   children: [
                     PText(badge.title!,
-                        style: textTheme.titleLarge, bold: true),
+                      style: textTheme.titleLarge,
+                      bold: true,
+                    ),
                     const SizedBox(height: 5.0),
-                    PText(badge.description!, style: textTheme.bodyLarge),
+                    PText(badge.description!,
+                      style: textTheme.bodyLarge,
+                    ),
                   ],
                 ),
               ),
@@ -239,7 +277,9 @@ class GlobalPresenter extends GetxController {
       ),
       type: DialogType.bi,
       leftText: '대표 컬렉션으로 설정',
-      leftPressed: () {
+      leftPressed: () async {
+        Get.back();
+        await Future.delayed(const Duration(milliseconds: 200));
         final userP = Get.find<UserPresenter>();
         userP.setMainBadge(badge.id!);
       },
@@ -291,9 +331,9 @@ class GlobalPresenter extends GetxController {
     Get.put(OnboardingPresenter());
     Get.put(RegisterPresenter());
     Get.put(HomePresenter());
-    Get.put(CompletePresenter());
     Get.put(RegisterPresenter());
-    // Get.put(NotificationPresenter());
+    Get.put(NotificationPresenter());
+
     Get.put(ExerciseDetailSetting());
     Get.put(ExerciseInput());
     Get.put(RecordMain());

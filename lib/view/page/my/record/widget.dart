@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/level.dart';
@@ -43,13 +44,18 @@ class MyRecordDetailView extends StatelessWidget {
         GetBuilder<MyRecordMain>(
           builder: (controller) {
             return Stack(
-              alignment: Alignment.topCenter,
+              alignment: Alignment.center,
               children: [
-                const Positioned(top: -1.0, child: BackgroundTop()),
-                const SunAndMoon(),
-                const Clouds(start: .7, relativeDistance: .25),
-                const Clouds(start: .6, relativeDistance: .5),
-                const Clouds(start: .3, relativeDistance: .0),
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: const [
+                    BackgroundTop(),
+                    SunAndMoon(),
+                    Clouds(start: .7, relativeDistance: .25),
+                    Clouds(start: .6, relativeDistance: .5),
+                    Clouds(start: .3, relativeDistance: .0),
+                  ],
+                ),
                 Positioned(
                   left: 0, top: 200.0, width: 100.0,
                   child: Image.asset('assets/image/record/rock.png'),
@@ -87,6 +93,25 @@ class MyRecordDetailView extends StatelessWidget {
                     ),
                   ),
                 ),
+                Positioned(
+                  bottom: 180.0.h,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      PTexts(['${loggedUser.nickname}', '님은'],
+                        colors: const [PTheme.colorD, PTheme.black],
+                        style: textTheme.headlineMedium,
+                      ),
+                      PTexts([
+                        '총 ', '${loggedUser.getAmounts(type).round()}${type.unitAlt}',
+                        '${eulReul(type.unitAlt)} ${type.did}',
+                      ], colors: [PTheme.black, type.color, PTheme.black],
+                        style: textTheme.headlineMedium,
+                        space: false,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             );
           },
@@ -94,10 +119,7 @@ class MyRecordDetailView extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           height: 800.0.h,
-          padding: EdgeInsets.symmetric(
-            horizontal: 20.0.w,
-            vertical: 70.0.h,
-          ),
+          padding: EdgeInsets.fromLTRB(20.0.w, 70.0.h, 20.0.w, 40.0.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -121,8 +143,8 @@ class MyRecordDetailView extends StatelessWidget {
               ),
               SingleChildScrollView(
                 child: PText('${current.description}',
-                  style: textTheme.titleLarge,
-                  maxLines: 8,
+                  style: textTheme.titleMedium,
+                  maxLines: 6,
                 ),
               ),
             ],

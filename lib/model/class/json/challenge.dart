@@ -32,6 +32,7 @@ class Challenge {
 
   /// accessors & mutators
   String? get titleOneLine => title?.replaceAll('\n', ' ');
+  Map<String, dynamic>? getLevel(Difficulty diff) => levels[diff.name];
 
   /// constructors
   Challenge();

@@ -15,6 +15,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class ChallengePartyMain extends GetxController {
   /// static variables
   static final refreshCont = RefreshController();
+  static const int millisecond = 500;
 
   /// static methods
   // 챌린지 파티 메인 페이지로 이동
@@ -30,7 +31,6 @@ class ChallengePartyMain extends GetxController {
   double maxValue = 0;
   Timer? timer;
   Party? loadedParty;
-  static const int millisecond = 500;
   bool copied = false;
 
   // 초기화

@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
-import 'package:pistachio/model/class/json/challenge.dart';
+import 'package:pistachio/model/class/database/party.dart';
 
 /// class
-class ChallengeComplete {
+class ChallengePartyComplete {
   /// static methods
   // 챌린지 완료 페이지로 이동
-  static void toChallengeComplete(Challenge challenge) {
-    Get.toNamed('/challenge/complete', arguments: challenge);
+  static void toChallengePartyComplete(Party party) {
+    Get.toNamed('/challenge/party/complete', arguments: party);
   }
 }

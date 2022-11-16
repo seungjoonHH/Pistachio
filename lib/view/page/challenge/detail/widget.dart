@@ -101,7 +101,7 @@ class ChallengeDetailView extends StatelessWidget {
                   SizedBox(width: 20.0.w),
                   PButton(
                     onPressed: () => ChallengeCreate.toChallengeCreate(challenge),
-                    text: '챌린지 하러가기',
+                    text: '챌린지 생성하기',
                     stretch: true,
                     multiple: true,
                   ),

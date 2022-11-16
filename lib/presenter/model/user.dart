@@ -84,6 +84,7 @@ class UserPresenter extends GetxController {
 
     Party newParty = Party.fromJson({
       'id': code,
+      'complete': false,
       'challengeId': challenge.id,
       'difficulty': diff.name,
       'records': <String, dynamic>{loggedUser.uid!: 0},

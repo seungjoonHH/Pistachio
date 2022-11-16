@@ -6,7 +6,12 @@ bool hasBottomConsonant(String input) {
 String eunNeun(String input) => hasBottomConsonant(input) ? '은' : '는';
 String iGa(String input) => hasBottomConsonant(input) ? '이' : '가';
 String eulReul(String input) => hasBottomConsonant(input) ? '을' : '를';
-String roeuro(String input) => hasBottomConsonant(input) ? '으로' : '로';
+String roEuro(String input) => hasBottomConsonant(input) ? '으로' : '로';
+
+String withEunNeun(String input) => '$input${eunNeun(input)}';
+String withIGa(String input) => '$input${iGa(input)}';
+String withEulReul(String input) => '$input${eulReul(input)}';
+String withRoEuro(String input) => '$input${roEuro(input)}';
 
 bool isKoreanConsonant(String input) {
   int inputToUniCode = input.codeUnits[0];

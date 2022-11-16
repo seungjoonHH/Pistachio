@@ -291,7 +291,7 @@ class DistanceGoalView extends StatelessWidget {
               child: GoalNumberPicker(
                 type: ActivityType.distance,
                 itemWidth: 200.0,
-                color: PTheme.colorB,
+                color: ActivityType.distance.color,
                 style: PTheme.largeText,
                 maxValue: 200,
               ),
@@ -445,7 +445,7 @@ class HeightGoalView extends StatelessWidget {
               child: GoalNumberPicker(
                 type: ActivityType.height,
                 itemWidth: 200.0,
-                color: PTheme.colorD,
+                color: ActivityType.height.color,
                 style: PTheme.largeText,
               ),
             ),

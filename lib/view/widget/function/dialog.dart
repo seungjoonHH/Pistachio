@@ -23,6 +23,7 @@ class DialogButtonData {
 void showPDialog({
   String? title,
   required Widget content,
+  CrossAxisAlignment contentAlignment = CrossAxisAlignment.center,
   EdgeInsets? titlePadding = const EdgeInsets.only(top: 50.0),
   EdgeInsets? contentPadding = const EdgeInsets.all(20.0),
   DialogType type = DialogType.none,
@@ -60,6 +61,7 @@ void showPDialog({
   Get.dialog(PAlertDialog(
     title: title,
     content: content,
+    contentAlignment: contentAlignment,
     titlePadding: titlePadding,
     contentPadding: contentPadding,
     type: type,
@@ -82,6 +84,7 @@ class PAlertDialog extends StatefulWidget {
     Key? key,
     this.title,
     required this.content,
+    this.contentAlignment = CrossAxisAlignment.start,
     this.titlePadding = const EdgeInsets.only(top: 50.0),
     this.contentPadding = const EdgeInsets.all(20.0),
     this.type = DialogType.none,
@@ -100,6 +103,7 @@ class PAlertDialog extends StatefulWidget {
 
   final String? title;
   final Widget content;
+  final CrossAxisAlignment contentAlignment;
   final EdgeInsets? titlePadding;
   final EdgeInsets? contentPadding;
   final DialogType type;
@@ -176,7 +180,7 @@ class _PAlertDialogState extends State<PAlertDialog> {
       titlePadding: EdgeInsets.zero,
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: widget.contentAlignment,
         children: [
           Container(
             padding: widget.contentPadding,

@@ -48,7 +48,7 @@ class NotificationPresenter extends GetxController {
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
-    var iOSInitializationSettings = const DarwinInitializationSettings(
+    var iOSInitializationSettings = const IOSInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,

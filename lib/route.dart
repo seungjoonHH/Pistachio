@@ -5,6 +5,7 @@ import 'package:pistachio/view/page/challenge/detail/detail.dart';
 import 'package:pistachio/view/page/challenge/complete/complete.dart';
 import 'package:pistachio/view/page/challenge/party/party.dart';
 import 'package:pistachio/view/page/collection/main/main.dart';
+import 'package:pistachio/view/page/developer_info/main.dart';
 import 'package:pistachio/view/page/edit_goal/edit_goal.dart';
 import 'package:pistachio/view/page/exercise/input/input.dart';
 import 'package:pistachio/view/page/home/home.dart';
@@ -45,7 +46,7 @@ class PRoute {
         '/challenge/main': const ChallengeMainPage(),
         '/challenge/detail': const ChallengeDetailPage(),
         '/challenge/create': const ChallengeCreatePage(),
-        '/challenge/complete': const ChallengeCompletePage(),
+        '/challenge/party/complete': const ChallengePartyCompletePage(),
         '/challenge/party/main': const ChallengePartyMainPage(),
         '/collection/main': const CollectionMainPage(),
         '/my/main': const MyMainPage(),
@@ -55,6 +56,7 @@ class PRoute {
         '/quest': const QuestPage(),
         '/editGoal': const EditGoalPage(),
         '/releaseNote': const ReleaseNotePage(),
+        '/developerInfo': const DeveloperInfoPage(),
       };
 
   // 겟페이지 리스트

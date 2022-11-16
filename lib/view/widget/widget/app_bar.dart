@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/main.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/my/main.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
-import 'package:pistachio/presenter/page/release_note.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -188,11 +186,17 @@ class MySettingMainAppBar extends StatelessWidget implements PreferredSizeWidget
       ),
       actions: [
         PTextButton(
-          text: version,
+          text: '앱 정보',
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           color: PTheme.grey,
-          onPressed: ReleaseNoteMain.toReleaseNoteMain,
+          onPressed: MySettingMain.showAppInfoDialog,
         ),
+        // PTextButton(
+        //   text: version,
+        //   padding: EdgeInsets.symmetric(horizontal: 20.0),
+        //   color: PTheme.grey,
+        //   onPressed: ReleaseNoteMain.toReleaseNoteMain,
+        // ),
       ],
     );
   }

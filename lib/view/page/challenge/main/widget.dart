@@ -463,6 +463,7 @@ class MyPartyListTile extends StatelessWidget {
     int index = min(max((party.remainDays ~/ 4) + 1, 0), 4);
 
     return Stack(
+      alignment: Alignment.center,
       children: [
         Material(
           color: Colors.transparent,
@@ -544,32 +545,33 @@ class MyPartyListTile extends StatelessWidget {
             ),
           ),
         ),
-        if (party.complete || party.over)
+        if (party.over)
         Positioned.fill(
           child: Container(
             alignment: Alignment.center,
             color: PTheme.black.withOpacity(.2),
-            child: RotationTransition(
-              turns: const AlwaysStoppedAnimation(-.075),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7.0),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: party.complete
-                        ? PTheme.colorB
-                        : PTheme.black,
-                    width: 2.0,
-                  ),
-                ),
-                child: PText(
-                  party.complete ? ' 완 료 ' : ' 실 패 ',
-                  color: party.complete ? PTheme.colorB : PTheme.black,
-                  style: textTheme.headlineLarge,
-                ),
-              ),
-            ),
           ),
         ),
+        if (party.complete)
+        RotationTransition(
+          turns: const AlwaysStoppedAnimation(-.075),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 7.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: party.complete
+                    ? PTheme.colorB
+                    : PTheme.black,
+                width: 2.0,
+              ),
+            ),
+            child: PText(
+              party.complete ? ' 완 료 ' : ' 실 패 ',
+              color: party.complete ? PTheme.colorB : PTheme.black,
+              style: textTheme.headlineLarge,
+            ),
+          ),
+        )
       ],
     );
   }

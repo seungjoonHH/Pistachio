@@ -303,7 +303,7 @@ class GlobalPresenter extends GetxController {
               SizedBox(height: 20.0.h),
               PText('대표 컬렉션이'),
               PTexts(
-                [selectedBadge.title!, '${roeuro(selectedBadge.title!)} 설정되었습니다.'],
+                [selectedBadge.title!, '${roEuro(selectedBadge.title!)} 설정되었습니다.'],
                 colors: const [PTheme.colorB, PTheme.black],
                 space: false,
               )

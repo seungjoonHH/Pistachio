@@ -10,6 +10,7 @@ import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/page/challenge/party/complete.dart';
 import 'package:pistachio/presenter/page/challenge/party/main.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/view/widget/button/button.dart';
@@ -356,6 +357,7 @@ class RankWidget extends StatelessWidget {
                             height: 120.0.r,
                           ),
                         ),
+                        if (myRank > 0)
                         Image.asset(
                           '${trophyAsset}trophy${myRank > 3 ? '' : '_$myRank'}.png',
                           width: 50.0.r, height: 50.0.r,
@@ -574,11 +576,12 @@ class ChallengeBadgeWidget extends StatelessWidget {
                       if (party.satisfy &&
                           party.leaderUid == user.uid)
                       PButton(
-                        text: '보상 받기',
+                        text: '완료하기',
                         stretch: true,
-                        onPressed: controller.complete,
+                        onPressed: () =>
+                            ChallengePartyComplete.toChallengePartyComplete(party),
                       ) else PButton(
-                        text: party.complete ? '완료' : '보상 받기',
+                        text: '완료하기',
                         stretch: true,
                         backgroundColor: PTheme.lightGrey,
                         textColor: PTheme.grey,

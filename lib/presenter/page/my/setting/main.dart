@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/auth/auth.dart';
+import 'package:pistachio/presenter/page/release_note.dart';
+import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/function/dialog.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -28,6 +31,39 @@ class MySettingMain extends GetxController {
       leftPressed: Get.back,
       rightPressed: AuthPresenter.pDeleteAccount,
       rightBackgroundColor: Colors.red,
+    );
+  }
+
+  static void showAppInfoDialog() {
+    showPDialog(
+      title: '앱 정보',
+      content: Column(
+        children: [
+          PTextButton(
+            text: '릴리즈 노트',
+            style: textTheme.bodyLarge,
+            onPressed: () {
+              Get.back();
+              ReleaseNoteMain.toReleaseNoteMain();
+            },
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
+              vertical: 10.0,
+            ),
+          ),
+          PTextButton(
+            text: '개발자 정보',
+            style: textTheme.bodyLarge,
+            onPressed: () {},
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
+              vertical: 10.0,
+            ),
+          ),
+          PText('fitween.pistachio@gmail.com', color: PTheme.grey),
+        ],
+      ),
+      contentAlignment: CrossAxisAlignment.center,
     );
   }
 }

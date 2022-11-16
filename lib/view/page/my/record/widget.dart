@@ -20,7 +20,10 @@ import 'background/layout/components/sun.dart';
 class MyRecordDetailView extends StatelessWidget {
   final ActivityType type;
 
-  const MyRecordDetailView({Key? key, required this.type}) : super(key: key);
+  const MyRecordDetailView({
+    Key? key,
+    required this.type,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,8 @@ class MyRecordDetailView extends StatelessWidget {
     Level next = tier['next'];
 
     Record nextValue = Record.init(
-      type, next.amount!.toDouble(), DistanceUnit.kilometer,
+      type, next.amount!.toDouble(),
+      DistanceUnit.kilometer,
     );
 
     nextValue.convert(DistanceUnit.step);
@@ -94,7 +98,7 @@ class MyRecordDetailView extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 180.0.h,
+                  bottom: 160.0.h,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

@@ -77,20 +77,18 @@ class MyRecordDetailView extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Image.asset(
                             'assets/image/level/${type.name}/${current.id}.png',
-                            width: 300.0.w,
-                            height: 300.0.h,
+                            width: 170.0.w,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                         onDragStarted: controller.endAnimation,
                         onDragEnd: (_) => controller.startAnimation(),
                         child: controller.animating ? Container(
-                          width: 300.0.w,
-                          height: 300.0.h,
                           alignment: Alignment.center,
                           child: Image.asset(
                             'assets/image/level/${type.name}/${current.id}.png',
-                            width: 300.0.w,
-                            height: 300.0.h,
+                            width: 170.0.w,
+                            fit: BoxFit.fitWidth,
                           ),
                         ) : Container(),
                       ),
@@ -98,7 +96,7 @@ class MyRecordDetailView extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 160.0.h,
+                  bottom: 140.0.h,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

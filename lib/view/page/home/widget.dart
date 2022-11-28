@@ -423,8 +423,8 @@ class MyRecordCard extends StatelessWidget {
             bottom: 20.0.h,
             child: Image.asset(
               'assets/image/level/${randomType.name}/${current.id}.png',
-              width: 100.0.w,
-              height: 100.0.h,
+              width: 70.0.w,
+              fit: BoxFit.fitWidth,
             ),
           ).animate(
           ).fadeIn(
@@ -450,7 +450,29 @@ class MyRecordCard extends StatelessWidget {
                     color: PTheme.white,
                   )],
                 ),
-                PTexts(['${current.title}', '${eulReul(current.title!)} 정복했어요!'],
+                if (current.title!.length > 12)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PText(current.title!,
+                      color: randomType.color,
+                      style: textTheme.titleLarge,
+                      shadows: const [Shadow(
+                        blurRadius: 20.0,
+                        color: PTheme.white,
+                      )],
+                    ),
+                    PText('${eulReul(current.title!)} 정복했어요!',
+                      color: PTheme.black,
+                      style: textTheme.titleLarge,
+                      shadows: const [Shadow(
+                        blurRadius: 20.0,
+                        color: PTheme.white,
+                      )],
+                    ),
+                  ],
+                ) else PTexts(
+                  ['${current.title}', '${eulReul(current.title!)} 정복했어요!'],
                   colors: [randomType.color, PTheme.black],
                   style: textTheme.titleLarge,
                   alignment: MainAxisAlignment.start,

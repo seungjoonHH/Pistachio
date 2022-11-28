@@ -59,7 +59,7 @@ class _MyMainViewState extends State<MyMainView> {
                     int remainValue = (nextValue.amount - amount).round();
 
                     return SizedBox(
-                      height: 120.0.h,
+                      height: 130.0.h,
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
@@ -79,7 +79,7 @@ class _MyMainViewState extends State<MyMainView> {
                                           if (tier['current'] != null)
                                           Image.asset(
                                             'assets/image/level/${type.name}/${tier['current'].id}.png',
-                                            width: 50.0.w,
+                                            width: 40.0.w,
                                           ),
                                           PText(
                                             tier['current']?.title ?? '',

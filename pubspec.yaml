@@ -53,6 +53,7 @@ dependencies:
   ntp: ^2.0.0
   dio: ^4.0.6
   webview_flutter: ^3.0.4
+  in_app_review: ^2.0.6
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.2

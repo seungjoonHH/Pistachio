@@ -1,6 +1,16 @@
-# pistachio
+# Pistachio 1.0
 
-A new Flutter project.
+Fitween Pistachio Project Version 1
+
+#Development Environment[2022.12.20]
+- Flutter
+- Firebase
+- Adobe Illustrator
+- Figma
+
+Privacy Policy: https://sites.google.com/view/pistachio-privacy
+
+Help URl: https://sites.google.com/view/pistachio-help
 
 ## Getting Started
 

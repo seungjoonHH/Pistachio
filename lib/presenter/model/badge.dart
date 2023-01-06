@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/class/database/user.dart';
@@ -59,6 +60,7 @@ class BadgePresenter extends GetxController {
   }
 
   static Future synchronizeBadges() async {
+    final inAppReview = InAppReview.instance;
     final userP = Get.find<UserPresenter>();
     PUser user = userP.loggedUser;
 
@@ -78,6 +80,9 @@ class BadgePresenter extends GetxController {
     }
     for (int i = 0; i < consecutive7 - count7; i++) {
       userP.awardBadge(BadgePresenter.getBadge('1000004')!);
+      if (await inAppReview.isAvailable()) {
+        await inAppReview.requestReview();
+      }
     }
 
     for (String id in user.partyIds) {

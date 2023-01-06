@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/view/page/login/login.dart';
 
-const version = 'ver 0.1.1';
+const version = 'ver 0.1.2';
 String get versionNumber => version.replaceAll('ver ', '');
 const releaseNoteUrl = 'https://trusted-robe-5cd.notion.site/ad4f1c130b7a45e5a86eac2cc71133d8';
 

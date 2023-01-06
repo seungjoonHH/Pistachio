@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
+import 'package:pistachio/main.dart';
 import 'package:pistachio/model/enum/enum.dart';
 import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:pistachio/presenter/page/release_note.dart';
@@ -51,6 +52,8 @@ class MySettingMain extends GetxController {
               vertical: 10.0,
             ),
           ),
+          PText(version, color: PTheme.grey),
+          const SizedBox(height: 20.0),
           PTextButton(
             text: '개발자 정보',
             style: textTheme.bodyLarge,

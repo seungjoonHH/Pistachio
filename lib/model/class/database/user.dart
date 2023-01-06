@@ -163,6 +163,14 @@ class PUser {
       '"uid":$uid,"name":$name,"nickname":$nickname,"email":$email';
 
   /// methods
+  List<DateTime> get accessHistory {
+    List<DateTime> dates = [];
+    for (var rec in records[ActivityType.calorie] ?? []) {
+      dates.add(rec['date'].toDate());
+    }
+    return dates;
+  }
+
   // 기록 추가
   void addRecord(
     ActivityType type,

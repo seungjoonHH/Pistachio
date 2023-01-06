@@ -17,7 +17,9 @@ import 'package:pistachio/presenter/page/onboarding.dart';
 
 class AuthPresenter {
   static const List<String> developerUids = [
+    'sLc4rerF1Xg41rclmmfqgc7jlAa2', // 현승준
     'F02JAQ4Cdbb2w7AaCf9VJz9fqs52', // 현승준
+    '09zhHKukWhaK2MlwJMJoOVFq7D23', // 정윤석
     'e3Ei6k4c9TSZrNzzfUZCLXtbqRB3', // 정윤석
     'AEROyVDTr2P04e2GD0x2Js6ejN42', // 이하준
     'OelnDbcyH8dXR04DkWpbfaXtjVN2', // 최복원

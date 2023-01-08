@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/main.dart';
 import 'package:pistachio/model/class/database/user.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/login_type.dart';
 import 'package:pistachio/presenter/firebase/auth/apple.dart';
 import 'package:pistachio/presenter/firebase/auth/google.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';

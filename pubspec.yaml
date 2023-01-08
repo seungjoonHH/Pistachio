@@ -51,7 +51,7 @@ dependencies:
   flutter_animate: ^2.0.0
   ntp: ^2.0.0
   dio: ^4.0.6
-  webview_flutter: ^4.0.1
+#  webview_flutter: ^4.0.1
   in_app_review: ^2.0.6
   path_provider: ^2.0.8
   camera: ^0.9.4+5
@@ -73,6 +73,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/lite-model_movenet_singlepose_lightning_3.tflite
     - assets/image/logo/
     - assets/image/object/
     - assets/image/level/distance/

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/border_type.dart';
 
 class PCard extends StatelessWidget {
   PCard({

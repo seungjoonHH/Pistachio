@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
 
 class MyRecordMain extends GetxController {
   static void toMyRecordMain(ActivityType type) {

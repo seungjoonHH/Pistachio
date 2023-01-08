@@ -9,7 +9,7 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/badge.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
 import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:pistachio/presenter/model/party.dart';
 import 'package:pistachio/presenter/model/user.dart';

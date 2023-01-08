@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
 import 'package:pistachio/view/page/exercise/input/widget.dart';
 import 'package:pistachio/view/widget/button/button.dart';

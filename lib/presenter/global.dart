@@ -8,13 +8,15 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/badge.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/dialog.dart';
 import 'package:pistachio/presenter/notification.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';
 import 'package:pistachio/presenter/page/edit_goal.dart';
 import 'package:pistachio/presenter/page/my/record/main.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
+import 'package:pistachio/presenter/page/workout.dart';
+import 'package:pistachio/presenter/widget/camera.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/level.dart';
@@ -33,6 +35,7 @@ import 'package:pistachio/presenter/page/onboarding.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:pistachio/presenter/page/register.dart';
 import 'package:pistachio/presenter/page/my/main.dart';
+import 'package:pistachio/presenter/widget/painter.dart';
 import 'package:pistachio/view/widget/effect/effect.dart';
 import 'package:pistachio/view/widget/function/dialog.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';
@@ -55,7 +58,8 @@ class GlobalPresenter extends GetxController {
         if (navIndex == index) { homeP.init(); }
         else { HomePresenter.toHome(); }
         break;
-      case 1: openBottomBar(); break;
+      // case 1: openBottomBar(); break;
+      case 1: WorkoutMain.toWorkoutMain(); break;
       case 2:
         if (navIndex == index) { challengeMain.init(); }
         else { ChallengeMain.toChallengeMain(); }
@@ -347,5 +351,7 @@ class GlobalPresenter extends GetxController {
     Get.put(ChallengePartyMain());
     Get.put(CollectionMain());
     Get.put(EditGoal());
+    Get.put(CameraPresenter());
+    Get.put(PainterPresenter());
   }
 }

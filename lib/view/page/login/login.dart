@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/main.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/login_type.dart';
 import 'package:pistachio/view/page/login/widget.dart';
 import 'package:pistachio/view/widget/widget/logo.dart';
 import 'package:pistachio/view/widget/widget/text.dart';

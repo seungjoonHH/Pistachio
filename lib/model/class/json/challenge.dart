@@ -1,5 +1,6 @@
 import 'package:pistachio/model/class/json/badge.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/difficulty.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 
 class Challenge {

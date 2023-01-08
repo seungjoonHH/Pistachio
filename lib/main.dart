@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:pistachio/firebase_options.dart';
@@ -6,6 +7,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/import.dart';
+import 'package:pistachio/presenter/widget/camera.dart';
 import 'package:pistachio/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +20,8 @@ const releaseNoteUrl = 'https://trusted-robe-5cd.notion.site/ad4f1c130b7a45e5a86
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  CameraPresenter.descriptions = await availableCameras();
+
   await Firebase.initializeApp(
     // name: 'pistachio',
     options: DefaultFirebaseOptions.currentPlatform,
@@ -64,18 +68,14 @@ class _PistachioState extends State<Pistachio> {
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.light,
           theme: ThemeData(
+            colorScheme: PTheme.lightColorScheme,
             textTheme: PTheme.textTheme,
           ),
-          // darkTheme: ThemeData(
-          //   useMaterial3: true,
-          //   colorScheme: PTheme.darkScheme,
-          //   textTheme: PTheme.textTheme,
-          //   appBarTheme: AppBarTheme(
-          //     iconTheme: IconThemeData(
-          //       color: PTheme.darkScheme.primary,
-          //     ),
-          //   ),
-          // ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorScheme: PTheme.darkColorScheme,
+            textTheme: PTheme.textTheme,
+          ),
           // home: const DeveloperPage(),
           home: const LoginPage(),
           getPages: PRoute.getPages,

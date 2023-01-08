@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pistachio/main.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/dialog.dart';
 import 'package:pistachio/view/widget/function/dialog.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 

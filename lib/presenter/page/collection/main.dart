@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/database/collection.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/page_mode.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/user.dart';
 

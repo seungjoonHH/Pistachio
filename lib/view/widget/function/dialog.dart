@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/dialog.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
 class DialogButtonData {

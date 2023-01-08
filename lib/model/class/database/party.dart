@@ -4,7 +4,7 @@ import 'package:pistachio/global/number.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/difficulty.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
 import 'package:pistachio/presenter/page/record/detail.dart';
 import 'package:pistachio/presenter/page/record/main.dart';
 import 'package:flutter/material.dart';

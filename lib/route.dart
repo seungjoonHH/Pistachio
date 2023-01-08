@@ -22,6 +22,7 @@ import 'package:pistachio/view/page/my/main/my.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/view/page/release_note/main.dart';
+import 'package:pistachio/view/page/workout/main.dart';
 
 /// class
 class PRoute {
@@ -57,17 +58,15 @@ class PRoute {
         '/editGoal': const EditGoalPage(),
         '/releaseNote': const ReleaseNotePage(),
         '/developerInfo': const DeveloperInfoPage(),
+        '/workout/main': const WorkoutMainPage(),
       };
 
   // 겟페이지 리스트
-  static List<GetPage> get getPages =>
-      pages.entries
-          .map((page) =>
-          GetPage(
-            name: page.key,
-            page: () => page.value,
-            transition: transition,
-            transitionDuration: duration,
-          ))
-          .toList();
+  static List<GetPage> get getPages => pages
+      .entries.map((page) => GetPage(
+    name: page.key,
+    page: () => page.value,
+    transition: transition,
+    transitionDuration: duration,
+  )).toList();
 }

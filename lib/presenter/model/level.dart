@@ -5,7 +5,8 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/json/level.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/distance_unit.dart';
 import 'package:pistachio/presenter/model/record.dart';
 
 /// class

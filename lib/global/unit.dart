@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:pistachio/global/number.dart';
 import 'package:pistachio/model/class/exercises.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/register.dart';
 

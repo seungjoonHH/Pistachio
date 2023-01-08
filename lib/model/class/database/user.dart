@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/party.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/distance_unit.dart';
+import 'package:pistachio/model/enum/sex.dart';
 import 'package:pistachio/presenter/model/record.dart';
 
 class PUser {

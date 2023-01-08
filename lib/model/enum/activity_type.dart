@@ -2,28 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 
-// 성별 { 남성, 여성 }
-enum Sex {
-  male, female;
-  String get kr => ['남성', '여성'][index];
-
-  // 문자열을 enum 으로 전환
-  static Sex? toEnum(String? string) =>
-      Sex.values.firstWhereOrNull((sex) => sex.name == string);
-}
-
-enum Difficulty {
-  easy, normal, hard;
-  String get kr => ['쉬움', '보통', '어려움'][index];
-  bool get active => activeValues.contains(this);
-
-  // 문자열을 enum 으로 전환
-  static Difficulty? toEnum(String? string) =>
-      Difficulty.values.firstWhereOrNull((diff) => diff.name == string);
-
-  static List<Difficulty> get activeValues => [easy, normal, hard];
-}
-
 enum ActivityType {
   // distance, height, weight, calorie;
   //
@@ -52,21 +30,8 @@ enum ActivityType {
 
   // 문자열을 enum 으로 전환
   static ActivityType? toEnum(String? string) =>
-      ActivityType.values.firstWhereOrNull((type) => type.name == string);
+  ActivityType.values.firstWhereOrNull((type) => type.name == string);
 
   static List<ActivityType> get activeValues => [calorie, distance, height];
 
 }
-
-// 팝업창 형식 { 버튼 없음, 버튼 1개, 버튼 2개 }
-enum DialogType { none, mono, bi }
-
-// 로그인 형식 { 구글, 애플, ... }
-enum LoginType { google, apple }
-
-// 외곽선 형식
-enum BorderType { all, horizontal, vertical, left, top, right, bottom, none }
-
-enum DistanceUnit { minute, step, kilometer }
-
-enum PageMode { view, edit }

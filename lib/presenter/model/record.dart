@@ -1,7 +1,8 @@
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/exercises.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/distance_unit.dart';
 
 abstract class Record {
   late double _amount;

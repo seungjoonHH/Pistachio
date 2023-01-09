@@ -253,7 +253,7 @@ class PTheme {
   // }[Theme.of(Get.context!).brightness]!;
 
   /// typography
-  static const fontFamily = 'BMJUA';
+  static const fontFamily = 'Pretendard';
 
   static TextStyle largeText = const TextStyle(
     fontFamily: fontFamily,

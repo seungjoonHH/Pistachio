@@ -47,26 +47,35 @@ class PainterPresenter extends GetxController {
   late List<Limb> limbs;
 
   int count = 0;
+  bool allowCount = true;
 
   WorkoutView beforeView = WorkoutView.front;
+  WorkoutStage beforeStage = WorkoutStage.ready;
+  WorkoutStage currentStage = WorkoutStage.ready;
 
-  List<WorkoutDistance> distanceHistory = [];
-  List<WorkoutView> viewHistory = [];
-  List<WorkoutStage> stageHistory = [];
+  static List<WorkoutDistance> distanceHistory = [];
+  static List<WorkoutView> viewHistory = [];
+  static List<bool> hitHistory = [];
+  static int humanHistory = 0;
 
-  void addDistanceHistory(WorkoutDistance distance) {
+  static void addDistanceHistory(WorkoutDistance distance) {
     distanceHistory.add(distance);
     if (distanceHistory.length > 50) distanceHistory.removeAt(0);
   }
 
-  void addViewHistory(WorkoutView view) {
+  static void addViewHistory(WorkoutView view) {
     viewHistory.add(view);
     if (viewHistory.length > 50) viewHistory.removeAt(0);
   }
 
-  void addStageHistory(WorkoutStage stage) {
-    stageHistory.add(stage);
-    if (stageHistory.length > 15) stageHistory.removeAt(0);
+  static void addHitHistory(bool hit) {
+    hitHistory.add(hit);
+    if (hitHistory.length > 5) hitHistory.removeAt(0);
+  }
+
+  static void addHumanHistory(bool isHuman) {
+    int after = humanHistory + (isHuman ? 1 : -1);
+    humanHistory = max(min(after, 10), -50);
   }
 
   WorkoutDistance get decideDistance {
@@ -107,7 +116,9 @@ class PainterPresenter extends GetxController {
     WorkoutDistance currentDistance = WorkoutDistance.middle;
 
     if (height > 500) currentDistance = WorkoutDistance.near;
-    if (height < 150) currentDistance = WorkoutDistance.far;
+    if (height < 100 + (currentStage == WorkoutStage.down ? 0 : 50)) {
+      currentDistance = WorkoutDistance.far;
+    }
 
     addDistanceHistory(currentDistance);
     return decideDistance;
@@ -120,7 +131,10 @@ class PainterPresenter extends GetxController {
 
     WorkoutView currentView = WorkoutView.side;
 
-    if (distance != WorkoutDistance.middle) currentView = WorkoutView.unrecognized;
+    if (PainterPresenter.humanHistory < 0
+        || distance != WorkoutDistance.middle) {
+      currentView = WorkoutView.unrecognized;
+    }
     if (width < 60 && width > 38) currentView = WorkoutView.front;
     if (width > -60 && width < -38) currentView = WorkoutView.back;
 
@@ -130,17 +144,43 @@ class PainterPresenter extends GetxController {
   }
 
   void staging() {
-    WorkoutStage stage = limbs.map((l) => l.isCorrect).any((i) => i)
-        ? WorkoutStage.hit : WorkoutStage.ready;
-    addStageHistory(stage);
+    beforeStage = WorkoutStage.down;
+    currentStage = WorkoutStage.down;
+    addHitHistory(limbs.map((l) => l.isCorrect).any((i) => i));
     countUp();
   }
 
   void countUp() {
     if (distance != WorkoutDistance.middle) return;
 
-    List<WorkoutStage> subList = stageHistory.sublist(0, stageHistory.length - 1);
-    if ([...subList].where((s) => s == WorkoutStage.hit).length == 4
-        && stageHistory.last == WorkoutStage.ready) count++;
+    List<bool> subList = hitHistory.sublist(0, hitHistory.length - 1);
+
+    late bool upCond, downCond, countCond;
+
+    upCond = currentStage == WorkoutStage.up;
+    upCond &= [...subList].every((s) => !s);
+    upCond &= hitHistory.last;
+
+    downCond = currentStage == WorkoutStage.down;
+    downCond &= [...subList].every((s) => s);
+    downCond &= !hitHistory.last;
+
+    if (upCond) currentStage = WorkoutStage.down;
+    if (downCond) currentStage = WorkoutStage.up;
+
+    countCond = beforeStage == WorkoutStage.down;
+    countCond &= currentStage == WorkoutStage.up;
+
+    beforeStage = currentStage;
+    if (countCond) {
+      if (!allowCount) {
+        currentStage = WorkoutStage.fast;
+        return;
+      }
+      count++; allowCount = false;
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        allowCount = true;
+      });
+    }
   }
 }

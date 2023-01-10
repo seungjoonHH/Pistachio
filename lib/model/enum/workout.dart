@@ -8,7 +8,4 @@ enum WorkoutView {
 get kr => ['정면', '측면', '후면', ''][index];
 }
 
-enum WorkoutStage {
-  ready, hit;
-get kr => ['준비', '동작'][index];
-}
+enum WorkoutStage { ready, down, up, fast }

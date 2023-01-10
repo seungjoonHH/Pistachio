@@ -8,7 +8,7 @@ import 'package:pistachio/model/class/workout/isolate.dart';
 
 class CameraPresenter extends GetxController {
   static List<CameraDescription>? descriptions;
-  static CameraController? cameraController;
+  CameraController? cameraController;
   static late Classifier classifier;
   static late IsolateUtils isolate;
 
@@ -23,7 +23,7 @@ class CameraPresenter extends GetxController {
     classifier = Classifier();
     classifier.loadModel();
 
-    await loadCamera();
+    await loadCamera(direction);
     update();
   }
 
@@ -33,7 +33,7 @@ class CameraPresenter extends GetxController {
     update();
   }
 
-  static Future loadCamera([direction = 0]) async {
+  Future loadCamera([direction = 0]) async {
     if (descriptions == null) return;
 
     if (Platform.isIOS) {

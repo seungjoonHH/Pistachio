@@ -8,11 +8,15 @@ double? stringToNum(String string) {
   catch(_) { return null; }
 }
 
-double sum(List<double> list) {
-  List<double> temp = [...list];
+num sum(List<num> list) {
+  List<num> temp = [...list];
   return temp.reduce((a, b) => a + b);
 }
 
-double average(List<double> list) {
-  return sum(list) / list.length;
+num average(List<num> list) {
+  return sum(toDoubleList(list)) / list.length;
+}
+
+List<double> toDoubleList(List<num> list) {
+  return list.map((e) => e.toDouble()).toList();
 }

@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pistachio/model/class/workout/edge.dart';
 import 'package:pistachio/model/class/workout/handler.dart';
 import 'package:pistachio/model/class/workout/limb.dart';
+import 'package:pistachio/model/class/workout/parts.dart';
 import 'package:pistachio/model/enum/workout.dart';
 import 'package:pistachio/presenter/widget/painter.dart';
 
@@ -82,7 +82,14 @@ class LimbsPainter extends CustomPainter {
       ), area,
     );
 
-    if (painterP.distance != WorkoutDistance.middle) return;
+
+    bool isHuman = Parts(painterP.inferences).isHuman;
+
+    PainterPresenter.addHumanHistory(isHuman);
+    if (!isHuman
+        || PainterPresenter.humanHistory < 0
+        || painterP.distance != WorkoutDistance.middle) return;
+
     painterP.staging();
 
     for (List<dynamic> point in painterP.inferences) {

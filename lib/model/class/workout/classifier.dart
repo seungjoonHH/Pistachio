@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 import 'package:image/image.dart' as image_lib;
@@ -33,7 +34,9 @@ class Classifier {
         options: InterpreterOptions()..threads = 4,
       );
     } catch (e) {
-      print("Error while creating interpreter: $e");
+      if (kDebugMode) {
+        print("Error while creating interpreter: $e");
+      }
     }
 
     outputLocations = TensorBufferFloat([1, 1, 17, 3]);

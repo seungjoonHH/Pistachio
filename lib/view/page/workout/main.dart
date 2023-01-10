@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/number.dart';
 import 'package:pistachio/model/class/workout/handler.dart';
 import 'package:pistachio/model/class/workout/isolate.dart';
 import 'package:pistachio/model/enum/workout.dart';
@@ -26,7 +27,7 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
 
   late WorkoutView view;
 
-  static int historyMax = 5;
+  static int historyMax = 4;
   int frameCount = 0;
 
   List<List<int>> historyX = List.generate(
@@ -39,7 +40,6 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
     17, (_) => List.generate(historyMax, (_) => .0),
   );
 
-
   @override
   void initState() {
     super.initState();
@@ -48,7 +48,7 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
 
   void initAsync() async {
     await cameraP.init();
-    await CameraPresenter.cameraController!
+    await cameraP.cameraController!
         .startImageStream(createIsolate);
     handler = SquatHandler();
     handler.init();
@@ -77,9 +77,9 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
       const int thresholdX = 50;
       const int thresholdY = 50;
 
-      int refinedX = [...historyX[i]].reduce((a, b) => a + b) ~/ historyX[i].length;
-      int refinedY = [...historyY[i]].reduce((a, b) => a + b) ~/ historyY[i].length;
-      double refinedC = [...historyC[i]].reduce((a, b) => a + b) / historyC[i].length;
+      int refinedX = average(historyX[i]).toInt();
+      int refinedY = average(historyY[i]).toInt();
+      double refinedC = average([...historyC[i]]).toDouble();
 
       if (frameCount < historyMax) {
         refinedInferences[i][0] = refinedX;
@@ -102,6 +102,8 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
     frameCount++;
 
     setState(() {
+      // inferenceResults
+      // refinedInferences
       inferences = refinedInferences;
       predicting = false;
       initialize = true;
@@ -111,10 +113,7 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (CameraPresenter.cameraController == null
-        || inferences == null) {
-      return const Scaffold();
-    }
+    if (inferences == null) return const Scaffold();
 
     return Scaffold(
       appBar: AppBar(
@@ -123,7 +122,7 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
           GetBuilder<CameraPresenter>(
               builder: (cameraP) {
                 return IconButton(
-                  onPressed: cameraP.toggleDirection,
+                  onPressed: () async => await cameraP.toggleDirection(),
                   icon: const Icon(Icons.camera_alt),
                 );
               }
@@ -142,20 +141,41 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
                   inferences: inferences!,
                   limbs: handler.limbs,
                 ),
-                child: CameraPreview(CameraPresenter.cameraController!),
+                child: GetBuilder<CameraPresenter>(
+                  builder: (cameraP) {
+                    return CameraPreview(cameraP.cameraController!);
+                  }
+                ),
               ),
             ),
           ),
           GetBuilder<PainterPresenter>(
-              builder: (painterP) {
-                return Column(
-                  children: [
-                    Text(painterP.distance.desc, style: Theme.of(context).textTheme.titleLarge),
-                    Text(painterP.view.kr, style: Theme.of(context).textTheme.titleLarge),
-                    Text('${painterP.count} 개', style: Theme.of(context).textTheme.headlineSmall),
-                  ],
-                );
-              }
+            builder: (painterP) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      if (PainterPresenter.humanHistory > 0)
+                      Text(painterP.distance.desc,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ) else if (painterP.currentStage == WorkoutStage.fast)
+                      Text('동작이 너무 빠릅니다.', style: Theme.of(context).textTheme.titleLarge)
+                      else Text('사람이 감지되지 않습니다.', style: Theme.of(context).textTheme.titleLarge)
+                    ],
+                  ),
+                  if (painterP.distance == WorkoutDistance.middle)
+                  Text(
+                    painterP.view.kr,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Text(
+                    '${painterP.count} 개',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),

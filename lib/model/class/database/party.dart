@@ -39,8 +39,8 @@ class Party {
 
   List<double> get recordValues => records.values
       .map<double>((e) => e.toDouble()).toList();
-  double get recordSum => sum(recordValues);
-  double get recordAverage => average(recordValues);
+  double get recordSum => sum(recordValues).toDouble();
+  double get recordAverage => average(recordValues).toDouble();
 
   bool get satisfy => recordSum >= level['goal'];
 

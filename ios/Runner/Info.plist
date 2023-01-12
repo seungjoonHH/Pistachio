@@ -2,7 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>This app needs access to location when open.</string>
     <key>NSLocationTemporaryUsageDescriptionDictionary</key>
@@ -65,8 +64,22 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-1627293083770208~8224143481</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Access to pick a photo</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Access to take a photo by camera</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Pistachio will sync your data with the Apple Health app to give you better insights</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Pistachio will sync your data with the Apple Health app to give you better insights</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need microphone access for uploading audio</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access to pick a photo</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
@@ -77,18 +90,20 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIStatusBarStyle</key>
+	<string></string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
@@ -101,5 +116,6 @@
     <string>YES</string>
     <key>FirebaseScreenReportingEnabled</key>
     <false/>
+
 </dict>
 </plist>

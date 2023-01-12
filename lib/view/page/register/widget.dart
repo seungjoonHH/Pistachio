@@ -11,7 +11,7 @@ import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/enum/activity_type.dart';
-import 'package:pistachio/model/enum/distance_unit.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/model/enum/sex.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
@@ -29,17 +29,16 @@ class CarouselView extends StatelessWidget {
 
   // 회원가입 페이지 carousel 리스트
   static List<Widget> carouselWidgets() => const [
-        UserInfoView(),
-        WeightHeightView(),
-        SettingIntroView(),
-        DistanceRecommendView(),
-        DistanceGoalView(),
-        HeightRecommendView(),
-        HeightGoalView(),
-        CalorieCheckView(),
-        RecommendView(),
-        // WeightGoalView(),
-      ];
+    UserInfoView(),
+    WeightHeightView(),
+    SettingIntroView(),
+    DistanceRecommendView(),
+    DistanceGoalView(),
+    HeightRecommendView(),
+    HeightGoalView(),
+    // WeightGoalView(),
+    CalorieCheckView(),
+  ];
 
   static int widgetCount = carouselWidgets().length;
 
@@ -238,7 +237,7 @@ class WeightHeightView extends StatelessWidget {
             builder: (controller) {
               return NumberPicker(
                 onChanged: controller.setWeight,
-                value: controller.newcomer.weight ?? 60,
+                value: controller.newcomer.weight!,
                 minValue: 30,
                 maxValue: 220,
                 selectedTextStyle: textTheme.headlineSmall,
@@ -256,7 +255,7 @@ class WeightHeightView extends StatelessWidget {
             builder: (controller) {
               return NumberPicker(
                 onChanged: controller.setHeight,
-                value: controller.newcomer.height ?? 170,
+                value: controller.newcomer.height!,
                 minValue: 100,
                 maxValue: 220,
                 selectedTextStyle: textTheme.headlineSmall,
@@ -356,17 +355,17 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
     return GetBuilder<RegisterPresenter>(
       builder: (controller) {
         Record record = controller.newcomer.getGoal(widget.type)!;
-        record.convert(DistanceUnit.minute);
+        record.convert(ExerciseUnit.minute);
 
         Record lessRecord = Record.init(
           widget.type,
           max(record.amount - 1, widget.minValue.toDouble()),
-          DistanceUnit.minute,
+          ExerciseUnit.minute,
         );
         Record greaterRecord = Record.init(
           widget.type,
           min(record.amount + 1, widget.maxValue.toDouble()),
-          DistanceUnit.minute,
+          ExerciseUnit.minute,
         );
 
         return Column(
@@ -390,7 +389,7 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
                 controller.newcomer.setGoal(
                   widget.type, Record.init(
                     widget.type, val.toDouble(),
-                    DistanceUnit.minute,
+                    ExerciseUnit.minute,
                   ),
                 );
                 controller.update();
@@ -535,7 +534,7 @@ class DistanceGoalView extends StatelessWidget {
         String distanceTitle = tier['current'].title;
         DistanceRecord distanceValue = DistanceRecord(
             amount: tier['current'].amount.toDouble(),
-            state: DistanceUnit.kilometer,
+            state: ExerciseUnit.kilometer,
         );
 
         const Velocity velocity = Velocity(
@@ -712,6 +711,92 @@ class HeightGoalView extends StatelessWidget {
   }
 }
 
+
+class WeightGoalView extends StatelessWidget {
+  const WeightGoalView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<RegisterPresenter>(
+      builder: (controller) {
+        HeightRecord goal = controller.newcomer.getGoal(
+          ActivityType.height,
+        ) as HeightRecord;
+
+        Map<String, dynamic> tier = LevelPresenter.getTier(
+          ActivityType.height, goal,
+        );
+
+        String heightTitle = tier['current'].title;
+        HeightRecord heightValue = HeightRecord(
+          amount: tier['current'].amount.toDouble(),
+        );
+
+        TextStyle? style(Color color) => textTheme.displaySmall?.merge(
+          TextStyle(
+            color: color,
+            fontWeight: FontWeight.normal,
+          ),
+        );
+
+        const velocity = Velocity(pixelsPerSecond: Offset(50, 0));
+
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PTexts(['하루', '${goal.amount.round()}', '층이면'],
+                  colors: [PTheme.black, ActivityType.calorie.color, PTheme.black],
+                  alignment: MainAxisAlignment.start,
+                  style: style(PTheme.black),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 210.0.w),
+                      child: TextScroll(
+                        heightTitle,
+                        style: style(ActivityType.height.color),
+                        velocity: velocity,
+                        intervalSpaces: 5,
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    PText('(${heightValue.amount.round()}층)'),
+                  ],
+                ),
+                PText('을 정복할 수 있어요', style: textTheme.displaySmall),
+                const SizedBox(height: 10.0),
+                PTexts(
+                  ['* 수명 약', timeToString((100 * goal.amount).round()), '연장'],
+                  colors: [PTheme.grey, ActivityType.height.color, PTheme.grey],
+                  alignment: MainAxisAlignment.start,
+                ),
+              ],
+            ),
+            const Expanded(child: SizedBox()),
+            Align(
+              alignment: Alignment.topRight,
+              child: GoalNumberPicker(
+                type: ActivityType.height,
+                itemWidth: 200.0,
+                color: ActivityType.height.color,
+                style: PTheme.largeText,
+              ),
+            ),
+            const SizedBox(height: 100.0),
+          ],
+        );
+      },
+    );
+  }
+}
+
 class CalorieCheckView extends StatelessWidget {
   const CalorieCheckView({Key? key}) : super(key: key);
 
@@ -800,36 +885,6 @@ class CalorieCheckView extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class RecommendView extends StatelessWidget {
-  const RecommendView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Text(
-            '건강을 위해',
-            style: TextStyle(fontSize: 36),
-          ),
-          Text(
-            '음식을 참아보는 건',
-            style: TextStyle(fontSize: 36),
-          ),
-          Text(
-            '어떨까요?',
-            style: TextStyle(fontSize: 36),
-          ),
-          SizedBox(height: 120.0),
-        ],
-      ),
     );
   }
 }

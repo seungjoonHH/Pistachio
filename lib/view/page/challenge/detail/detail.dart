@@ -2,7 +2,6 @@
 
 import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/view/page/challenge/detail/widget.dart';
-import 'package:pistachio/global/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
@@ -18,7 +17,6 @@ class ChallengeDetailPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: const PAppBar(color: Colors.transparent),
-      backgroundColor: PTheme.background,
       body: ChallengeDetailView(challenge: challenge),
     );
   }

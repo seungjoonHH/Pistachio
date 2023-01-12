@@ -55,7 +55,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         return AppBar(
           elevation: 0.0,
           iconTheme: const IconThemeData(color: PTheme.white),
-          backgroundColor: PTheme.background,
           title: const Align(
             alignment: Alignment.centerRight,
             child: MyNavigationButton(),

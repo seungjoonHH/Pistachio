@@ -125,7 +125,6 @@ class _ExerciseInputPageState extends State<ExerciseInputPage> {
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
-        backgroundColor: PTheme.background,
         appBar: PAppBar(title: '${type.kr} 입력'),
         body: Padding(
           padding: const EdgeInsets.all(30.0),

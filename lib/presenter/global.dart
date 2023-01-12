@@ -15,7 +15,8 @@ import 'package:pistachio/presenter/page/edit_goal.dart';
 import 'package:pistachio/presenter/page/my/record/main.dart';
 import 'package:pistachio/presenter/page/my/setting/edit.dart';
 import 'package:pistachio/presenter/page/my/setting/main.dart';
-import 'package:pistachio/presenter/page/workout.dart';
+import 'package:pistachio/presenter/page/workout/guide.dart';
+import 'package:pistachio/presenter/page/workout/main.dart';
 import 'package:pistachio/presenter/widget/camera.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
 import 'package:pistachio/presenter/model/badge.dart';
@@ -59,7 +60,7 @@ class GlobalPresenter extends GetxController {
         else { HomePresenter.toHome(); }
         break;
       // case 1: openBottomBar(); break;
-      case 1: WorkoutMain.toWorkoutMain(); break;
+      case 1: WorkoutGuide.toWorkoutGuide(); break;
       case 2:
         if (navIndex == index) { challengeMain.init(); }
         else { ChallengeMain.toChallengeMain(); }
@@ -353,5 +354,6 @@ class GlobalPresenter extends GetxController {
     Get.put(EditGoal());
     Get.put(CameraPresenter());
     Get.put(PainterPresenter());
+    Get.put(WorkoutMain());
   }
 }

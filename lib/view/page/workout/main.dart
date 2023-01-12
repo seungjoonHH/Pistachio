@@ -1,13 +1,19 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/number.dart';
+import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/workout/handler.dart';
 import 'package:pistachio/model/class/workout/isolate.dart';
 import 'package:pistachio/model/enum/workout.dart';
+import 'package:pistachio/presenter/page/workout/main.dart';
 import 'package:pistachio/presenter/widget/camera.dart';
 import 'package:pistachio/presenter/widget/painter.dart';
+import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/painter/painter.dart';
+import 'package:pistachio/view/widget/widget/app_bar.dart';
+import 'package:pistachio/view/widget/widget/text.dart';
 
 class WorkoutMainPage extends StatefulWidget {
   const WorkoutMainPage({Key? key}) : super(key: key);
@@ -17,8 +23,6 @@ class WorkoutMainPage extends StatefulWidget {
 }
 
 class _WorkoutMainPageState extends State<WorkoutMainPage> {
-  final cameraP = Get.find<CameraPresenter>();
-
   bool predicting = false;
   bool initialize = false;
 
@@ -46,7 +50,18 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
     initAsync();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    final cameraP = Get.find<CameraPresenter>();
+    final workoutMain = Get.find<WorkoutMain>();
+    workoutMain.init();
+    cameraP.cameraController!.dispose();
+  }
+
   void initAsync() async {
+    final cameraP = Get.find<CameraPresenter>();
     await cameraP.init();
     await cameraP.cameraController!
         .startImageStream(createIsolate);
@@ -101,6 +116,8 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
 
     frameCount++;
 
+    if (!mounted) return;
+
     setState(() {
       // inferenceResults
       // refinedInferences
@@ -115,70 +132,134 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
   Widget build(BuildContext context) {
     if (inferences == null) return const Scaffold();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Camera'),
-        actions: [
-          GetBuilder<CameraPresenter>(
-              builder: (cameraP) {
-                return IconButton(
-                  onPressed: () async => await cameraP.toggleDirection(),
-                  icon: const Icon(Icons.camera_alt),
-                );
-              }
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SizedBox(
-              width: PainterPresenter.canvasSize.width,
-              height: PainterPresenter.canvasSize.height,
-              child: CustomPaint(
-                foregroundPainter: LimbsPainter(
-                  inferences: inferences!,
-                  limbs: handler.limbs,
-                ),
-                child: GetBuilder<CameraPresenter>(
-                  builder: (cameraP) {
-                    return CameraPreview(cameraP.cameraController!);
-                  }
-                ),
+    return GetBuilder<CameraPresenter>(
+      builder: (cameraP) {
+        return Scaffold(
+          appBar: PAppBar(
+            title: '운동하기',
+            actions: [
+              IconButton(
+                onPressed: cameraP.toggleDirection,
+                icon: const Icon(Icons.camera_alt),
               ),
-            ),
+            ],
           ),
-          GetBuilder<PainterPresenter>(
+          body: GetBuilder<PainterPresenter>(
             builder: (painterP) {
               return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      if (PainterPresenter.humanHistory > 0)
-                      Text(painterP.distance.desc,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ) else if (painterP.currentStage == WorkoutStage.fast)
-                      Text('동작이 너무 빠릅니다.', style: Theme.of(context).textTheme.titleLarge)
-                      else Text('사람이 감지되지 않습니다.', style: Theme.of(context).textTheme.titleLarge)
-                    ],
+                  SizedBox(
+                    // width: PainterPresenter.canvasSize.width,
+                    height: PainterPresenter.canvasSize.height,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CustomPaint(
+                          foregroundPainter: LimbsPainter(
+                            inferences: inferences!,
+                            limbs: handler.limbs,
+                          ),
+                          child: CameraPreview(
+                            cameraP.cameraController!,
+                          ),
+                        ),
+                        GestureDetector(
+                          onScaleStart: (details) => cameraP.setInitZoom(),
+                          onScaleUpdate: (details) {
+                            cameraP.setZoomLevel(details.scale);
+                          },
+                        ),
+                        if (painterP.stateText != null)
+                        PText(
+                          painterP.stateText!,
+                          style: textTheme.displayLarge,
+                          color: painterP.stateText == 'READY'
+                              ? PTheme.colorC : PTheme.colorA,
+                          border: true,
+                        ),
+                        if (painterP.floatingMessage != null)
+                        Positioned(
+                          bottom: 30.0.h,
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: PainterPresenter.canvasSize.width * .8,
+                            height: 70.h,
+                            constraints: const BoxConstraints(maxWidth: 340.0),
+                            decoration: BoxDecoration(
+                              color: PTheme.white.withOpacity(.6),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: PText(
+                              painterP.floatingMessage!,
+                              style: textTheme.headlineSmall,
+                            ),
+                          ),
+                        ),
+                        if (painterP.count > 0
+                            && painterP.state == WorkoutState.stop)
+                        GetBuilder<WorkoutMain>(
+                          builder: (workoutMain) {
+                            return Positioned(
+                              bottom: 30.0.h,
+                              child: PButton(
+                                height: 80.h,
+                                stretch: true,
+                                constraints: const BoxConstraints(maxWidth: 340.0),
+                                backgroundColor: PTheme.colorD,
+                                onPressed: workoutMain.finishWorkout,
+                                child: Text('${painterP.count} 개로 운동 완료하기',
+                                  style: textTheme.headlineSmall,
+                                ),
+                              ),
+                            );
+                          }
+                        ),
+                      ],
+                    ),
                   ),
-                  if (painterP.distance == WorkoutDistance.middle)
-                  Text(
-                    painterP.view.kr,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Text(
-                    '${painterP.count} 개',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        PCircledButton(
+                          onPressed: painterP.initCount,
+                          backgroundColor: PTheme.lightGrey,
+                          enabled: painterP.state == WorkoutState.workout,
+                          child: PText('취소', style: textTheme.titleLarge),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (painterP.view != WorkoutView.unrecognized)
+                            PText(
+                              painterP.view.kr,
+                              style: textTheme.headlineSmall,
+                            ),
+                            PText(
+                              '${painterP.count} 개',
+                              style: textTheme.headlineMedium,
+                            ),
+                          ],
+                        ),
+                        if (painterP.state == WorkoutState.workout)
+                        PCircledButton(
+                          onPressed: painterP.workout,
+                          backgroundColor: PTheme.colorA,
+                          child: PText('중지', style: textTheme.titleLarge),
+                        ) else PCircledButton(
+                          onPressed: painterP.workout,
+                          backgroundColor: PTheme.colorB,
+                          child: PText('시작', style: textTheme.titleLarge),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );
-            },
+            }
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

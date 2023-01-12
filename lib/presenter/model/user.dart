@@ -9,7 +9,7 @@ import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/activity_type.dart';
 import 'package:pistachio/model/enum/difficulty.dart';
-import 'package:pistachio/model/enum/distance_unit.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/health/health.dart';
@@ -163,7 +163,7 @@ class UserPresenter extends GetxController {
         today,
         oneSecondBefore(tomorrow),
       ),
-      state: DistanceUnit.step,
+      state: ExerciseUnit.step,
     );
 
     HeightRecord height = HeightRecord(
@@ -172,6 +172,15 @@ class UserPresenter extends GetxController {
         today,
         oneSecondBefore(tomorrow),
       ),
+    );
+
+    WeightRecord weight = WeightRecord(
+      amount: loggedUser.getAmounts(
+        ActivityType.weight,
+        today,
+        oneSecondBefore(tomorrow),
+      ),
+      state: ExerciseUnit.count,
     );
 
     CalorieRecord calorie = CalorieRecord(amount: 0);
@@ -183,6 +192,10 @@ class UserPresenter extends GetxController {
     calorie.amount += CalorieRecord.from(
       ActivityType.height,
       height.amount,
+    );
+    calorie.amount += CalorieRecord.from(
+      ActivityType.weight,
+      weight.amount,
     );
 
     loggedUser.setRecord(
@@ -207,15 +220,17 @@ class UserPresenter extends GetxController {
     loggedUser.addRecord(type, today, record, true);
     updateCalorie();
 
-    switch (type) {
-      case ActivityType.distance:
-        if (!isIOS) record.amount += loggedUser.getTodayAmounts(type);
-        await HealthPresenter.addStepsData(record); break;
-      case ActivityType.height:
-        if (!isIOS) break;
-        await HealthPresenter.addFlightsData(record); break;
-      default: break;
-    }
+    // switch (type) {
+    //   case ActivityType.distance:
+    //     if (!isIOS) record.amount += loggedUser.getTodayAmounts(type);
+    //     await HealthPresenter.addStepsData(record);
+    //     break;
+    //   case ActivityType.height:
+    //     if (!isIOS) break;
+    //     await HealthPresenter.addFlightsData(record);
+    //     break;
+    //   default: break;
+    // }
 
     after = loggedUser.completedActivities.length;
 
@@ -240,6 +255,10 @@ class UserPresenter extends GetxController {
       BadgePresenter.awardDailyActivityCompleteBadge();
     }
     save();
+  }
+
+  void duplicateInputRecords() {
+    loggedUser.duplicateInputRecords();
   }
 
   void setMainBadge(String badgeId, [bool showDialog = true]) {

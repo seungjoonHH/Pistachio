@@ -7,7 +7,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/level.dart';
 import 'package:pistachio/model/enum/activity_type.dart';
-import 'package:pistachio/model/enum/distance_unit.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -31,7 +31,7 @@ class MyRecordDetailView extends StatelessWidget {
 
     PUser loggedUser = Get.find<UserPresenter>().loggedUser;
     double amount = loggedUser.getAmounts(type);
-    Record record = Record.init(type, amount, DistanceUnit.step);
+    Record record = Record.init(type, amount, ExerciseUnit.step);
 
     Map<String, dynamic> tier = LevelPresenter.getTier(type, record);
     Level current = tier['current'];
@@ -39,10 +39,10 @@ class MyRecordDetailView extends StatelessWidget {
 
     Record nextValue = Record.init(
       type, next.amount!.toDouble(),
-      DistanceUnit.kilometer,
+      ExerciseUnit.kilometer,
     );
 
-    nextValue.convert(DistanceUnit.step);
+    nextValue.convert(ExerciseUnit.step);
 
     return Stack(
       children: [

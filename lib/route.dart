@@ -22,6 +22,7 @@ import 'package:pistachio/view/page/my/main/my.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/view/page/release_note/main.dart';
+import 'package:pistachio/view/page/workout/guide.dart';
 import 'package:pistachio/view/page/workout/main.dart';
 
 /// class
@@ -59,6 +60,7 @@ class PRoute {
         '/releaseNote': const ReleaseNotePage(),
         '/developerInfo': const DeveloperInfoPage(),
         '/workout/main': const WorkoutMainPage(),
+        '/workout/guide': const WorkoutGuidePage(),
       };
 
   // 겟페이지 리스트

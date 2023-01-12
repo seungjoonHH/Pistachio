@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/workout/edge.dart';
 import 'package:pistachio/model/class/workout/handler.dart';
 import 'package:pistachio/model/class/workout/limb.dart';
@@ -43,9 +44,13 @@ class LimbsPainter extends CustomPainter {
     ..color = Colors.black54
     ..strokeWidth = 5;
 
-  Paint area = Paint()
-    ..color = Colors.white30;
+  // Paint area = Paint()
+  //   ..color = Colors.white24;
 
+  Paint area = Paint()
+    ..style = PaintingStyle.stroke
+    ..color = PTheme.colorB
+    ..strokeWidth = 5;
 
   List<Offset> pointsGreen = [];
   List<Offset> pointsRed   = [];
@@ -71,17 +76,28 @@ class LimbsPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 
   void renderEdge(Canvas canvas, Limb limb) {
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(
-          PainterPresenter.canvasSize.width * .5,
-          PainterPresenter.canvasSize.height * .55,
-        ),
-        width: PainterPresenter.canvasSize.width * .5,
-        height: PainterPresenter.canvasSize.height * .75,
+    // canvas.drawOval(
+    //   Rect.fromCenter(
+    //     center: Offset(
+    //       PainterPresenter.canvasSize.width * .5,
+    //       PainterPresenter.canvasSize.height * .55,
+    //     ),
+    //     width: PainterPresenter.canvasSize.width * .5,
+    //     height: PainterPresenter.canvasSize.height * .75,
+    //   ), area,
+    // );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromCenter(
+          center: Offset(
+            PainterPresenter.canvasSize.width * .5,
+            PainterPresenter.canvasSize.height * .55,
+          ),
+          width: PainterPresenter.canvasSize.width * .5,
+          height: PainterPresenter.canvasSize.height * .75,
+        ), const Radius.circular(40.0),
       ), area,
     );
-
 
     bool isHuman = Parts(painterP.inferences).isHuman;
 

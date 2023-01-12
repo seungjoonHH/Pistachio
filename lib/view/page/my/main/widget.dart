@@ -9,7 +9,7 @@ import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/level.dart';
 import 'package:pistachio/model/enum/activity_type.dart';
-import 'package:pistachio/model/enum/distance_unit.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
@@ -45,18 +45,18 @@ class _MyMainViewState extends State<MyMainView> {
                 PText('개인 누적 기록치', style: textTheme.headlineSmall),
                 const SizedBox(height: 20.0),
                 Column(
-                  children: ActivityType.values.sublist(1, 4).map((type) {
+                  children: ActivityType.values.sublist(1, 3).map((type) {
                     double amount = loggedUser.getAmounts(type);
-                    Record record = Record.init(type, amount, DistanceUnit.step);
+                    Record record = Record.init(type, amount, ExerciseUnit.step);
 
                     Map<String, dynamic> tier = LevelPresenter.getTier(type, record);
                     Level next = tier['next'] ?? Level.fromJson({'amount': 0});
 
                     Record nextValue = Record.init(
-                      type, next.amount!.toDouble(), DistanceUnit.kilometer,
+                      type, next.amount!.toDouble(), ExerciseUnit.kilometer,
                     );
 
-                    nextValue.convert(DistanceUnit.step);
+                    nextValue.convert(ExerciseUnit.step);
                     int remainValue = (nextValue.amount - amount).round();
 
                     return SizedBox(

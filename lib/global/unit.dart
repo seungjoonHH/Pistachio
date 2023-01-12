@@ -41,7 +41,7 @@ Map<ActivityType, int> get velocities => {
 //   switch (type) {
 //     case ActivityType.distance:
 //       int converted = convertDistance(
-//         amount, DistanceUnit.minute, DistanceUnit.step,
+//         amount, ExerciseUnit.minute, ExerciseUnit.step,
 //       );
 //       return converted;
 //     case ActivityType.height: return amount;

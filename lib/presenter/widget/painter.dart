@@ -10,7 +10,7 @@ import 'package:pistachio/model/enum/workout.dart';
 class PainterPresenter extends GetxController {
   static Size canvasSize = Size(
     MediaQuery.of(Get.context!).size.width,
-    MediaQuery.of(Get.context!).size.height * .7,
+    MediaQuery.of(Get.context!).size.height * .74,
   );
 
   static List<Edge> edges = [
@@ -48,10 +48,14 @@ class PainterPresenter extends GetxController {
 
   int count = 0;
   bool allowCount = true;
+  String? floatingMessage;
 
   WorkoutView beforeView = WorkoutView.front;
   WorkoutStage beforeStage = WorkoutStage.ready;
   WorkoutStage currentStage = WorkoutStage.ready;
+  WorkoutState state = WorkoutState.stop;
+
+  String? stateText;
 
   static List<WorkoutDistance> distanceHistory = [];
   static List<WorkoutView> viewHistory = [];
@@ -115,9 +119,13 @@ class PainterPresenter extends GetxController {
 
     WorkoutDistance currentDistance = WorkoutDistance.middle;
 
-    if (height > 500) currentDistance = WorkoutDistance.near;
+    if (height > 500) {
+      currentDistance = WorkoutDistance.near;
+      floatingMessage = '너무 가까워요!';
+    }
     if (height < 100 + (currentStage == WorkoutStage.down ? 0 : 50)) {
       currentDistance = WorkoutDistance.far;
+      floatingMessage = '좀 더 가까이 와주세요.';
     }
 
     addDistanceHistory(currentDistance);
@@ -134,6 +142,7 @@ class PainterPresenter extends GetxController {
     if (PainterPresenter.humanHistory < 0
         || distance != WorkoutDistance.middle) {
       currentView = WorkoutView.unrecognized;
+      floatingMessage = '사람이 인식되지 않아요.';
     }
     if (width < 60 && width > 38) currentView = WorkoutView.front;
     if (width > -60 && width < -38) currentView = WorkoutView.back;
@@ -172,15 +181,51 @@ class PainterPresenter extends GetxController {
     countCond &= currentStage == WorkoutStage.up;
 
     beforeStage = currentStage;
+
     if (countCond) {
       if (!allowCount) {
         currentStage = WorkoutStage.fast;
+        floatingMessage = '조금만 더 천천히 해주세요.';
         return;
       }
-      count++; allowCount = false;
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        allowCount = true;
-      });
+      if (state == WorkoutState.workout) {
+        count++; allowCount = false;
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          allowCount = true;
+        });
+      }
     }
+
+    floatingMessage = null;
+  }
+
+  void initCount() {
+    count = 0;
+    state = WorkoutState.stop;
+    stateText = '';
+    update();
+  }
+
+  void workout() {
+    switch (state) {
+      case WorkoutState.stop:
+        stateText = 'READY';
+        state = WorkoutState.ready;
+        Future.delayed(const Duration(milliseconds: 2000), () {
+          stateText = 'GO!'; update();
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            state = WorkoutState.workout;
+            stateText = null; update();
+          });
+        });
+        update();
+        break;
+      case WorkoutState.ready: break;
+      case WorkoutState.workout:
+        state = WorkoutState.stop;
+        update();
+        break;
+    }
+
   }
 }

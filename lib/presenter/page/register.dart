@@ -6,12 +6,14 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/global/string.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/enum/activity_type.dart';
-import 'package:pistachio/model/enum/distance_unit.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/model/enum/sex.dart';
 import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:pistachio/presenter/model/badge.dart';
+import 'package:pistachio/presenter/model/height.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
+import 'package:pistachio/presenter/model/weight.dart';
 import 'package:pistachio/view/page/register/widget.dart';
 import 'home.dart';
 
@@ -232,13 +234,17 @@ class RegisterPresenter extends GetxController {
         if (invalid) { invalid = false; return; }
         newcomer.nickname = fields['nickname']!.controller.text;
         newcomer.dateOfBirth = stringToDate(fields['dateOfBirth']!.controller.text);
+        newcomer.weight = WeightPresenter.getAverageWeight(newcomer.age, newcomer.sex!);
+        newcomer.height = HeightPresenter.getAverageHeight(newcomer.age, newcomer.sex!);
         break;
-      case 1: break;
+      case 1:
+
+        break;
       case 2: break;
       case 3:
         initGoal(Record.init(
           ActivityType.distance,
-          60, DistanceUnit.minute,
+          60, ExerciseUnit.minute,
         ));
         break;
       case 4: break;

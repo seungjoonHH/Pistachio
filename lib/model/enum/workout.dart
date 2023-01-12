@@ -9,3 +9,4 @@ get kr => ['정면', '측면', '후면', ''][index];
 }
 
 enum WorkoutStage { ready, down, up, fast }
+enum WorkoutState { stop, ready, workout }

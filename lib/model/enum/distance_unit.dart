@@ -1,1 +1,0 @@
-enum DistanceUnit { minute, step, kilometer }

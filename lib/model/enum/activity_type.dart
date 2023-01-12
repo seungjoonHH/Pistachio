@@ -30,8 +30,8 @@ enum ActivityType {
 
   // 문자열을 enum 으로 전환
   static ActivityType? toEnum(String? string) =>
-  ActivityType.values.firstWhereOrNull((type) => type.name == string);
+    ActivityType.values.firstWhereOrNull((type) => type.name == string);
 
-  static List<ActivityType> get activeValues => [calorie, distance, height];
+  static List<ActivityType> get activeValues => [calorie, distance, height, weight];
 
 }

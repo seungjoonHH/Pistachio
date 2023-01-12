@@ -87,7 +87,7 @@ class MonthlyQuestView extends StatelessWidget {
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: ActivityType.activeValues.map((type) {
+                    children: ActivityType.activeValues.sublist(0, 3).map((type) {
                       Badge? badge;
                       () async {
                         badge = BadgePresenter.getBadge('1040${type.index}${

@@ -49,8 +49,10 @@ class HomePresenter extends GetxController {
       ActivityType.weight: false,
     };
 
-    await userP.load();
     await userP.fetchData();
+    await userP.load();
+    userP.duplicateInputRecords();
+    userP.updateCalorie();
     await BadgePresenter.synchronizeBadges();
 
     loadingP.loadEnd();

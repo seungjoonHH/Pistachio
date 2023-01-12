@@ -70,11 +70,19 @@ class _PistachioState extends State<Pistachio> {
           theme: ThemeData(
             colorScheme: PTheme.lightColorScheme,
             textTheme: PTheme.textTheme,
+            scaffoldBackgroundColor: PTheme.lightColorScheme.background,
+            appBarTheme: AppBarTheme(
+              backgroundColor: PTheme.lightColorScheme.background,
+            ),
           ),
           darkTheme: ThemeData(
             useMaterial3: true,
             colorScheme: PTheme.darkColorScheme,
             textTheme: PTheme.textTheme,
+            scaffoldBackgroundColor: PTheme.darkColorScheme.background,
+            appBarTheme: AppBarTheme(
+              backgroundColor: PTheme.darkColorScheme.background,
+            ),
           ),
           // home: const DeveloperPage(),
           home: const LoginPage(),

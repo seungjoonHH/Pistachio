@@ -8,7 +8,7 @@ import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/enum/activity_type.dart';
-import 'package:pistachio/model/enum/distance_unit.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/model/enum/sex.dart';
 import 'package:pistachio/presenter/model/record.dart';
 
@@ -52,6 +52,7 @@ class PUser {
 
   DateTime? get regDate => _regDate?.toDate();
   DateTime? get dateOfBirth => _dateOfBirth?.toDate();
+  int get age => today.year - dateOfBirth!.year;
 
   String? get dateOfBirthString => dateToString('yyyy-MM-dd', dateOfBirth);
 
@@ -81,7 +82,7 @@ class PUser {
 
   List<ActivityType> get completedActivities {
     List<ActivityType> types = [];
-    for (ActivityType type in ActivityType.activeValues) {
+    for (ActivityType type in ActivityType.activeValues.sublist(0, 3)) {
       if (completed(type)) types.add(type);
     }
     return types;
@@ -184,29 +185,45 @@ class PUser {
     double amount = type == ActivityType.distance
         ? (record as DistanceRecord).step : record.amount;
 
+    late bool alreadyExist;
+
+    alreadyExist = inputRecords[type.name]
+        .map((rec) => rec['date']).contains(toTimestamp(date));
+
     if (input) {
-      for (var rec in inputRecords[type.name] ?? []) {
-        if (rec['date'] == toTimestamp(date)) {
-          rec['amount'] += amount;
-          return;
+      if (alreadyExist) {
+        for (var rec in inputRecords[type.name] ?? []) {
+          if (rec['date'] == toTimestamp(date)) {
+            rec['amount'] += amount;
+            break;
+          }
         }
       }
-      inputRecords[type.name].add({
+      else {
+        inputRecords[type.name].add({
+          'date': toTimestamp(date),
+          'amount': amount,
+        });
+      }
+    }
+
+    alreadyExist = records[type.name]
+        .map((rec) => rec['date']).contains(toTimestamp(date));
+
+    if (alreadyExist) {
+      for (var rec in records[type.name] ?? []) {
+        if (rec['date'] == toTimestamp(date)) {
+          rec['amount'] += amount;
+          break;
+        }
+      }
+    }
+    else {
+      records[type.name].add({
         'date': toTimestamp(date),
         'amount': amount,
       });
     }
-
-    for (var rec in records[type.name] ?? []) {
-      if (rec['date'] == toTimestamp(date)) {
-        rec['amount'] += amount;
-        return;
-      }
-    }
-    records[type.name].add({
-      'date': toTimestamp(date),
-      'amount': amount,
-    });
   }
 
   // 기록 설정
@@ -214,7 +231,7 @@ class PUser {
     ActivityType type,
     DateTime date,
     Record record,
-    [DistanceUnit? unit]
+    [ExerciseUnit? unit]
   ) {
     for (var rec in records[type.name] ?? []) {
       if (rec['date'] == toTimestamp(date)) {
@@ -228,6 +245,18 @@ class PUser {
     'date': toTimestamp(date),
     'amount': record.amount,
     });
+  }
+
+  void duplicateInputRecords() {
+    for (ActivityType type in ActivityType.values) {
+      for (var rec in records[type.name] ?? []) {
+        for (var inputRec in inputRecords[type.name] ?? []) {
+          if (rec['date'] == inputRec['date']) {
+            rec['amount'] += inputRec['amount'];
+          }
+        }
+      }
+    }
   }
 
   // 금일 기록 반환
@@ -285,12 +314,12 @@ class PUser {
   Record? getGoal(ActivityType type) {
     return Record.init(
       type, goals[type.name]?.toDouble() ?? .0,
-      DistanceUnit.step,
+      ExerciseUnit.step,
     );
   }
 
   void setGoal(ActivityType type, Record record) {
-    record.convert(DistanceUnit.step);
+    record.convert(ExerciseUnit.step);
     goals[type.name] = record.amount;
   }
 

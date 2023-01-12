@@ -39,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
     const backgroundAsset = 'assets/image/page/login/background.svg';
 
     return Scaffold(
-      backgroundColor: PTheme.background,
       body: Stack(
         alignment: Alignment.center,
         children: [

@@ -4,7 +4,7 @@ import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pistachio/global/date.dart';
 import 'package:pistachio/model/enum/activity_type.dart';
-import 'package:pistachio/model/enum/distance_unit.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 
@@ -70,7 +70,7 @@ class HealthPresenter {
       steps = (await health.getTotalStepsInInterval(today, now)) ?? 0;
       DistanceRecord distance = DistanceRecord(
         amount: steps.toDouble(),
-        state: DistanceUnit.step,
+        state: ExerciseUnit.step,
       );
 
       userP.setRecord(ActivityType.distance, distance);
@@ -105,7 +105,7 @@ class HealthPresenter {
   static Future addStepsData(Record distance) async {
     DateTime startTime = today;
     DateTime endTime = now;
-    distance.convert(DistanceUnit.step);
+    distance.convert(ExerciseUnit.step);
 
     await health.writeHealthData(
       distance.amount.toDouble(),

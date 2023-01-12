@@ -94,7 +94,6 @@ class ChallengeDetailView extends StatelessWidget {
                     onPressed: challengeMain.challengeJoinButtonPressed,
                     text: '챌린지 참여하기',
                     stretch: true,
-                    backgroundColor: PTheme.background,
                     textColor: PTheme.black,
                     multiple: true,
                   ),

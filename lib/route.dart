@@ -41,7 +41,7 @@ class PRoute {
         '/login': const LoginPage(),
         '/register': const RegisterPage(),
         '/onboarding': const OnboardingPage(),
-        '/exercise/input': const ExerciseInputPage(),
+        '/exercise/input': ExerciseInputPage(),
         '/record/main': const RecordMainPage(),
         '/record/detail': const RecordDetailPage(),
         '/challenge/main': const ChallengeMainPage(),

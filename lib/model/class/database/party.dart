@@ -63,7 +63,7 @@ class Party {
   PUser getMemberByRank(int rank) => getMember(ranks[rank - 1].key);
   PUser get winner => getMemberByRank(1);
 
-  Badge get badge => BadgePresenter.getBadge(level['collection'])!;
+  PBadge get badge => BadgePresenter.getBadge(level['collection'])!;
 
   /// constructors
   Party();

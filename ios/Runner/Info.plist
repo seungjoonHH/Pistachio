@@ -117,5 +117,7 @@
     <key>FirebaseScreenReportingEnabled</key>
     <false/>
 
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>

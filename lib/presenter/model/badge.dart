@@ -19,34 +19,34 @@ import 'package:pistachio/presenter/model/user.dart';
 class BadgePresenter extends GetxController {
   /// static variables
   static String asset = 'assets/json/data/badges.json';
-  static List<Badge> badges = [];
+  static List<PBadge> badges = [];
 
   /// static methods
   // json 파일 불러오기
   static Future importFile() async {
     String string = await rootBundle.loadString(asset);
     List<dynamic> list = jsonDecode(string);
-    badges = list.map((json) => Badge.fromJson(json)).toList();
+    badges = list.map((json) => PBadge.fromJson(json)).toList();
   }
 
-  static List<Badge> get availableBadges {
-    List<Badge> badgeList = [...badges];
+  static List<PBadge> get availableBadges {
+    List<PBadge> badgeList = [...badges];
     badgeList.removeWhere((badge) => !badge.activate!);
     return badgeList;
   }
 
-  static List<Badge> get notAcquiredBadges {
+  static List<PBadge> get notAcquiredBadges {
     PUser user = Get.find<UserPresenter>().loggedUser;
-    List<Badge> badgeList = [...availableBadges];
+    List<PBadge> badgeList = [...availableBadges];
     badgeList.removeWhere((badge) => user.hasCollection(badge.id!));
     return badgeList;
   }
 
   // 뱃지 아이디에 해당하는 뱃지 반환
-  static Badge? getBadge(String? id) => badges
+  static PBadge? getBadge(String? id) => badges
       .firstWhereOrNull((badge) => badge.id == id);
 
-  static Badge? getThisMonthQuestBadge(ActivityType type) {
+  static PBadge? getThisMonthQuestBadge(ActivityType type) {
     if (!type.active) return null;
     return getBadge('1040${type.index}${
       (today.month - 1).toString().padLeft(2, '0')}'

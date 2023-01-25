@@ -77,7 +77,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/lite-model_movenet_singlepose_lightning_3.tflite
+    - assets/model/lite-model_movenet_singlepose_lightning_3.tflite
     - assets/image/logo/
     - assets/image/level/distance/
     - assets/image/level/height/

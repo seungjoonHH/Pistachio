@@ -19,7 +19,7 @@ class Parts {
   }
 
   bool get isHuman {
-    return average(probs.values.toList()) > .3;
+    return probs.values.toList().reduce(min) > .3;
     // Point sL = points[Part.shoulderL]!;
     // Point hL = points[Part.hipL]!;
     // Point aL = points[Part.ankleL]!;

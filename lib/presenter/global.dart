@@ -207,7 +207,7 @@ class GlobalPresenter extends GetxController {
   }
 
   static void showAwardedBadgeDialog(
-    PBadge? badge,
+    PBadge badge,
     [bool firstAward = false]
   ) async {
     showPDialog(
@@ -265,7 +265,7 @@ class GlobalPresenter extends GetxController {
                 bottom: 20.0,
                 child: Column(
                   children: [
-                    PText(badge!.title!,
+                    PText(badge.title!,
                       style: textTheme.titleLarge,
                       bold: true,
                     ),

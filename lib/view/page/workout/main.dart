@@ -34,6 +34,8 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
   static int historyMax = 4;
   int frameCount = 0;
 
+  late LimbsPainter painter;
+
   List<List<int>> historyX = List.generate(
     17, (_) => List.generate(historyMax, (_) => 0),
   );
@@ -83,8 +85,8 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
     List refinedInferences = List.generate(inferenceResults.length, (_) => [0, 0, .0]);
 
     for (int i = 0; i < inferenceResults.length; i++) {
-      historyX[i][frameCount % historyMax] = inferenceResults[i][0];
-      historyY[i][frameCount % historyMax] = inferenceResults[i][1];
+      historyX[i][frameCount % historyMax] = inferenceResults[i][0] - 68;
+      historyY[i][frameCount % historyMax] = inferenceResults[i][1] - 68;
       historyC[i][frameCount % historyMax] = inferenceResults[i][2];
     }
 
@@ -92,13 +94,13 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
       const int thresholdX = 50;
       const int thresholdY = 50;
 
-      int refinedX = average(historyX[i]).toInt();
-      int refinedY = average(historyY[i]).toInt();
-      double refinedC = average([...historyC[i]]).toDouble();
+      int refinedX = average(historyX[i]).round();
+      int refinedY = average(historyY[i]).round();
+      double refinedC = average(historyC[i]).toDouble();
 
       if (frameCount < historyMax) {
-        refinedInferences[i][0] = refinedX;
-        refinedInferences[i][1] = refinedY;
+        refinedInferences[i][0] = refinedX - 68;
+        refinedInferences[i][1] = refinedY - 68;
         refinedInferences[i][2] = refinedC;
         continue;
       }
@@ -125,139 +127,154 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
       predicting = false;
       initialize = true;
       handler.checkLimbs(refinedInferences);
+
+      painter = LimbsPainter(
+        inferences: inferences!,
+        limbs: handler.limbs,
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
+
     if (inferences == null) return const Scaffold();
 
     return GetBuilder<CameraPresenter>(
       builder: (cameraP) {
-        return Scaffold(
-          appBar: PAppBar(
-            title: '운동하기',
-            actions: [
-              IconButton(
-                onPressed: cameraP.toggleDirection,
-                icon: const Icon(Icons.camera_alt),
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            PainterPresenter.setScreenRatio(orientation);
+            return Scaffold(
+              appBar: PAppBar(
+                title: '운동하기',
+                actions: [
+                  IconButton(
+                    onPressed: () async {
+                      cameraP.toggleDirection();
+                      initAsync();
+                    },
+                    icon: const Icon(Icons.camera_alt),
+                  ),
+                ],
               ),
-            ],
-          ),
-          body: GetBuilder<PainterPresenter>(
-            builder: (painterP) {
-              return Column(
-                children: [
-                  SizedBox(
-                    // width: PainterPresenter.canvasSize.width,
-                    height: PainterPresenter.canvasSize.height,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        CustomPaint(
-                          foregroundPainter: LimbsPainter(
-                            inferences: inferences!,
-                            limbs: handler.limbs,
-                          ),
-                          child: CameraPreview(
-                            cameraP.cameraController!,
-                          ),
-                        ),
-                        GestureDetector(
-                          onScaleStart: (details) => cameraP.setInitZoom(),
-                          onScaleUpdate: (details) {
-                            cameraP.setZoomLevel(details.scale);
-                          },
-                        ),
-                        if (painterP.stateText != null)
-                        PText(
-                          painterP.stateText!,
-                          style: textTheme.displayLarge,
-                          color: painterP.stateText == 'READY'
-                              ? PTheme.colorC : PTheme.colorA,
-                          border: true,
-                        ),
-                        if (painterP.floatingMessage != null)
-                        Positioned(
-                          bottom: 30.0.h,
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: PainterPresenter.canvasSize.width * .8,
-                            height: 70.h,
-                            constraints: const BoxConstraints(maxWidth: 340.0),
-                            decoration: BoxDecoration(
-                              color: PTheme.white.withOpacity(.6),
-                              borderRadius: BorderRadius.circular(20.0),
+              body: GetBuilder<PainterPresenter>(
+                builder: (painterP) {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        // width: PainterPresenter.canvasSize.width,
+                        height: PainterPresenter.canvasSize.height,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CustomPaint(
+                              foregroundPainter: painter,
+                              child: CameraPreview(
+                                cameraP.cameraController!,
+                              ),
                             ),
-                            child: PText(
-                              painterP.floatingMessage!,
-                              style: textTheme.headlineSmall,
+                            GestureDetector(
+                              onScaleStart: (details) => cameraP.setInitZoom(),
+                              onScaleUpdate: (details) {
+                                cameraP.setZoomLevel(details.scale);
+                              },
                             ),
-                          ),
-                        ),
-                        if (painterP.count > 0
-                            && painterP.state == WorkoutState.stop)
-                        GetBuilder<WorkoutMain>(
-                          builder: (workoutMain) {
-                            return Positioned(
+                            if (painterP.stateText != null)
+                            PText(
+                              painterP.stateText!,
+                              style: textTheme.displayLarge,
+                              color: painterP.stateText == 'READY'
+                                  ? PTheme.colorC : PTheme.colorA,
+                              border: true,
+                            ),
+                            if (painterP.floatingMessage != null)
+                            Positioned(
                               bottom: 30.0.h,
-                              child: PButton(
-                                height: 80.h,
-                                stretch: true,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: PainterPresenter.canvasSize.width * .8,
+                                height: 70.h,
                                 constraints: const BoxConstraints(maxWidth: 340.0),
-                                backgroundColor: PTheme.colorD,
-                                onPressed: workoutMain.finishWorkout,
-                                child: Text('${painterP.count} 개로 운동 완료하기',
+                                decoration: BoxDecoration(
+                                  color: PTheme.white.withOpacity(.6),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: PText(
+                                  painterP.floatingMessage!,
                                   style: textTheme.headlineSmall,
                                 ),
                               ),
-                            );
-                          }
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        PCircledButton(
-                          onPressed: painterP.initCount,
-                          backgroundColor: PTheme.lightGrey,
-                          enabled: painterP.state == WorkoutState.workout,
-                          child: PText('취소', style: textTheme.titleLarge),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (painterP.view != WorkoutView.unrecognized)
-                            PText(
-                              painterP.view.kr,
-                              style: textTheme.headlineSmall,
                             ),
-                            PText(
-                              '${painterP.count} 개',
-                              style: textTheme.headlineMedium,
+                            if (painterP.count > 0
+                                && painterP.state == WorkoutState.stop)
+                            GetBuilder<WorkoutMain>(
+                              builder: (workoutMain) {
+                                return Positioned(
+                                  bottom: 30.0.h,
+                                  child: PButton(
+                                    height: 80.h,
+                                    stretch: true,
+                                    constraints: BoxConstraints(maxWidth: 300.0.w),
+                                    backgroundColor: PTheme.colorD,
+                                    onPressed: workoutMain.finishWorkout,
+                                    child: Text('${painterP.count} 개로 운동 완료하기',
+                                      style: textTheme.headlineSmall,
+                                    ),
+                                  ),
+                                );
+                              }
+                            ),
+                            // Container(
+                            //   width: 370,
+                            //   height: 494,
+                            // ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            PCircledButton(
+                              onPressed: painterP.initCount,
+                              backgroundColor: PTheme.lightGrey,
+                              enabled: painterP.state == WorkoutState.workout,
+                              child: PText('취소', style: textTheme.titleLarge),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (painterP.view != WorkoutView.unrecognized)
+                                PText(
+                                  painterP.view.kr,
+                                  style: textTheme.headlineSmall,
+                                ),
+                                PText(
+                                  '${painterP.count} 개',
+                                  style: textTheme.headlineMedium,
+                                ),
+                              ],
+                            ),
+                            if (painterP.state == WorkoutState.workout)
+                            PCircledButton(
+                              onPressed: painterP.workout,
+                              backgroundColor: PTheme.colorA,
+                              child: PText('중지', style: textTheme.titleLarge),
+                            ) else PCircledButton(
+                              onPressed: painterP.workout,
+                              backgroundColor: PTheme.colorB,
+                              child: PText('시작', style: textTheme.titleLarge),
                             ),
                           ],
                         ),
-                        if (painterP.state == WorkoutState.workout)
-                        PCircledButton(
-                          onPressed: painterP.workout,
-                          backgroundColor: PTheme.colorA,
-                          child: PText('중지', style: textTheme.titleLarge),
-                        ) else PCircledButton(
-                          onPressed: painterP.workout,
-                          backgroundColor: PTheme.colorB,
-                          child: PText('시작', style: textTheme.titleLarge),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            }
-          ),
+                      ),
+                    ],
+                  );
+                }
+              ),
+            );
+          }
         );
       },
     );

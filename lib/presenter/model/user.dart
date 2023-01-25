@@ -57,9 +57,7 @@ class UserPresenter extends GetxController {
 
   // 로그아웃
   // 현재 로그인된 사용자 정보 초기화
-  void logout() {
-    loggedUser = PUser();
-  }
+  void logout() => loggedUser = PUser();
 
   /* 파이어베이스 관련 */
   // 파이어베이스에서 로드
@@ -207,6 +205,25 @@ class UserPresenter extends GetxController {
     update();
   }
 
+  void clearRecords() {
+    for (ActivityType type in ActivityType.values) {
+      ExerciseUnit? unit;
+
+      switch (type) {
+        case ActivityType.distance:
+          unit = ExerciseUnit.step;
+          break;
+        case ActivityType.weight:
+          unit = ExerciseUnit.count;
+          break;
+        default: break;
+      }
+      print(type);
+      Record record = Record.init(type, 0, unit);
+      loggedUser.setRecord(type, today, record);
+    }
+  }
+
   // 해당 활동형식의 기록 추가 (구글핏/건강 연동, 칼로리 계산, 관련 뱃지 수여)
   void addRecord(
     ActivityType type,
@@ -255,10 +272,6 @@ class UserPresenter extends GetxController {
       BadgePresenter.awardDailyActivityCompleteBadge();
     }
     save();
-  }
-
-  void duplicateInputRecords() {
-    loggedUser.duplicateInputRecords();
   }
 
   void setMainBadge(String badgeId, [bool showDialog = true]) {

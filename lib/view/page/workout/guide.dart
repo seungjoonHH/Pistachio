@@ -5,6 +5,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/presenter/page/workout/main.dart';
 import 'package:pistachio/presenter/page/workout/guide.dart';
 import 'package:pistachio/view/widget/button/button.dart';
+import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:pistachio/view/widget/widget/card.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -14,10 +15,11 @@ class WorkoutGuidePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const PAppBar(),
       body: Center(
         child: CarouselSlider(
           items: List.generate(4, (index) => Padding(
-            padding: const EdgeInsets.all(40.0),
+            padding: const EdgeInsets.fromLTRB(30.0, .0, 30.0, 30.0),
             child: GuideCard(index: index),
           ))..add(Center(
             child: PButton(

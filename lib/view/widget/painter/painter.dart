@@ -41,7 +41,7 @@ class LimbsPainter extends CustomPainter {
     ..strokeWidth = 8;
 
   Paint edgeBlack = Paint()
-    ..color = Colors.black54
+    ..color = Colors.black12
     ..strokeWidth = 5;
 
   // Paint area = Paint()
@@ -73,7 +73,7 @@ class LimbsPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 
   void renderEdge(Canvas canvas, Limb limb) {
     // canvas.drawOval(
@@ -123,7 +123,6 @@ class LimbsPainter extends CustomPainter {
       double vertex1Y = painterP.inferences[edge.part1.index][1].toDouble() + ExerciseHandler.errorY;
       double vertex2X = painterP.inferences[edge.part2.index][0].toDouble() + ExerciseHandler.errorX;
       double vertex2Y = painterP.inferences[edge.part2.index][1].toDouble() + ExerciseHandler.errorY;
-
 
       if (limb.contains(edge.part1.index) & limb.contains(edge.part2.index)) {
         canvas.drawLine(

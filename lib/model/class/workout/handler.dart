@@ -37,17 +37,17 @@ class SquatHandler extends ExerciseHandler {
     Limb limb1 = Limb(Part.hipL, Part.kneeL, Part.ankleL);
     Limb limb2 = Limb(Part.hipR, Part.kneeR, Part.ankleR);
 
-    limb1.setAngles(WorkoutView.front, 70, 160);
-    limb1.setAngles(WorkoutView.back, 70, 160);
-    limb1.setAngles(WorkoutView.side, 70, 150);
+    limb1.setAngles(WorkoutView.front, 30, 160);
+    limb1.setAngles(WorkoutView.back, 30, 160);
+    limb1.setAngles(WorkoutView.side, 30, 150);
 
-    limb2.setAngles(WorkoutView.front, 70, 160);
-    limb2.setAngles(WorkoutView.back, 70, 160);
-    limb2.setAngles(WorkoutView.side, 70, 150);
+    limb2.setAngles(WorkoutView.front, 30, 160);
+    limb2.setAngles(WorkoutView.back, 30, 160);
+    limb2.setAngles(WorkoutView.side, 30, 150);
 
     limbs = [limb1, limb2];
 
-    ExerciseHandler.errorX = -70;
-    ExerciseHandler.errorY = -110;
+    ExerciseHandler.errorX = 0;
+    ExerciseHandler.errorY = 0;
   }
 }

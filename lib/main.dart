@@ -55,7 +55,11 @@ class _PistachioState extends State<Pistachio> {
     setTimeError();
     GlobalPresenter.initControllers();
     ImportPresenter.importData();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
 
     return ScreenUtilInit(
       designSize: const Size(360, 800),

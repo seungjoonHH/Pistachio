@@ -187,7 +187,7 @@ class PUser {
 
     late bool alreadyExist;
 
-    alreadyExist = inputRecords[type.name]
+    alreadyExist = (inputRecords[type.name] ?? [])
         .map((rec) => rec['date']).contains(toTimestamp(date));
 
     if (input) {
@@ -200,6 +200,7 @@ class PUser {
         }
       }
       else {
+        inputRecords[type.name] ??= [];
         inputRecords[type.name].add({
           'date': toTimestamp(date),
           'amount': amount,
@@ -207,7 +208,7 @@ class PUser {
       }
     }
 
-    alreadyExist = records[type.name]
+    alreadyExist = (records[type.name] ?? [])
         .map((rec) => rec['date']).contains(toTimestamp(date));
 
     if (alreadyExist) {
@@ -219,6 +220,7 @@ class PUser {
       }
     }
     else {
+      records[type.name] ??= [];
       records[type.name].add({
         'date': toTimestamp(date),
         'amount': amount,
@@ -281,6 +283,15 @@ class PUser {
   ]) {
     double result = 0;
 
+    inputRecords.forEach((type, recordList) {
+      if (activityType.name == type) {
+        for (var record in recordList) {
+          if (startDate != null && record['date'].toDate().isBefore(startDate)) continue;
+          if (endDate != null && record['date'].toDate().isAfter(endDate)) continue;
+          result += record['amount'].toDouble();
+        }
+      }
+    });
     records.forEach((type, recordList) {
       if (activityType.name == type) {
         for (var record in recordList) {

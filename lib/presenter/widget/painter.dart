@@ -8,10 +8,19 @@ import 'package:pistachio/model/enum/part.dart';
 import 'package:pistachio/model/enum/workout.dart';
 
 class PainterPresenter extends GetxController {
-  static Size canvasSize = Size(
-    MediaQuery.of(Get.context!).size.width,
-    MediaQuery.of(Get.context!).size.height * .74,
+  static double screenRatio = 3 / 4;
+  static double get _canvasHeight =>
+      MediaQuery.of(Get.context!).size.height * .74;
+  static Size get canvasSize => Size(
+    _canvasHeight * screenRatio,
+    _canvasHeight,
   );
+
+  static void setScreenRatio(Orientation orientation) {
+    screenRatio = 3 / 4;
+    if (orientation == Orientation.portrait) return;
+    screenRatio = 1 / screenRatio;
+  }
 
   static List<Edge> edges = [
     Edge.index( 0,  1), // nose to left_eye
@@ -119,11 +128,11 @@ class PainterPresenter extends GetxController {
 
     WorkoutDistance currentDistance = WorkoutDistance.middle;
 
-    if (height > 500) {
+    if (height > 800) {
       currentDistance = WorkoutDistance.near;
       floatingMessage = '너무 가까워요!';
     }
-    if (height < 100 + (currentStage == WorkoutStage.down ? 0 : 50)) {
+    if (height < 200 + (currentStage == WorkoutStage.down ? 0 : 100)) {
       currentDistance = WorkoutDistance.far;
       floatingMessage = '좀 더 가까이 와주세요.';
     }
@@ -133,29 +142,32 @@ class PainterPresenter extends GetxController {
   }
 
   WorkoutView get view {
-    double shoulderLX = inferences[Part.shoulderL.index][0].toDouble();
-    double shoulderRX = inferences[Part.shoulderR.index][0].toDouble();
-    double width = shoulderLX - shoulderRX;
+    try {
+      double shoulderLX = inferences[Part.shoulderL.index][0].toDouble();
+      double shoulderRX = inferences[Part.shoulderR.index][0].toDouble();
+      double width = shoulderLX - shoulderRX;
 
-    WorkoutView currentView = WorkoutView.side;
+      WorkoutView currentView = WorkoutView.side;
 
-    if (PainterPresenter.humanHistory < 0
-        || distance != WorkoutDistance.middle) {
-      currentView = WorkoutView.unrecognized;
-      floatingMessage = '사람이 인식되지 않아요.';
+      if (humanHistory < 0
+          || distance != WorkoutDistance.middle) {
+        currentView = WorkoutView.unrecognized;
+        floatingMessage = '사람이 인식되지 않아요.';
+      }
+      if (width < 60 && width > 38) currentView = WorkoutView.front;
+      if (width > -60 && width < -38) currentView = WorkoutView.back;
+
+      addViewHistory(currentView);
+      beforeView = decideView;
+      return decideView;
     }
-    if (width < 60 && width > 38) currentView = WorkoutView.front;
-    if (width > -60 && width < -38) currentView = WorkoutView.back;
-
-    addViewHistory(currentView);
-    beforeView = decideView;
-    return decideView;
+    catch (e) { return WorkoutView.unrecognized; }
   }
 
   void staging() {
     beforeStage = WorkoutStage.down;
     currentStage = WorkoutStage.down;
-    addHitHistory(limbs.map((l) => l.isCorrect).any((i) => i));
+    addHitHistory(limbs.map((l) => l.isCorrect).every((i) => i));
     countUp();
   }
 

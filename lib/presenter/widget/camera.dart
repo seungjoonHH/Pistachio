@@ -32,7 +32,6 @@ class CameraPresenter extends GetxController {
 
   Future toggleDirection() async {
     direction = 1 - direction;
-    await loadCamera(direction);
     update();
   }
 

@@ -10,7 +10,7 @@ class Walking {
   static const int velocity = 100;
 
   // 15분 소모 칼로리
-  static int get calorie => (weight * coefficient).ceil();
+  static int get calorie => (userWeight * coefficient).ceil();
 }
 
 // 조깅
@@ -22,7 +22,7 @@ class Jogging {
   static const int velocity = 145;
 
   // 15분 소모 칼로리
-  static int get calorie => (weight * coefficient).ceil();
+  static int get calorie => (userWeight * coefficient).ceil();
 }
 
 // 달리기
@@ -34,7 +34,7 @@ class Running {
   static const int velocity = 167;
 
   // 15분 소모 칼로리
-  static int get calorie => (weight * coefficient).ceil();
+  static int get calorie => (userWeight * coefficient).ceil();
 }
 
 // 계단오르기
@@ -43,10 +43,10 @@ class StairClimbing {
   static const double coefficient = 1.6;
 
   // 속력 (층/분)
-  static const double velocity = 3;
+  static const double velocity = 1;
 
   // 15분 소모 칼로리
-  static int get calorie => (weight * coefficient).ceil();
+  static int get calorie => (userWeight * coefficient).ceil();
 }
 
 // 근력운동
@@ -55,8 +55,8 @@ class MuscularExercise {
   static const double coefficient = 1.225;
 
   // 속력 (회/분)
-  static const double velocity = 14;
+  static const double velocity = 7;
 
   // 15분 소모 칼로리
-  static int get calorie => (weight * coefficient).ceil();
+  static int get calorie => (userWeight * coefficient).ceil();
 }

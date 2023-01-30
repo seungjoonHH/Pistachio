@@ -1,32 +1,54 @@
+import 'dart:math';
+
 import 'package:pistachio/model/class/workout/limb.dart';
+import 'package:pistachio/model/class/workout/parts.dart';
 import 'package:pistachio/model/enum/part.dart';
 import 'package:pistachio/model/enum/workout.dart';
 import 'package:pistachio/presenter/widget/painter.dart';
 
+class AngleRange {
+  late double min;
+  late double max;
+
+  AngleRange(this.min, this.max);
+
+  bool inRange(double angle) => angle >= min && angle <= max;
+}
+
 class ExerciseHandler {
-  late List<Limb> limbs;
-  static late double errorX;
-  static late double errorY;
+  static WorkoutPosture posture = WorkoutPosture.ready;
+  static late Parts parts;
+
+  List<Limb> limbs = [];
+  List<AngleRange> angleRanges = [];
 
   void init() {}
-  void doReps(List<dynamic> inferenceResults) {}
+  void checkLimbs(List<dynamic> inference) {
+    parts = Parts(inference);
+    posture = WorkoutPosture.ready;
+    bool downed = true;
+    bool isCorrect = true;
 
-  bool isPostureCorrect() {
-    return limbs.map((limb) => !limb.isCorrect).every((i) => i);
-  }
-
-  void checkLimbs(List<dynamic> inferenceResults) {
     for (int i = 0; i < limbs.length; i++) {
-      int A = limbs[i].part1.index;
-      int B = limbs[i].part2.index;
-      int C = limbs[i].part3.index;
+      Part A = limbs[i].part1;
+      Part B = limbs[i].part2;
+      Part C = limbs[i].part3;
 
-      List<int> pointA = [inferenceResults[A][0], inferenceResults[A][1]];
-      List<int> pointB = [inferenceResults[B][0], inferenceResults[B][1]];
-      List<int> pointC = [inferenceResults[C][0], inferenceResults[C][1]];
+      Point pointA = parts.points[A]!;
+      Point pointB = parts.points[B]!;
+      Point pointC = parts.points[C]!;
 
       double angle = PainterPresenter.getAngle(pointA, pointB, pointC);
-      limbs[i].correct(angle);
+
+      downed &= angleRanges[i].inRange(angle);
+      isCorrect &= Parts.similar(pointB.x, pointC.x);
+    }
+
+    isCorrect &= Parts.similar(parts.points[limbs[0].part3]!.y, parts.points[limbs[1].part3]!.y);
+
+    if (downed) {
+      posture = WorkoutPosture.wrong;
+      if (isCorrect) posture = WorkoutPosture.correct;
     }
   }
 }
@@ -34,20 +56,10 @@ class ExerciseHandler {
 class SquatHandler extends ExerciseHandler {
   @override
   void init() {
-    Limb limb1 = Limb(Part.hipL, Part.kneeL, Part.ankleL);
-    Limb limb2 = Limb(Part.hipR, Part.kneeR, Part.ankleR);
+    limbs = [];
+    limbs.add(Limb(Part.hipL, Part.kneeL, Part.ankleL));
+    limbs.add(Limb(Part.hipR, Part.kneeR, Part.ankleR));
 
-    limb1.setAngles(WorkoutView.front, 30, 160);
-    limb1.setAngles(WorkoutView.back, 30, 160);
-    limb1.setAngles(WorkoutView.side, 30, 150);
-
-    limb2.setAngles(WorkoutView.front, 30, 160);
-    limb2.setAngles(WorkoutView.back, 30, 160);
-    limb2.setAngles(WorkoutView.side, 30, 150);
-
-    limbs = [limb1, limb2];
-
-    ExerciseHandler.errorX = 0;
-    ExerciseHandler.errorY = 0;
+    angleRanges = [AngleRange(30, 150), AngleRange(30, 150)];
   }
 }

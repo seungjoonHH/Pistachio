@@ -243,6 +243,7 @@ class PUser {
       }
     }
 
+    records[type.name] ??= [];
     records[type.name].add({
     'date': toTimestamp(date),
     'amount': record.amount,
@@ -323,14 +324,19 @@ class PUser {
   }
 
   Record? getGoal(ActivityType type) {
+    ExerciseUnit? unit = {
+      ActivityType.distance: ExerciseUnit.step,
+      ActivityType.weight: ExerciseUnit.count,
+    }[type];
     return Record.init(
       type, goals[type.name]?.toDouble() ?? .0,
-      ExerciseUnit.step,
+      unit,
     );
   }
 
   void setGoal(ActivityType type, Record record) {
-    record.convert(ExerciseUnit.step);
+    if (type == ActivityType.distance) record.convert(ExerciseUnit.step);
+    if (type == ActivityType.weight) record.convert(ExerciseUnit.count);
     goals[type.name] = record.amount;
   }
 

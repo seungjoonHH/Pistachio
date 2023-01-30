@@ -52,7 +52,7 @@ class UserPresenter extends GetxController {
     Map<String, dynamic> json = user.toJson();
     data.forEach((key, value) => json[key] = value);
     loggedUser = PUser.fromJson(json);
-    await fetchData();
+    if (!await fetchData()) await load();
   }
 
   // 로그아웃
@@ -145,12 +145,15 @@ class UserPresenter extends GetxController {
 
   /* 기록 관련 */
   // 건강 및 구글핏 데이터 불러오기
-  Future fetchData() async {
+  Future<bool> fetchData() async {
     bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+    bool fetchCompleted = true;
+
     await HealthPresenter.requestAuth();
-    await HealthPresenter.fetchStepData();
-    if (isIOS) await HealthPresenter.fetchFlightsData();
-    updateCalorie();
+    fetchCompleted &= await HealthPresenter.fetchStepData();
+    if (isIOS) fetchCompleted &= await HealthPresenter.fetchFlightsData();
+
+    return fetchCompleted;
   }
 
   // 로그인된 사용자의 거리 및 높이 기록에 따른 칼로리 소모량을 계산하여 최신화
@@ -218,7 +221,6 @@ class UserPresenter extends GetxController {
           break;
         default: break;
       }
-      print(type);
       Record record = Record.init(type, 0, unit);
       loggedUser.setRecord(type, today, record);
     }
@@ -229,7 +231,6 @@ class UserPresenter extends GetxController {
     ActivityType type,
     Record record,
   ) async {
-    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
     late int before, after;
 
     before = loggedUser.completedActivities.length;

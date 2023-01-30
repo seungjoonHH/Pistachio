@@ -21,6 +21,7 @@ abstract class Record {
     [ExerciseUnit? unit]
   ) {
     assert(type != ActivityType.distance || unit != null);
+    assert(type != ActivityType.weight || unit != null);
 
     switch (type) {
       case ActivityType.calorie:
@@ -50,7 +51,7 @@ class CalorieRecord extends Record {
 
   static double from(ActivityType type, double amount) {
     double velocity = velocities[type]!.toDouble();
-    return calories[type]! * velocity * amount;
+    return calories[type]! * (1 / velocity) * amount;
   }
 
   CalorieRecord({required this.amount});
@@ -147,10 +148,10 @@ class WeightRecord extends Record {
 
     switch (unit) {
       case ExerciseUnit.count:
-        value /= weight;
+        value /= userWeight;
         break;
       case ExerciseUnit.weight:
-        value *= weight;
+        value *= userWeight;
         break;
       default: break;
     }

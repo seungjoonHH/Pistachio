@@ -188,7 +188,7 @@ class MyProfileWidget extends StatelessWidget {
                   style: textTheme.displaySmall,
                 ),
                 PText(
-                  '${height}cm | ${weight}kg',
+                  '${userHeight}cm | ${userWeight}kg',
                   style: textTheme.titleLarge,
                   color: PTheme.grey,
                 ),

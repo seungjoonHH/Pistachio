@@ -25,21 +25,22 @@ class WorkoutMainPage extends StatefulWidget {
 class _WorkoutMainPageState extends State<WorkoutMainPage> {
   bool predicting = false;
   bool initialize = false;
+  late Size inferenceSize;
+  double widthRatio = 1.0;
+  double heightRatio = 1.0;
 
   List<dynamic>? inferences;
   late ExerciseHandler handler;
-
-  late WorkoutView view;
 
   static int historyMax = 4;
   int frameCount = 0;
 
   late LimbsPainter painter;
 
-  List<List<int>> historyX = List.generate(
+  List<List<double>> historyX = List.generate(
     17, (_) => List.generate(historyMax, (_) => 0),
   );
-  List<List<int>> historyY = List.generate(
+  List<List<double>> historyY = List.generate(
     17, (_) => List.generate(historyMax, (_) => 0),
   );
   List<List<double>> historyC = List.generate(
@@ -75,7 +76,6 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
   void createIsolate(CameraImage imageStream) async {
     if (predicting) return;
     predicting = true;
-
     IsolateData isolateData = IsolateData(
       cameraImage: imageStream,
       interpreterAddress: CameraPresenter.classifier.interpreter.address,
@@ -85,8 +85,8 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
     List refinedInferences = List.generate(inferenceResults.length, (_) => [0, 0, .0]);
 
     for (int i = 0; i < inferenceResults.length; i++) {
-      historyX[i][frameCount % historyMax] = inferenceResults[i][0] - 68;
-      historyY[i][frameCount % historyMax] = inferenceResults[i][1] - 68;
+      historyX[i][frameCount % historyMax] = inferenceResults[i][0] * widthRatio;
+      historyY[i][frameCount % historyMax] = inferenceResults[i][1] * heightRatio;
       historyC[i][frameCount % historyMax] = inferenceResults[i][2];
     }
 
@@ -94,13 +94,13 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
       const int thresholdX = 50;
       const int thresholdY = 50;
 
-      int refinedX = average(historyX[i]).round();
-      int refinedY = average(historyY[i]).round();
+      double refinedX = average(historyX[i]).toDouble();
+      double refinedY = average(historyY[i]).toDouble();
       double refinedC = average(historyC[i]).toDouble();
 
       if (frameCount < historyMax) {
-        refinedInferences[i][0] = refinedX - 68;
-        refinedInferences[i][1] = refinedY - 68;
+        refinedInferences[i][0] = refinedX;
+        refinedInferences[i][1] = refinedY;
         refinedInferences[i][2] = refinedC;
         continue;
       }
@@ -121,6 +121,23 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
     if (!mounted) return;
 
     setState(() {
+      switch (PainterPresenter.orientation) {
+        case Orientation.portrait:
+          inferenceSize = Size(
+            imageStream.width.toDouble(),
+            imageStream.height.toDouble(),
+          );
+          break;
+        case Orientation.landscape:
+          inferenceSize = Size(
+            imageStream.height.toDouble(),
+            imageStream.width.toDouble(),
+          );
+          break;
+      }
+      widthRatio = PainterPresenter.canvasSize.width / inferenceSize.width;
+      heightRatio = PainterPresenter.canvasSize.height / inferenceSize.height;
+
       // inferenceResults
       // refinedInferences
       inferences = refinedInferences;
@@ -144,7 +161,7 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
       builder: (cameraP) {
         return OrientationBuilder(
           builder: (context, orientation) {
-            PainterPresenter.setScreenRatio(orientation);
+            PainterPresenter.setOrientation(orientation);
             return Scaffold(
               appBar: PAppBar(
                 title: '운동하기',
@@ -183,10 +200,12 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
                             if (painterP.stateText != null)
                             PText(
                               painterP.stateText!,
-                              style: textTheme.displayLarge,
-                              color: painterP.stateText == 'READY'
-                                  ? PTheme.colorC : PTheme.colorA,
-                              border: true,
+                              style: TextStyle(fontSize: 100.0.sp),
+                              color: {
+                                'HIT!': PTheme.colorA,
+                                'GO!': PTheme.colorB,
+                                'READY': PTheme.colorC,
+                              }[painterP.stateText],
                             ),
                             if (painterP.floatingMessage != null)
                             Positioned(
@@ -225,10 +244,6 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
                                 );
                               }
                             ),
-                            // Container(
-                            //   width: 370,
-                            //   height: 494,
-                            // ),
                           ],
                         ),
                       ),
@@ -245,11 +260,6 @@ class _WorkoutMainPageState extends State<WorkoutMainPage> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                if (painterP.view != WorkoutView.unrecognized)
-                                PText(
-                                  painterP.view.kr,
-                                  style: textTheme.headlineSmall,
-                                ),
                                 PText(
                                   '${painterP.count} 개',
                                   style: textTheme.headlineMedium,

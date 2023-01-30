@@ -61,21 +61,25 @@ class HealthPresenter {
   }
 
   // 걸음 데이터 가져오기
-  static Future fetchStepData() async {
+  static Future<bool> fetchStepData() async {
     int steps = 0;
 
     // 승인 시 헬스 데이터 가져와서 로컬에 저장
-    if (approved) {
-      final userP = Get.find<UserPresenter>();
-      steps = (await health.getTotalStepsInInterval(today, now)) ?? 0;
-      DistanceRecord distance = DistanceRecord(
-        amount: steps.toDouble(),
-        state: ExerciseUnit.step,
-      );
+    if (!approved) return false;
 
-      userP.setRecord(ActivityType.distance, distance);
-      userP.save();
-    }
+    final userP = Get.find<UserPresenter>();
+    int? fetchedSteps = await health.getTotalStepsInInterval(today, now);
+    if (fetchedSteps == null || fetchedSteps == 0) return false;
+    steps = fetchedSteps;
+    DistanceRecord distance = DistanceRecord(
+      amount: steps.toDouble(),
+      state: ExerciseUnit.step,
+    );
+
+    userP.setRecord(ActivityType.distance, distance);
+    userP.save();
+
+    return true;
   }
 
   // 높이 데이터 가져오기
@@ -83,22 +87,26 @@ class HealthPresenter {
     List<HealthDataPoint> flightsData = [];
     int flights = 0;
 
+    if (!approved) return false;
+
     // 승인 시 헬스 데이터 가져와서 로컬에 저장
-    if (approved) {
-      final userP = Get.find<UserPresenter>();
+    final userP = Get.find<UserPresenter>();
 
-      flightsData = (await health.getHealthDataFromTypes(today, now, flightType));
-      flightsData = HealthFactory.removeDuplicates(flightsData);
+    flightsData = await health.getHealthDataFromTypes(today, now, flightType);
+    if (flightsData.isEmpty) return false;
 
-      for (var flight in flightsData) {
-        flights += double.parse(flight.value.toString()).round();
-      }
+    flightsData = HealthFactory.removeDuplicates(flightsData);
 
-      HeightRecord height = HeightRecord(amount: flights.toDouble());
-
-      userP.setRecord(ActivityType.height, height);
-      userP.save();
+    for (var flight in flightsData) {
+      flights += double.parse(flight.value.toString()).round();
     }
+
+    HeightRecord height = HeightRecord(amount: flights.toDouble());
+
+    userP.setRecord(ActivityType.height, height);
+    userP.save();
+
+    return true;
   }
 
   // 걸음 데이터 저장

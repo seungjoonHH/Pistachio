@@ -7,6 +7,7 @@ import 'package:pistachio/model/class/workout/edge.dart';
 import 'package:pistachio/model/class/workout/handler.dart';
 import 'package:pistachio/model/class/workout/limb.dart';
 import 'package:pistachio/model/class/workout/parts.dart';
+import 'package:pistachio/model/enum/part.dart';
 import 'package:pistachio/model/enum/workout.dart';
 import 'package:pistachio/presenter/widget/painter.dart';
 
@@ -15,24 +16,33 @@ class LimbsPainter extends CustomPainter {
 
   // COLOR PROFILES
 
+  Paint pointBlue = Paint()
+    ..color = colorScheme.tertiary.withOpacity(.5)
+    ..strokeCap = StrokeCap.round
+    ..strokeWidth = 8;
+
+  Paint edgeBlue = Paint()
+    ..color = colorScheme.tertiaryContainer.withOpacity(.8)
+    ..strokeWidth = 5;
+
   // CORRECT POSTURE COLOR PROFILE
   Paint pointGreen = Paint()
-    ..color = Theme.of(Get.context!).colorScheme.primary.withOpacity(.5)
+    ..color = colorScheme.primary.withOpacity(.5)
     ..strokeCap = StrokeCap.round
     ..strokeWidth = 8;
 
   Paint edgeGreen = Paint()
-    ..color = Theme.of(Get.context!).colorScheme.primaryContainer.withOpacity(.8)
+    ..color = colorScheme.primaryContainer.withOpacity(.8)
     ..strokeWidth = 5;
 
   // INCORRECT POSTURE COLOR PROFILE
   Paint pointRed = Paint()
-    ..color = Theme.of(Get.context!).colorScheme.secondary.withOpacity(.5)
+    ..color = colorScheme.secondary.withOpacity(.5)
     ..strokeCap = StrokeCap.round
     ..strokeWidth = 8;
 
   Paint edgeRed = Paint()
-    ..color = Theme.of(Get.context!).colorScheme.secondaryContainer.withOpacity(.8)
+    ..color = colorScheme.secondaryContainer.withOpacity(.8)
     ..strokeWidth = 5;
 
   Paint pointBlack = Paint()
@@ -52,6 +62,7 @@ class LimbsPainter extends CustomPainter {
     ..color = PTheme.colorB
     ..strokeWidth = 5;
 
+  List<Offset> pointsBlue = [];
   List<Offset> pointsGreen = [];
   List<Offset> pointsRed   = [];
   List<Offset> pointsBlack = [];
@@ -67,6 +78,7 @@ class LimbsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (Limb limb in painterP.limbs) { renderEdge(canvas, limb); }
+    canvas.drawPoints(PointMode.points, pointsBlue, pointBlue);
     canvas.drawPoints(PointMode.points, pointsGreen, pointGreen);
     canvas.drawPoints(PointMode.points, pointsRed, pointRed);
     // canvas.drawPoints(PointMode.points, pointsBlack, pointBlack);
@@ -102,42 +114,50 @@ class LimbsPainter extends CustomPainter {
     bool isHuman = Parts(painterP.inferences).isHuman;
 
     PainterPresenter.addHumanHistory(isHuman);
+
+    painterP.staging();
+
     if (!isHuman
         || PainterPresenter.humanHistory < 0
         || painterP.distance != WorkoutDistance.middle) return;
 
-    painterP.staging();
-
     for (List<dynamic> point in painterP.inferences) {
       if ((point[2] > 0.40) & limb.contains(painterP.inferences.indexOf(point))) {
         Offset offset = Offset(
-          point[0].toDouble() + ExerciseHandler.errorX,
-          point[1].toDouble() + ExerciseHandler.errorY,
-        );
-        (limb.isCorrect ? pointsGreen : pointsRed).add(offset);
+          point[0].toDouble(),
+          point[1].toDouble(),
+        ); ({
+          WorkoutPosture.ready: pointsBlue,
+          WorkoutPosture.correct: pointsGreen,
+          WorkoutPosture.wrong: pointsRed,
+        }[ExerciseHandler.posture]!).add(offset);
+        // (ExerciseHandler.isCorrect ? pointsGreen : pointsRed).add(offset);
       }
     }
 
     for (Edge edge in PainterPresenter.edges) {
-      double vertex1X = painterP.inferences[edge.part1.index][0].toDouble() + ExerciseHandler.errorX;
-      double vertex1Y = painterP.inferences[edge.part1.index][1].toDouble() + ExerciseHandler.errorY;
-      double vertex2X = painterP.inferences[edge.part2.index][0].toDouble() + ExerciseHandler.errorX;
-      double vertex2Y = painterP.inferences[edge.part2.index][1].toDouble() + ExerciseHandler.errorY;
+      double vertex1X = painterP.inferences[edge.part1.index][0].toDouble();
+      double vertex1Y = painterP.inferences[edge.part1.index][1].toDouble();
+      double vertex2X = painterP.inferences[edge.part2.index][0].toDouble();
+      double vertex2Y = painterP.inferences[edge.part2.index][1].toDouble();
 
       if (limb.contains(edge.part1.index) & limb.contains(edge.part2.index)) {
         canvas.drawLine(
           Offset(vertex1X, vertex1Y),
-          Offset(vertex2X, vertex2Y),
-          limb.isCorrect ? edgeGreen : edgeRed,
+          Offset(vertex2X, vertex2Y), {
+            WorkoutPosture.ready: edgeBlue,
+            WorkoutPosture.correct: edgeGreen,
+            WorkoutPosture.wrong: edgeRed,
+          }[ExerciseHandler.posture]!,
         );
       }
-      else {
-        // canvas.drawLine(
-        //   Offset(vertex1X, vertex1Y),
-        //   Offset(vertex2X, vertex2Y),
-        //   edgeBlack,
-        // );
-      }
+      // else {
+      //   canvas.drawLine(
+      //     Offset(vertex1X, vertex1Y),
+      //     Offset(vertex2X, vertex2Y),
+      //     edgeBlack,
+      //   );
+      // }
     }
   }
 }

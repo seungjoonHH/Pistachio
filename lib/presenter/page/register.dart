@@ -237,9 +237,7 @@ class RegisterPresenter extends GetxController {
         newcomer.weight = WeightPresenter.getAverageWeight(newcomer.age, newcomer.sex!);
         newcomer.height = HeightPresenter.getAverageHeight(newcomer.age, newcomer.sex!);
         break;
-      case 1:
-
-        break;
+      case 1: break;
       case 2: break;
       case 3:
         initGoal(Record.init(
@@ -250,13 +248,23 @@ class RegisterPresenter extends GetxController {
       case 4: break;
       case 5:
         initGoal(Record.init(ActivityType.height, 10));
+        initGoal(Record.init(
+          ActivityType.weight,
+          100, ExerciseUnit.count,
+        ));
         break;
       case 6:
         Record calorie = CalorieRecord(amount: 0);
         DistanceRecord distance = newcomer.getGoal(ActivityType.distance) as DistanceRecord;
         HeightRecord height = newcomer.getGoal(ActivityType.height) as HeightRecord;
+        WeightRecord weight = newcomer.getGoal(ActivityType.weight) as WeightRecord;
+        print(height.amount);
         calorie.amount += CalorieRecord.from(ActivityType.distance, distance.minute);
+        print(CalorieRecord.from(ActivityType.distance, distance.minute));
         calorie.amount += CalorieRecord.from(ActivityType.height, height.amount);
+        print(CalorieRecord.from(ActivityType.height, height.amount));
+        calorie.amount += CalorieRecord.from(ActivityType.weight, weight.count);
+        print(CalorieRecord.from(ActivityType.weight, weight.count));
 
         newcomer.setGoal(ActivityType.calorie, calorie);
         update();

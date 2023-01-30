@@ -7,7 +7,6 @@ import 'package:native_exif/native_exif.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/enum/activity_type.dart';
 import 'package:pistachio/presenter/page/exercise/input.dart';
-import 'package:pistachio/view/page/exercise/input/widget.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:pistachio/view/widget/widget/card.dart';

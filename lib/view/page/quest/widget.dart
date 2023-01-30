@@ -125,7 +125,7 @@ class QuestBadgePercentView extends StatelessWidget {
     PUser user = Get.find<UserPresenter>().loggedUser;
     double record = user.getThisMonthAmounts(type);
     int goal = QuestPresenter.quests[type] ?? 1;
-    if (type == ActivityType.weight) goal ~/= weight + 1;
+    if (type == ActivityType.weight) goal ~/= userWeight + 1;
     double percent = min(record / goal, 1);
 
     bool completed = percent == 1;

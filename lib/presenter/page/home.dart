@@ -51,7 +51,7 @@ class HomePresenter extends GetxController {
 
     await userP.load();
     userP.clearRecords();
-    await userP.fetchData();
+    if (!await userP.fetchData()) await userP.load();
     userP.updateCalorie();
     await BadgePresenter.synchronizeBadges();
 

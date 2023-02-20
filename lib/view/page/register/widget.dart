@@ -271,7 +271,7 @@ class WeightHeightView extends StatelessWidget {
       children: [
         Center(
           child: PText(
-            '보다 나은 서비스를 위해\n정보를 입력해주세요!',
+            '정보 입력',
             style: textTheme.headlineSmall,
             color: PTheme.black,
             maxLines: 2,
@@ -309,7 +309,7 @@ class WeightHeightView extends StatelessWidget {
         Expanded(
           child: Center(
             child: PText(
-              '*체중과 신장은 간편한 계산을 위해서만 사용될 뿐\n다른 곳에는 이용되지 않아요!',
+              '*체중과 신장은 간편한 칼로리 계산을 위해서만 사용될 뿐\n다른 곳에는 이용되지 않아요!',
               style: textTheme.bodyMedium,
               color: PTheme.grey,
               maxLines: 2,

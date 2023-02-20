@@ -249,7 +249,7 @@ class UserPresenter extends GetxController {
 
   // 로그인된 사용자에게 뱃지 수여
   void awardBadge(
-    Badge badge, [
+    PBadge badge, [
       bool once = false,
       bool aDay = false,
     ]

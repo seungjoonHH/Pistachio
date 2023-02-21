@@ -23,7 +23,7 @@ class OnboardingPresenter extends GetxController {
   void pageChanged(int index) async {
     pageIndex = index; update();
 
-    if (index == 3) {
+    if (index == 4) {
       await Future.delayed(const Duration(seconds: 1), () {
         visible = true; update();
       });

@@ -271,7 +271,7 @@ class WeightHeightView extends StatelessWidget {
       children: [
         Center(
           child: PText(
-            '정보 입력',
+            '회원 가입 정보 입력',
             style: textTheme.headlineSmall,
             color: PTheme.black,
             maxLines: 2,

@@ -2,7 +2,8 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/database/user.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/view/page/edit_goal/widget.dart';
@@ -102,12 +103,12 @@ class EditGoal extends GetxController {
     switch (pageIndex) {
       case 0:
         Record record = user.getGoal(ActivityType.distance)!;
-        record.convert(DistanceUnit.minute);
+        record.convert(ExerciseUnit.minute);
 
         initGoal(Record.init(
           ActivityType.distance,
           record.amount,
-          DistanceUnit.minute,
+          ExerciseUnit.minute,
         ));
         break;
       case 1: break;

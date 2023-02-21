@@ -1,7 +1,8 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/dialog.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/page/edit_goal.dart';
 import 'package:pistachio/presenter/widget/loading.dart';
@@ -49,7 +50,9 @@ class HomePresenter extends GetxController {
     };
 
     await userP.load();
-    await userP.fetchData();
+    userP.clearRecords();
+    if (!await userP.fetchData()) await userP.load();
+    userP.updateCalorie();
     await BadgePresenter.synchronizeBadges();
 
     loadingP.loadEnd();

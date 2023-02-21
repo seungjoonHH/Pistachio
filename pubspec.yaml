@@ -27,10 +27,9 @@ dependencies:
   carousel_slider: ^4.1.1
   flutter_svg: ^1.1.1+1
   animated_flip_counter: ^0.2.4
-  lottie: ^1.4.1
+  lottie: ^2.1.0
   syncfusion_flutter_calendar: ^20.2.40
   dotted_border: ^2.0.0+2
-  path_provider: ^2.0.11
   firebase_auth: ^4.1.0
   bottom_sheet_bar: ^2.3.1
   flutter_polygon: ^0.3.0+2
@@ -41,7 +40,7 @@ dependencies:
   flutter_shake_animated: ^0.0.5
   numberpicker: ^2.1.1
   sign_in_with_apple: ^4.1.0
-  flutter_secure_storage: ^6.0.0
+  flutter_secure_storage: ^7.0.1
   health: ^4.1.1
   permission_handler: ^10.0.0
   rive: ^0.9.1
@@ -52,8 +51,17 @@ dependencies:
   flutter_animate: ^2.0.0
   ntp: ^2.0.0
   dio: ^4.0.6
-  webview_flutter: ^3.0.4
+  super_banners: ^0.0.1
+  native_exif: ^0.4.0
+  geocoding: ^2.0.5
+  geolocator: ^9.0.1
+#  webview_flutter: ^4.0.1
   in_app_review: ^2.0.6
+  path_provider: ^2.0.8
+  camera: ^0.9.4+5
+  image: ^3.1.0
+  tflite_flutter: ^0.9.0
+  tflite_flutter_helper: ^0.3.1
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.2
@@ -69,8 +77,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/model/lite-model_movenet_singlepose_lightning_3.tflite
     - assets/image/logo/
-    - assets/image/object/
     - assets/image/level/distance/
     - assets/image/level/height/
     - assets/image/record/
@@ -86,8 +94,10 @@ flutter:
     - assets/image/page/onboarding/
     - assets/image/page/timer/
     - assets/image/page/home/
+    - assets/image/page/input/
     - assets/image/page/challenge/
     - assets/image/page/edit_goal/
+    - assets/image/page/workout/
     - assets/image/icon/selected/
     - assets/image/icon/unselected/
     - assets/json/lottie/
@@ -100,3 +110,7 @@ flutter:
     - family: BMJUA
       fonts:
         - asset: assets/font/BMJUA/BMJUA_ttf.ttf
+
+    - family: Pretendard
+      fonts:
+        - asset: assets/font/Pretendard/Pretendard-Bold.otf

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -24,7 +25,7 @@ class RecordMain extends GetxController {
 
     for (ActivityType type in ActivityType.activeValues) {
       double amount = userP.loggedUser.getAmounts(type);
-      Record record = Record.init(type, amount, DistanceUnit.kilometer);
+      Record record = Record.init(type, amount, ExerciseUnit.kilometer);
 
       tiers[type] = LevelPresenter.getTier(type, record);
     }

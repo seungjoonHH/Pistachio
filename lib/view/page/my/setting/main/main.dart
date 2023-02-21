@@ -1,6 +1,5 @@
 /* 설정 페이지 */
 
-import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/page/my/setting/main/widget.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ class MySettingMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: PTheme.background,
       appBar: MySettingMainAppBar(),
       body: MySettingMainView(),
     );

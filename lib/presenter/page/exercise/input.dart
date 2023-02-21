@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/number.dart';
 import 'package:pistachio/model/class/database/user.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/model/user.dart';
@@ -79,7 +80,7 @@ class ExerciseInput extends GetxController {
     if (!await validate(type)) return;
 
     double amount = double.parse(inputCont.text);
-    Record record = Record.init(type, amount, DistanceUnit.minute);
+    Record record = Record.init(type, amount, ExerciseUnit.minute);
 
     userP.addRecord(type, record);
 

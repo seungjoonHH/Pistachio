@@ -1,5 +1,6 @@
 import 'package:pistachio/model/class/json/badge.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/difficulty.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 
 class Challenge {
@@ -28,7 +29,7 @@ class Challenge {
   Map<String, dynamic> levels = {};
 
   // 의존 변수
-  Map<Difficulty, Badge> badges = {}; // levels 에 의존
+  Map<Difficulty, PBadge> badges = {}; // levels 에 의존
 
   /// accessors & mutators
   String? get titleOneLine => title?.replaceAll('\n', ' ');

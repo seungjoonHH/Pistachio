@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pistachio/main.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class ReleaseNotePage extends StatelessWidget {
   const ReleaseNotePage({Key? key}) : super(key: key);
@@ -8,12 +6,42 @@ class ReleaseNotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: SafeArea(
-        child: WebView(
-          initialUrl: releaseNoteUrl,
-          javascriptMode: JavascriptMode.unrestricted,
-        ),
-      ),
+      body: Center(child: Text('test')),
     );
+
+    // final webViewController = WebViewController()
+    //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    //   ..setNavigationDelegate(
+    //     NavigationDelegate(
+    //       onProgress: (int progress) {
+    //         print(progress);
+    //       // Update loading bar.
+    //       },
+    //       onPageStarted: (String url) {
+    //         print(url);
+    //       },
+    //       onPageFinished: (String url) {
+    //         print(url);
+    //       },
+    //       onWebResourceError: (WebResourceError error) {
+    //         print(error);
+    //       },
+    //       onNavigationRequest: (NavigationRequest request) {
+    //         print(request.url);
+    //       if (request.url.startsWith(releaseNoteUrl)) {
+    //         return NavigationDecision.prevent;
+    //       }
+    //       return NavigationDecision.navigate;
+    //     },
+    //   ),
+    // )..loadRequest(Uri.parse(releaseNoteUrl));
+    //
+    // return Scaffold(
+    //   body: SafeArea(
+    //     child: WebViewWidget(
+    //       controller: webViewController,
+    //     ),
+    //   ),
+    // );
   }
 }

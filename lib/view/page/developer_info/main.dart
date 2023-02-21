@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 import 'package:pistachio/view/widget/widget/text.dart';
 
@@ -9,7 +8,6 @@ class DeveloperInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: PTheme.background,
       appBar: const PAppBar(title: '개발자 정보'),
       body: Container(
         alignment: Alignment.center,

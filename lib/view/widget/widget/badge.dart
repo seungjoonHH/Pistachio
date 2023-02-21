@@ -148,7 +148,7 @@ class BadgeWidget extends StatelessWidget {
   }) : onPressed = onPressed ?? (() => GlobalPresenter.showBadgeDialog(badge)),
         super(key: key);
 
-  final Badge? badge;
+  final PBadge? badge;
   final bool detail;
   final VoidCallback? onPressed;
   final double size;

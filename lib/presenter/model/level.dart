@@ -5,7 +5,8 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/json/level.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/model/record.dart';
 
 /// class
@@ -28,7 +29,7 @@ class LevelPresenter extends GetxController {
     Map<String, dynamic> result = {};
 
     List<Level> levelList = levels[type] ?? [];
-    record.convert(DistanceUnit.kilometer);
+    record.convert(ExerciseUnit.kilometer);
 
     for (int i = 0; i < levelList.length - 1; i++) {
       int current = levelList[i].amount!;

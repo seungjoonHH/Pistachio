@@ -4,7 +4,7 @@ import 'package:pistachio/global/number.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/badge.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/difficulty.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/challenge.dart';
 
@@ -39,8 +39,8 @@ class Party {
 
   List<double> get recordValues => records.values
       .map<double>((e) => e.toDouble()).toList();
-  double get recordSum => sum(recordValues);
-  double get recordAverage => average(recordValues);
+  double get recordSum => sum(recordValues).toDouble();
+  double get recordAverage => average(recordValues).toDouble();
 
   bool get satisfy => recordSum >= level['goal'];
 
@@ -63,7 +63,7 @@ class Party {
   PUser getMemberByRank(int rank) => getMember(ranks[rank - 1].key);
   PUser get winner => getMemberByRank(1);
 
-  Badge get badge => BadgePresenter.getBadge(level['collection'])!;
+  PBadge get badge => BadgePresenter.getBadge(level['collection'])!;
 
   /// constructors
   Party();

@@ -26,8 +26,8 @@ class MySettingEdit extends GetxController {
     PUser user = userP.loggedUser;
 
     editConts['nickname']?.text = user.nickname!;
-    editConts['height']?.text = '$height';
-    editConts['weight']?.text = '$weight';
+    editConts['height']?.text = '$userHeight';
+    editConts['weight']?.text = '$userWeight';
     Get.toNamed('my/setting/edit', arguments: editType);
   }
 

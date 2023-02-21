@@ -1,16 +1,16 @@
 import 'package:get/get.dart';
 import 'package:pistachio/global/number.dart';
 import 'package:pistachio/model/class/exercises.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/register.dart';
 
 // 사용자의 체중
-int get weight => Get.find<UserPresenter>().loggedUser.weight
+int get userWeight => Get.find<UserPresenter>().loggedUser.weight
     ?? Get.find<RegisterPresenter>().newcomer.weight ?? 0;
 
 // 사용자의 신장
-int get height => Get.find<UserPresenter>().loggedUser.height
+int get userHeight => Get.find<UserPresenter>().loggedUser.height
     ?? Get.find<RegisterPresenter>().newcomer.height ?? 0;
 
 // 1분 간 소모 칼로리
@@ -41,7 +41,7 @@ Map<ActivityType, int> get velocities => {
 //   switch (type) {
 //     case ActivityType.distance:
 //       int converted = convertDistance(
-//         amount, DistanceUnit.minute, DistanceUnit.step,
+//         amount, ExerciseUnit.minute, ExerciseUnit.step,
 //       );
 //       return converted;
 //     case ActivityType.height: return amount;
@@ -56,4 +56,4 @@ String unitDistance(int amount) {
 }
 
 // 무게 변환 (회 -> kg)
-int convertWeight(int amount) => amount * weight;
+int convertWeight(int amount) => amount * userWeight;

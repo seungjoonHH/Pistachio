@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/json/challenge.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/difficulty.dart';
 import 'package:pistachio/presenter/page/challenge/create.dart';
 import 'package:pistachio/view/widget/button/button.dart';
 import 'package:pistachio/view/widget/widget/badge.dart';

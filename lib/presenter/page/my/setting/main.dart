@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/main.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/dialog.dart';
 import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:pistachio/presenter/page/release_note.dart';
 import 'package:pistachio/view/widget/button/button.dart';

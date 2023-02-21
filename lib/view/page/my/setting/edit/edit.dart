@@ -36,7 +36,6 @@ class MySettingEditPage extends StatelessWidget {
                   ? PTheme.grey : PTheme.colorB,
             ),
           ),
-          backgroundColor: PTheme.background,
         );
       },
     );

@@ -33,7 +33,7 @@ class _CarouselViewState extends State<CarouselView> {
     List<String> messages = [
       '일상 운동 기록,\n어떻게 관리하시나요?',
       '입력만 하세요!\n피스타치오가 의미있게\n만들어드릴게요',
-      '유산소, 계단 오르기를\n 기록 가능해요!',
+      '유산소, 계단 오르기,\n운동 횟수를 기록 가능해요!',
       '오늘의 목표 설정을 통해\n더 쉽게 관리 해보세요!',
     ];
 

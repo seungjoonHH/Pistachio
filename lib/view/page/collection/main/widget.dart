@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pistachio/model/class/database/user.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/page_mode.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/user.dart';
 import 'package:pistachio/presenter/page/collection/main.dart';

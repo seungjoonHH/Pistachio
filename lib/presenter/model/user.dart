@@ -7,7 +7,9 @@ import 'package:pistachio/model/class/json/challenge.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/party.dart';
 import 'package:pistachio/model/class/database/user.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/difficulty.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/firebase/firebase.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/health/health.dart';
@@ -50,14 +52,12 @@ class UserPresenter extends GetxController {
     Map<String, dynamic> json = user.toJson();
     data.forEach((key, value) => json[key] = value);
     loggedUser = PUser.fromJson(json);
-    await fetchData();
+    if (!await fetchData()) await load();
   }
 
   // 로그아웃
   // 현재 로그인된 사용자 정보 초기화
-  void logout() {
-    loggedUser = PUser();
-  }
+  void logout() => loggedUser = PUser();
 
   /* 파이어베이스 관련 */
   // 파이어베이스에서 로드
@@ -145,12 +145,15 @@ class UserPresenter extends GetxController {
 
   /* 기록 관련 */
   // 건강 및 구글핏 데이터 불러오기
-  Future fetchData() async {
+  Future<bool> fetchData() async {
     bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+    bool fetchCompleted = true;
+
     await HealthPresenter.requestAuth();
-    await HealthPresenter.fetchStepData();
-    if (isIOS) await HealthPresenter.fetchFlightsData();
-    updateCalorie();
+    fetchCompleted &= await HealthPresenter.fetchStepData();
+    if (isIOS) fetchCompleted &= await HealthPresenter.fetchFlightsData();
+
+    return fetchCompleted;
   }
 
   // 로그인된 사용자의 거리 및 높이 기록에 따른 칼로리 소모량을 계산하여 최신화
@@ -161,7 +164,7 @@ class UserPresenter extends GetxController {
         today,
         oneSecondBefore(tomorrow),
       ),
-      state: DistanceUnit.step,
+      state: ExerciseUnit.step,
     );
 
     HeightRecord height = HeightRecord(
@@ -170,6 +173,15 @@ class UserPresenter extends GetxController {
         today,
         oneSecondBefore(tomorrow),
       ),
+    );
+
+    WeightRecord weight = WeightRecord(
+      amount: loggedUser.getAmounts(
+        ActivityType.weight,
+        today,
+        oneSecondBefore(tomorrow),
+      ),
+      state: ExerciseUnit.count,
     );
 
     CalorieRecord calorie = CalorieRecord(amount: 0);
@@ -182,6 +194,10 @@ class UserPresenter extends GetxController {
       ActivityType.height,
       height.amount,
     );
+    calorie.amount += CalorieRecord.from(
+      ActivityType.weight,
+      weight.amount,
+    );
 
     loggedUser.setRecord(
       ActivityType.calorie,
@@ -192,12 +208,29 @@ class UserPresenter extends GetxController {
     update();
   }
 
+  void clearRecords() {
+    for (ActivityType type in ActivityType.values) {
+      ExerciseUnit? unit;
+
+      switch (type) {
+        case ActivityType.distance:
+          unit = ExerciseUnit.step;
+          break;
+        case ActivityType.weight:
+          unit = ExerciseUnit.count;
+          break;
+        default: break;
+      }
+      Record record = Record.init(type, 0, unit);
+      loggedUser.setRecord(type, today, record);
+    }
+  }
+
   // 해당 활동형식의 기록 추가 (구글핏/건강 연동, 칼로리 계산, 관련 뱃지 수여)
   void addRecord(
     ActivityType type,
     Record record,
   ) async {
-    bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
     late int before, after;
 
     before = loggedUser.completedActivities.length;
@@ -205,15 +238,17 @@ class UserPresenter extends GetxController {
     loggedUser.addRecord(type, today, record, true);
     updateCalorie();
 
-    switch (type) {
-      case ActivityType.distance:
-        if (!isIOS) record.amount += loggedUser.getTodayAmounts(type);
-        await HealthPresenter.addStepsData(record); break;
-      case ActivityType.height:
-        if (!isIOS) break;
-        await HealthPresenter.addFlightsData(record); break;
-      default: break;
-    }
+    // switch (type) {
+    //   case ActivityType.distance:
+    //     if (!isIOS) record.amount += loggedUser.getTodayAmounts(type);
+    //     await HealthPresenter.addStepsData(record);
+    //     break;
+    //   case ActivityType.height:
+    //     if (!isIOS) break;
+    //     await HealthPresenter.addFlightsData(record);
+    //     break;
+    //   default: break;
+    // }
 
     after = loggedUser.completedActivities.length;
 
@@ -249,7 +284,7 @@ class UserPresenter extends GetxController {
 
   // 로그인된 사용자에게 뱃지 수여
   void awardBadge(
-    Badge badge, [
+    PBadge badge, [
       bool once = false,
       bool aDay = false,
     ]

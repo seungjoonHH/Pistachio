@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pistachio/global/theme.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/login_type.dart';
 import 'package:pistachio/presenter/firebase/auth/auth.dart';
 import 'package:pistachio/presenter/page/login.dart';
 import 'package:pistachio/view/widget/button/button.dart';

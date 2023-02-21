@@ -11,7 +11,9 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/model/class/database/collection.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/level.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/border_type.dart';
+import 'package:pistachio/model/enum/unit.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/level.dart';
@@ -406,7 +408,7 @@ class MyRecordCard extends StatelessWidget {
     ).first;
     PUser user = Get.find<UserPresenter>().loggedUser;
     double amounts = user.getAmounts(randomType);
-    Record record = Record.init(randomType, amounts, DistanceUnit.step);
+    Record record = Record.init(randomType, amounts, ExerciseUnit.step);
 
     Map<String, dynamic> tier = LevelPresenter.getTier(randomType, record);
     Level current = tier['current'];
@@ -731,7 +733,7 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
 
     Record record = Record.init(
       type, user.getThisMonthAmounts(type),
-      DistanceUnit.step,
+      ExerciseUnit.step,
     );
 
     int goal = QuestPresenter.quests[type] ?? 1;
@@ -757,8 +759,10 @@ class MonthlyQuestProgressWidget extends StatelessWidget {
                 flex: 1,
                 // child: BadgeWidget(badge: questBadge, size: 60.0),
                 child: type.active
-                    ? Image.asset('$directory${type.name}.png')
-                    : Container(),
+                    ? Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Image.asset('$directory${type.name}.png'),
+                    ) : Container(),
               ),
               const VerticalDivider(
                 color: PTheme.black,

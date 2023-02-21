@@ -9,7 +9,9 @@ import 'package:pistachio/global/number.dart';
 import 'package:pistachio/global/string.dart';
 import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
+import 'package:pistachio/model/enum/unit.dart';
+import 'package:pistachio/model/enum/sex.dart';
 import 'package:pistachio/presenter/model/level.dart';
 import 'package:pistachio/presenter/model/record.dart';
 import 'package:pistachio/presenter/page/edit_goal.dart';
@@ -124,17 +126,17 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
     return GetBuilder<EditGoal>(
       builder: (controller) {
         Record record = controller.user.getGoal(widget.type)!;
-        record.convert(DistanceUnit.minute);
+        record.convert(ExerciseUnit.minute);
 
         Record lessRecord = Record.init(
           widget.type,
           max(record.amount - 1, widget.minValue.toDouble()),
-          DistanceUnit.minute,
+          ExerciseUnit.minute,
         );
         Record greaterRecord = Record.init(
           widget.type,
           min(record.amount + 1, widget.maxValue.toDouble()),
-          DistanceUnit.minute,
+          ExerciseUnit.minute,
         );
 
         return Column(
@@ -160,7 +162,7 @@ class _GoalNumberPickerState extends State<GoalNumberPicker> {
                   Record.init(
                     widget.type,
                     val.toDouble(),
-                    DistanceUnit.minute,
+                    ExerciseUnit.minute,
                   ),
                 );
                 controller.update();
@@ -275,7 +277,7 @@ class DistanceGoalView extends StatelessWidget {
         String distanceTitle = tier['current'].title;
         DistanceRecord distanceValue = DistanceRecord(
           amount: tier['current'].amount.toDouble(),
-          state: DistanceUnit.kilometer,
+          state: ExerciseUnit.kilometer,
         );
 
         const Velocity velocity = Velocity(

@@ -10,7 +10,7 @@ import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/global/unit.dart';
 import 'package:pistachio/model/class/database/user.dart';
 import 'package:pistachio/model/class/json/badge.dart';
-import 'package:pistachio/model/enum/enum.dart';
+import 'package:pistachio/model/enum/activity_type.dart';
 import 'package:pistachio/presenter/global.dart';
 import 'package:pistachio/presenter/model/badge.dart';
 import 'package:pistachio/presenter/model/quest.dart';
@@ -87,8 +87,8 @@ class MonthlyQuestView extends StatelessWidget {
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: ActivityType.activeValues.map((type) {
-                      Badge? badge;
+                    children: ActivityType.activeValues.sublist(0, 3).map((type) {
+                      PBadge? badge;
                       () async {
                         badge = BadgePresenter.getBadge('1040${type.index}${
                           (today.month - 1).toString().padLeft(2, '0')}'
@@ -115,7 +115,7 @@ class QuestBadgePercentView extends StatelessWidget {
     required this.type,
   }) : super(key: key);
 
-  final Badge badge;
+  final PBadge badge;
   final ActivityType type;
 
   @override
@@ -125,7 +125,7 @@ class QuestBadgePercentView extends StatelessWidget {
     PUser user = Get.find<UserPresenter>().loggedUser;
     double record = user.getThisMonthAmounts(type);
     int goal = QuestPresenter.quests[type] ?? 1;
-    if (type == ActivityType.weight) goal ~/= weight + 1;
+    if (type == ActivityType.weight) goal ~/= userWeight + 1;
     double percent = min(record / goal, 1);
 
     bool completed = percent == 1;

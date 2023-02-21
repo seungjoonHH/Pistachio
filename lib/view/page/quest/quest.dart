@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pistachio/global/theme.dart';
 import 'package:pistachio/view/page/quest/widget.dart';
 import 'package:pistachio/view/widget/widget/app_bar.dart';
 
@@ -10,7 +9,6 @@ class QuestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: PAppBar(title: '월간 목표'),
-      backgroundColor: PTheme.background,
       body: MonthlyQuestView(),
     );
   }

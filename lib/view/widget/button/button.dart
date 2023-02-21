@@ -112,6 +112,58 @@ class PDirectButton extends StatelessWidget {
   }
 }
 
+class PCircledButton extends StatelessWidget {
+  const PCircledButton({
+    Key? key,
+    required this.onPressed,
+    required this.child,
+    this.size = 80.0,
+    this.enabled = true,
+    Color? backgroundColor,
+  }) : backgroundColor = backgroundColor ?? const Color(0xFFD6BDAC),
+        super(key: key);
+
+  final VoidCallback onPressed;
+  final Widget child;
+  final double size;
+  final bool enabled;
+  final Color? backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    BorderRadius radius = BorderRadius.circular(size.r * .5);
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Material(
+          color: backgroundColor,
+          borderRadius: radius,
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: radius,
+            child: Container(
+              padding: EdgeInsets.all(10.0.r),
+              alignment: Alignment.center,
+              width: size.r,
+              height: size.r,
+              child: child,
+            ),
+          ),
+        ),
+        if (!enabled)
+        Container(
+          width: size.r,
+          height: size.r,
+          decoration: BoxDecoration(
+            color: PTheme.white.withOpacity(.3),
+            borderRadius: radius,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class PIconButton extends StatelessWidget {
   const PIconButton({
     Key? key,

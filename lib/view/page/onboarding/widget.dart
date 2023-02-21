@@ -35,6 +35,7 @@ class _CarouselViewState extends State<CarouselView> {
       '입력만 하세요!\n피스타치오가 의미있게\n만들어드릴게요',
       '유산소, 계단 오르기를\n 기록 가능해요!',
       '오늘의 목표 설정을 통해\n더 쉽게 관리 해보세요!',
+      "피스타치오가 애플 건강 앱과 연동을 하여\n운동 데이터(걸음 수, 올라간 층수)를 수집합니다.\n피스타치오가 수집한 건강 및 피트니스 목적으로 사용되며 샤용자가 소모한 칼로리를 계산하고\n운동 데이터를 축적해 시각적으로 표현해줍니다!"
     ];
 
     return GetBuilder<OnboardingPresenter>(
@@ -52,7 +53,7 @@ class _CarouselViewState extends State<CarouselView> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       PText(messages[index],
-                        maxLines: 3,
+                        maxLines: 8,
                         style: textTheme.headlineSmall,
                         align: TextAlign.center,
                       ),

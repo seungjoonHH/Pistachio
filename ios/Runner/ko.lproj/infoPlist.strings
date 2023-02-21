@@ -6,5 +6,5 @@
   
 */
 "CFBundleDisplayName" = "피스타치오";
-"NSHealthShareUsageDescription" = "피스타치오가 건강 앱의 신체활동 데이터를 동기화하여 더 나은 통찰력을 제공합니다.";
-"NSHealthUpdateUsageDescription" = "피스타치오가 건강 앱의 신체활동 데이터를 동기화하여 더 나은 통찰력을 제공합니다.";
+"NSHealthShareUsageDescription" = "피스타치오가 건강 앱의 신체활동 데이터(걸음, 층수)를 동기화하여 저장된 운동량으로 소모한 칼로리를 계산하고 총 운동량을 합산하여 시각적 효과로 치환하여 보여줍니다.";
+"NSHealthUpdateUsageDescription" = "피스타치오가 건강 앱의 신체활동 데이터(걸음, 층수)를 동기화하여 저장된 운동량으로 소모한 칼로리를 계산하고 총 운동량을 합산하여 시각적 효과로 치환하여 보여줍니다.";

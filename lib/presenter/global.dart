@@ -73,7 +73,7 @@ class GlobalPresenter extends GetxController {
 
   static void goBack() => Get.back(result: true);
 
-  static void showBadgeDialog(Badge? badge) {
+  static void showBadgeDialog(PBadge? badge) {
     PUser user = Get.find<UserPresenter>().loggedUser;
 
     if (badge == null) return;
@@ -202,7 +202,7 @@ class GlobalPresenter extends GetxController {
   }
 
   static void showAwardedBadgeDialog(
-    Badge badge,
+    PBadge badge,
     [bool firstAward = false]
   ) async {
     showPDialog(
@@ -290,7 +290,7 @@ class GlobalPresenter extends GetxController {
 
   // 대표 컬렉션 설정 팝업
   static void showCollectionSettingDialog(String badgeId) {
-    Badge? selectedBadge = BadgePresenter.getBadge(badgeId);
+    PBadge? selectedBadge = BadgePresenter.getBadge(badgeId);
 
     showPDialog(
       title: '대표 컬렉션 변경',
